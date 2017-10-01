@@ -574,7 +574,7 @@ public class JsonUtil{
 		return ja;
 	}
 
-	public static JsonElement getArrayFromObjectList(ArrayList<Object> array){
+	public static JsonElement getArrayFromObjectList(ArrayList<?> array){
 		JsonArray ja = new JsonArray();
 		for(Object obj : array){
 			add(ja, obj.toString());
