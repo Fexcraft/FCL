@@ -1,0 +1,3 @@
+tile.fcl:workbench.name=Workbench
+tile.fcl:blueprinttable.name=Blueprint Table
+fcl.perm_cmd.info=FCL Permissions Management Command

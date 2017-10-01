@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "normal": { "model": "fcl:blueprinttable" },
+        "facing=north": { "model": "fcl:blueprinttable", "y": 180 },
+        "facing=south": { "model": "fcl:blueprinttable" },
+        "facing=west":  { "model": "fcl:blueprinttable", "y": 90 },
+        "facing=east":  { "model": "fcl:blueprinttable", "y": 270 }
+    }
+}
