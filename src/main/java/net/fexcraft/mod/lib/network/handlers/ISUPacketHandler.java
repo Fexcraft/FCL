@@ -15,8 +15,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class ISUPacketHandler{
 	
-	private static HashSet<IPacketListener> sls = new HashSet<IPacketListener>();
-	private static HashSet<IPacketListener> cls = new HashSet<IPacketListener>();
+	private static HashSet<IPacketListener<PacketItemStackUpdate>> sls = new HashSet<IPacketListener<PacketItemStackUpdate>>();
+	private static HashSet<IPacketListener<PacketItemStackUpdate>> cls = new HashSet<IPacketListener<PacketItemStackUpdate>>();
 	
 	public static class Server implements IMessageHandler<PacketItemStackUpdate, IMessage>{
 		@Override
@@ -30,7 +30,7 @@ public class ISUPacketHandler{
 						((ISPR)stack.getItem()).processServerPacket(packet, stack);
 					}
 					if(packet.nbt.hasKey("target_listener")){
-						for(IPacketListener pktl : sls){
+						for(IPacketListener<PacketItemStackUpdate> pktl : sls){
 							if(pktl.getId().equals(packet.nbt.getString("target_listener"))){
 								pktl.process(packet, new Object[]{stack});
 							}
@@ -54,7 +54,7 @@ public class ISUPacketHandler{
 						((ISPR)stack.getItem()).processClientPacket(packet, stack);
 					}
 					if(packet.nbt.hasKey("target_listener")){
-						for(IPacketListener pktl : cls){
+						for(IPacketListener<PacketItemStackUpdate> pktl : cls){
 							if(pktl.getId().equals(packet.nbt.getString("target_listener"))){
 								pktl.process(packet, new Object[]{stack});
 							}
@@ -66,7 +66,7 @@ public class ISUPacketHandler{
 		}
 	}
 
-	public static void addListener(Side side, IPacketListener listener) {
+	public static void addListener(Side side, IPacketListener<PacketItemStackUpdate> listener) {
 		if(side.isClient()){
 			cls.add(listener);
 		}

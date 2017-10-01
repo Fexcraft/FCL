@@ -123,6 +123,7 @@ public class RecipeRegistry {
 		return cat == null ? null : cat.get(stack.getUnlocalizedName());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static List<BluePrintRecipe> getRecipes(int x, int y){
 		TreeMap<String, List<BluePrintRecipe>> cat = getRecipes(x);
 		//ItemStackComparable stack = cat == null ? null : (ItemStackComparable)cat.keySet().toArray()[y];

@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class KeyInputPacketHandler implements IMessageHandler<PacketKeyInput, IMessage>{
 	
-	private static HashSet<IPacketListener> lsts = new HashSet<IPacketListener>();
+	private static HashSet<IPacketListener<PacketKeyInput>> lsts = new HashSet<IPacketListener<PacketKeyInput>>();
 	
 	@Override
 	public IMessage onMessage(final PacketKeyInput packet, final MessageContext ctx) {
@@ -34,7 +34,7 @@ public class KeyInputPacketHandler implements IMessageHandler<PacketKeyInput, IM
 						Print.chat(e, "PACKET ERROR, read console.");
 						break;
 				}*/
-				for(IPacketListener pktls : lsts){
+				for(IPacketListener<PacketKeyInput> pktls : lsts){
 					if(pktls.getId().equals(packet.target)){
 						pktls.process(packet, new Object[]{name});
 					}
@@ -45,7 +45,7 @@ public class KeyInputPacketHandler implements IMessageHandler<PacketKeyInput, IM
 		return null;
 	}
 
-	public static void addListener(IPacketListener listener) {
+	public static void addListener(IPacketListener<PacketKeyInput> listener) {
 		lsts.add(listener);
 	}
 }

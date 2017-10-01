@@ -49,39 +49,42 @@ public class PacketHandler{
 		TILEENTITY, KEYINPUT, ITEMSTACK, JSON, NBT, ENTITY;
 	}
 	
-	public static void registerListener(PacketHandlerType type, Side side, IPacketListener listener){
+	@SuppressWarnings("unchecked")
+	public static void registerListener(PacketHandlerType type, Side side, IPacketListener<?> listener){
 		switch(type){
 			case ITEMSTACK:{
-				ISUPacketHandler.addListener(side, listener);
+				ISUPacketHandler.addListener(side, (IPacketListener<PacketItemStackUpdate>)listener);
 				break;
 			}
 			case JSON:{
-				JsonObjectPacketHandler.addListener(side, listener);break;
+				JsonObjectPacketHandler.addListener(side, (IPacketListener<PacketJsonObject>)listener);
+				break;
 			}
 			case NBT:{
-				NBTTagCompoundPacketHandler.addListener(side, listener);break;
+				NBTTagCompoundPacketHandler.addListener(side, (IPacketListener<PacketNBTTagCompound>) listener);
+				break;
 			}
 			case KEYINPUT:{
 				if(side.isServer()){
-					KeyInputPacketHandler.addListener(listener);
+					KeyInputPacketHandler.addListener((IPacketListener<PacketKeyInput>) listener);
 				}
 				break;
 			}
 			case TILEENTITY:{
 				if(side.isClient()){
-					TileEntityUpdatePacketHandler.Client.addListener(listener);
+					TileEntityUpdatePacketHandler.Client.addListener((IPacketListener<PacketTileEntityUpdate>) listener);
 				}
 				if(side.isServer()){
-					TileEntityUpdatePacketHandler.Server.addListener(listener);
+					TileEntityUpdatePacketHandler.Server.addListener((IPacketListener<PacketTileEntityUpdate>) listener);
 				}
 				break;
 			}
 			case ENTITY:{
 				if(side.isClient()){
-					EntityUpdatePacketHandler.Client.addListener(listener);
+					EntityUpdatePacketHandler.Client.addListener((IPacketListener<PacketEntityUpdate>) listener);
 				}
 				if(side.isServer()){
-					EntityUpdatePacketHandler.Server.addListener(listener);
+					EntityUpdatePacketHandler.Server.addListener((IPacketListener<PacketEntityUpdate>) listener);
 				}
 				break;
 			}

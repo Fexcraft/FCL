@@ -25,4 +25,8 @@ public enum ModelType {
 		return NONE;
 	}
 	
+	public String getExtension(){
+		return extension;
+	}
+	
 }

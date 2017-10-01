@@ -14,8 +14,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class NBTTagCompoundPacketHandler {
 	
-	private static HashMap<String, IPacketListener> sls = new HashMap<String, IPacketListener>();
-	private static HashMap<String, IPacketListener> cls = new HashMap<String, IPacketListener>();
+	private static HashMap<String, IPacketListener<PacketNBTTagCompound>> sls = new HashMap<String, IPacketListener<PacketNBTTagCompound>>();
+	private static HashMap<String, IPacketListener<PacketNBTTagCompound>> cls = new HashMap<String, IPacketListener<PacketNBTTagCompound>>();
 	
 	public static class Server implements IMessageHandler<PacketNBTTagCompound, IMessage> {
 		@Override
@@ -29,7 +29,7 @@ public class NBTTagCompoundPacketHandler {
 						Print.log("[NBT] " + packet.nbt.toString());
 						return;
 					}
-					IPacketListener listener = sls.get(packet.nbt.getString("target_listener"));
+					IPacketListener<PacketNBTTagCompound> listener = sls.get(packet.nbt.getString("target_listener"));
 					if(listener != null){
 						listener.process(packet, new Object[]{ctx.getServerHandler().player});
 					}
@@ -51,7 +51,7 @@ public class NBTTagCompoundPacketHandler {
 						Print.log("[NBT] " + packet.nbt.toString());
 						return;
 					}
-					IPacketListener listener = cls.get(packet.nbt.getString("target_listener"));
+					IPacketListener<PacketNBTTagCompound> listener = cls.get(packet.nbt.getString("target_listener"));
 					if(listener != null){
 						listener.process(packet, new Object[]{Minecraft.getMinecraft().player});
 					}
@@ -61,7 +61,7 @@ public class NBTTagCompoundPacketHandler {
 		}
 	}
 	
-	public static void addListener(Side side, IPacketListener listener) {
+	public static void addListener(Side side, IPacketListener<PacketNBTTagCompound> listener) {
 		if(side.isClient()){
 			cls.put(listener.getId(), listener);
 		}

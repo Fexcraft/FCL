@@ -243,14 +243,14 @@ public class RGBA {
 		set(0, f); set(1, f); set(2, f);
 	}
 	
-	private void set(RGBA rgb){
+	public void set(RGBA rgb){
 		red = rgb.red;
 		green = rgb.green;
 		blue = rgb.blue;
 		alpha = rgb.alpha;
 	}
 	
-	private void set(RGB rgb){
+	public void set(RGB rgb){
 		red = rgb.red;
 		green = rgb.green;
 		blue = rgb.blue;

@@ -1,7 +1,6 @@
 package net.fexcraft.mod.lib.perms;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonPrimitive;
 
 public abstract class PermissionNode implements Comparable<PermissionNode>{
@@ -33,15 +32,15 @@ public abstract class PermissionNode implements Comparable<PermissionNode>{
 		if(elm.isJsonPrimitive()){
 			JsonPrimitive prim = elm.getAsJsonPrimitive();
 			if(prim.isBoolean()){
-				type = type.BOOLEAN;
+				type = Type.BOOLEAN;
 				value = elm.getAsBoolean();
 			}
 			else if(prim.isNumber()){
-				type = type.NUMBER;
+				type = Type.NUMBER;
 				value = elm.getAsNumber();
 			}
 			else if(prim.isString()){
-				type = type.STRING;
+				type = Type.STRING;
 				value = elm.getAsString();
 			}
 			else{
@@ -147,7 +146,7 @@ public abstract class PermissionNode implements Comparable<PermissionNode>{
 			default:
 				break;
 		}
-		return new JsonNull();
+		return new JsonPrimitive("null");
 	}
 	
 }

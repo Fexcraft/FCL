@@ -511,8 +511,8 @@ public class JsonUtil{
 		return list;
 	}
 
-	public static ArrayList<Class> jsonArrayToClassArray(JsonArray array){
-		ArrayList<Class> list = new ArrayList<Class>();
+	public static ArrayList<Class<?>> jsonArrayToClassArray(JsonArray array){
+		ArrayList<Class<?>> list = new ArrayList<Class<?>>();
 		ArrayList<String> json = jsonArrayToStringArray(array);
 		for(String string : json){
 			try{
@@ -574,7 +574,7 @@ public class JsonUtil{
 		return ja;
 	}
 
-	public static JsonElement getArrayFromObjectList(ArrayList array){
+	public static JsonElement getArrayFromObjectList(ArrayList<Object> array){
 		JsonArray ja = new JsonArray();
 		for(Object obj : array){
 			add(ja, obj.toString());

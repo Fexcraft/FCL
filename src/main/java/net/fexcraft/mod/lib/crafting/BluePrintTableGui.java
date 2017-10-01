@@ -44,14 +44,14 @@ public class BluePrintTableGui {
 		//z alt
 		
 		private EntityPlayer player;
-		private World world;
+		//private World world;
 		private int x, y, z;
 		//
 		private GenericGuiButton cat_left, cat_right;
 		private GenericGuiButton item_left, item_right;
 		private GenericGuiButton recipe_left, recipe_right;
 		private GenericGuiButton amount_up, amount_down;
-		private GenericGuiButton items_up, items_down;
+		//private GenericGuiButton items_up, items_down;
 		private GenericGuiButton craft;
 		//
 		private Server server;
@@ -60,7 +60,7 @@ public class BluePrintTableGui {
 			super(new Server(player, world, x, y, z));
 			server = (Server)this.inventorySlots;
 			this.player = player;
-			this.world = world;
+			//this.world = world;
 			this.x = x; this.y = y; this.z = z;
 			//
 			this.xSize = 256;
@@ -156,7 +156,7 @@ public class BluePrintTableGui {
 						server.inv.setField(0, server.inv.getField(0) + 1);
 						amount_up.enabled = server.inv.getField(0) < 64;
 						amount_down.enabled = server.inv.getField(0) > 1;
-						craft.enabled = server.canCraft(x, y, z, player);
+						craft.enabled = Server.canCraft(x, y, z, player);
 					}
 					break;
 				}
@@ -168,7 +168,7 @@ public class BluePrintTableGui {
 						server.inv.setField(0, server.inv.getField(0) - 1);
 						amount_up.enabled = server.inv.getField(0) < 64;
 						amount_down.enabled = server.inv.getField(0) > 1;
-						craft.enabled = server.canCraft(x, y, z, player);
+						craft.enabled = Server.canCraft(x, y, z, player);
 					}
 				}
 			}
@@ -187,7 +187,7 @@ public class BluePrintTableGui {
 			craft.setTexturePos(1, 112, 225);
 			craft.setTexturePos(2, 89, 207);
 			craft.setTexturePos(3, 89, 225);
-			craft.enabled = server.canCraft(x, y, z, player);
+			craft.enabled = Server.canCraft(x, y, z, player);
 			//
 			this.buttonList.add(cat_left = new GenericGuiButton(1, i + 27, j + 5, 15, 12, null));
 			this.buttonList.add(cat_right = new GenericGuiButton(2, i + 236, j + 5, 15, 12, null));
@@ -338,16 +338,16 @@ public class BluePrintTableGui {
 	
 	public static class Server extends Container {
 		
-		private EntityPlayer player;
-		private World world;
-		private int x, y, z;
+		//private EntityPlayer player;
+		//private World world;
+		//private int x, y, z;
 		private Inventory inv;
 
 		public Server(EntityPlayer player, World world, int x, int y, int z){
-			this.player = player;
-			this.world = world;
-			this.x = x; this.y = y; this.z = z;
-			inv = new Inventory(this);
+			//this.player = player;
+			//this.world = world;
+			//this.x = x; this.y = y; this.z = z;
+			inv = new Inventory();
 			//
 			for(int row = 0; row < 4; row++){
 				for(int col = 0; col < 12; col++){
@@ -429,11 +429,9 @@ public class BluePrintTableGui {
 	public static class Inventory implements IInventory {
 		
 		private NonNullList<ItemStack> invlist = NonNullList.<ItemStack>withSize(49, ItemStack.EMPTY);
-		private Server server;
+		//private Server server;
 
-		public Inventory(Server server){
-			this.server = server;
-		}
+		public Inventory(){}
 
 		@Override
 		public String getName(){

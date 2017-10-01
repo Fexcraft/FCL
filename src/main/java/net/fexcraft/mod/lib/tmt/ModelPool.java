@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Loader;
 
 public class ModelPool {
 	
-	public static ModelPoolEntry addFile(String file, Class modelClass, Map<String, TransformGroup> group, Map<String, TextureGroup> textureGroup){
+	public static ModelPoolEntry addFile(String file, Class<?> modelClass, Map<String, TransformGroup> group, Map<String, TextureGroup> textureGroup){
 		ModelPoolEntry entry = null;
 		if(modelMap.containsKey(file)){
 			entry = modelMap.get(file);
@@ -50,7 +50,7 @@ public class ModelPool {
 		return entry;
 	}
 	
-    public static ModelPoolEntry addFileF(String file, Class modelClass, Map<String, TransformGroup> group, Map<String, TextureGroup> textureGroup) throws IOException{
+    public static ModelPoolEntry addFileF(String file, Class<?> modelClass, Map<String, TransformGroup> group, Map<String, TextureGroup> textureGroup) throws IOException{
 		ModelPoolEntry entry = null;
 		if(modelMap.containsKey(file)){
 			entry = modelMap.get(file);
@@ -93,6 +93,6 @@ public class ModelPool {
     					"minecraft/resources/models/",
     					"minecraft/resources/mod/models/"
     	};
-    public static final Class OBJ = ModelPoolObjEntry.class;
+    public static final Class<ModelPoolObjEntry> OBJ = ModelPoolObjEntry.class;
     
 }

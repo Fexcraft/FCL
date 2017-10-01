@@ -21,7 +21,7 @@ public class Log {
 	
 	public void log(Object obj){
 		if(obj instanceof Iterable){
-			Iterable inte = (Iterable)obj;
+			Iterable<?> inte = (Iterable<?>)obj;
 			logger.info("ITERABLE: {");
 			for(Object object : inte){
 				logger.info("    " + (object == null ? ";>> null >>;" : String.valueOf(object)));

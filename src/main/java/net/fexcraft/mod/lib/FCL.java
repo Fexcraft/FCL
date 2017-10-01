@@ -37,10 +37,9 @@ guiFactory = "net.fexcraft.mod.lib.util.common.GuiFactory")
 public class FCL {
 	
 	public static final String prefix = TextFormatting.BLACK + "[" + TextFormatting.DARK_AQUA + "FCL" + TextFormatting.BLACK + "]" + TextFormatting.GRAY + " ";
-	public static final String version = "XII.30";
-	public static final String mcv = "1.12";
+	public static final String version = "XII.31";
+	public static final String mcv = "1.12.2";
 	public static final UUID[] authors = new UUID[]{UUID.fromString("01e4af9b-2a30-471e-addf-f6338ffce04b")};
-	private static PacketHandler packet_handler;
 	@Mod.Instance("fcl")
 	private static FCL instance;
 	private static Side side;
@@ -71,12 +70,12 @@ public class FCL {
 	@Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) throws Exception{
 		SimpleUpdateHandler.register("fcl", 1, version);
-		SimpleUpdateHandler.setUpdateMessage("fcl", prefix + "Update avaible! (" + SimpleUpdateHandler.getLatestVersionOf("fcl") + ")");
+		SimpleUpdateHandler.setUpdateMessage("fcl", prefix + "Update available! (" + SimpleUpdateHandler.getLatestVersionOf("fcl") + ")");
 		SimpleUpdateHandler.postInit();
 		Network.initializeValidator(event.getSide());
 		RegistryUtil.clear(event);
 		PermManager.initialize();
-		packet_handler.init();
+		PacketHandler.init();
 		CreativeTab.getIcons();
 		//RecipeRegistry.importVanillaRecipes();
 		Print.log("Loading complete.");

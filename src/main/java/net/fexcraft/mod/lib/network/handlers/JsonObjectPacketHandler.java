@@ -14,8 +14,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class JsonObjectPacketHandler{
 	
-	private static HashMap<String, IPacketListener> sls = new HashMap<String, IPacketListener>();
-	private static HashMap<String, IPacketListener> cls = new HashMap<String, IPacketListener>();
+	private static HashMap<String, IPacketListener<PacketJsonObject>> sls = new HashMap<String, IPacketListener<PacketJsonObject>>();
+	private static HashMap<String, IPacketListener<PacketJsonObject>> cls = new HashMap<String, IPacketListener<PacketJsonObject>>();
 	
 	public static class Server implements IMessageHandler<PacketJsonObject, IMessage> {
 		@Override
@@ -29,7 +29,7 @@ public class JsonObjectPacketHandler{
 						Print.log("[OBJ] " + packet.obj.toString());
 						return;
 					}
-					IPacketListener listener = sls.get(packet.obj.get("target_listener").getAsString());
+					IPacketListener<PacketJsonObject> listener = sls.get(packet.obj.get("target_listener").getAsString());
 					if(listener != null){
 						listener.process(packet, new Object[]{ctx.getServerHandler().player});
 					}
@@ -51,7 +51,7 @@ public class JsonObjectPacketHandler{
 						Print.log("[OBJ] " + packet.obj.toString());
 						return;
 					}
-					IPacketListener listener = cls.get(packet.obj.get("target_listener").getAsString());
+					IPacketListener<PacketJsonObject> listener = cls.get(packet.obj.get("target_listener").getAsString());
 					if(listener != null){
 						listener.process(packet, new Object[]{Minecraft.getMinecraft().player});
 					}
@@ -61,7 +61,7 @@ public class JsonObjectPacketHandler{
 		}
 	}
 	
-	public static void addListener(Side side, IPacketListener listener) {
+	public static void addListener(Side side, IPacketListener<PacketJsonObject> listener){
 		if(side.isClient()){
 			cls.put(listener.getId(), listener);
 		}

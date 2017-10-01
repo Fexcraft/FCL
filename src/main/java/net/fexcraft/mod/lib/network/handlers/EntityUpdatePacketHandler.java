@@ -17,20 +17,21 @@ public class EntityUpdatePacketHandler {
 	
 	public static class Client implements IMessageHandler<PacketEntityUpdate, IMessage> {
 		
-		private static HashSet<IPacketListener> set = new HashSet<IPacketListener>();
+		private static HashSet<IPacketListener<PacketEntityUpdate>> set = new HashSet<IPacketListener<PacketEntityUpdate>>();
 		
 		@Override
 		public IMessage onMessage(final PacketEntityUpdate packet, MessageContext ctx) {
 			IThreadListener ls = Minecraft.getMinecraft();
 			ls.addScheduledTask(new Runnable(){
+				@SuppressWarnings("unchecked")
 				@Override
 				public void run(){
 					Entity entity = Minecraft.getMinecraft().world.getEntityByID(packet.id);
 					if(entity != null && entity instanceof IPacketReceiver){
-						((IPacketReceiver)entity).processClientPacket(packet);
+						((IPacketReceiver<PacketEntityUpdate>)entity).processClientPacket(packet);
 					}
 					if(packet.nbt.hasKey("target_listener")){
-						for(IPacketListener pktl : set){
+						for(IPacketListener<PacketEntityUpdate> pktl : set){
 							if(pktl.getId().equals(packet.nbt.getString("target_listener"))){
 								pktl.process(packet, null);
 							}
@@ -42,27 +43,28 @@ public class EntityUpdatePacketHandler {
 			return null;
 		}
 
-		public static void addListener(IPacketListener listener) {
+		public static void addListener(IPacketListener<PacketEntityUpdate> listener) {
 			set.add(listener);
 		}
 	}
 	
 	public static class Server implements IMessageHandler<PacketEntityUpdate, IMessage>{
 		
-		private static HashSet<IPacketListener> set = new HashSet<IPacketListener>();
+		private static HashSet<IPacketListener<PacketEntityUpdate>> set = new HashSet<IPacketListener<PacketEntityUpdate>>();
 		
 		@Override
 		public IMessage onMessage(final PacketEntityUpdate packet, MessageContext ctx) {
 			IThreadListener ls = Static.getServer();
 			ls.addScheduledTask(new Runnable(){
+				@SuppressWarnings("unchecked")
 				@Override
 				public void run(){
 					Entity entity = Static.getServer().worlds[packet.dim].getEntityByID(packet.id);
 					if(entity != null && entity instanceof IPacketReceiver){
-						((IPacketReceiver)entity).processServerPacket(packet);
+						((IPacketReceiver<PacketEntityUpdate>)entity).processServerPacket(packet);
 					}
 					if(packet.nbt.hasKey("target_listener")){
-						for(IPacketListener pktl : set){
+						for(IPacketListener<PacketEntityUpdate> pktl : set){
 							if(pktl.getId().equals(packet.nbt.getString("target_listener"))){
 								pktl.process(packet, null);
 							}
@@ -74,7 +76,7 @@ public class EntityUpdatePacketHandler {
 			return null;
 		}
 
-		public static void addListener(IPacketListener listener) {
+		public static void addListener(IPacketListener<PacketEntityUpdate> listener) {
 			set.add(listener);
 		}
 	}

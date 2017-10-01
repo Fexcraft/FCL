@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 * @Author Ferdinand (FEX___96)
 * Similar to 'FlansMod'-type Models, for a fast convert.
 */
-public class ModelBase extends Model {
+public class ModelBase extends Model<Object> {
 	
 	public static final ModelBase EMPTY;
 	static {

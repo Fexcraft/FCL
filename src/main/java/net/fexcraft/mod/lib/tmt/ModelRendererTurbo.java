@@ -54,8 +54,8 @@ public class ModelRendererTurbo extends ModelRenderer {
     public boolean field_1402_i;
     public boolean forcedRecompile;
     public boolean useLegacyCompiler;
-    public List cubeList;
-    public List childModels;
+    public List<?> cubeList;
+    public List<?> childModels;
     public final String boxName;
     
     private String defaultTexture;
@@ -1235,7 +1235,7 @@ public class ModelRendererTurbo extends ModelRenderer {
      * which are either resources/models or resources/mods/models.
      * @param modelFormat the class of the model format interpreter
      */
-    public void addModel(String file, Class modelFormat){
+    public void addModel(String file, Class<?> modelFormat){
     	ModelPoolEntry entry = ModelPool.addFile(file, modelFormat, transformGroup, textureGroup);
     	if(entry == null){
     		return;
@@ -1250,7 +1250,7 @@ public class ModelRendererTurbo extends ModelRenderer {
     	copyTo(verts, poly, false);
     }
     
-    public void addModelF(String file, Class modelFormat) throws IOException{
+    public void addModelF(String file, Class<?> modelFormat) throws IOException{
     	ModelPoolEntry entry = ModelPool.addFileF(file, modelFormat, transformGroup, textureGroup);
     	if(entry == null){
     		return;

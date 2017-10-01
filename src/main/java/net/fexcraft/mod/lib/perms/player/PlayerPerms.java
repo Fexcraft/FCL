@@ -23,8 +23,8 @@ import net.fexcraft.mod.lib.util.json.JsonUtil;
 public class PlayerPerms implements IPlayerPerms {
 	
 	private TreeMap<String, PermissionNode> permissions = new TreeMap<String, PermissionNode>();
-	private HashMap<Class, AttachedData> data = new HashMap<Class, AttachedData>();
-	private static final HashSet<Class> set = new HashSet<Class>();
+	private HashMap<Class<?>, AttachedData> data = new HashMap<Class<?>, AttachedData>();
+	private static final HashSet<Class<?>> set = new HashSet<Class<?>>();
 	private Rank rank;
 	
 	public PlayerPerms(){
@@ -37,7 +37,7 @@ public class PlayerPerms implements IPlayerPerms {
 		if(elm == null){
 			setRank(PermManager.getRank("default"));
 			Print.log("No perm data for " + uuid.toString() + " found! Setting to default rank and saving.");
-			for(Class clazz : set){
+			for(Class<?> clazz : set){
 				try{
 					this.data.put(clazz, ((AttachedData)clazz.getConstructor(PlayerPerms.class).newInstance(this)).load(uuid, null));
 				}
@@ -53,7 +53,7 @@ public class PlayerPerms implements IPlayerPerms {
 			try{
 				JsonElement data = obj.get("AttachedData").getAsJsonObject();
 				if(data != null){
-					for(Class clazz : set){
+					for(Class<?> clazz : set){
 						try{
 							AttachedData iad = (AttachedData)clazz.getConstructor(PlayerPerms.class).newInstance(this);
 							JsonElement jsn = data.getAsJsonObject().get(iad.getId());
@@ -187,10 +187,11 @@ public class PlayerPerms implements IPlayerPerms {
 		}
 	}
 	
-	public static void addAdditionalData(Class type){
+	public static void addAdditionalData(Class<?> type){
 		set.add(type);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <T extends AttachedData> T getAdditionalData(Class<T> clazz){
 		return (T)data.get(clazz);
 	}

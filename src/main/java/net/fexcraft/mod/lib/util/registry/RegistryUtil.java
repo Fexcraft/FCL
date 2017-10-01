@@ -53,8 +53,7 @@ public class RegistryUtil {
 	private static int eid = 0;
 	//
 	private static final Map<String, AutoRegisterer> regs = new TreeMap<String, AutoRegisterer>();
-	//
-	private static Map<ResourceLocation, Entity> entities = new TreeMap<ResourceLocation, Entity>();
+	//private static Map<ResourceLocation, Entity> entities = new TreeMap<ResourceLocation, Entity>();
 	private static Map<ResourceLocation, Object> models = new TreeMap<ResourceLocation, Object>();
 
 	public static void prepare(ASMDataTable asmData){
@@ -174,7 +173,7 @@ public class RegistryUtil {
 			Set<ASMData> data = table.getAll(recipeholder);
 			for(ASMData entry : data){
 				try{
-					Class clazz = Class.forName(entry.getClassName());
+					Class<?> clazz = Class.forName(entry.getClassName());
 					fRecipeHolder rph = (fRecipeHolder)clazz.getAnnotation(fRecipeHolder.class);
 					if(rph.value().equals(modid)){
 						clazz.newInstance();
@@ -286,7 +285,7 @@ public class RegistryUtil {
 		TreeMap<String, Class<? extends Block>> map = new TreeMap<String, Class<? extends Block>>();
 		for(ASMData entry : data){
 			try{
-				//Print.debug(entry.getClassName());
+				@SuppressWarnings("unchecked")
 				Class<? extends Block> clazz = (Class<? extends Block>)Class.forName(entry.getClassName());
 				fBlock blk = (fBlock)clazz.getAnnotation(fBlock.class);
 				if(blk.modid().equals(modid)){
@@ -305,7 +304,7 @@ public class RegistryUtil {
 		TreeMap<String, Class<? extends Item>> map = new TreeMap<String, Class<? extends Item>>();
 		for(ASMData entry : data){
 			try{
-				//Print.debug(entry.getClassName());
+				@SuppressWarnings("unchecked")
 				Class<? extends Item> clazz = (Class<? extends Item>)Class.forName(entry.getClassName());
 				fItem item = (fItem)clazz.getAnnotation(fItem.class);
 				if(item.modid().equals(modid)){
@@ -325,6 +324,7 @@ public class RegistryUtil {
 		Set<ASMData> data = table.getAll(fCommand.class.getCanonicalName());
 		for(ASMData entry : data){
 			try{
+				@SuppressWarnings("unchecked")
 				Class<? extends CommandBase> cmd = (Class<? extends CommandBase>)Class.forName(entry.getClassName());
 				event.registerServerCommand(cmd.newInstance());
 			}
@@ -368,6 +368,7 @@ public class RegistryUtil {
 		TreeMap<String, Class<? extends Entity>> map = new TreeMap<String, Class<? extends Entity>>();
 		for(ASMData entry : data){
 			try{
+				@SuppressWarnings("unchecked")
 				Class<? extends Entity> clazz = (Class<? extends Entity>)Class.forName(entry.getClassName());
 				if(clazz.getAnnotation(fEntity.class).modid().equals(modid)){
 					map.put(clazz.getAnnotation(fEntity.class).name(), clazz);
@@ -390,6 +391,7 @@ public class RegistryUtil {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void registerTESRs(){
 		if(FCL.getSide().isServer()){
 			return;

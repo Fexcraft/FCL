@@ -42,12 +42,12 @@ public class LimitedList<E> implements List<E> {
 	}
 
 	@Override
-	public boolean addAll(Collection collectionToAdd){
-		if(list.size() + collectionToAdd.size() > maxsize){
+	public boolean addAll(Collection<? extends E> col){
+		if(list.size() + col.size() > maxsize){
 			Print.log("Array limit reached.");
 			return false;
 		}
-		return list.addAll(collectionToAdd);
+		return list.addAll(col);
 	}
 
 	@Override

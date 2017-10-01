@@ -25,8 +25,8 @@ public class SortableList<E> implements List<E> {
 	}
 
 	@Override
-	public boolean addAll(Collection collectionToAdd){
-		return list.addAll(collectionToAdd);
+	public boolean addAll(Collection<? extends E> col){
+		return list.addAll(col);
 	}
 
 	@Override

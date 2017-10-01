@@ -4,6 +4,7 @@ import java.util.TreeMap;
 
 public class NonNullMap<K, V> extends TreeMap<K, V>{
 	
+	private static final long serialVersionUID = -6904819501960267639L;
 	private final V def;
 	
 	public NonNullMap(V value){

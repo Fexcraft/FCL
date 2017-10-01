@@ -17,7 +17,7 @@ public class Print{
 	
 	public static void log(Object obj){
 		if(obj instanceof Iterable){
-			Iterable inte = (Iterable)obj;
+			Iterable<?> inte = (Iterable<?>)obj;
 			logger.info("ITERABLE: {");
 			for(Object object : inte){
 				logger.info("    " + (object == null ? ">> IS null;" : String.valueOf(object)));
