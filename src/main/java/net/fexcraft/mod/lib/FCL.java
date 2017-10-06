@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.Side;
  * consider deleting it instantly for security reasons!
  * 
  */
-@Mod(modid = "fcl", name = "Fexcraft Common Library", version = FCL.version, acceptableRemoteVersions = "*", updateJSON = "http://fexcraft.net/minecraft/fcl/request?mode=getForgeUpdateJson&modid=fcl",
+@Mod(modid = "fcl", name = "Fexcraft Common Library", version = FCL.version, acceptableRemoteVersions = "*", acceptedMinecraftVersions = "*", updateJSON = "http://fexcraft.net/minecraft/fcl/request?mode=getForgeUpdateJson&modid=fcl",
 guiFactory = "net.fexcraft.mod.lib.util.common.GuiFactory")
 public class FCL {
 	
