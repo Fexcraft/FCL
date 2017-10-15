@@ -311,6 +311,16 @@ public class JsonUtil{
 		return obj.get(target).getAsBoolean();
 	}
 	
+	public static boolean getIfExists(JsonObject obj, String[] targets, boolean default_value){
+		for(String str : targets){
+			if(obj.has(str)){
+				return obj.get(str).getAsBoolean();
+			}
+		}
+		obj.addProperty(targets[0], default_value);
+		return default_value;
+	}
+	
 	/**
 	 * Gets a JsonElement from a JsonObject if it exists, else returns specified default JsonElement and adds it to the JsonObject
 	 * @param obj

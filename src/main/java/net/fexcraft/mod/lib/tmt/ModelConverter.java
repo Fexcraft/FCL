@@ -1,10 +1,12 @@
 package net.fexcraft.mod.lib.tmt;
 
+import net.minecraft.entity.Entity;
+
 /**
-* @Author Ferdinand (FEX___96)
 * Converter to use Flansmod-Type vehicle models.
+* @Author Ferdinand Calo' (FEX___96)
 */
-public class ModelConverter extends ModelBase {
+public class ModelConverter<T> extends Model<T> {
 	
 	public ModelRendererTurbo bodyModel[] = new ModelRendererTurbo[0];
 	public ModelRendererTurbo model[] = new ModelRendererTurbo[0];
@@ -46,6 +48,11 @@ public class ModelConverter extends ModelBase {
 		render(steeringWheelModel);
 	}
 
+	@Override
+	public void render(T type, Entity ent){
+		render();
+	}
+
 	public void translateAll(float x, float y, float z){
 		translate(bodyModel, x, y, z);
 		translate(model, x, y, z);
@@ -65,6 +72,28 @@ public class ModelConverter extends ModelBase {
 		translate(leftTrackWheelModels, x, y, z);
 		translate(trailerModel, x, y, z);
 		translate(steeringWheelModel, x, y, z);
+	}
+
+	@Override
+	public void rotateAll(float x, float y, float z){
+		rotate(bodyModel, x, y, z);
+		rotate(model, x, y, z);
+		rotate(bodyDoorOpenModel, x, y, z);
+		rotate(bodyDoorCloseModel, x, y, z);
+		rotate(turretModel, x, y, z);
+		rotate(barrelModel, x, y, z);
+		rotate(frontWheelModel, x, y, z);
+		rotate(backWheelModel, x, y, z);
+		rotate(leftFrontWheelModel, x, y, z);
+		rotate(rightFrontWheelModel, x, y, z);
+		rotate(leftBackWheelModel, x, y, z);
+		rotate(rightBackWheelModel, x, y, z);
+		rotate(rightTrackModel, x, y, z);
+		rotate(leftTrackModel, x, y, z);
+		rotate(rightTrackWheelModels, x, y, z);
+		rotate(leftTrackWheelModels, x, y, z);
+		rotate(trailerModel, x, y, z);
+		rotate(steeringWheelModel, x, y, z);
 	}
 	
 	public void flipAll(){

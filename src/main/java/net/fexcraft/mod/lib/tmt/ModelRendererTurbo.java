@@ -29,7 +29,7 @@ import net.minecraft.util.math.MathHelper;
  * support or have the addSprite method, methods that add a lot of vertices and
  * polygons.
  *
- * This version of TMT was updated and maintened/extended for 1.8+ MC by FEX___96
+ * This version of TMT was updated, maintened, as well as extended for 1.8 and newer Minecraft versions by FEX___96
  *
  * @author GaryCXJk, Ferdinand (FEX___96)
  * @license http://fexcraft.net/license?id=tmt
@@ -1186,9 +1186,9 @@ public class ModelRendererTurbo extends ModelRenderer {
 			vert[1] = tempVerts[1 + index2].setTexturePosition(uStart + 0.5F * uCircle + uSize1, vStart + 0.5F * vCircle + vSize1);
 			vert[2] = tempVerts[1 + index].setTexturePosition(uStart + 0.5F * uCircle + uSize, vStart + 0.5F * vCircle + vSize);
 			poly[index] = new TexturedPolygon(vert);
-			//if(mirror ^ flip){
+			if(!(mirror ^ flip)){
 				poly[index].flipFace();
-			//}
+			}
 			if(!coneBase && !coneTop){
 				vert = new PositionTextureVertex[4];
 				vert[0] = tempVerts[1 + index].setTexturePosition(uStart + uOffset + uWidth * index, vStart + vOffset + vCircle);
@@ -1196,18 +1196,18 @@ public class ModelRendererTurbo extends ModelRenderer {
 				vert[2] = tempVerts[1 + segments + index2].setTexturePosition(uStart + uOffset + uWidth * (index + 1), vStart + vOffset + vCircle + vHeight);
 				vert[3] = tempVerts[1 + segments + index].setTexturePosition(uStart + uOffset + uWidth * index, vStart + vOffset + vCircle + vHeight);
 				poly[index + segments] = new TexturedPolygon(vert);
-				//if(mirror ^ flip){
+				if(!(mirror ^ flip)){
 					poly[index + segments].flipFace();
-				//}
+				}
 			}
 			vert = new PositionTextureVertex[3];
 			vert[0] = tempVerts[tempVerts.length - 1].setTexturePosition(uStart + 1.5F * uCircle, vStart + 0.5F * vCircle);
 			vert[1] = tempVerts[tempVerts.length - 2 - index].setTexturePosition(uStart + 1.5F * uCircle + uSize1, vStart + 0.5F * vCircle + vSize1);
 			vert[2] = tempVerts[tempVerts.length - (1 + segments) + ((segments - index) % segments)].setTexturePosition(uStart + 1.5F * uCircle + uSize, vStart + 0.5F * vCircle + vSize);
 			poly[poly.length - segments + index]  = new TexturedPolygon(vert);
-			//if(mirror ^ flip){
+			if(!(mirror ^ flip)){
 				poly[poly.length - segments + index].flipFace();
-			//}
+			}
 		}
 		copyTo(tempVerts, poly);
 	}
@@ -1669,6 +1669,17 @@ public class ModelRendererTurbo extends ModelRenderer {
 	
 	public final void setOldRotationOrder(boolean bool){
 		this.rotorder = bool;
+	}
+	
+	public String toString(String alt){
+		String str = this.toString();
+		return str == null || str.equals("") ? alt : str;
+		
+	}
+	
+	@Override
+	public String toString(){
+		return boxName;
 	}
 	
 }
