@@ -8,6 +8,8 @@ import net.fexcraft.mod.lib.util.common.Static;
 import net.fexcraft.mod.lib.util.json.JsonUtil;
 
 /**
+* Tool to parse `ModelRendererTurbo` objects from JSON.
+* @Author Ferdinand Calo' (FEX___96)
 */
 public class JsonToTMT {
 	
