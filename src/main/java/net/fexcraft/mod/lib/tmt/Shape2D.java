@@ -94,7 +94,7 @@ public class Shape2D {
 		return new Shape3D(verts, poly);
 	}
 	
-	protected void setVectorRotations(Vec3f extrudeVector, float xRot, float yRot, float zRot){
+	protected Vec3f setVectorRotations(Vec3f extrudeVector, float xRot, float yRot, float zRot){
 		float x = xRot;
 		float y = yRot;
 		float z = zRot;
@@ -123,7 +123,7 @@ public class Shape2D {
 		yVec = zy;
 		zVec = yz;
 		
-        extrudeVector = new Vec3f(xVec, yVec, zVec);
+        return new Vec3f(xVec, yVec, zVec);
 	}
 	
 }

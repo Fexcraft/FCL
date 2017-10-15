@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
+import net.fexcraft.mod.lib.util.common.Static;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -596,14 +597,21 @@ public class ModelRendererTurbo extends ModelRenderer {
     	addShape3D(x, y, z, shape, depth, shapeTextureWidth, shapeTextureHeight, sideTextureWidth, sideTextureHeight, rotX, rotY, rotZ, null);
     }
     
+    /**
+     * NOTE: `x` and `z` are inverted to prevent "Toolbox" or "Flansmod"-type models from being rendered wrong.
+     * There is currently no other commonly used editor for such models, so let's leave it that way for now.
+     * NOTE2: Also let's rotate by 180 degrees for whatever reason.
+     * @Ferdinand
+     */
     public void addShape3D(float x, float y, float z, Shape2D shape, float depth, int shapeTextureWidth, int shapeTextureHeight, int sideTextureWidth, int sideTextureHeight, float rotX, float rotY, float rotZ, float[] faceLengths){
-    	Shape3D shape3D = shape.extrude(x, y, z, rotX, rotY, rotZ, depth, textureOffsetX, textureOffsetY, textureWidth, textureHeight, shapeTextureWidth, shapeTextureHeight, sideTextureWidth, sideTextureHeight, faceLengths);
+    	Shape3D shape3D = shape.extrude(-x, y, -z, rotX, rotY, rotZ, depth, textureOffsetX, textureOffsetY, textureWidth, textureHeight, shapeTextureWidth, shapeTextureHeight, sideTextureWidth, sideTextureHeight, faceLengths);
     	if(flip){
     		for(int idx = 0; idx < shape3D.faces.length; idx++){
     			shape3D.faces[idx].flipFace();
     		}
     	}
     	copyTo(shape3D.vertices, shape3D.faces);
+    	this.rotateAngleZ = Static.rad180;
     }
     
     /**
