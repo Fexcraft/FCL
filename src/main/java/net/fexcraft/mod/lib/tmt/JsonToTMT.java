@@ -17,6 +17,7 @@ public class JsonToTMT {
 	protected static final float def = 0f;
 	protected static final int idef = 0;
 	//common
+	protected static final String[] format  = new String[]{"format", "form", "f"};
 	protected static final String[] width  = new String[]{"width",  "wid", "w"};
 	protected static final String[] height = new String[]{"height", "hgt", "h"};
 	protected static final String[] depth  = new String[]{"depth",  "dep", "d"};
@@ -25,6 +26,8 @@ public class JsonToTMT {
 	protected static final String[] posz = new String[]{"pos_z", "posz", "z"};
 	protected static final String[] expansion = new String[]{"expansion", "exp", "e"};
 	protected static final String[] scale = new String[]{"scale", "s"};
+	protected static final String[] texturex = new String[]{"texture_x", "texturex", "tex_x", "tx"};
+	protected static final String[] texturey = new String[]{"texture_y", "texturey", "tex_y", "ty"};
 	//
 	protected static final String[] rotpointx = new String[]{"rotation_point_x", "rotpoint_x", "rotpointx", "rot_x", "rx"};
 	protected static final String[] rotpointy = new String[]{"rotation_point_y", "rotpoint_y", "rotpointy", "rot_y", "ry"};
@@ -32,7 +35,7 @@ public class JsonToTMT {
 	//settings
 	protected static final String[] oldrot = new String[]{"old_ration", "old_rotation_order", "oro"};
 	protected static final String[] mirror = new String[]{"mirror", "mir", "m"};
-	protected static final String[] flip = new String[]{"flip", "f", "usd"};
+	protected static final String[] flip = new String[]{"flip", "fl", "usd"};
 	//cyl
 	protected static final String[] radius = new String[]{"radius", "rad", "r"};
 	protected static final String[] length = new String[]{"length", "len", "l"};
@@ -42,7 +45,7 @@ public class JsonToTMT {
 	protected static final String[] direction = new String[]{"direction", "dir", "facing"};
 	
 	public final static ModelRendererTurbo parse(net.minecraft.client.model.ModelBase base, JsonObject obj, int tx, int ty){
-		ModelRendererTurbo model = new ModelRendererTurbo(base, get("texture_x", obj, idef), get("texture_y", obj, idef), tx, ty);
+		ModelRendererTurbo model = new ModelRendererTurbo(base, get(texturex, obj, idef), get(texturey, obj, idef), tx, ty);
 		//
 		float x = get(posx, obj, def);
 		float y = get(posy, obj, def);
@@ -123,13 +126,6 @@ public class JsonToTMT {
 			}
 		}
 		return 0;
-	}
-	
-	private static final int get(String s, JsonObject obj, int def){
-		if(obj.has(s)){
-			return obj.get(s).getAsInt();
-		}
-		return def;
 	}
 	
 	private static final int get(String[] s, JsonObject obj, int def){
