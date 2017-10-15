@@ -59,7 +59,7 @@ public class JsonToTMT {
 				model.addBox(x, y, z, w, h, d, get(expansion, obj, def));
 				break;
 			}
-			case "shapebox": case "sb": {
+			case "shapebox": case "sbox": case "sb": {
 				model.addShapeBox(x, y, z, w, h, d, get(scale, obj, def),
 						get("x0", obj, def), get("y0", obj, def), get("z0", obj, def),
 						get("x1", obj, def), get("y1", obj, def), get("z1", obj, def),
@@ -72,8 +72,12 @@ public class JsonToTMT {
 					);
 				break;
 			}
-			case "cylinder": case "cyl": {
+			case "cylinder": case "cyl": case "c": {
 				model.addCylinder(x, y, z, get(radius, obj, 1f), get(length, obj, 1f), get(segments, obj, 16), get(basescale, obj, 1f), get(topscale, obj, 1f), get(direction, obj, 4));
+				break;
+			}
+			case "cone": case "cn": {
+				model.addCone(x, y, z, get(radius, obj, 1f), get(length, obj, 1f), get(segments, obj, 12), get(basescale, obj, 1f), get(direction, obj, 4));
 				break;
 			}
 		}
