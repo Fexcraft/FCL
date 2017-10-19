@@ -50,9 +50,9 @@ public class JsonToTMT {
 		float x = get(posx, obj, def);
 		float y = get(posy, obj, def);
 		float z = get(posz, obj, def);
-		int w = get(width, obj, idef);
-		int h = get(height, obj, idef);
-		int d = get(depth, obj, idef);
+		float w = get(width, obj, def);
+		float h = get(height, obj, def);
+		float d = get(depth, obj, def);
 		//
 		switch(obj.get("type").getAsString()){
 			case "box": case "cube": case "b": {
