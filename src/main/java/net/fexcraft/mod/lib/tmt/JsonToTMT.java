@@ -14,38 +14,38 @@ import net.fexcraft.mod.lib.util.json.JsonUtil;
 public class JsonToTMT {
 	
 	//def
-	protected static final float def = 0f;
-	protected static final int idef = 0;
+	public static final float def = 0f;
+	public static final int idef = 0;
 	//common
-	protected static final String[] format  = new String[]{"format", "form", "f"};//1.1f
-	protected static final String[] width  = new String[]{"width",  "wid", "w"};
-	protected static final String[] height = new String[]{"height", "hgt", "h"};
-	protected static final String[] depth  = new String[]{"depth",  "dep", "d"};
-	protected static final String[] offx = new String[]{"offset_x", "off_x", "offx", "ox"};
-	protected static final String[] offy = new String[]{"offset_y", "off_y", "offy", "oy"};
-	protected static final String[] offz = new String[]{"offset_z", "off_z", "offz", "oz"};
-	protected static final String[] expansion = new String[]{"expansion", "exp", "e"};
-	protected static final String[] scale = new String[]{"scale", "s"};
-	protected static final String[] texturex = new String[]{"texture_x", "texturex", "tex_x", "tx"};
-	protected static final String[] texturey = new String[]{"texture_y", "texturey", "tex_y", "ty"};
+	public static final String[] format  = new String[]{"format", "form", "f"};//1.1f
+	public static final String[] width  = new String[]{"width",  "wid", "w"};
+	public static final String[] height = new String[]{"height", "hgt", "h"};
+	public static final String[] depth  = new String[]{"depth",  "dep", "d"};
+	public static final String[] offx = new String[]{"offset_x", "off_x", "offx", "ox"};
+	public static final String[] offy = new String[]{"offset_y", "off_y", "offy", "oy"};
+	public static final String[] offz = new String[]{"offset_z", "off_z", "offz", "oz"};
+	public static final String[] expansion = new String[]{"expansion", "exp", "e"};
+	public static final String[] scale = new String[]{"scale", "s"};
+	public static final String[] texturex = new String[]{"texture_x", "texturex", "tex_x", "tx"};
+	public static final String[] texturey = new String[]{"texture_y", "texturey", "tex_y", "ty"};
 	//
-	protected static final String[] posx = new String[]{"rotation_point_x", "pos_x", "posx", "px", "x"};
-	protected static final String[] posy = new String[]{"rotation_point_y", "pos_y", "posy", "py", "y"};
-	protected static final String[] posz = new String[]{"rotation_point_z", "pos_z", "posz", "pz", "z"};
-	protected static final String[] rotx = new String[]{"rotation_angle_x", "rotangle_x", "rotanglex", "rot_x", "rx"};
-	protected static final String[] roty = new String[]{"rotation_angle_y", "rotangle_y", "rotangley", "rot_y", "ry"};
-	protected static final String[] rotz = new String[]{"rotation_angle_z", "rotangle_z", "rotanglez", "rot_z", "rz"};
+	public static final String[] posx = new String[]{"rotation_point_x", "pos_x", "posx", "px", "x"};
+	public static final String[] posy = new String[]{"rotation_point_y", "pos_y", "posy", "py", "y"};
+	public static final String[] posz = new String[]{"rotation_point_z", "pos_z", "posz", "pz", "z"};
+	public static final String[] rotx = new String[]{"rotation_angle_x", "rotangle_x", "rotanglex", "rot_x", "rx"};
+	public static final String[] roty = new String[]{"rotation_angle_y", "rotangle_y", "rotangley", "rot_y", "ry"};
+	public static final String[] rotz = new String[]{"rotation_angle_z", "rotangle_z", "rotanglez", "rot_z", "rz"};
 	//settings
-	protected static final String[] oldrot = new String[]{"old_ration", "old_rotation_order", "oro"};
-	protected static final String[] mirror = new String[]{"mirror", "mir", "m"};
-	protected static final String[] flip = new String[]{"flip", "fl", "usd"};
+	public static final String[] oldrot = new String[]{"old_ration", "old_rotation_order", "oro"};
+	public static final String[] mirror = new String[]{"mirror", "mir", "m"};
+	public static final String[] flip = new String[]{"flip", "fl", "usd"};
 	//cyl
-	protected static final String[] radius = new String[]{"radius", "rad", "r"};
-	protected static final String[] length = new String[]{"length", "len", "l"};
-	protected static final String[] segments = new String[]{"segments", "seg", "sg"};
-	protected static final String[] basescale = new String[]{"base_scale", "basescale", "bs"};
-	protected static final String[] topscale = new String[]{"top_scale", "topscale", "ts"};
-	protected static final String[] direction = new String[]{"direction", "dir", "facing"};
+	public static final String[] radius = new String[]{"radius", "rad", "r"};
+	public static final String[] length = new String[]{"length", "len", "l"};
+	public static final String[] segments = new String[]{"segments", "seg", "sg"};
+	public static final String[] basescale = new String[]{"base_scale", "basescale", "bs"};
+	public static final String[] topscale = new String[]{"top_scale", "topscale", "ts"};
+	public static final String[] direction = new String[]{"direction", "dir", "facing"};
 	
 	public final static ModelRendererTurbo parse(net.minecraft.client.model.ModelBase base, JsonObject obj, int tx, int ty){
 		ModelRendererTurbo model = new ModelRendererTurbo(base, get(texturex, obj, idef), get(texturey, obj, idef), tx, ty);
@@ -53,9 +53,9 @@ public class JsonToTMT {
 		float x = get(offx, obj, def);
 		float y = get(offy, obj, def);
 		float z = get(offz, obj, def);
-		float w = get(width, obj, def);
-		float h = get(height, obj, def);
-		float d = get(depth, obj, def);
+		int w = get(width, obj, idef);
+		int h = get(height, obj, idef);
+		int d = get(depth, obj, idef);
 		//
 		switch(obj.get("type").getAsString()){
 			case "box": case "cube": case "b": {
@@ -123,14 +123,14 @@ public class JsonToTMT {
 		return new ModelRendererTurbo[0];
 	}
 	
-	private static final float get(String s, JsonObject obj, float def){
+	public static final float get(String s, JsonObject obj, float def){
 		if(obj.has(s)){
 			return obj.get(s).getAsFloat();
 		}
 		return def;
 	}
 	
-	private static final float get(String[] s, JsonObject obj, float def){
+	public static final float get(String[] s, JsonObject obj, float def){
 		for(String str : s){
 			if(obj.has(str)){
 				return obj.get(str).getAsFloat();
@@ -139,7 +139,7 @@ public class JsonToTMT {
 		return 0;
 	}
 	
-	private static final int get(String[] s, JsonObject obj, int def){
+	public static final int get(String[] s, JsonObject obj, int def){
 		for(String str : s){
 			if(obj.has(str)){
 				return obj.get(str).getAsInt();
