@@ -17,21 +17,21 @@ public class JsonToTMT {
 	protected static final float def = 0f;
 	protected static final int idef = 0;
 	//common
-	protected static final String[] format  = new String[]{"format", "form", "f"};
+	protected static final String[] format  = new String[]{"format", "form", "f"};//1.1f
 	protected static final String[] width  = new String[]{"width",  "wid", "w"};
 	protected static final String[] height = new String[]{"height", "hgt", "h"};
 	protected static final String[] depth  = new String[]{"depth",  "dep", "d"};
-	protected static final String[] posx = new String[]{"pos_x", "posx", "x"};
-	protected static final String[] posy = new String[]{"pos_y", "posy", "y"};
-	protected static final String[] posz = new String[]{"pos_z", "posz", "z"};
+	protected static final String[] offx = new String[]{"offset_x", "off_x", "offx", "ox"};
+	protected static final String[] offy = new String[]{"offset_y", "off_y", "offy", "oy"};
+	protected static final String[] offz = new String[]{"offset_z", "off_z", "offz", "oz"};
 	protected static final String[] expansion = new String[]{"expansion", "exp", "e"};
 	protected static final String[] scale = new String[]{"scale", "s"};
 	protected static final String[] texturex = new String[]{"texture_x", "texturex", "tex_x", "tx"};
 	protected static final String[] texturey = new String[]{"texture_y", "texturey", "tex_y", "ty"};
 	//
-	protected static final String[] rotpointx = new String[]{"rotation_point_x", "rotpoint_x", "rotpointx", "rot_x", "rx"};
-	protected static final String[] rotpointy = new String[]{"rotation_point_y", "rotpoint_y", "rotpointy", "rot_y", "ry"};
-	protected static final String[] rotpointz = new String[]{"rotation_point_z", "rotpoint_z", "rotpointz", "rot_z", "rz"};
+	protected static final String[] rotx = new String[]{"rotation_angle_x", "rotangle_x", "rotanglex", "rot_x", "rx"};
+	protected static final String[] roty = new String[]{"rotation_angle_y", "rotangle_y", "rotangley", "rot_y", "ry"};
+	protected static final String[] rotz = new String[]{"rotation_angle_z", "rotangle_z", "rotanglez", "rot_z", "rz"};
 	//settings
 	protected static final String[] oldrot = new String[]{"old_ration", "old_rotation_order", "oro"};
 	protected static final String[] mirror = new String[]{"mirror", "mir", "m"};
@@ -47,9 +47,9 @@ public class JsonToTMT {
 	public final static ModelRendererTurbo parse(net.minecraft.client.model.ModelBase base, JsonObject obj, int tx, int ty){
 		ModelRendererTurbo model = new ModelRendererTurbo(base, get(texturex, obj, idef), get(texturey, obj, idef), tx, ty);
 		//
-		float x = get(posx, obj, def);
-		float y = get(posy, obj, def);
-		float z = get(posz, obj, def);
+		float x = get(offx, obj, def);
+		float y = get(offy, obj, def);
+		float z = get(offz, obj, def);
 		float w = get(width, obj, def);
 		float h = get(height, obj, def);
 		float d = get(depth, obj, def);
@@ -86,7 +86,11 @@ public class JsonToTMT {
 		model.mirror = JsonUtil.getIfExists(obj, mirror, false);
 		model.flip = JsonUtil.getIfExists(obj, flip, false);
 		//
-		model.setRotationPoint(get(rotpointx, obj, def), get(rotpointy, obj, def), get(rotpointz, obj, def));
+		model.rotateAngleX = get(rotx, obj, def);
+		model.rotateAngleY = get(roty, obj, def);
+		model.rotateAngleZ = get(rotz, obj, def);
+		//
+		model.setRotationPoint(get(posx, obj, def), get(posy, obj, def), get(posz, obj, def));
 		return model;
 	}
 
