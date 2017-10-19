@@ -29,6 +29,9 @@ public class JsonToTMT {
 	protected static final String[] texturex = new String[]{"texture_x", "texturex", "tex_x", "tx"};
 	protected static final String[] texturey = new String[]{"texture_y", "texturey", "tex_y", "ty"};
 	//
+	protected static final String[] posx = new String[]{"rotation_point_x", "pos_x", "posx", "px", "x"};
+	protected static final String[] posy = new String[]{"rotation_point_y", "pos_y", "posy", "py", "y"};
+	protected static final String[] posz = new String[]{"rotation_point_z", "pos_z", "posz", "pz", "z"};
 	protected static final String[] rotx = new String[]{"rotation_angle_x", "rotangle_x", "rotanglex", "rot_x", "rx"};
 	protected static final String[] roty = new String[]{"rotation_angle_y", "rotangle_y", "rotangley", "rot_y", "ry"};
 	protected static final String[] rotz = new String[]{"rotation_angle_z", "rotangle_z", "rotanglez", "rot_z", "rz"};
