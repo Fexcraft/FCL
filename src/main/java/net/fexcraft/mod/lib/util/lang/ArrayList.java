@@ -1,6 +1,6 @@
 package net.fexcraft.mod.lib.util.lang;
 
-import java.util.List;
+import java.util.List;;
 
 public class ArrayList<T> extends java.util.ArrayList<T> {
 	
@@ -12,6 +12,13 @@ public class ArrayList<T> extends java.util.ArrayList<T> {
 
 	public ArrayList(){
 		super();
+	}
+
+	public ArrayList(T[] arr){
+		super();
+		for(T e : arr){
+			this.add(e);
+		}
 	}
 
 	@Override
