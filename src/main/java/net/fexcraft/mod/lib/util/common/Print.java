@@ -1,5 +1,8 @@
 package net.fexcraft.mod.lib.util.common;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -82,6 +85,18 @@ public class Print{
 		if(Static.dev()){
 			Minecraft.getMinecraft().player.sendMessage(new TextComponentString(string));
 		}
+	}
+	
+	public static void stacktrace(ICommandSender sender, Exception e){
+		PrintWriter writer = new PrintWriter(new StringWriter());
+		e.printStackTrace(writer);
+		chat(sender, writer.toString());
+	}
+	
+	public static void stacktrace(Exception e){
+		PrintWriter writer = new PrintWriter(new StringWriter());
+		e.printStackTrace(writer);
+		log(writer.toString());
 	}
 	
 }

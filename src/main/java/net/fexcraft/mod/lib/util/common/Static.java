@@ -155,11 +155,16 @@ public class Static{
 		if(cache.containsKey(uuid)){
 			return cache.get(uuid);
 		}
-		JsonElement obj = Network.request(" https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
-		if(obj != null){
-			JsonObject elm = obj.getAsJsonObject();
-			cache.put(uuid, elm.get("name").getAsString());
-			return elm.get("name").getAsString();
+		try{
+			JsonElement obj = Network.request(" https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
+			if(obj != null){
+				JsonObject elm = obj.getAsJsonObject();
+				cache.put(uuid, elm.get("name").getAsString());
+				return elm.get("name").getAsString();
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
 		}
 		return "<null/errored>";
 	}

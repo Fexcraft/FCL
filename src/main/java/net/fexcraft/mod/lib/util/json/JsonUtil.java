@@ -656,4 +656,8 @@ public class JsonUtil{
 		}
 	}
 	
+	public static String setPrettyPrinting(JsonObject obj){
+		return gson.toJson(obj);
+	}
+	
 }

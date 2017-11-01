@@ -139,10 +139,11 @@ public abstract class PermissionNode implements Comparable<PermissionNode>{
 		switch(type){
 			case BOOLEAN:
 				return new JsonPrimitive((boolean)value);
+				return new JsonPrimitive(this.getBooleanValue());
 			case NUMBER:
-				return new JsonPrimitive((Number)value);
+				return new JsonPrimitive(this.getNumberValue());
 			case STRING:
-				return new JsonPrimitive((String)value);
+				return new JsonPrimitive(this.getStringValue());
 			default:
 				break;
 		}

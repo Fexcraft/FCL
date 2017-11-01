@@ -173,7 +173,7 @@ public class PlayerPerms implements IPlayerPerms {
 		else{
 			switch(type){
 				case BOOLEAN:
-					permissions.put(id, new PermissionBool(id, type, default_value));
+					permissions.put(id, new PermissionBool(id, type, default_value == null ? false : default_value));
 					return true;
 				case NUMBER:
 					permissions.put(id, new PermissionNumber(id, type, default_value));
