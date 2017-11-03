@@ -4,21 +4,21 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.fexcraft.mod.lib.util.registry.UCResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.ITextureObject;
-import net.minecraft.util.ResourceLocation;
 
 public class ExternalTextureHelper {
 	
-	private static final Map<String, ResourceLocation> map = new HashMap<String, ResourceLocation>();
-	private static final Map<String, ResourceLocation> tempmap = new HashMap<String, ResourceLocation>();
+	private static final Map<String, UCResourceLocation> map = new HashMap<String, UCResourceLocation>();
+	private static final Map<String, UCResourceLocation> tempmap = new HashMap<String, UCResourceLocation>();
 	
-	public static ResourceLocation get(String s){
+	public static UCResourceLocation get(String s){
 		if(map.containsKey(s)){
 			return map.get(s);
 		}
-		ResourceLocation texture = new ResourceLocation("fcl:remote/" + s);
+		UCResourceLocation texture = new UCResourceLocation("fcl:remote/", s);
 		ITextureObject object = Minecraft.getMinecraft().renderEngine.getTexture(texture);
         if(object == null){
     		ThreadDownloadImageData tdid = new ThreadDownloadImageData((File)null, s, null, null);
@@ -29,11 +29,11 @@ public class ExternalTextureHelper {
 		return texture;
 	}
 	
-	public static ResourceLocation getTemp(String s){
+	public static UCResourceLocation getTemp(String s){
 		if(tempmap.containsKey(s)){
 			return tempmap.get(s);
 		}
-		ResourceLocation texture = new ResourceLocation("fcl:remote/" + s);
+		UCResourceLocation texture = new UCResourceLocation("fcl:remote/", s);
 		ITextureObject object = Minecraft.getMinecraft().renderEngine.getTexture(texture);
         if(object == null){
     		ThreadDownloadImageData tdid = new ThreadDownloadImageData((File)null, s, null, null);
