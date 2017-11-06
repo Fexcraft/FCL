@@ -34,7 +34,7 @@ public class PermissionsCmd extends CommandBase {
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(sender.getCommandSenderEntity() instanceof EntityPlayer && !(args.length >= 3 && (args[2].equals("view") || args[2].equals("obj")))){
 			PlayerPerms pp = PermManager.getPlayerPerms((EntityPlayer)sender);
-			if(!pp.hasPermission(Permissions.FCL_PERMISSION_EDIT)){
+			if(!pp.hasPermission(Permissions.FCL_PERMISSION_EDIT) && !server.isSinglePlayer()){
 				Print.chat(sender, "&cNo permission to use this command.");
 				return;
 			}
