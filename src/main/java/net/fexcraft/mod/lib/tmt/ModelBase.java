@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 * Similar to 'FlansMod'-type Models, for a fast convert.
 * @Author Ferdinand Calo' (FEX___96)
 */
-public class ModelBase<T> extends Model<T> {
+public class ModelBase extends Model<Object> {
 	
 	public ModelRendererTurbo base[] = new ModelRendererTurbo[0];
 	public ModelRendererTurbo open[] = new ModelRendererTurbo[0];
@@ -39,7 +39,7 @@ public class ModelBase<T> extends Model<T> {
 	}
 
 	@Override
-	public void render(T type, Entity ent){
+	public void render(Object type, Entity ent){
 		render();
 	}
 	

@@ -23,10 +23,7 @@ public class ArrayList<T> extends java.util.ArrayList<T> {
 
 	@Override
 	public T get(int i){
-		if(i > this.size()){
-			return super.get(0);
-		}
-		return i < 0 ? null : super.get(i);
+		return this.isEmpty() ? null : i > this.size() ? super.get(0) : i < 0 ? null : super.get(i);
 	}
 	
 }

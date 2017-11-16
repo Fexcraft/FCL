@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import net.fexcraft.mod.lib.util.math.Time;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -43,6 +44,10 @@ public class Print{
 		sender.sendMessage(new TextComponentString(Formatter.format(string)));
 	}
 	
+	public static void bar(EntityPlayer sender, String string){
+		sender.sendStatusMessage(new TextComponentString(Formatter.format(string)), true);
+	}
+	
 	public static void link(ICommandSender sender, String string, String link){
 		TextComponentString textcomponent = new TextComponentString(Formatter.format(string));
 		textcomponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link == null ? string : link));
@@ -58,13 +63,13 @@ public class Print{
 		}
 	}
 
-	public static void spam(int l, String string) {
+	public static void spam(int l, Object obj){
 		for(int i = 0; i < l; i++){
-			logger.error(string);
+			logger.error(obj == null ? ">> IS null;" : String.valueOf(obj));
 		}
 	}
 
-	public static void debug(Object obj) {
+	public static void debug(Object obj){
 		if(Static.dev()){
 			log(obj);
 		}

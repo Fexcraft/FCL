@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 * Converter to use Flansmod-Type vehicle models.
 * @Author Ferdinand Calo' (FEX___96)
 */
-public class ModelConverter<T> extends Model<T> {
+public class ModelConverter extends Model<Object> {
 	
 	public ModelRendererTurbo bodyModel[] = new ModelRendererTurbo[0];
 	public ModelRendererTurbo model[] = new ModelRendererTurbo[0];
@@ -49,7 +49,7 @@ public class ModelConverter<T> extends Model<T> {
 	}
 
 	@Override
-	public void render(T type, Entity ent){
+	public void render(Object type, Entity ent){
 		render();
 	}
 

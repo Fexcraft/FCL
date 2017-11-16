@@ -103,6 +103,9 @@ public class RegistryUtil {
 					ItemBlock iblock = block.item().getConstructor(Block.class).newInstance(mBlock);
 					iblock.setRegistryName(mBlock.getRegistryName());
 					iblock.setUnlocalizedName(mBlock.getUnlocalizedName());
+					if(iblock instanceof ItemBlock16){
+						((ItemBlock16)iblock).setItemBurnTime(block.burn_time());
+					}
 					itemblocks.add(iblock);
 					if(block.variants() > 1){
 						meta.put(mBlock.getRegistryName(), block.variants());
@@ -112,7 +115,8 @@ public class RegistryUtil {
 					}
 					//TileEntity
 					if(mBlock instanceof ITileEntityProvider){
-						GameRegistry.registerTileEntity(block.tileentity(), mBlock.getRegistryName().toString());
+						try{ GameRegistry.registerTileEntity(block.tileentity(), mBlock.getRegistryName().toString()); }
+						catch(IllegalArgumentException e){ if(Static.dev()) e.printStackTrace(); }
 					}
 					Print.debug("Registered Block: " + mBlock.getRegistryName().toString());
 				}

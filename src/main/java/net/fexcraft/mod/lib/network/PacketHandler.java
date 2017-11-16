@@ -3,14 +3,12 @@ package net.fexcraft.mod.lib.network;
 import net.fexcraft.mod.lib.api.network.IPacketListener;
 import net.fexcraft.mod.lib.network.handlers.EntityUpdatePacketHandler;
 import net.fexcraft.mod.lib.network.handlers.ExamplePacketHandler;
-import net.fexcraft.mod.lib.network.handlers.ISUPacketHandler;
 import net.fexcraft.mod.lib.network.handlers.JsonObjectPacketHandler;
 import net.fexcraft.mod.lib.network.handlers.KeyInputPacketHandler;
 import net.fexcraft.mod.lib.network.handlers.NBTTagCompoundPacketHandler;
 import net.fexcraft.mod.lib.network.handlers.TileEntityUpdatePacketHandler;
 import net.fexcraft.mod.lib.network.packet.Packet;
 import net.fexcraft.mod.lib.network.packet.PacketEntityUpdate;
-import net.fexcraft.mod.lib.network.packet.PacketItemStackUpdate;
 import net.fexcraft.mod.lib.network.packet.PacketJsonObject;
 import net.fexcraft.mod.lib.network.packet.PacketKeyInput;
 import net.fexcraft.mod.lib.network.packet.PacketNBTTagCompound;
@@ -23,6 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class PacketHandler{
 	
 	private static final SimpleNetworkWrapper instance = NetworkRegistry.INSTANCE.newSimpleChannel("frsm");
+	public static int nextpacketid = 12;
 	
 	public static void init(){
 		Print.log("Initialising Packet Handler.");
@@ -30,8 +29,8 @@ public class PacketHandler{
 		instance.registerMessage(TileEntityUpdatePacketHandler.Client.class,  PacketTileEntityUpdate.class,  1, Side.CLIENT);
 		instance.registerMessage(TileEntityUpdatePacketHandler.Server.class,  PacketTileEntityUpdate.class,  2, Side.SERVER);
 		instance.registerMessage(KeyInputPacketHandler.class,                 PacketKeyInput.class,          3, Side.SERVER);
-		instance.registerMessage(ISUPacketHandler.Server.class,               PacketItemStackUpdate.class,   4, Side.SERVER);
-		instance.registerMessage(ISUPacketHandler.Client.class,               PacketItemStackUpdate.class,   5, Side.CLIENT);
+		//instance.registerMessage(ISUPacketHandler.Server.class,               PacketItemStackUpdate.class,   4, Side.SERVER);
+		//instance.registerMessage(ISUPacketHandler.Client.class,               PacketItemStackUpdate.class,   5, Side.CLIENT);
 		instance.registerMessage(JsonObjectPacketHandler.Server.class,        PacketJsonObject.class,        6, Side.SERVER);
 		instance.registerMessage(JsonObjectPacketHandler.Client.class,        PacketJsonObject.class,        7, Side.CLIENT);
 		instance.registerMessage(NBTTagCompoundPacketHandler.Server.class,    PacketNBTTagCompound.class,    8, Side.SERVER);
@@ -52,10 +51,10 @@ public class PacketHandler{
 	@SuppressWarnings("unchecked")
 	public static void registerListener(PacketHandlerType type, Side side, IPacketListener<?> listener){
 		switch(type){
-			case ITEMSTACK:{
+			/*case ITEMSTACK:{
 				ISUPacketHandler.addListener(side, (IPacketListener<PacketItemStackUpdate>)listener);
 				break;
-			}
+			}*/
 			case JSON:{
 				JsonObjectPacketHandler.addListener(side, (IPacketListener<PacketJsonObject>)listener);
 				break;

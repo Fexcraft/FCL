@@ -24,5 +24,7 @@ public @interface fBlock{
 	public Class<? extends ItemBlock> item() default ItemBlock16.class;
 	
 	public Class<? extends TileEntity> tileentity() default TileEntity.class;
+
+	public int burn_time() default -1;
 	
 }

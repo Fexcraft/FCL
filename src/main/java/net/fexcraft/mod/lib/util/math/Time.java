@@ -1,61 +1,61 @@
 package net.fexcraft.mod.lib.util.math;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class Time {
 	
-	public static final Calendar cal = Calendar.getInstance();
-	private static final TimeZone GMT = TimeZone.getTimeZone("GMT");
-	
-	public static final Calendar getCalendar(){
-		return cal;
-	}
-	
 	public static int getMonth(){
-		return cal.get(0x2);
+		return LocalDate.now().getMonthValue();
 	}
 	
 	public static int getDay(){
-		return cal.get(0x5);
+		return LocalDate.now().getDayOfMonth();
 	}
 	
 	public static int getDay365(){
-		return cal.get(0x6);
+		return LocalDate.now().getDayOfYear();
 	}
 	
 	public static int getDay7(){
-		return cal.get(0x7);
+		return LocalDate.now().getDayOfWeek().getValue();
 	}
 	
 	public static int getHour12(){
-		return cal.get(0xa);
+		int h = getHour24();
+		return h >= 12 ? h - 12 : h;
 	}
 	
 	public static int getHour24(){
-		return cal.get(0xb);
+		return LocalTime.now().getHour();
 	}
 	
 	public static int getMinute(){
-		return cal.get(0xc);
+		return LocalTime.now().getMinute();
 	}
 	
 	public static int getSecond(){
-		return cal.get(0xd);
+		return LocalTime.now().getSecond();
 	}
 	
-	public static int getMilisecond(){
-		return cal.get(0xe);
+	public static int getNano(){
+		return LocalTime.now().getNano();
 	}
 	
 	public static long getDate(){
 		return new Date().getTime();
 	}
 	
-	public static Calendar getGMTCalendar(){
-		return Calendar.getInstance(GMT);
+	public static LocalTime getGMTOffset(int i){
+		return getGMTOffset(i, false);
+	}
+	
+	public static LocalTime getGMTOffset(int i, boolean control){
+		if(control){ i = i > 12 ? i = 12 : i < -11 ? i = -11 : i; }
+		return LocalTime.now(ZoneId.of("GMT" + (i >= 0 ? "+" + i : i)));
 	}
 	
 	public static final String getAsString(long date){

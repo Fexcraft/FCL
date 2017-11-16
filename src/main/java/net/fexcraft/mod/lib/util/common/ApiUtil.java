@@ -1,11 +1,11 @@
 package net.fexcraft.mod.lib.util.common;
 
-import net.fexcraft.mod.lib.api.tileentity.Cable;
 import net.fexcraft.mod.lib.network.PacketHandler;
 import net.fexcraft.mod.lib.network.packet.PacketEntityUpdate;
 import net.fexcraft.mod.lib.network.packet.PacketTileEntityUpdate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -54,37 +54,6 @@ public class ApiUtil{
 		PacketHandler.getInstance().sendToServer(new PacketEntityUpdate(ent, nbt));
 	}
 	
-	public static void tryTransfer(Cable sender, World w, BlockPos pos, EnumFacing side){
-		if(sender.fpu_get(side) > sender.fpu_min(side) && sender.fpu_get(side) > sender.fpu_min_transfer_speed(side)){
-			TileEntity rte = w.getTileEntity(getPosFromFacing(side, pos));
-			if(rte != null && rte instanceof Cable){
-				Cable receiver = (Cable)rte;
-				if(receiver.fpu_isInput(side.getOpposite())){
-					if(receiver.fpu_get(side.getOpposite()) >= receiver.fpu_max(side.getOpposite())){
-						return;
-					}
-					int t = getTransferSpeed(sender, side, receiver);
-					if(t <= 0){
-						return;
-					}
-					boolean b = hasSpaceForFullTransfer(side.getOpposite(), receiver, t);
-					if(b){
-						sender.fpu_subtract(side, t);
-						receiver.fpu_add(side, t);
-					}
-					if(!b){
-						int fs = getFreeSpace(side.getOpposite(), receiver);
-						if((t - fs) == 0){
-							return;
-						}
-						sender.fpu_subtract(side, fs);
-						receiver.fpu_add(side, fs);
-					}
-				}
-			}
-		}
-	}
-	
 	public static BlockPos getPosFromFacing(EnumFacing facing, BlockPos pos){
 		switch(facing){
 			case NORTH: return new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1);
@@ -95,72 +64,32 @@ public class ApiUtil{
 		}
 	}
 	
-	public static int getTransferSpeed(Cable sender, EnumFacing ef, Cable receiver){
-		int rs = getTransferSpeed(sender, ef);
-		int r = receiver.fpu_transfer_speed(ef.getOpposite());
-		if(rs > r){
-			rs = r;
-		}
-		if(rs < receiver.fpu_min_transfer_speed(ef.getOpposite())){
-			rs = 0;
-		}
-		//Print.spam(1, sender.getContainerName() + "  --->  " + rs + "  --->  " + receiver.getContainerName());
-		return rs;
-	}
-
-	/*public static void transferPower(CableEntity sender, EnumFacing ef, CableEntity target){
-		if(isFull(target)){
-			return;
-		}
-		int t = getTransferSpeed(sender, ef);
-		if(t == 0){
-			return;
-		}
-		boolean b = hasSpaceForFullTransfer(target, t);
-		if(b){
-			sender.fpu_subtract(t);
-			target.fpu_add(t);
-		}
-		if(!b){
-			int fs = getFreeSpace(target);
-			if((t - fs) == 0){
-				return;
-			}
-			sender.fpu_set(sender.fpu_get() - fs);
-			target.fpu_set(target.fpu_get() + fs);
-		}
-	}*/
-	
-	public static int getTransferSpeed(Cable cable, EnumFacing ef){
-		int r = cable.fpu_transfer_speed(ef);
-		if(r > cable.fpu_get(ef)){
-			r = cable.fpu_get(ef);
-		}
-		r = r - cable.fpu_resistivity(ef);
-		if(r < 1){
-			return 0;
-		}
-		return r;
+	/** For compatibility with the removed EnumColor */
+	public static final EnumDyeColor getDyeColorFromString(String s){
+		return getDyeColorFromString(s, EnumDyeColor.WHITE);
 	}
 	
-	public static boolean hasSpaceForFullTransfer(EnumFacing ef, Cable cable, int i){
-		int t = cable.fpu_get(ef) + i;
-		if(t > cable.fpu_max(ef)){
-			return false;
+	public static final EnumDyeColor getDyeColorFromString(String s, EnumDyeColor def){
+		switch(s){
+			case "white":      return EnumDyeColor.WHITE;
+			case "orange":     return EnumDyeColor.ORANGE;
+			case "magenta":    return EnumDyeColor.MAGENTA;
+			case "light_blue": return EnumDyeColor.LIGHT_BLUE;
+			case "yellow":     return EnumDyeColor.YELLOW;
+			case "lime":       return EnumDyeColor.LIME;
+			case "pink":       return EnumDyeColor.PINK;
+			case "gray":       return EnumDyeColor.GRAY;
+			case "silver":
+			case "light_gray": return EnumDyeColor.SILVER;
+			case "cyan":       return EnumDyeColor.CYAN;
+			case "purple":     return EnumDyeColor.PURPLE;
+			case "blue":       return EnumDyeColor.BLUE;
+			case "brown":      return EnumDyeColor.BROWN;
+			case "green":      return EnumDyeColor.GREEN;
+			case "red":        return EnumDyeColor.RED;
+			case "black":      return EnumDyeColor.BLACK;
 		}
-		else return true;
-	}
-	
-	public static int getFreeSpace(EnumFacing ef, Cable cable){
-		int r = cable.fpu_max(ef) - cable.fpu_get(ef);
-		return r;
-	}
-	
-	public static boolean isFull(EnumFacing ef, Cable cable){
-		if(cable.fpu_get(ef) >= cable.fpu_max(ef)){
-			return true;
-		}
-		else return false;
+		return def;
 	}
 	
 }
