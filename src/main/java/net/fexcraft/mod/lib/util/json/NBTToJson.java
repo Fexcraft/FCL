@@ -1,5 +1,8 @@
 package net.fexcraft.mod.lib.util.json;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -24,21 +27,29 @@ import net.minecraft.nbt.NBTTagString;
 public class NBTToJson {
 	
 	public static final JsonObject getJsonFromTag(NBTTagCompound compound){
-		return convert(compound);
+		return convert(compound, true);
+	}
+	
+	public static final JsonObject getJsonFromTag(NBTTagCompound compound, boolean sort){
+		return convert(compound, sort);
 	}
 
-	private static final JsonObject convert(NBTTagCompound compound){
+	private static final JsonObject convert(NBTTagCompound compound, boolean sort){
 		JsonObject obj = new JsonObject();
-		for(String str : compound.getKeySet()){
-			JsonElement elm = element(compound.getTag(str));
+		ArrayList<String> list = new ArrayList<String>(compound.getKeySet());
+		if(sort){
+			Collections.sort(list);
+		}
+		for(String str : list){
+			JsonElement elm = element(compound.getTag(str), sort);
 			if(!(elm == null)){ obj.add(str, elm); }
 		}
 		return obj;
 	}
 	
-	private static final JsonElement element(NBTBase base){
+	private static final JsonElement element(NBTBase base, boolean sort){
 		if(base instanceof NBTTagByte){
-			return new JsonPrimitive(((NBTTagByte)base).getByte() + "b");
+			return new JsonPrimitive(((NBTTagByte)base).toString());
 		}
 		if(base instanceof NBTTagByteArray){
 			byte[] arr = ((NBTTagByteArray)base).getByteArray();
@@ -49,16 +60,16 @@ public class NBTToJson {
 			return array;
 		}
 		if(base instanceof NBTTagCompound){
-			return convert((NBTTagCompound)base);
+			return convert((NBTTagCompound)base, sort);
 		}
 		if(base instanceof NBTTagDouble){
-			return new JsonPrimitive(((NBTTagDouble)base).getDouble() + "d");
+			return new JsonPrimitive(((NBTTagDouble)base).toString());
 		}
 		if(base instanceof NBTTagFloat){
-			return new JsonPrimitive(((NBTTagFloat)base).getFloat() + "f");
+			return new JsonPrimitive(((NBTTagFloat)base).toString());
 		}
 		if(base instanceof NBTTagInt){
-			return new JsonPrimitive(((NBTTagInt)base).getInt());
+			return new JsonPrimitive(((NBTTagInt)base).toString());
 		}
 		if(base instanceof NBTTagIntArray){
 			int[] arr = ((NBTTagIntArray)base).getIntArray();
@@ -73,19 +84,19 @@ public class NBTToJson {
 			NBTTagList list = (NBTTagList)base;
 			for(NBTBase nbt : list){
 				if(nbt instanceof NBTTagCompound){
-					array.add(convert((NBTTagCompound)nbt));
+					array.add(convert((NBTTagCompound)nbt, sort));
 				}
 				else{
-					array.add(element(nbt));
+					array.add(element(nbt, sort));
 				}
 			}
 			return array;
 		}
 		if(base instanceof NBTTagLong){
-			return new JsonPrimitive(((NBTTagLong)base).getLong() + "l");
+			return new JsonPrimitive(((NBTTagLong)base).toString());
 		}
 		if(base instanceof NBTTagShort){
-			return new JsonPrimitive(((NBTTagShort)base).getShort() + "s");
+			return new JsonPrimitive(((NBTTagShort)base).toString());
 		}
 		if(base instanceof NBTTagString){
 			return new JsonPrimitive(((NBTTagString)base).getString());
