@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -63,7 +66,7 @@ public class ZipUtil {
 		return false;
 	}
 
-	public static JsonArray getJsonObjectsAt(File file, String path, String extension){
+	public static final JsonArray getJsonObjectsAt(File file, String path, String extension){
 		JsonArray array = new JsonArray();
 		try{
 			ZipFile zip = new ZipFile(file);
@@ -73,23 +76,40 @@ public class ZipUtil {
 				if(entry == null){
 					break;
 				}
-				//Print.log(path + "[<<ENTRY>>]" + extension);
 				if(entry.getName().startsWith(path) && entry.getName().endsWith(extension)){
-					//Print.log("1 >>:>> " + entry.getName());
 					array.add(JsonUtil.getObjectFromInputStream(zip.getInputStream(entry)));
 				}
-				/*else{
-					Print.log("0 >>:>> " + entry.getName());
-				}*/
 			}
 			zip.close();
 			stream.close();
-			//Static.halt();
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
 		return array;
+	}
+	
+	public static final Map<String, JsonObject> getJsonObjectsAt(File file, String path, String extension, boolean sorted){
+		Map<String, JsonObject> map = sorted ? new TreeMap<String, JsonObject>() : new HashMap<String, JsonObject>();
+		try{
+			ZipFile zip = new ZipFile(file);
+			ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
+			while(true){
+				ZipEntry entry = stream.getNextEntry();
+				if(entry == null){
+					break;
+				}
+				if(entry.getName().startsWith(path) && entry.getName().endsWith(extension)){
+					map.put(entry.getName().replace(path, "").replace(extension, ""), JsonUtil.getObjectFromInputStream(zip.getInputStream(entry)));
+				}
+			}
+			zip.close();
+			stream.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return map;
 	}
 	
 }
