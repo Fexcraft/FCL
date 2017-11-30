@@ -77,7 +77,7 @@ public class PermissionsCmd extends CommandBase {
 					Print.chat(sender, "Player already has this permission node.");
 				}
 				else{
-					player.add(args[3], Type.BOOLEAN, false);
+					player.add(args[3], Type.BOOLEAN, args.length >= 5 ? Boolean.parseBoolean(args[4]) : args[4]);
 					Print.chat(sender, "Permission added.");
 				}
 				break;
@@ -129,7 +129,7 @@ public class PermissionsCmd extends CommandBase {
 					Print.chat(sender, "Rank already has this permission node.");
 				}
 				else{
-					rank.add(args[3], Type.BOOLEAN, false);
+					rank.add(args[3], Type.BOOLEAN, args.length >= 5 ? Boolean.parseBoolean(args[4]) : args[4]);
 					Print.chat(sender, "Permission added.");
 				}
 				break;
