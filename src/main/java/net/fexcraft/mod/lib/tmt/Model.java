@@ -1,5 +1,6 @@
 package net.fexcraft.mod.lib.tmt;
 
+import net.fexcraft.mod.lib.util.common.Static;
 import net.minecraft.entity.Entity;
 
 /**
@@ -58,22 +59,31 @@ public abstract class Model<T> extends net.minecraft.client.model.ModelBase {
 	
 	public abstract void rotateAll(float x, float y, float z);
 	
-	protected final void fixRotation(ModelRendererTurbo[] model, boolean... bools){
-		if(bools.length >= 1 && bools[0]){
-			for(ModelRendererTurbo mod : model){
-				mod.rotateAngleX = -mod.rotateAngleX;
-			}
-		}
-		if(bools.length >= 2 && bools[1]){
-			for(ModelRendererTurbo mod : model){
-				mod.rotateAngleY = -mod.rotateAngleY;
-			}
-		}
-		if(bools.length >= 3 && bools[2]){
-			for(ModelRendererTurbo mod : model){
-				mod.rotateAngleZ = -mod.rotateAngleZ;
-			}
-		}
+	/** Legacy Method */
+	protected void flip(ModelRendererTurbo[] model){
+		this.fixRotations(model);
 	}
+	
+	/** Legacy Method */
+	public void flipAll(){
+		//To be overriden by extending classes.
+	}
+	
+	/**
+	 * Based on @EternalBlueFlame's fix.
+	 * @param array ModelRendererTurbo Array
+	 */
+	public void fixRotations(ModelRendererTurbo[] array){
+        for(ModelRendererTurbo model : array){
+            if(model.isShape3D){
+                model.rotateAngleY = -model.rotateAngleY;
+                model.rotateAngleX = -model.rotateAngleX;
+                model.rotateAngleZ = -model.rotateAngleZ + Static.rad180;
+            }
+            else{
+                model.rotateAngleZ = -model.rotateAngleZ;
+            }
+        }
+    }
 	
 }

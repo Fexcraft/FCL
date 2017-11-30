@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import net.fexcraft.mod.lib.util.common.Static;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -56,6 +55,7 @@ public class ModelRendererTurbo extends ModelRenderer {
     public boolean field_1402_i;
     public boolean forcedRecompile;
     public boolean useLegacyCompiler;
+    public boolean isShape3D;
     public List<?> cubeList;
     public List<?> childModels;
     public final String boxName;
@@ -599,8 +599,9 @@ public class ModelRendererTurbo extends ModelRenderer {
     
     /**
      * NOTE: `x` and `z` are inverted to prevent "Toolbox" or "Flansmod"-type models from being rendered wrong.
-     * There is currently no other commonly used editor for such models, so let's leave it that way for now.
-     * NOTE2: Also let's rotate by 180 degrees for whatever reason.
+     * There is currently no other commonly used editor for such models, so let's leave it that way for now.<br>
+     * <s>NOTE2: Also let's rotate by 180 degrees for whatever reason.</s><br>
+     * NOTE2: Let's mark as Shape3D for further processing.
      * @Ferdinand
      */
     public void addShape3D(float x, float y, float z, Shape2D shape, float depth, int shapeTextureWidth, int shapeTextureHeight, int sideTextureWidth, int sideTextureHeight, float rotX, float rotY, float rotZ, float[] faceLengths){
@@ -611,7 +612,7 @@ public class ModelRendererTurbo extends ModelRenderer {
     		}
     	}
     	copyTo(shape3D.vertices, shape3D.faces);
-    	this.rotateAngleZ = Static.rad180;
+    	isShape3D = true;
     }
     
     /**

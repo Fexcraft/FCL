@@ -96,6 +96,7 @@ public class ModelConverter extends Model<Object> {
 		rotate(steeringWheelModel, x, y, z);
 	}
 	
+	@Override
 	public void flipAll(){
 		flip(bodyModel);
 		flip(model);
@@ -115,13 +116,6 @@ public class ModelConverter extends Model<Object> {
 		flip(leftTrackWheelModels);
 		flip(trailerModel);
 		flip(steeringWheelModel);
-	}
-	
-	private void flip(ModelRendererTurbo[] model) {
-		for(ModelRendererTurbo sub : model){
-			sub.doMirror(false, true, true);
-			sub.setRotationPoint(sub.rotationPointX, -sub.rotationPointY, -sub.rotationPointZ);
-		}
 	}
 	
 }
