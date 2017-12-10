@@ -1,7 +1,9 @@
 package net.fexcraft.mod.lib.tmt;
 
 import net.fexcraft.mod.lib.util.common.Static;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 
 /**
 * Replaces the old `ModelBase` in this package.
@@ -85,5 +87,11 @@ public abstract class Model<T> extends net.minecraft.client.model.ModelBase {
             }
         }
     }
+	
+	public static void bindTexture(ResourceLocation rs){
+		Minecraft.getMinecraft().renderEngine.bindTexture(rs);
+		return;
+		//TODO add check if current texture equals new texture, return if true;
+	}
 	
 }
