@@ -51,7 +51,7 @@ public abstract class Model<T> extends net.minecraft.client.model.ModelBase {
 	
 	public abstract void translateAll(float x, float y, float z);
 	
-	protected void rotate(ModelRendererTurbo[] model, float x, float y, float z) {
+	protected void rotate(ModelRendererTurbo[] model, float x, float y, float z){
 		for(ModelRendererTurbo mod : model){
 			mod.rotateAngleX += x;
 			mod.rotateAngleY += y;
