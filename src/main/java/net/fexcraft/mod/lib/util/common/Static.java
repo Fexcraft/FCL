@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.authlib.GameProfile;
 
 import net.fexcraft.mod.lib.network.Network;
 import net.minecraft.entity.MoverType;
@@ -155,15 +156,19 @@ public class Static{
 		if(cache.containsKey(uuid)){
 			return cache.get(uuid);
 		}
+		if(getServer().getPlayerProfileCache().getProfileByUUID(uuid) != null){
+			GameProfile gp = getServer().getPlayerProfileCache().getProfileByUUID(uuid);
+			cache.put(uuid, gp.getName());
+			return gp.getName();
+		}
+		JsonElement obj = Network.request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
 		try{
-			JsonElement obj = Network.request(" https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
-			if(obj != null){
-				JsonObject elm = obj.getAsJsonObject();
-				cache.put(uuid, elm.get("name").getAsString());
-				return elm.get("name").getAsString();
-			}
+			JsonObject elm = obj.getAsJsonObject();
+			cache.put(uuid, elm.get("name").getAsString());
+			return elm.get("name").getAsString();
 		}
 		catch(Exception e){
+			Print.debug(obj == null ? "null" : obj.toString());
 			e.printStackTrace();
 		}
 		return "<null/errored>";

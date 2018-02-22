@@ -16,10 +16,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 * 
 */
 @SideOnly(Side.CLIENT)
-public class Tessellator extends net.minecraft.client.renderer.Tessellator{
+public class Tessellator extends net.minecraft.client.renderer.Tessellator {
 	
 	private static ByteBuffer bbuf = GLAllocation.createDirectByteBuffer(0x200000 * 4);
-	private int rbs = 0, verts = 0, /*br, c,*/ rbi = 0, /*vertices = 0,*/ dm, n;
+	private int rbs = 0, verts = 0, /*br = 0, c,*/ rbi = 0, /*vertices = 0,*/ dm, n;
 	private boolean ht = false, in = false, drawing = false;
 	public static Tessellator INSTANCE = new Tessellator();
 	private static FloatBuffer fbuf = bbuf.asFloatBuffer();
@@ -87,7 +87,7 @@ public class Tessellator extends net.minecraft.client.renderer.Tessellator{
 		bbuf.clear();
 	}
 	
-	public void addVertex(double par1, double par3, double par5){
+	public void addVertex(double i, double j, double k){
 		if(rbi >= rbs - 40) {
 			if(rbs == 0){rbs = 0x10000; rb = new int[rbs];}
 			else{rbs *= 2; rb = Arrays.copyOf(rb, rbs);}
@@ -97,9 +97,9 @@ public class Tessellator extends net.minecraft.client.renderer.Tessellator{
 			rb[rbi + 5] = Float.floatToRawIntBits(0.0F); rb[rbi + 6] = Float.floatToRawIntBits((float)w);
 		}
 		if(in){rb[rbi + 8] = n;}
-		rb[rbi] = Float.floatToRawIntBits((float)(par1 + x));
-		rb[rbi + 1] = Float.floatToRawIntBits((float)(par3 + y));
-		rb[rbi + 2] = Float.floatToRawIntBits((float)(par5 + z));
+		rb[rbi] = Float.floatToRawIntBits((float)(i + x));
+		rb[rbi + 1] = Float.floatToRawIntBits((float)(j + y));
+		rb[rbi + 2] = Float.floatToRawIntBits((float)(k + z));
 		rbi += 10; verts++; //vertices++;
 	}
 	

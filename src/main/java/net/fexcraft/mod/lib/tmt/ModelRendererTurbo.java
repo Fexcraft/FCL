@@ -303,9 +303,9 @@ public class ModelRendererTurbo extends ModelRenderer {
      * @param scale
      */
     public void addBox(float x, float y, float z, float w, float h, float d, float expansion, float scale){
-    	if(w ==0){ w=0.01F; }
-    	if(h ==0){ h=0.01F; }
-    	if(d ==0){ d=0.01F; }
+    	if(w == 0){ w = 0.01F; }
+    	if(h == 0){ h = 0.01F; }
+    	if(d == 0){ d = 0.01F; }
     	
         float scaleX = w * scale;
         float scaleY = h * scale;
@@ -1664,7 +1664,7 @@ public class ModelRendererTurbo extends ModelRenderer {
     }
 
 	public void addShapeBox(float x, float y, float z, int w, int h, int d, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7){
-		float f4 = x + w, f5 = y + h, f6 = z + d;
+    	float f4 = x + w, f5 = y + h, f6 = z + d;
 		x -= scale; y -= scale; z -= scale;
 		f4 += scale; f5 += scale; f6 += scale;
 		if(mirror){
