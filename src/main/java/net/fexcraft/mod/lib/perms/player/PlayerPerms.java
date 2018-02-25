@@ -65,6 +65,16 @@ public class PlayerPerms implements IPlayerPerms {
 						}
 					}
 				}
+				else{
+					for(Class<?> clazz : set){
+						try{
+							this.data.put(clazz, ((AttachedData)clazz.getConstructor(PlayerPerms.class).newInstance(this)).load(uuid, null));
+						}
+						catch(Exception e){
+							e.printStackTrace();
+						}
+					}
+				}
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -187,7 +197,7 @@ public class PlayerPerms implements IPlayerPerms {
 		}
 	}
 	
-	public static void addAdditionalData(Class<?> type){
+	public static <T extends AttachedData> void addAdditionalData(Class<T> type){
 		set.add(type);
 	}
 	

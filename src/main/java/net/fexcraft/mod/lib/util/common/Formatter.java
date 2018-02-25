@@ -2,11 +2,13 @@ package net.fexcraft.mod.lib.util.common;
 
 public class Formatter {
 	
+	public static final String PARAGRAPH_SIGN = "\u00a7";
+	
 	public static String format(String string){
 		if(string == null){
 			return "";
 		}
-		string = string.replace("&", "\u00a7");
+		string = string.replace("&", PARAGRAPH_SIGN);
 		return string;
 	}
 	
