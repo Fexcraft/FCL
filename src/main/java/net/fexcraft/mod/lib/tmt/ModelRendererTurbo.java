@@ -1,6 +1,5 @@
 package net.fexcraft.mod.lib.tmt;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,7 +28,7 @@ import net.minecraft.util.math.MathHelper;
  * support or have the addSprite method, methods that add a lot of vertices and
  * polygons.
  *
- * This version of TMT was updated, maintened, as well as extended for 1.8 and newer Minecraft versions by FEX___96
+ * This version of TMT was updated, maintained, as well as extended for 1.8 and newer Minecraft versions by FEX___96
  *
  * @author GaryCXJk, Ferdinand (FEX___96)
  * @license http://fexcraft.net/license?id=tmt
@@ -1223,45 +1222,19 @@ public class ModelRendererTurbo extends ModelRenderer {
     
     /**
      * Adds a Waveform .obj file as a model. Model files use the entire texture file.
-     * @param file the location of the .obj file. The location is relative to the base directories,
-     * which are either resources/models or resources/mods/models.
+     * @param location the ResourceLocation of the .obj file.
      */
-    public void addObj(String file){
-    	addModel(file, ModelPool.OBJ);
-    }
-    
-    public void addObjF(String file){
-    	try{
-			addModelF(file, ModelPool.OBJ);
-		}
-    	catch(IOException e) {
-			e.printStackTrace();
-		}
+    public void addObj(String location){
+    	addModel(new ResourceLocation(location), ModelPool.OBJ);
     }
     
     /**
      * Adds model format support. Model files use the entire texture file.
-     * @param file the location of the model file. The location is relative to the base directories,
-     * which are either resources/models or resources/mods/models.
+     * @param file the location of the model file.
      * @param modelFormat the class of the model format interpreter
      */
-    public void addModel(String file, Class<?> modelFormat){
-    	ModelPoolEntry entry = ModelPool.addFile(file, modelFormat, transformGroup, textureGroup);
-    	if(entry == null){
-    		return;
-    	}
-    	PositionTextureVertex[] verts = Arrays.copyOf(entry.vertices, entry.vertices.length);
-    	TexturedPolygon[] poly = Arrays.copyOf(entry.faces, entry.faces.length);
-    	if(flip){
-            for(int l = 0; l < faces.length; l++){
-                faces[l].flipFace();
-            }
-    	}
-    	copyTo(verts, poly, false);
-    }
-    
-    public void addModelF(String file, Class<?> modelFormat) throws IOException{
-    	ModelPoolEntry entry = ModelPool.addFileF(file, modelFormat, transformGroup, textureGroup);
+    public void addModel(ResourceLocation location, Class<?> modelFormat){
+    	ModelPoolEntry entry = ModelPool.addLocation(location, modelFormat, transformGroup, textureGroup);
     	if(entry == null){
     		return;
     	}

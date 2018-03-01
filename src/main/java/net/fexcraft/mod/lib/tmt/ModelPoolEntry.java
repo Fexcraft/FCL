@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.client.resources.IResource;
+
 public abstract class ModelPoolEntry {
 	
 	public String name;
@@ -32,7 +34,7 @@ public abstract class ModelPoolEntry {
 		return file;
 	}
 	
-	public abstract void getModel(File file);
+	public abstract void getModel(IResource resource);
 	
     /**
      * Sets the current transformation group. The transformation group is used
