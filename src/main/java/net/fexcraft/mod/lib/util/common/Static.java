@@ -177,5 +177,14 @@ public class Static{
 	public static final String toString(BlockPos pos){
 		return pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
 	}
+
+	public static String getPlayerNameByUUID(String string){
+		try{
+			return getPlayerNameByUUID(UUID.fromString(string));
+		}
+		catch(Exception e){
+			return "<null/uuid-parse-error>";
+		}
+	}
 	
 }
