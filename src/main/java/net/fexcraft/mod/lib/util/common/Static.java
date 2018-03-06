@@ -153,6 +153,9 @@ public class Static{
 	
 	private static final HashMap<UUID, String> cache = new HashMap<UUID, String>();
 	public static final String getPlayerNameByUUID(UUID uuid){
+		if(uuid == null){
+			return "<null-uuid>";
+		}
 		if(cache.containsKey(uuid)){
 			return cache.get(uuid);
 		}
