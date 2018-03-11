@@ -56,9 +56,7 @@ public class RGBA {
 	}
 	
 	public RGBA(RGB rgb){
-		this.red = rgb.red;
-		this.blue = rgb.blue;
-		this.green = rgb.green;
+		this(rgb.toFloatArray());
 		this.alpha = 1f;
 	}
 	
@@ -251,9 +249,10 @@ public class RGBA {
 	}
 	
 	public void set(RGB rgb){
-		red = rgb.red;
-		green = rgb.green;
-		blue = rgb.blue;
+		float[] arr = rgb.toFloatArray();
+		red = arr[0];
+		green = arr[1];
+		blue = arr[2];
 		alpha = 1f;
 	}
 
@@ -300,9 +299,10 @@ public class RGBA {
 	}
 	
 	public void copyFrom(RGB color){
-		red = color.red;
-		green = color.green;
-		blue = color.blue;
+		float[] arr = color.toFloatArray();
+		red = arr[0];
+		green = arr[1];
+		blue = arr[2];
 		alpha = 1f;
 	}
 	

@@ -3,6 +3,7 @@ package net.fexcraft.mod.lib.util.render;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.fexcraft.mod.lib.util.common.Static;
@@ -13,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RGB {
 	
-	public byte red, green, blue;
+	public int packed = 0x00000;
 	
 	public static final RGB RED   = new RGB(255,   0,   0);
 	public static final RGB GREEN = new RGB(  0, 255,   0);
@@ -22,63 +23,64 @@ public class RGB {
 	public static final RGB WHITE = new RGB(255, 255, 255);
 	
 	public RGB(){
-		copyFrom(WHITE);
-	}
-	
-	public RGB(byte r, byte g, byte b){
-		this.red = r;
-		this.green = g;
-		this.blue = b;
-	}
-	
-	public RGB(int r, int g, int b){
-		r -= 128; g -= 128; b -= 128;
-		this.red   = con(r);
-		this.green = con(g);
-		this.blue  = con(b);
-	}
-	
-	public RGB(byte[] i){
-		this.red   = i.length >= 1 ? i[0] : 0;
-		this.green = i.length >= 2 ? i[1] : 0;
-		this.blue  = i.length >= 3 ? i[2] : 0;
-	}
-	
-	public RGB(int[] i){
-		this.red   = con(i.length >= 1 ? i[0] - 128 : 0);
-		this.green = con(i.length >= 2 ? i[1] - 128 : 0);
-		this.blue  = con(i.length >= 3 ? i[2] - 128 : 0);
-	}
-	
-	public RGB(String x, String y, String z){
-		try{ this.red   = con(Integer.parseInt(x) - 128); } catch(Exception e){ this.red   = 0; }
-		try{ this.green = con(Integer.parseInt(y) - 128); } catch(Exception e){ this.green = 0; }
-		try{ this.blue  = con(Integer.parseInt(z) - 128); } catch(Exception e){ this.blue  = 0; }
-	}
-	
-	public RGB(String[] s){
-		if(s.length >= 1){ try{ this.red   = con(Integer.parseInt(s[0]) - 128); } catch(Exception e){ this.red   = 0; } } else {this.red   = 0; }
-		if(s.length >= 2){ try{ this.green = con(Integer.parseInt(s[1]) - 128); } catch(Exception e){ this.green = 0; } } else {this.green = 0; }
-		if(s.length >= 3){ try{ this.blue  = con(Integer.parseInt(s[2]) - 128); } catch(Exception e){ this.blue  = 0; } } else {this.blue  = 0; }
+		packed = WHITE.packed;
 	}
 	
 	public RGB(RGB rgb){
-		this.red = rgb.red;
-		this.blue = rgb.blue;
-		this.green = rgb.green;
+		this.packed = rgb.packed;
 	}
 	
-	private static final byte con(int i){
-		return (byte)((i > 127 ? 127 : i < -128 ? -128 : i) & 0xFF);
+	public RGB(int color){
+		packed = color;
 	}
-
-	public final void copyFrom(RGB color){
-		red = color.red; green = color.green; blue = color.blue;
+	
+	public RGB(byte r, byte g, byte b){
+		packed = (65536 * (r + 128)) + (256 * (g + 128)) + (b + 128);
+	}
+	
+	public RGB(int r, int g, int b){
+		r = r > 255 ? 255 : r < 0 ? 0 : r;
+		g = g > 255 ? 255 : g < 0 ? 0 : g;
+		b = b > 255 ? 255 : b < 0 ? 0 : b;
+		packed = (65536 * r) + (256 * g) + b;
+	}
+	
+	public RGB(byte[] i){
+		this(i.length >= 1 ? i[0] : 0, i.length >= 2 ? i[1] : 0, i.length >= 3 ? i[2] : 0);
+	}
+	
+	public RGB(int[] i){
+		this(i.length >= 1 ? i[0] : 0, i.length >= 2 ? i[1] : 0, i.length >= 3 ? i[2] : 0);
+	}
+	
+	public static RGB fromStrings(String x, String y, String z){
+		try{
+			int r = Integer.parseInt(x);
+			int g = Integer.parseInt(y);
+			int b = Integer.parseInt(z);
+			return new RGB(r, g, b);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return new RGB(WHITE);
+		}
+	}
+	
+	public static RGB fromStrings(String[] s){
+		switch(s.length){
+			case 0: return new RGB(WHITE);
+			case 1: return fromStrings(s[0], "255", "255");
+			case 2: return fromStrings(s[0], s[1], "255");
+			case 3:
+			default:{
+				return fromStrings(s[0], s[1], s[2]);
+			}
+		}
 	}
 	
 	@SideOnly(Side.CLIENT)
 	public void glColorApply(){
-		org.lwjgl.opengl.GL11.glColor3b(red, green, blue);
+		org.lwjgl.opengl.GL11.glColor4f((packed >> 16 & 255) / 255.0F, (packed >> 8 & 255) / 255.0F, (packed & 255) / 255.0F, 1f);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -86,11 +88,8 @@ public class RGB {
 		org.lwjgl.opengl.GL11.glColor3b(Byte.MAX_VALUE, Byte.MAX_VALUE, Byte.MAX_VALUE);
 	}
 	
-	public final void fromDyeColor(EnumDyeColor e){
-		int c = Static.side().isClient() ? e.getColorValue() : get(e);
-		blue  = con(c & 255);
-		green = con((c >> 8) & 255);
-		red   = con((c >> 16) & 255);
+	public static final RGB fromDyeColor(EnumDyeColor e){
+		return new RGB(Static.side().isClient() ? e.getColorValue() : get(e));
 	}
 	
 	private static final int get(EnumDyeColor e){
@@ -114,19 +113,13 @@ public class RGB {
 		}
 	}
 
-	public static RGB fromSingleInt(int i){
-		return new RGB(con((i >> 16) & 255), con((i >> 8) & 255), con(i & 255));
-	}
-
 	/**
 	 * @param a additional name data to append into the nbt tag key
 	 */
 	public final NBTTagCompound writeToNBT(NBTTagCompound tag, String a){
 		try{
 			String s = a == null ? "" : "_" + a;
-			tag.setByte("RGB_Red" + s, red);
-			tag.setByte("RGB_Green" + s, green);
-			tag.setByte("RGB_Blue" + s, blue);
+			tag.setInteger("RGB_" + s, packed);
 			return tag;
 		}
 		catch(Exception e){
@@ -141,84 +134,77 @@ public class RGB {
 	public final void readFromNBT(NBTTagCompound tag, String a){
 		try{
 			String s = a == null ? "" : "_" + a;
-			red = tag.getByte("RGB_Red" + s);
-			green = tag.getByte("RGB_Green" + s);
-			blue = tag.getByte("RGB_Blue" + s);
+			if(tag.hasKey("RGB_Red" + s)){
+				byte red = tag.getByte("RGB_Red" + s);
+				byte green = tag.getByte("RGB_Green" + s);
+				byte blue = tag.getByte("RGB_Blue" + s);
+				packed = new RGB(red, green, blue).packed;
+			}
+			else{
+				packed = tag.getInteger("RGB_" + s);
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			copyFrom(WHITE);
+			packed = WHITE.packed;
 		}
 	}
 	
 	@Override
 	public final String toString(){
-		return "[" + red + ":" + green + ":" + blue + "]";
+		return Integer.toHexString(packed);
+	}
+	
+	public final int getColorInt(){
+		return packed;
 	}
 
-	public final int toSingleInteger(){
-		return (65536 * red) + (256 * green) + blue;
+	public float[] toFloatArray(){
+		return new float[]{(packed >> 16 & 255) / 255.0F, (packed >> 8 & 255) / 255.0F, (packed & 255) / 255.0F};
 	}
 
-	public final JsonObject toJsonObject(){
-		JsonObject obj = new JsonObject();
-		obj.addProperty("Red", red + 128);
-		obj.addProperty("Blue", blue + 128);
-		obj.addProperty("Green", green + 128);
-		return obj;
+	public byte[] toByteArray(){
+		return new byte[]{(byte)(((packed >> 16) & 255) - 128), (byte)(((packed >> 8) & 255) - 128), (byte)((packed & 255) - 128)};
 	}
 	
 	/// JSON ///
 	
-	public RGB(JsonObject object){
+	public RGB(JsonElement object){
 		this(object, false);
 	}
 
-	public RGB(JsonObject object, boolean write){
+	public RGB(JsonElement elm, boolean write){
+		if((elm.isJsonPrimitive() || !elm.isJsonObject()) && !elm.isJsonArray()){
+			try{
+				packed = Integer.parseInt(elm.getAsString(), 16);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				packed = Integer.parseInt(elm.getAsString(), 10);
+			}
+			return;
+		}
+		JsonObject object = elm.getAsJsonObject();
 		String[] red = {"Red", "red", "r", "R"};
 		String[] blue = {"Blue", "blue", "b", "B"};
 		String[] green = {"Green", "green", "g", "G"};
-		this.red = getFJO(red, object, write, 0);
-		this.blue = getFJO(blue, object, write, 0);
-		this.green = getFJO(green, object, write, 0);
+		byte r = getFJO(red, object, write, packed);
+		byte b = getFJO(blue, object, write, packed);
+		byte g = getFJO(green, object, write, packed);
+		packed = new RGB(r, g, b).packed;
 	}
 	
-	private static final byte getFJO(String[] strings, JsonObject obj, boolean write, int i){
+	private static final byte getFJO(String[] strings, JsonObject obj, boolean write, int packed){
 		for(String s : strings){
 			if(obj.has(s)){
-				return con(obj.get(s).getAsInt() - 128);
+				int j = obj.get(s).getAsInt() - 128;
+				return (byte)(j > 127 ? 127 : j < -128 ? -128 : j);
 			}
 		}
 		if(write){
-			obj.addProperty(strings[i], 0);
+			obj.addProperty("RGB", packed);
 		}
 		return 0;
-	}
-	
-	/// Math ///
-
-	public final void add(int i, int j){
-		switch(i){
-			case 0: { red   = con(red   + j); break;}
-			case 1: { green = con(green + j); break;}
-			case 2: { blue  = con(blue  + j); break;}
-		}
-	}
-	
-	public final void addAll(int j){
-		add(0, j); add(1, j); add(2, j);
-	}
-	
-	public final void set(int i, int j){
-		switch(i){
-			case 0: { red   = con(j); break;}
-			case 1: { green = con(j); break;}
-			case 2: { blue  = con(j); break;}
-		}
-	}
-	
-	public final void setAll(int j){
-		set(0, j); set(1, j); set(2, j);
 	}
 	
 	/// OTHER ///
