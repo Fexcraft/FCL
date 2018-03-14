@@ -14,9 +14,9 @@ import net.minecraft.util.math.Vec3i;
 public class Vec3f {
 	
     public static final Vec3f ZERO = new Vec3f(0.0F, 0.0F, 0.0F);
-    public final float xCoord;
-    public final float yCoord;
-    public final float zCoord;
+    public float xCoord;
+    public float yCoord;
+    public float zCoord;
 
     public Vec3f(float x, float y, float z){
         if(x == -0.0F){

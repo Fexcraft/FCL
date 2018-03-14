@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
+import net.fexcraft.mod.lib.util.math.Vec3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -1643,12 +1644,265 @@ public class ModelRendererTurbo extends ModelRenderer {
 		if(mirror){
 			float f7 = f4; f4 = x; x = f7;
 		}
+		//
+		float[] v0 = control(w, h, d, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, x5, y5, z5, x6, y6, z6, x7, y7, z7);
+		x0 = v0[ 0]; y0 = v0[ 1]; z0 = v0[ 2]; x1 = v0[ 3]; y1 = v0[ 4]; z1 = v0[ 5]; x2 = v0[ 6]; y2 = v0[ 7]; z2 = v0[ 8]; x3 = v0[ 9]; y3 = v0[10]; z3 = v0[11];
+		x4 = v0[12]; y4 = v0[13]; z4 = v0[14]; x5 = v0[15]; y5 = v0[16]; z5 = v0[17]; x6 = v0[18]; y6 = v0[19]; z6 = v0[20]; x7 = v0[21]; y7 = v0[22]; z7 = v0[23];
+		//
 		float[] v  = {x  - x0, y  - y0, z  - z0}, v1 = {f4 + x1, y  - y1, z  - z1}, v2 = {f4 + x5, f5 + y5, z  - z5};
 		float[] v3 = {x  - x4, f5 + y4, z  - z4}, v4 = {x  - x3, y  - y3, f6 + z3}, v5 = {f4 + x2, y  - y2, f6 + z2};
 		float[] v6 = {f4 + x6, f5 + y6, f6 + z6}, v7 = {x  - x7, f5 + y7, f6 + z7};
 		addRectShape(v, v1, v2, v3, v4, v5, v6, v7, w, h, d);
 	}
+    
+    private static final float fix = 0.01f;
 	
+	private float[] control(int w, int h, int d, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7){
+		//There was supposed to be nice commentary explaining stuff here, but as I started compressing, there is no real reason left.
+		Vec3f c0 = new Vec3f(x0    , y0    , z0    );
+		Vec3f c1 = new Vec3f(x1 + w, y1    , z1    );
+		Vec3f c2 = new Vec3f(x2 + w, y2    , z2 + d);
+		Vec3f c3 = new Vec3f(x3    , y3    , z3 + d);
+		Vec3f c4 = new Vec3f(x4    , y4 + h, z4    );
+		Vec3f c5 = new Vec3f(x5 + w, y5 + h, z5    );
+		Vec3f c6 = new Vec3f(x6 + w, y6 + h, z6 + d);
+		Vec3f c7 = new Vec3f(x7    , y7 + h, z7 + d);
+		/* C0 */{
+			if(c0.equals(c1)){
+				c0.xCoord += fix;
+			}
+			if(c0.equals(c2)){
+				c0.xCoord += fix;
+				c0.zCoord += fix;
+			}
+			if(c0.equals(c3)){
+				c0.zCoord += fix;
+			}
+			if(c0.equals(c4)){
+				c0.yCoord += fix;
+			}
+			if(c0.equals(c5)){
+				c0.xCoord += fix;
+				c0.yCoord += fix;
+			}
+			if(c0.equals(c6)){
+				c0.xCoord += fix;
+				c0.yCoord += fix;
+				c0.zCoord += fix;
+			}
+			if(c0.equals(c7)){
+				c0.yCoord += fix;
+				c0.zCoord += fix;
+			}
+		}
+		/* C1 */{
+			if(c1.equals(c0)){
+				c1.xCoord += fix;
+			}
+			if(c1.equals(c2)){
+				c1.zCoord += fix;
+			}
+			if(c1.equals(c3)){
+				c1.xCoord += fix;
+				c1.zCoord += fix;
+			}
+			if(c1.equals(c4)){
+				c1.xCoord += fix;
+				c1.yCoord += fix;
+			}
+			if(c1.equals(c5)){
+				c1.yCoord += fix;
+			}
+			if(c1.equals(c6)){
+				c1.yCoord += fix;
+				c1.zCoord += fix;
+			}
+			if(c1.equals(c7)){
+				c1.xCoord += fix;
+				c1.yCoord += fix;
+				c1.zCoord += fix;
+			}
+		}
+		/* C2 */{
+			if(c2.equals(c0)){
+				c2.xCoord += fix;
+				c2.zCoord += fix;
+			}
+			if(c2.equals(c1)){
+				c2.xCoord += fix;
+			}
+			if(c2.equals(c3)){
+				c2.zCoord += fix;
+			}
+			if(c2.equals(c4)){
+				c2.xCoord += fix;
+				c2.yCoord += fix;
+				c2.zCoord += fix;
+			}
+			if(c2.equals(c5)){
+				c2.xCoord += fix;
+				c2.yCoord += fix;
+			}
+			if(c2.equals(c6)){
+				c2.yCoord += fix;
+			}
+			if(c2.equals(c7)){
+				c2.yCoord += fix;
+				c2.zCoord += fix;
+			}
+		}
+		/* C3 */{
+			if(c7.equals(c0)){
+				c7.zCoord += fix;
+			}
+			if(c7.equals(c1)){
+				c7.xCoord += fix;
+				c7.zCoord += fix;
+			}
+			if(c7.equals(c2)){
+				c7.zCoord += fix;
+			}
+			if(c7.equals(c4)){
+				c7.xCoord += fix;
+				c7.yCoord += fix;
+			}
+			if(c7.equals(c5)){
+				c7.xCoord += fix;
+				c7.yCoord += fix;
+				c7.zCoord += fix;
+			}
+			if(c7.equals(c6)){
+				c7.yCoord += fix;
+				c7.zCoord += fix;
+			}
+			if(c7.equals(c7)){
+				c7.yCoord += fix;
+			}
+		}
+		/* C4 */{
+			if(c4.equals(c0)){
+				c4.yCoord += fix;
+			}
+			if(c4.equals(c1)){
+				c4.xCoord += fix;
+				c4.yCoord += fix;
+			}
+			if(c4.equals(c2)){
+				c4.xCoord += fix;
+				c4.yCoord += fix;
+				c4.zCoord += fix;
+			}
+			if(c4.equals(c3)){
+				c4.yCoord += fix;
+				c4.zCoord += fix;
+			}
+			if(c4.equals(c5)){
+				c4.xCoord += fix;
+			}
+			if(c4.equals(c6)){
+				c4.xCoord += fix;
+				c4.zCoord += fix;
+			}
+			if(c4.equals(c7)){
+				c4.zCoord += fix;
+			}
+		}
+		/* C5 */{
+			if(c5.equals(c0)){
+				c5.xCoord += fix;
+				c5.yCoord += fix;
+			}
+			if(c5.equals(c1)){
+				c5.yCoord += fix;
+			}
+			if(c5.equals(c2)){
+				c5.yCoord += fix;
+				c5.zCoord += fix;
+			}
+			if(c5.equals(c3)){
+				c5.xCoord += fix;
+				c5.yCoord += fix;
+				c5.zCoord += fix;
+			}
+			if(c5.equals(c4)){
+				c5.xCoord += fix;
+			}
+			if(c5.equals(c6)){
+				c5.zCoord += fix;
+			}
+			if(c5.equals(c7)){
+				c5.xCoord += fix;
+				c5.zCoord += fix;
+			}
+		}
+		/* C6 */{
+			if(c6.equals(c0)){
+				c6.xCoord += fix;
+				c6.yCoord += fix;
+				c6.zCoord += fix;
+			}
+			if(c6.equals(c1)){
+				c6.xCoord += fix;
+				c6.yCoord += fix;
+			}
+			if(c6.equals(c2)){
+				c6.yCoord += fix;
+			}
+			if(c6.equals(c3)){
+				c6.yCoord += fix;
+				c6.zCoord += fix;
+			}
+			if(c6.equals(c4)){
+				c6.xCoord += fix;
+				c6.zCoord += fix;
+			}
+			if(c6.equals(c5)){
+				c6.xCoord += fix;
+			}
+			if(c6.equals(c7)){
+				c6.zCoord += fix;
+			}
+		}
+		/* C7 */{
+			if(c7.equals(c0)){
+				c7.yCoord += fix;
+				c7.zCoord += fix;
+			}
+			if(c7.equals(c1)){
+				c7.xCoord += fix;
+				c7.yCoord += fix;
+				c7.zCoord += fix;
+			}
+			if(c7.equals(c4)){
+				c7.yCoord += fix;
+			}
+			if(c7.equals(c2)){
+				c7.yCoord += fix;
+				c7.zCoord += fix;
+			}
+			if(c7.equals(c4)){
+				c7.xCoord += fix;
+			}
+			if(c7.equals(c5)){
+				c7.xCoord += fix;
+				c7.zCoord += fix;
+			}
+			if(c7.equals(c6)){
+				c7.zCoord += fix;
+			}
+		}
+		return new float[]{
+				c0.xCoord    , c0.yCoord    , c0.zCoord    ,
+				c1.xCoord - w, c1.yCoord    , c1.zCoord    ,
+				c2.xCoord - w, c2.yCoord    , c2.zCoord - d,
+				c3.xCoord    , c3.yCoord    , c3.zCoord - d,
+				c4.xCoord    , c4.yCoord - h, c4.zCoord    , 
+				c5.xCoord - w, c5.yCoord - h, c5.zCoord    , 
+				c6.xCoord - w, c6.yCoord - h, c6.zCoord - d,
+				c7.xCoord    , c7.yCoord - h, c7.zCoord - d
+			};
+	}
+
 	public final void setOldRotationOrder(boolean bool){
 		this.rotorder = bool;
 	}

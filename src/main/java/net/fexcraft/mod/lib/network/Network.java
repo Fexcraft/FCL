@@ -91,7 +91,9 @@ public class Network{
 			return obj;
 		}
 		catch(Exception e){
-			e.printStackTrace();
+			if(!Static.dev()){
+				e.printStackTrace();
+			}
 			return null;
 		}
 	}

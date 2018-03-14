@@ -171,8 +171,8 @@ public class Static{
 			return elm.get("name").getAsString();
 		}
 		catch(Exception e){
-			Print.debug(obj == null ? "null" : obj.toString());
-			e.printStackTrace();
+			Print.debug(obj == null ? "null:" + e.getMessage() : obj.toString());
+			//e.printStackTrace();
 		}
 		return "<null/errored>";
 	}
