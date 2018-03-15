@@ -1655,7 +1655,7 @@ public class ModelRendererTurbo extends ModelRenderer {
 		addRectShape(v, v1, v2, v3, v4, v5, v6, v7, w, h, d);
 	}
     
-    private static final float fix = 0.01f;
+    private static final float fix = 0.001f;
 	
 	private float[] control(int w, int h, int d, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7){
 		//There was supposed to be nice commentary explaining stuff here, but as I started compressing, there is no real reason left.

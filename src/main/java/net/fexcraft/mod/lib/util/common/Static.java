@@ -173,6 +173,7 @@ public class Static{
 		catch(Exception e){
 			Print.debug(obj == null ? "null:" + e.getMessage() : obj.toString());
 			//e.printStackTrace();
+			cache.put(uuid, "<null/errored>");
 		}
 		return "<null/errored>";
 	}
