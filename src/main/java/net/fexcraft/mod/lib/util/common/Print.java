@@ -79,9 +79,9 @@ public class Print{
 
 	public static void debug(Object... objs){
 		if(Static.dev()){
-			String str = "[";
+			String str = "[\n";
 			for(int i = 0; i < objs.length; i++){
-				str += objs[i] == null ? ">> IS null;" : String.valueOf(objs[i]) + (i == objs.length - 1 ? "" : ", ");
+				str += "\t" + (objs[i] == null ? ">> IS null;" : String.valueOf(objs[i]) + (i == objs.length - 1 ? "" : ", ")) + "\n";
 			}
 			log(str + "]");
 		}

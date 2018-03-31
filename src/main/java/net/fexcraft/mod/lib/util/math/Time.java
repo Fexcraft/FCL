@@ -7,6 +7,12 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public class Time {
+
+	public static final long WEEK_MS = 604800000;
+	public static final long DAY_MS = 86400000;
+	public static final long HOUR_MS = 3600000;
+	public static final long MIN_MS = 60000;
+	public static final long SEC_MS = 1000;
 	
 	public static int getMonth(){
 		return LocalDate.now().getMonthValue();

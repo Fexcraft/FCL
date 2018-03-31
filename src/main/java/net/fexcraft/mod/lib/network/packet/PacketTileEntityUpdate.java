@@ -9,7 +9,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class PacketTileEntityUpdate extends Packet implements IPacket, IMessage{
+public class PacketTileEntityUpdate extends Packet implements IPacket, IMessage {
 	
 	public BlockPos pos;
 	public NBTTagCompound nbt;

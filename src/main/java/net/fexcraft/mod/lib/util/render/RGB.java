@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RGB {
 	
 	public int packed = 0x00000;
+	public float alpha = 1f;
 	
 	public static final RGB RED   = new RGB(255,   0,   0);
 	public static final RGB GREEN = new RGB(  0, 255,   0);
@@ -24,10 +25,12 @@ public class RGB {
 	
 	public RGB(){
 		packed = WHITE.packed;
+		alpha = WHITE.alpha;
 	}
 	
 	public RGB(RGB rgb){
 		this.packed = rgb.packed;
+		this.alpha = rgb.alpha;
 	}
 	
 	public RGB(int color){
@@ -38,6 +41,11 @@ public class RGB {
 		packed = (65536 * (r + 128)) + (256 * (g + 128)) + (b + 128);
 	}
 	
+	public RGB(byte i, byte j, byte k, float f){
+		this(i, j, k);
+		alpha = f;
+	}
+	
 	public RGB(int r, int g, int b){
 		r = r > 255 ? 255 : r < 0 ? 0 : r;
 		g = g > 255 ? 255 : g < 0 ? 0 : g;
@@ -45,12 +53,23 @@ public class RGB {
 		packed = (65536 * r) + (256 * g) + b;
 	}
 	
+	public RGB(int r, int g, int b, float a){
+		this(r, g, b);
+		alpha = a;
+	}
+	
 	public RGB(byte[] i){
 		this(i.length >= 1 ? i[0] : 0, i.length >= 2 ? i[1] : 0, i.length >= 3 ? i[2] : 0);
+		if(i.length >= 4){
+			alpha = i[3] / 255;
+		}
 	}
 	
 	public RGB(int[] i){
 		this(i.length >= 1 ? i[0] : 0, i.length >= 2 ? i[1] : 0, i.length >= 3 ? i[2] : 0);
+		if(i.length >= 4){
+			alpha = i[3] / 255;
+		}
 	}
 	
 	public static RGB fromStrings(String x, String y, String z){
@@ -80,12 +99,12 @@ public class RGB {
 	
 	@SideOnly(Side.CLIENT)
 	public void glColorApply(){
-		org.lwjgl.opengl.GL11.glColor4f((packed >> 16 & 255) / 255.0F, (packed >> 8 & 255) / 255.0F, (packed & 255) / 255.0F, 1f);
+		org.lwjgl.opengl.GL11.glColor4f((packed >> 16 & 255) / 255.0F, (packed >> 8 & 255) / 255.0F, (packed & 255) / 255.0F, alpha);
 	}
 	
 	@SideOnly(Side.CLIENT)
 	public final static void glColorReset(){
-		org.lwjgl.opengl.GL11.glColor3b(Byte.MAX_VALUE, Byte.MAX_VALUE, Byte.MAX_VALUE);
+		org.lwjgl.opengl.GL11.glColor4b(Byte.MAX_VALUE, Byte.MAX_VALUE, Byte.MAX_VALUE, Byte.MAX_VALUE);
 	}
 	
 	public static final RGB fromDyeColor(EnumDyeColor e){
@@ -119,7 +138,8 @@ public class RGB {
 	public final NBTTagCompound writeToNBT(NBTTagCompound tag, String a){
 		try{
 			String s = a == null ? "" : "_" + a;
-			tag.setInteger("RGB_" + s, packed);
+			tag.setInteger("RGB" + s, packed);
+			tag.setFloat("RGBA" + s, alpha);
 			return tag;
 		}
 		catch(Exception e){
@@ -141,7 +161,8 @@ public class RGB {
 				packed = new RGB(red, green, blue).packed;
 			}
 			else{
-				packed = tag.getInteger("RGB_" + s);
+				packed = tag.getInteger("RGB" + s);
+				alpha = tag.getFloat("RGBA" + s);
 			}
 		}
 		catch(Exception e){
@@ -160,7 +181,7 @@ public class RGB {
 	}
 
 	public float[] toFloatArray(){
-		return new float[]{(packed >> 16 & 255) / 255.0F, (packed >> 8 & 255) / 255.0F, (packed & 255) / 255.0F};
+		return new float[]{(packed >> 16 & 255) / 255.0F, (packed >> 8 & 255) / 255.0F, (packed & 255) / 255.0F, alpha};
 	}
 
 	public byte[] toByteArray(){
@@ -193,7 +214,7 @@ public class RGB {
 		byte g = getFJO(green, object, write, packed);
 		packed = new RGB(r, g, b).packed;
 	}
-	
+
 	private static final byte getFJO(String[] strings, JsonObject obj, boolean write, int packed){
 		for(String s : strings){
 			if(obj.has(s)){
