@@ -82,6 +82,7 @@ public class FCL {
 		//
 		MinecraftForge.EVENT_BUS.register(new SignCapabilityUtil.EventHandler());
 		CapabilityManager.INSTANCE.register(SignCapability.class, new SignCapabilityUtil.Storage(), new SignCapabilityUtil.Callable());
+		SignCapabilityUtil.addListener(net.fexcraft.mod.lib.capabilities.sign.ExampleListener.class);
 		//
 		//RecipeRegistry.importVanillaRecipes();
 		Print.log("Loading complete.");

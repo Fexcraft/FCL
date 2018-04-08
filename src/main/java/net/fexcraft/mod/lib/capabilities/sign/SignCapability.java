@@ -2,6 +2,9 @@ package net.fexcraft.mod.lib.capabilities.sign;
 
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
+import net.fexcraft.mod.lib.util.common.Static;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.tileentity.TileEntitySign;
@@ -41,10 +44,17 @@ public interface SignCapability {
 		public boolean isActive();
 
 		public boolean onPlayerInteract(SignCapability cap, PlayerInteractEvent event, IBlockState state, TileEntitySign tileentity);
-
+		
+		@Nullable
 		public NBTBase writeToNBT(Capability<SignCapability> capability, EnumFacing side);
 
-		public void readNBT(Capability<SignCapability> capability, EnumFacing side, NBTBase nbt);
+		public void readNBT(Capability<SignCapability> capability, EnumFacing side, @Nullable NBTBase nbt);
+		
+		default void sendUpdate(TileEntitySign tileentity){
+			Static.getServer().getPlayerList().getPlayers().forEach(player -> {
+				player.connection.sendPacket(tileentity.getUpdatePacket());
+			});//TODO make range based
+		}
 		
 	}
 	

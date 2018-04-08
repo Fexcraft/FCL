@@ -49,7 +49,10 @@ public class SignCapabilityImpl implements SignCapability {
 		compound.setBoolean("active", active);
 		if(isActive()){
 			listeners.forEach(listener -> {
-				compound.setTag(listener.getId().toString(), listener.writeToNBT(capability, side));
+				NBTBase nbt = listener.writeToNBT(capability, side);
+				if(nbt != null){
+					compound.setTag(listener.getId().toString(), nbt);
+				}
 			});
 		}
 		return compound;
@@ -61,7 +64,7 @@ public class SignCapabilityImpl implements SignCapability {
 		active = compound.getBoolean("active");
 		if(isActive()){
 			listeners.forEach(listener -> {
-				listener.readNBT(capability, side, compound.getTag(listener.getId().toString()));
+				listener.readNBT(capability, side, compound.hasKey(listener.getId().toString()) ? compound.getTag(listener.getId().toString()) : null);
 			});
 		}
 	}
