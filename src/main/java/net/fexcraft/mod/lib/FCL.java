@@ -3,6 +3,8 @@ package net.fexcraft.mod.lib;
 import java.io.File;
 import java.util.UUID;
 
+import net.fexcraft.mod.lib.capabilities.sign.SignCapability;
+import net.fexcraft.mod.lib.capabilities.sign.SignCapabilityUtil;
 import net.fexcraft.mod.lib.crafting.RecipeRegistry;
 import net.fexcraft.mod.lib.network.Network;
 import net.fexcraft.mod.lib.network.PacketHandler;
@@ -14,6 +16,7 @@ import net.fexcraft.mod.lib.util.registry.CreativeTab;
 import net.fexcraft.mod.lib.util.registry.RegistryUtil;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -36,7 +39,7 @@ guiFactory = "net.fexcraft.mod.lib.util.common.GuiFactory")
 public class FCL {
 	
 	public static final String prefix = TextFormatting.BLACK + "[" + TextFormatting.DARK_AQUA + "FCL" + TextFormatting.BLACK + "]" + TextFormatting.GRAY + " ";
-	public static final String version = "XII.37";
+	public static final String version = "XII.38";
 	public static final String mcv = "1.12.2";
 	public static final UUID[] authors = new UUID[]{UUID.fromString("01e4af9b-2a30-471e-addf-f6338ffce04b")};
 	@Mod.Instance("fcl")
@@ -76,6 +79,10 @@ public class FCL {
 		PermManager.initialize();
 		PacketHandler.init();
 		CreativeTab.getIcons();
+		//
+		MinecraftForge.EVENT_BUS.register(new SignCapabilityUtil.EventHandler());
+		CapabilityManager.INSTANCE.register(SignCapability.class, new SignCapabilityUtil.Storage(), new SignCapabilityUtil.Callable());
+		//
 		//RecipeRegistry.importVanillaRecipes();
 		Print.log("Loading complete.");
 	}
