@@ -64,7 +64,7 @@ public class ExampleListener implements SignCapability.Listener {
 				return true;
 			}
 			else{
-				Print.bar(event.getEntityPlayer(), "Last check was less then 2 hours ago.");
+				Print.bar(event.getEntityPlayer(), "Last check was less than 2 hours ago.");
 			}
 		}
 		return false;
