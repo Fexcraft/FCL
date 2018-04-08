@@ -63,7 +63,7 @@ public class ExampleListener implements SignCapability.Listener {
 				return true;
 			}
 			else{
-				Print.chat(event.getEntityPlayer(), "Last check was less then 2 hours ago.");
+				Print.bar(event.getEntityPlayer(), "Last check was less then 2 hours ago.");
 			}
 		}
 		return false;
@@ -77,7 +77,7 @@ public class ExampleListener implements SignCapability.Listener {
 		if(obj.has("versions")){
 			for(JsonElement elm : obj.get("versions").getAsJsonArray()){
 				if(elm.getAsJsonObject().get("version").getAsString().equals(FCL.mcv)){
-					return elm.getAsJsonObject().get("latest_version").getAsString();
+					return "&a" + elm.getAsJsonObject().get("latest_version").getAsString();
 				}
 			}
 			return "&cno version data";
