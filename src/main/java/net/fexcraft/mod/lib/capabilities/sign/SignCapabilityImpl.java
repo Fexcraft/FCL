@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.fexcraft.mod.lib.util.common.Print;
-import net.fexcraft.mod.lib.util.common.Static;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -86,9 +84,9 @@ public class SignCapabilityImpl implements SignCapability {
 
 	@Override
 	public boolean onPlayerInteract(PlayerInteractEvent event, IBlockState state, TileEntitySign tileentity){
-		if(Static.dev()){
-			Print.log((event.getWorld().isRemote ? "CLIENT" : "SERVER") + ": " + (tileentity.getTileData() != null ? tileentity.getTileData().toString() : "no tile data"));
-		}
+		/*if(Static.dev()){
+			Print.log((event.getWorld().isRemote ? "CLIENT" : "SERVER") + ": " + tileentity.writeToNBT(new NBTTagCompound()));
+		}*/
 		for(Listener listener : listeners){
 			if(listener.onPlayerInteract(this, event, state, tileentity)){
 				return true;

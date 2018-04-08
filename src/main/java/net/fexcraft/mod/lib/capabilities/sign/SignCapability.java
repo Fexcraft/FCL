@@ -5,11 +5,13 @@ import java.util.Collection;
 import javax.annotation.Nullable;
 
 import net.fexcraft.mod.lib.util.common.Static;
+import net.minecraft.block.BlockWallSign;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
@@ -54,6 +56,28 @@ public interface SignCapability {
 			Static.getServer().getPlayerList().getPlayers().forEach(player -> {
 				player.connection.sendPacket(tileentity.getUpdatePacket());
 			});//TODO make range based
+		}
+		
+		default BlockPos getPosAtBack(IBlockState state, TileEntitySign tileentity){
+			EnumFacing facing = state.getBlock() instanceof BlockWallSign ? EnumFacing.getFront(tileentity.getBlockMetadata()) : EnumFacing.UP;
+			if(facing == EnumFacing.UP){
+				facing = EnumFacing.fromAngle((tileentity.getBlockMetadata() * 360) / 16.0);
+			}
+			facing = facing.getOpposite();
+			//
+			if(facing.getAxis().isVertical()){
+				return tileentity.getPos().add(0, -1, 0);//invalid
+			}
+			else{
+				BlockPos pos = tileentity.getPos();
+				if(facing.getAxis() == EnumFacing.Axis.X){
+					pos = pos.add(facing.getAxisDirection().getOffset(), 0, 0);
+				}
+				else{
+					pos = pos.add(0, 0, facing.getAxisDirection().getOffset());
+				}
+				return pos;
+			}
 		}
 		
 	}

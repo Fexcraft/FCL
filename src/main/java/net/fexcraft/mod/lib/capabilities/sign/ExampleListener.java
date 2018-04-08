@@ -42,10 +42,11 @@ public class ExampleListener implements SignCapability.Listener {
 		if(!active){
 			if(tileentity.signText[0].getUnformattedText().equals("[fcl-uc]") && tileentity.signText[1] != null && !tileentity.signText[1].getUnformattedText().equals("")){
 				tileentity.signText[0] = new TextComponentString(Formatter.format("&0[&9FCL-UC&0]"));
+				tileentity.signText[1] = new TextComponentString(tileentity.signText[1].getUnformattedText().toLowerCase());
 				lastcheck = Time.getDate();
 				tileentity.signText[3] = new TextComponentString(Time.getAsString(Time.getDate()));
 				String ver = getLatestVersion(tileentity.signText[1].getUnformattedText());
-				if(ver == null || ver.equals("null")){ ver = "not found"; }
+				if(ver == null || ver.equals("null")){ ver = "&6not found"; }
 				tileentity.signText[2] = new TextComponentString(Formatter.format(ver));
 				active = true;
 				cap.setActive();
@@ -56,8 +57,8 @@ public class ExampleListener implements SignCapability.Listener {
 		else{
 			if(lastcheck + Time.HOUR_MS + Time.HOUR_MS < Time.getDate()){
 				String ver = getLatestVersion(tileentity.signText[1].getUnformattedText());
-				if(ver == null || ver.equals("null")){ ver = "&enot found"; }
-				tileentity.signText[2] = new TextComponentString(Formatter.format(ver));
+				if(ver == null || ver.equals("null")){ ver = "&6not found"; }
+				tileentity.signText[2] = new TextComponentString(Formatter.format(ver).toLowerCase());
 				lastcheck = Time.getDate();
 				sendUpdate(tileentity);
 				return true;
@@ -71,19 +72,19 @@ public class ExampleListener implements SignCapability.Listener {
 
 	private String getLatestVersion(String modid){
 		JsonObject obj = Network.getModData(modid);
-		if(obj == null){
+		if(obj == null || obj.toString().equals("{}")){
 			return null;
 		}
 		if(obj.has("versions")){
 			for(JsonElement elm : obj.get("versions").getAsJsonArray()){
 				if(elm.getAsJsonObject().get("version").getAsString().equals(FCL.mcv)){
-					return "&a" + elm.getAsJsonObject().get("latest_version").getAsString();
+					return "&2" + elm.getAsJsonObject().get("latest_version").getAsString();
 				}
 			}
 			return "&cno version data";
 		}
 		else if(obj.has("latest_version")){
-			return "&a" + obj.get("latest_version").getAsString();
+			return "&2" + obj.get("latest_version").getAsString();
 		}
 		return "&cno version data";
 	}
