@@ -1,8 +1,9 @@
-package net.fexcraft.mod.lib.tmt;
+package net.fexcraft.mod.lib.tmt.util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import net.fexcraft.mod.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.lib.util.common.Print;
 import net.fexcraft.mod.lib.util.common.Static;
 import net.fexcraft.mod.lib.util.json.JsonUtil;

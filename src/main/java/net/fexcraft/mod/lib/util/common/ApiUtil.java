@@ -33,7 +33,7 @@ public class ApiUtil{
 		PacketHandler.getInstance().sendToAllAround(new PacketTileEntityUpdate(dim, pos, nbt), new TargetPoint(dim, pos.getX(), pos.getY(), pos.getZ(), range));
 	}
 
-	public static void sendTileEntityUpdatePacket(TileEntity entity, NBTTagCompound nbt, int i) {
+	public static void sendTileEntityUpdatePacket(TileEntity entity, NBTTagCompound nbt, int i){
 		BlockPos pos = entity.getPos();
 		PacketHandler.getInstance().sendToAllAround(new PacketTileEntityUpdate(entity.getWorld().provider.getDimension(), pos, nbt), new TargetPoint(entity.getWorld().provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), i));
 	}

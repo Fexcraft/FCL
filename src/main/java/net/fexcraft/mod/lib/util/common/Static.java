@@ -99,7 +99,7 @@ public class Static{
 		Exception ex = new Exception();
 		for(int j = i; j > 0; j--){
 			StackTraceElement elm = ex.getStackTrace()[j];
-			Print.log("{" + elm.getClassName() + "#"  + elm.getMethodName() + " [LINE: " + elm.getLineNumber() + "]}");
+			Print.log(elm.getClassName() + " <<#>> "  + elm.getMethodName() + " <@> " + elm.getLineNumber());
 		}
 		if(string != null){
 			Print.log(string);
