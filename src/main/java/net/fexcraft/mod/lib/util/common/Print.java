@@ -3,6 +3,7 @@ package net.fexcraft.mod.lib.util.common;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,7 +30,10 @@ public class Print{
 			logger.info("}");
 			return;
 		}
-		logger.info(obj == null ? ">> IS null;" : String.valueOf(obj));
+		if(obj instanceof Throwable){
+			logger.info(ExceptionUtils.getStackTrace((Throwable)obj));
+		}
+		logger.info(obj == null ? "[OBJ IS NULL]" : String.valueOf(obj));
 	}
 	
 	public static void log(Object prefix, Object obj){
@@ -39,6 +43,11 @@ public class Print{
 	public static void chat(ICommandSender sender, Object obj){
 		if(sender == null){ log("SENDERNULL||" + obj.toString()); }
 		sender.sendMessage(new TextComponentString("[DEBUG]: " + obj.toString()));
+	}
+	
+	public static void chat(ICommandSender sender, Throwable obj){
+		if(sender == null){ log("SENDERNULL||" + obj.toString()); }
+		sender.sendMessage(new TextComponentString(ExceptionUtils.getStackTrace(obj)));
 	}
 	
 	public static void chat(ICommandSender sender, String string){

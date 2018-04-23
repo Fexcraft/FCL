@@ -87,10 +87,12 @@ public abstract class Model<T> extends net.minecraft.client.model.ModelBase {
         }
     }
 	
-	public static void bindTexture(ResourceLocation rs){
+	//private static ResourceLocation temploc = new ResourceLocation("fcl:temp_check");
+	
+	public static final void bindTexture(ResourceLocation rs){
+		//if(temploc.equals(rs)){ return; } temploc = rs;
 		net.minecraft.client.Minecraft.getMinecraft().renderEngine.bindTexture(rs);
 		return;
-		//TODO check the less-rebind concept
 	}
 	
 }
