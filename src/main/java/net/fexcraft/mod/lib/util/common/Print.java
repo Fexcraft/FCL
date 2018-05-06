@@ -12,8 +12,8 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.RollingFileAppender;
 import org.apache.logging.log4j.core.appender.rolling.CompositeTriggeringPolicy;
 import org.apache.logging.log4j.core.appender.rolling.DefaultRolloverStrategy;
-import org.apache.logging.log4j.core.appender.rolling.OnStartupTriggeringPolicy;
 import org.apache.logging.log4j.core.appender.rolling.SizeBasedTriggeringPolicy;
+import org.apache.logging.log4j.core.appender.rolling.TimeBasedTriggeringPolicy;
 import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
@@ -134,7 +134,7 @@ public class Print{
 		RollingFileAppender appender = RollingFileAppender.newBuilder()
 		   	.setConfiguration(conf)
 		   	.withFileName("./logs/fcl/" + cat + "/" + file + ".log")
-		   	.withFilePattern("./logs/fcl/" + cat + "/" + file + "-%i.log")
+		   	.withFilePattern("./logs/fcl/" + cat + "/" + file + "-%d{yyyy-MM-dd}.%i.log.gz")
 		   	.withName(name)
 		   	.withAppend(true)
 		   	.withImmediateFlush(true)
@@ -143,7 +143,7 @@ public class Print{
             .withCreateOnDemand(false)
 		   	.withLocking(false)
 		   	.withLayout(layout)
-		   	.withPolicy(CompositeTriggeringPolicy.createPolicy(SizeBasedTriggeringPolicy.createPolicy("8 M"), OnStartupTriggeringPolicy.createPolicy(1)))
+		   	.withPolicy(CompositeTriggeringPolicy.createPolicy(SizeBasedTriggeringPolicy.createPolicy("256 M"), TimeBasedTriggeringPolicy.createPolicy("1", null)))
 		   	.withStrategy(DefaultRolloverStrategy.createStrategy(Integer.MAX_VALUE + "", "1", "max", Deflater.NO_COMPRESSION + "", null, true, conf)).build();
 		appender.start();
 		conf.addAppender(appender);
