@@ -32,4 +32,8 @@ public class Formatter {
 		}
 	}
 	
+	public static String clear(String string){
+		return string.replaceAll("&d", string).replaceAll(PARAGRAPH_SIGN + "d", string);
+	}
+	
 }

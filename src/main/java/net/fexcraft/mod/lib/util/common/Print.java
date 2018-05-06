@@ -2,10 +2,22 @@ package net.fexcraft.mod.lib.util.common;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.zip.Deflater;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.RollingFileAppender;
+import org.apache.logging.log4j.core.appender.rolling.CompositeTriggeringPolicy;
+import org.apache.logging.log4j.core.appender.rolling.DefaultRolloverStrategy;
+import org.apache.logging.log4j.core.appender.rolling.OnStartupTriggeringPolicy;
+import org.apache.logging.log4j.core.appender.rolling.SizeBasedTriggeringPolicy;
+import org.apache.logging.log4j.core.config.AppenderRef;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import net.fexcraft.mod.lib.util.math.Time;
 import net.minecraft.client.Minecraft;
@@ -113,6 +125,34 @@ public class Print{
 		PrintWriter writer = new PrintWriter(new StringWriter());
 		e.printStackTrace(writer);
 		log(writer.toString());
+	}
+	
+	public static final Logger getCustomLogger(String cat, String file, String name, String pattern){
+		LoggerContext context = (LoggerContext)LogManager.getContext(false);
+		final Configuration conf = context.getConfiguration();
+		PatternLayout layout = PatternLayout.newBuilder().withPattern(pattern == null ? "%d{dd MMM yyyy HH:mm:ss(SSS)} [%t/%c]: %m%n" : pattern).withConfiguration(conf).build();
+		RollingFileAppender appender = RollingFileAppender.newBuilder()
+		   	.setConfiguration(conf)
+		   	.withFileName("./logs/fcl/" + cat + "/" + file + ".log")
+		   	.withFilePattern("./logs/fcl/" + cat + "/" + file + "-%i.log")
+		   	.withName(name)
+		   	.withAppend(true)
+		   	.withImmediateFlush(true)
+            .withBufferedIo(true)
+            .withBufferSize(8192)
+            .withCreateOnDemand(false)
+		   	.withLocking(false)
+		   	.withLayout(layout)
+		   	.withPolicy(CompositeTriggeringPolicy.createPolicy(SizeBasedTriggeringPolicy.createPolicy("8 M"), OnStartupTriggeringPolicy.createPolicy(1)))
+		   	.withStrategy(DefaultRolloverStrategy.createStrategy(Integer.MAX_VALUE + "", "1", "max", Deflater.NO_COMPRESSION + "", null, true, conf)).build();
+		appender.start();
+		conf.addAppender(appender);
+	    AppenderRef ref = AppenderRef.createAppenderRef(name, null, null);
+	    LoggerConfig logcfg = LoggerConfig.createLogger(true, Level.INFO, name, "true", new AppenderRef[] { ref }, null, conf, null);
+	    conf.addLogger(name, logcfg);
+	    context.getLogger(name).addAppender(appender);
+		context.updateLoggers();
+		return context.getLogger(name);
 	}
 	
 }

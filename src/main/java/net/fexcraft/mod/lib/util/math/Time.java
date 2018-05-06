@@ -65,9 +65,9 @@ public class Time {
 	}
 	
 	public static final String getAsString(long date){
-		return format.format(new Date(date));
+		return format.format(date >= 0 ? new Date(date) : new Date());
 	}
 	
-	private static final SimpleDateFormat format = new SimpleDateFormat("dd|MM|yyyy hh:mm:ss");
+	private static final SimpleDateFormat format = new SimpleDateFormat("dd|MM|yyyy HH:mm:ss");
 	
 }
