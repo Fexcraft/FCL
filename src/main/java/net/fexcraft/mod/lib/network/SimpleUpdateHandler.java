@@ -56,6 +56,7 @@ public class SimpleUpdateHandler{
 		}
 		else{
 			Print.log("Tried to register an SimpleUpdateHandler for '" + modid + "', but mod seems not to be registered in the FCL database.");
+			Static.stop();
 		}
 	}
 
