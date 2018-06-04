@@ -4,7 +4,7 @@ package net.fexcraft.mod.lib.tmt;
 * Similar to 'FlansMod'-type Models, for a fast convert.
 * @Author Ferdinand Calo' (FEX___96)
 */
-public class GenericModelBase extends ModelBase<Object> {
+public class GenericModelBase extends ModelBase {
 	
 	public ModelRendererTurbo base[] = new ModelRendererTurbo[0], open[] = new ModelRendererTurbo[0], closed[] = new ModelRendererTurbo[0];
 	public ModelRendererTurbo r0[] = new ModelRendererTurbo[0], r1[] = new ModelRendererTurbo[0], r2[] = new ModelRendererTurbo[0];

@@ -8,16 +8,9 @@ import net.minecraft.util.ResourceLocation;
 * @Author Ferdinand Calo' (FEX___96)
 */
 
-public abstract class ModelBase<T> extends net.minecraft.client.model.ModelBase {
+public abstract class ModelBase extends net.minecraft.client.model.ModelBase {
 	
-	public static final ModelBase<Object> EMPTY;
-	static {
-		EMPTY = new ModelBase<Object>(){
-			@Override public void render(){}
-			@Override public void translateAll(float x, float y, float z){}
-			@Override public void rotateAll(float x, float y, float z){}
-		};
-	}
+	public static final ModelBase EMPTY = new EmptyModelBase();
 	
 	/** render whole model */
 	public abstract void render();
