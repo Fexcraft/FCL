@@ -21,7 +21,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 /**
- * An extension to the ModelRenderer class. It basically is a copy to ModelRenderer,
+ * <span style='text-decoration:line-through;'>An extension to the ModelRenderer class.</span> It basically is a copy to ModelRenderer,
  * however, it contains various new methods to make your models.
  * <br /><br />
  * Since the ModelRendererTurbo class gets loaded during startup, the models made
@@ -35,7 +35,12 @@ import net.minecraft.util.math.MathHelper;
  * @license http://fexcraft.net/license?id=tmt
  *
  */
-public class ModelRendererTurbo extends ModelRenderer {
+public class ModelRendererTurbo {
+	
+	//replaces reliance on ModelRenderer
+	public float textureWidth = 0, textureHeight = 0;
+	public float rotateAngleX = 0, rotateAngleY = 0, rotateAngleZ = 0;
+	public float rotationPointX = 0, rotationPointY = 0, rotationPointZ = 0;
 
     private PositionTextureVertex vertices[];
     private TexturedPolygon faces[];
@@ -72,7 +77,7 @@ public class ModelRendererTurbo extends ModelRenderer {
 	private static final float pi = (float)Math.PI;
 	
 	public ModelRendererTurbo(ModelBase modelbase, String s){
-		super(modelbase, s);
+		//super(modelbase, s);
     	flip = false;
         compiled = false;
         displayList = 0;
@@ -124,6 +129,18 @@ public class ModelRendererTurbo extends ModelRenderer {
         textureWidth = textureU;
         textureHeight = textureV;
     }
+    /**
+     * Sets the rotation point of the shape, relative to the model's origins. Note that changing
+     * the offsets will not change the pivot of the model.
+	 * @param x the x-rotation point of the shape
+	 * @param y the y-rotation point of the shape
+	 * @param z the z-rotation point of the shape
+	 */
+	public void setRotationPoint(float x, float y, float z){
+		rotationPointX = x;
+		rotationPointY = y;
+		rotationPointZ = z;
+	}
     
     /**
      * Creates a new polygon.
@@ -1535,15 +1552,8 @@ public class ModelRendererTurbo extends ModelRenderer {
     }
     
     public void renderWithRotation(float f){
-        if(field_1402_i){
-            return;
-        }
-        if(!showModel){
-            return;
-        }
-        if(!compiled){
-            compileDisplayList(f);
-        }
+        if(field_1402_i){ return; } if(!showModel){ return; }
+        if(!compiled){ compileDisplayList(f); }
         GL11.glPushMatrix();
         GL11.glTranslatef(rotationPointX * f, rotationPointY * f, rotationPointZ * f);
         if(rotateAngleY != 0.0F){
@@ -1560,15 +1570,8 @@ public class ModelRendererTurbo extends ModelRenderer {
     }
 
     public void postRender(float f){
-        if(field_1402_i){
-            return;
-        }
-        if(!showModel){
-            return;
-        }
-        if(!compiled || forcedRecompile){
-            compileDisplayList(f);
-        }
+        if(field_1402_i){ return; } if(!showModel){ return; }
+        if(!compiled || forcedRecompile){ compileDisplayList(f); }
         if(rotateAngleX != 0.0F || rotateAngleY != 0.0F || rotateAngleZ != 0.0F){
             GL11.glTranslatef(rotationPointX * f, rotationPointY * f, rotationPointZ * f);
             if(rotateAngleZ != 0.0F){
@@ -1592,8 +1595,7 @@ public class ModelRendererTurbo extends ModelRenderer {
     	}
     	else{
     		TextureManager renderEngine = Minecraft.getMinecraft().renderEngine;
-    		Collection<TextureGroup> textures = textureGroup.values();
-    		Iterator<TextureGroup> itr = textures.iterator();
+    		Iterator<TextureGroup> itr = textureGroup.values().iterator();
     		for(int i = 0; itr.hasNext(); i++){
     			TextureGroup curTexGroup = (TextureGroup)itr.next();
     			curTexGroup.loadTexture();

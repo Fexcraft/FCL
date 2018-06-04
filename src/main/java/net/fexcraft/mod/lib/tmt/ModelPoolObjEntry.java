@@ -29,9 +29,7 @@ public class ModelPoolObjEntry extends ModelPoolEntry {
 					s = s.substring(0, s.indexOf("#"));
 				}
 				s = s.trim();
-				if(s.equals("")){
-					continue;
-				}
+				if(s.equals("")){ continue; }
 				if(s.startsWith("g ")){
 					setTextureGroup(s.substring(s.indexOf(" ") + 1).trim());
 					continue;
@@ -196,10 +194,8 @@ public class ModelPoolObjEntry extends ModelPoolEntry {
 			in.close();
 		}
 		catch(Throwable e){
-			if(Static.dev()){
-				e.printStackTrace();
-				Static.halt();
-			}
+			e.printStackTrace();
+			Static.stop();
 		}
 	}
 	

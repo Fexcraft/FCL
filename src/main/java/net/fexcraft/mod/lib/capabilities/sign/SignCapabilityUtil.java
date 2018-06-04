@@ -99,7 +99,7 @@ public class SignCapabilityUtil implements ICapabilitySerializable<NBTBase>{
 		}
 		
 		@SubscribeEvent
-		public void onPlayerInteract(PlayerInteractEvent event){
+		public void onPlayerInteract(PlayerInteractEvent.RightClickBlock event){
 			IBlockState state = event.getWorld().getBlockState(event.getPos());
 			if(state.getBlock() instanceof BlockSign){
 				TileEntitySign te_sign = (TileEntitySign)event.getWorld().getTileEntity(event.getPos());

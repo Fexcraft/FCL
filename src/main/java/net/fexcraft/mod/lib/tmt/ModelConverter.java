@@ -1,12 +1,10 @@
 package net.fexcraft.mod.lib.tmt;
 
-import net.minecraft.entity.Entity;
-
 /**
 * Converter to use Flansmod-Type vehicle models.
 * @Author Ferdinand Calo' (FEX___96)
 */
-public class ModelConverter extends Model<Object> {
+public class ModelConverter extends ModelBase<Object> {
 	
 	public ModelRendererTurbo bodyModel[] = new ModelRendererTurbo[0];
 	public ModelRendererTurbo model[] = new ModelRendererTurbo[0];
@@ -46,11 +44,6 @@ public class ModelConverter extends Model<Object> {
 		render(leftTrackWheelModels);
 		render(trailerModel);
 		render(steeringWheelModel);
-	}
-
-	@Override
-	public void render(Object type, Entity ent){
-		render();
 	}
 
 	public void translateAll(float x, float y, float z){

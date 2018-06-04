@@ -1,80 +1,89 @@
 package net.fexcraft.mod.lib.tmt;
 
-import net.minecraft.entity.Entity;
+import net.fexcraft.mod.lib.util.common.Static;
+import net.minecraft.util.ResourceLocation;
 
 /**
-* Similar to 'FlansMod'-type Models, for a fast convert.
+* Replaces the old `ModelBase` in this package.
 * @Author Ferdinand Calo' (FEX___96)
 */
-public class ModelBase extends Model<Object> {
-	
-	public ModelRendererTurbo base[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo open[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo closed[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo r1[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo r2[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo r3[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo r4[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo r5[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo r6[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo r7[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo r8[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo r9[] = new ModelRendererTurbo[0];
-	public ModelRendererTurbo r0[] = new ModelRendererTurbo[0];
-	   
-	public void render(){
-		render(base);
-		render(open);
-		render(closed);
-		render(r0);
-		render(r1);
-		render(r2);
-		render(r3);
-		render(r4);
-		render(r5);
-		render(r6);
-		render(r7);
-		render(r8);
-		render(r9);
-	}
 
-	@Override
-	public void render(Object type, Entity ent){
-		render();
+public abstract class ModelBase<T> extends net.minecraft.client.model.ModelBase {
+	
+	public static final ModelBase<Object> EMPTY;
+	static {
+		EMPTY = new ModelBase<Object>(){
+			@Override public void render(){}
+			@Override public void translateAll(float x, float y, float z){}
+			@Override public void rotateAll(float x, float y, float z){}
+		};
 	}
 	
-	@Override
-	public void translateAll(float x, float y, float z){
-		translate(base, x, y, z);
-		translate(open, x, y, z);
-		translate(closed, x, y, z);
-		translate(r0, x, y, z);
-		translate(r1, x, y, z);
-		translate(r2, x, y, z);
-		translate(r3, x, y, z);
-		translate(r4, x, y, z);
-		translate(r5, x, y, z);
-		translate(r6, x, y, z);
-		translate(r7, x, y, z);
-		translate(r8, x, y, z);
-		translate(r9, x, y, z);
+	/** render whole model */
+	public abstract void render();
+	
+	/** render sub-model array */
+	public void render(ModelRendererTurbo[] model){
+		for(ModelRendererTurbo sub : model){
+			sub.render();
+		}
 	}
-
-	@Override
-	public void rotateAll(float x, float y, float z){
-		rotate(base, x, y, z);
-		rotate(open, x, y, z);
-		rotate(closed, x, y, z);
-		rotate(r0, x, y, z);
-		rotate(r1, x, y, z);
-		rotate(r2, x, y, z);
-		rotate(r3, x, y, z);
-		rotate(r4, x, y, z);
-		rotate(r5, x, y, z);
-		rotate(r6, x, y, z);
-		rotate(r7, x, y, z);
-		rotate(r8, x, y, z);
-		rotate(r9, x, y, z);
+	
+	public void render(ModelRendererTurbo[] model, float scale, boolean rotorder){
+		for(ModelRendererTurbo sub : model){
+			sub.render(scale, rotorder);
+		}
+	}
+	
+	protected void translate(ModelRendererTurbo[] model, float x, float y, float z){
+		for(ModelRendererTurbo mod : model){
+			mod.rotationPointX += x;
+			mod.rotationPointY += y;
+			mod.rotationPointZ += z;
+		}
+	}
+	
+	public abstract void translateAll(float x, float y, float z);
+	
+	protected void rotate(ModelRendererTurbo[] model, float x, float y, float z){
+		for(ModelRendererTurbo mod : model){
+			mod.rotateAngleX += x;
+			mod.rotateAngleY += y;
+			mod.rotateAngleZ += z;
+		}
+	}
+	
+	public abstract void rotateAll(float x, float y, float z);
+	
+	/** Legacy Method */
+	protected void flip(ModelRendererTurbo[] model){
+		this.fixRotations(model);
+	}
+	
+	/** Legacy Method */
+	public void flipAll(){
+		//To be overriden by extending classes.
+	}
+	
+	/**
+	 * Based on @EternalBlueFlame's fix.
+	 * @param array ModelRendererTurbo Array
+	 */
+	public void fixRotations(ModelRendererTurbo[] array){
+        for(ModelRendererTurbo model : array){
+            if(model.isShape3D){
+                model.rotateAngleY = -model.rotateAngleY;
+                model.rotateAngleX = -model.rotateAngleX;
+                model.rotateAngleZ = -model.rotateAngleZ + Static.rad180;
+            }
+            else{
+                model.rotateAngleZ = -model.rotateAngleZ;
+            }
+        }
+    }
+	
+	public static final void bindTexture(ResourceLocation rs){
+		net.minecraft.client.Minecraft.getMinecraft().renderEngine.bindTexture(rs);
 	}
 	
 }
