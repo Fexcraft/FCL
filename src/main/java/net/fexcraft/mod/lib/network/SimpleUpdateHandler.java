@@ -56,7 +56,7 @@ public class SimpleUpdateHandler{
 		}
 		else{
 			Print.log("Tried to register an SimpleUpdateHandler for '" + modid + "', but mod seems not to be registered in the FCL database.");
-			Static.stop();
+			//Static.stop();
 		}
 	}
 
@@ -139,9 +139,6 @@ public class SimpleUpdateHandler{
 				//TODO check why the boolean is sometimes true on end-user client even if set to false in config
 				//Print.chat(event.player, FCL.prefix + "Please check the FCL config, there are some important settings regarding statistical data sent to the FCL Database.");
 				//Print.chat(event.player, FCL.prefix + TextFormatting.DARK_AQUA + "You can get rid of this reminder\n" + FCL.prefix + TextFormatting.DARK_AQUA + "message in the config also.");
-			}
-			if(Network.isDonator(event.player)){
-				//
 			}
 		}
 	}
