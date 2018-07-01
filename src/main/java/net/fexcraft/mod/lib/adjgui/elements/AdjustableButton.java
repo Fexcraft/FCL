@@ -85,5 +85,10 @@ public class AdjustableButton implements CustomGuiElement {
 		compound.setBoolean("enabled", button.enabled = !button.enabled);
 		container.send(compound, Side.SERVER);
 	}
+
+	@Override
+	public String getId(){
+		return id;
+	}
 	
 }

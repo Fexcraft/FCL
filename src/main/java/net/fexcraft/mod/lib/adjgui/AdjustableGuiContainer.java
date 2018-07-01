@@ -41,7 +41,7 @@ public class AdjustableGuiContainer extends GuiContainer {
         this.drawTexturedModalRect(guiLeft, guiTop, 4, 4, xSize, ySize);
         //
         container.elements.values().forEach(elm -> elm.draw(pt, mouseX, mouseY));
-        container.drawGuiContainer(pt, mouseX, mouseY);
+        container.drawGuiContainer(this, pt, mouseX, mouseY);
 	}
 	
 	@Override

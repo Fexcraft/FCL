@@ -10,6 +10,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface CustomGuiElement {
 	
+	public String getId();
+	
 	@SideOnly(Side.CLIENT)
 	public void draw(float partial_ticks, int mouseX, int mouseY);
 	

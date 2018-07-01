@@ -116,6 +116,6 @@ public abstract class SynchronizedContainer extends Container {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public abstract void drawGuiContainer(float pt, int mouseX, int mouseY);
+	public abstract void drawGuiContainer(AdjustableGuiContainer gui, float pt, int mouseX, int mouseY);
 	
 }

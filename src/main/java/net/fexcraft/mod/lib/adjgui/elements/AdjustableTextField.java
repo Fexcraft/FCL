@@ -76,5 +76,14 @@ public class AdjustableTextField implements CustomGuiElement {
 	public void toggleState(){
 		//Nothing to toggle.
 	}
+
+	public GuiTextField getTextField(){
+		return field;
+	}
+
+	@Override
+	public String getId(){
+		return id;
+	}
 	
 }
