@@ -17,8 +17,8 @@ public class AdjustableGuiContainer extends GuiContainer {
     protected static SynchronizedContainer container;
 	protected RGB border_color;
 
-	public AdjustableGuiContainer(Class<? extends SynchronizedContainer> clazz, JsonObject obj, RGB color, boolean permcheck, EntityPlayer player, int x, int y) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		super(container = clazz.getConstructor(boolean.class, JsonObject.class, EntityPlayer.class).newInstance(permcheck, obj, player));
+	public AdjustableGuiContainer(Class<? extends SynchronizedContainer> clazz, JsonObject obj, RGB color, boolean permcheck, EntityPlayer player, int x, int y, Object... objs) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		super(container = clazz.getConstructor(boolean.class, JsonObject.class, EntityPlayer.class, Object[].class).newInstance(permcheck, obj, player, objs));
 		this.xSize = x > 248 ? 248 : x; this.ySize = y > 248 ? 248 : y;
 		this.border_color = color;
 	}
@@ -41,12 +41,7 @@ public class AdjustableGuiContainer extends GuiContainer {
         this.drawTexturedModalRect(guiLeft, guiTop, 4, 4, xSize, ySize);
         //
         container.elements.values().forEach(elm -> elm.draw(pt, mouseX, mouseY));
-        this.drawGuiContainer(pt, mouseX, mouseY);
-	}
-	
-	/* To be overriden by subclasses. */
-	protected void drawGuiContainer(float pt, int mouseX, int mouseY){
-		//
+        container.drawGuiContainer(pt, mouseX, mouseY);
 	}
 	
 	@Override

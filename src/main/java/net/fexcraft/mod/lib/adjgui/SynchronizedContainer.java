@@ -15,6 +15,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 
 public abstract class SynchronizedContainer extends Container {
@@ -23,7 +24,7 @@ public abstract class SynchronizedContainer extends Container {
 	protected TreeMap<String, CustomGuiElement> elements = new TreeMap<>();
 	private boolean check; protected EntityPlayer player;
 	
-	public SynchronizedContainer(boolean check, JsonObject json, EntityPlayer player){
+	public SynchronizedContainer(boolean check, JsonObject json, EntityPlayer player, Object... objs){
 		json.entrySet().forEach((entry) -> {
 			JsonObject obj = entry.getValue().getAsJsonObject();
 			if(obj.has("type")){
@@ -113,5 +114,8 @@ public abstract class SynchronizedContainer extends Container {
 	public void toggleElement(String elm){
 		this.elements.get(elm).toggleState();
 	}
+	
+	@SideOnly(Side.CLIENT)
+	public abstract void drawGuiContainer(float pt, int mouseX, int mouseY);
 	
 }
