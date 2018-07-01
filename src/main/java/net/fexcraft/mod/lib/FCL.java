@@ -9,7 +9,6 @@ import net.fexcraft.mod.lib.crafting.RecipeRegistry;
 import net.fexcraft.mod.lib.network.Network;
 import net.fexcraft.mod.lib.network.PacketHandler;
 import net.fexcraft.mod.lib.network.SimpleUpdateHandler;
-import net.fexcraft.mod.lib.perms.PermManager;
 import net.fexcraft.mod.lib.util.common.FclConfig;
 import net.fexcraft.mod.lib.util.common.Print;
 import net.fexcraft.mod.lib.util.registry.CreativeTab;
@@ -79,7 +78,6 @@ public class FCL {
 		SimpleUpdateHandler.postInit();
 		Network.initializeValidator(event.getSide());
 		RegistryUtil.clear(event);
-		PermManager.initialize();
 		PacketHandler.init();
 		CreativeTab.getIcons();
 		//

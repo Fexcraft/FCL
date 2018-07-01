@@ -9,9 +9,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PacketEntityUpdate extends Packet implements IPacket, IMessage{
 	
-	public int id;
 	public NBTTagCompound nbt;
-	public int dim;
+	public int id, dim;
 	
 	public PacketEntityUpdate(){}
 	

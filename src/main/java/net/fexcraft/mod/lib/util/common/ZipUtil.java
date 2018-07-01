@@ -12,6 +12,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.fexcraft.mod.lib.util.json.JsonUtil;
@@ -101,6 +102,54 @@ public class ZipUtil {
 				}
 				if(entry.getName().startsWith(path) && entry.getName().endsWith(extension)){
 					map.put(entry.getName().replace(path, "").replace(extension, ""), JsonUtil.getObjectFromInputStream(zip.getInputStream(entry)));
+				}
+			}
+			zip.close();
+			stream.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	//
+
+	public static final JsonArray getJsonElementsAt(File file, String path, String extension){
+		JsonArray array = new JsonArray();
+		try{
+			ZipFile zip = new ZipFile(file);
+			ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
+			while(true){
+				ZipEntry entry = stream.getNextEntry();
+				if(entry == null){
+					break;
+				}
+				if(entry.getName().startsWith(path) && entry.getName().endsWith(extension)){
+					array.add(JsonUtil.getElementFromInputStream(zip.getInputStream(entry)));
+				}
+			}
+			zip.close();
+			stream.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return array;
+	}
+	
+	public static final Map<String, JsonElement> getJsonElementsAt(File file, String path, String extension, boolean sorted){
+		Map<String, JsonElement> map = sorted ? new TreeMap<String, JsonElement>() : new HashMap<String, JsonElement>();
+		try{
+			ZipFile zip = new ZipFile(file);
+			ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
+			while(true){
+				ZipEntry entry = stream.getNextEntry();
+				if(entry == null){
+					break;
+				}
+				if(entry.getName().startsWith(path) && entry.getName().endsWith(extension)){
+					map.put(entry.getName().replace(path, "").replace(extension, ""), JsonUtil.getElementFromInputStream(zip.getInputStream(entry)));
 				}
 			}
 			zip.close();

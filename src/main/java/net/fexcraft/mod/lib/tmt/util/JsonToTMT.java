@@ -1,5 +1,7 @@
 package net.fexcraft.mod.lib.tmt.util;
 
+import javax.annotation.Nullable;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -48,7 +50,7 @@ public class JsonToTMT {
 	public static final String[] topscale = new String[]{"top_scale", "topscale", "ts"};
 	public static final String[] direction = new String[]{"direction", "dir", "facing"};
 	
-	public final static ModelRendererTurbo parse(net.minecraft.client.model.ModelBase base, JsonObject obj, int tx, int ty){
+	public final static ModelRendererTurbo parse(@Nullable net.minecraft.client.model.ModelBase base, JsonObject obj, int tx, int ty){
 		ModelRendererTurbo model = new ModelRendererTurbo(base, get(texturex, obj, idef), get(texturey, obj, idef), tx, ty);
 		//
 		float x = get(offx, obj, def);
@@ -94,6 +96,7 @@ public class JsonToTMT {
 		model.rotateAngleY = get(roty, obj, def);
 		model.rotateAngleZ = get(rotz, obj, def);
 		//
+		model.boxName = obj.has("name") ? obj.get("name").getAsString() : null;
 		model.setRotationPoint(get(posx, obj, def), get(posy, obj, def), get(posz, obj, def));
 		return model;
 	}

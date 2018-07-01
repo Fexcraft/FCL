@@ -1,7 +1,6 @@
 package net.fexcraft.mod.lib.network.handlers;
 
 import java.util.HashSet;
-
 import net.fexcraft.mod.lib.api.network.IPacketListener;
 import net.fexcraft.mod.lib.api.network.IPacketReceiver;
 import net.fexcraft.mod.lib.network.packet.PacketEntityUpdate;
@@ -26,7 +25,10 @@ public class EntityUpdatePacketHandler {
 				@SuppressWarnings("unchecked")
 				@Override
 				public void run(){
-					Entity entity = Minecraft.getMinecraft().world.getEntityByID(packet.id);
+					Entity entity = null;
+					for(Entity ent : Minecraft.getMinecraft().world.loadedEntityList){
+						if(ent.getEntityId() == packet.id){ entity = ent; }
+					}
 					if(entity != null && entity instanceof IPacketReceiver){
 						((IPacketReceiver<PacketEntityUpdate>)entity).processClientPacket(packet);
 					}

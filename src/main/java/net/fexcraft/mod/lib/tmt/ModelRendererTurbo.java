@@ -63,7 +63,7 @@ public class ModelRendererTurbo {
     public boolean isShape3D;
     public List<?> cubeList;
     public List<?> childModels;
-    public final String boxName;
+    public String boxName;
     
     private String defaultTexture;
     
