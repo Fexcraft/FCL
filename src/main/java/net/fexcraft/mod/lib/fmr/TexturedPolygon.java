@@ -36,35 +36,23 @@ public class TexturedPolygon {
         }
         if(list.isEmpty()){
 	        if(normals.length == 3){
-	        	if(invert){
-	        		tess.setNormal(-normals[0], -normals[1], -normals[2]);
-	        	}
-	        	else{
-	        		tess.setNormal(normals[0], normals[1], normals[2]);
-	        	}
+	        	if(invert){ tess.setNormal(-normals[0], -normals[1], -normals[2]); }
+	        	else{ tess.setNormal(normals[0], normals[1], normals[2]); }
 	        }
 	        else if(vertices.length >= 3){
 		        Vec3f vec0 = new Vec3f(vertices[1].vector.subtract(vertices[0].vector));
 		        Vec3f vec1 = new Vec3f(vertices[1].vector.subtract(vertices[2].vector));
 		        Vec3f vec2 = vec1.crossProduct(vec0).normalize();
-		        if(invert){
-		            tess.setNormal(-vec2.xCoord, -vec2.yCoord, -vec2.zCoord);
-		        }
-		        else{
-		            tess.setNormal(vec2.xCoord, vec2.yCoord, vec2.zCoord);
-		        }
+		        if(invert){ tess.setNormal(-vec2.xCoord, -vec2.yCoord, -vec2.zCoord); }
+		        else{ tess.setNormal(vec2.xCoord, vec2.yCoord, vec2.zCoord); }
 	        }
 	        else{ return; }
         }
         for(int i = 0; i < vertices.length; i++){
         	TexturedVertex texvex = vertices[i];
             if(i < list.size()){
-            	if(invert){
-            		tess.setNormal(-list.get(i).xCoord, -list.get(i).yCoord, -list.get(i).zCoord);
-            	}
-            	else{
-            		tess.setNormal(list.get(i).xCoord, list.get(i).yCoord, list.get(i).zCoord);
-            	}
+            	if(invert){ tess.setNormal(-list.get(i).xCoord, -list.get(i).yCoord, -list.get(i).zCoord); }
+            	else{ tess.setNormal(list.get(i).xCoord, list.get(i).yCoord, list.get(i).zCoord); }
             }
             tess.addVertexWithUV(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale, texvex.textureX, texvex.textureY);
         }

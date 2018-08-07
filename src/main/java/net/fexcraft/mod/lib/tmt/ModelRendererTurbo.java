@@ -1365,11 +1365,11 @@ public class ModelRendererTurbo {
         }
     }
     
-    public void renderWithRotation(float f){
+    public void renderWithRotation(float scale){
         if(!showModel){ return; }
-        if(displayList == null){ compileDisplayList(f); }
+        if(displayList == null){ compileDisplayList(scale); }
         GL11.glPushMatrix();
-        GL11.glTranslatef(rotationPointX * f, rotationPointY * f, rotationPointZ * f);
+        GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
         if(rotateAngleY != 0.0F){
             GL11.glRotatef(rotateAngleY * 57.29578F, 0.0F, 1.0F, 0.0F);
         }
@@ -1383,11 +1383,11 @@ public class ModelRendererTurbo {
         GL11.glPopMatrix();
     }
 
-    public void postRender(float f){
+    public void postRender(float scale){
         if(!showModel){ return; }
-        if(displayList == null || forcedRecompile){ compileDisplayList(f); }
+        if(displayList == null || forcedRecompile){ compileDisplayList(scale); }
         if(rotateAngleX != 0.0F || rotateAngleY != 0.0F || rotateAngleZ != 0.0F){
-            GL11.glTranslatef(rotationPointX * f, rotationPointY * f, rotationPointZ * f);
+            GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
             if(rotateAngleZ != 0.0F){
                 GL11.glRotatef(rotateAngleZ * 57.29578F, 0.0F, 0.0F, 1.0F);
             }
@@ -1399,7 +1399,7 @@ public class ModelRendererTurbo {
             }
         }
         else if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
-            GL11.glTranslatef(rotationPointX * f, rotationPointY * f, rotationPointZ * f);
+            GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
         }
     }
     
@@ -1432,6 +1432,14 @@ public class ModelRendererTurbo {
 	@Override
 	public String toString(){
 		return boxName;
+	}
+	
+	public TexturedPolygon[] getFaces(){
+		return faces;
+	}
+	
+	public TexturedVertex[] getVertices(){
+		return vertices;
 	}
 	
 }

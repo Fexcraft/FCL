@@ -1,7 +1,7 @@
 package net.fexcraft.mod.lib.tmt;
 
-import net.fexcraft.mod.lib.fmr.TextureManager;
 import net.fexcraft.mod.lib.util.common.Static;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -77,8 +77,8 @@ public abstract class ModelBase extends net.minecraft.client.model.ModelBase {
     }
 	
 	public static final void bindTexture(ResourceLocation rs){
-		//Minecraft.getMinecraft().renderEngine.bindTexture(rs);
-		TextureManager.bindTexture(rs);
+		Minecraft.getMinecraft().renderEngine.bindTexture(rs);
+		//TextureManager.bindTexture(rs);
 	}
 	
 }

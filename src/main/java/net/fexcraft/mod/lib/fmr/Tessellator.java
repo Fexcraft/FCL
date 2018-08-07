@@ -19,27 +19,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class Tessellator extends net.minecraft.client.renderer.Tessellator {
 	
 	private static ByteBuffer bbuf = GLAllocation.createDirectByteBuffer(0x200000 * 4);
-	private int rbs = 0, verts = 0, /*br = 0, c,*/ rbi = 0, /*vertices = 0,*/ dm, n;
+	private int rbs = 0, verts = 0, rbi = 0, dm, n;
 	private boolean ht = false, in = false, drawing = false;
 	public static Tessellator INSTANCE = new Tessellator();
 	private static FloatBuffer fbuf = bbuf.asFloatBuffer();
-	//private static ShortBuffer sbuf = bbuf.asShortBuffer();
 	private static IntBuffer ibuf = bbuf.asIntBuffer();
 	private double u, v, w, x, y, z;
 	private int[] rb;
 	
-	public static Tessellator getInstance(){
-		return INSTANCE;
-	}
+	public static Tessellator getInstance(){ return INSTANCE; }
 	
-	public Tessellator(){
-		super(2097152);
-	}
+	public Tessellator(){ super(2097152); }
 	
-	public void startDrawing(int i){
-		if(drawing){ return; }
-		drawing = true; dm = i; in = ht = false; reset();
-	}
+	public void startDrawing(int i){ if(drawing){ return; } drawing = true; dm = i; in = ht = false; reset(); }
 	
 	@Override
 	public void draw(){
@@ -63,23 +55,14 @@ public class Tessellator extends net.minecraft.client.renderer.Tessellator {
 			GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 			GL11.glDrawArrays(dm, 0, vtc);
 			GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
-			if(ht){
-				GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-			}
-			if(in){
-				GL11.glDisableClientState(GL11.GL_NORMAL_ARRAY);
-			}
+			if(ht){ GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY); }
+			if(in){ GL11.glDisableClientState(GL11.GL_NORMAL_ARRAY); }
 		}
-		if(rbs > 0x20000 && rbi < (rbs << 3)){
-			rbs = 0; rb = null;
-		}
+		if(rbs > 0x20000 && rbi < (rbs << 3)){ rbs = 0; rb = null; }
 		reset();
 	}
 	
-	private void reset(){
-		verts = rbi = 0;
-		bbuf.clear();
-	}
+	private void reset(){ verts = rbi = 0; bbuf.clear(); }
 	
 	public void addVertex(double i, double j, double k){
 		if(rbi >= rbs - 40) {
@@ -94,7 +77,7 @@ public class Tessellator extends net.minecraft.client.renderer.Tessellator {
 		rb[rbi] = Float.floatToRawIntBits((float)(i + x));
 		rb[rbi + 1] = Float.floatToRawIntBits((float)(j + y));
 		rb[rbi + 2] = Float.floatToRawIntBits((float)(k + z));
-		rbi += 10; verts++; //vertices++;
+		rbi += 10; verts++;
 	}
 	
 	public void addVertexWithUV(double i, double j, double k, double l, double m){
