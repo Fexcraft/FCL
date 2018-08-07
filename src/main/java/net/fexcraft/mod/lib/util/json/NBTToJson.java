@@ -49,7 +49,7 @@ public class NBTToJson {
 	
 	private static final JsonElement element(NBTBase base, boolean sort){
 		if(base instanceof NBTTagByte){
-			return new JsonPrimitive(((NBTTagByte)base).toString());
+			return new JsonPrimitive(((NBTTagByte)base).getByte());
 		}
 		if(base instanceof NBTTagByteArray){
 			byte[] arr = ((NBTTagByteArray)base).getByteArray();
@@ -63,13 +63,13 @@ public class NBTToJson {
 			return convert((NBTTagCompound)base, sort);
 		}
 		if(base instanceof NBTTagDouble){
-			return new JsonPrimitive(((NBTTagDouble)base).toString());
+			return new JsonPrimitive(((NBTTagDouble)base).getDouble());
 		}
 		if(base instanceof NBTTagFloat){
-			return new JsonPrimitive(((NBTTagFloat)base).toString());
+			return new JsonPrimitive(((NBTTagFloat)base).getFloat());
 		}
 		if(base instanceof NBTTagInt){
-			return new JsonPrimitive(((NBTTagInt)base).toString());
+			return new JsonPrimitive(((NBTTagInt)base).getInt());
 		}
 		if(base instanceof NBTTagIntArray){
 			int[] arr = ((NBTTagIntArray)base).getIntArray();
@@ -93,10 +93,10 @@ public class NBTToJson {
 			return array;
 		}
 		if(base instanceof NBTTagLong){
-			return new JsonPrimitive(((NBTTagLong)base).toString());
+			return new JsonPrimitive(((NBTTagLong)base).getLong());
 		}
 		if(base instanceof NBTTagShort){
-			return new JsonPrimitive(((NBTTagShort)base).toString());
+			return new JsonPrimitive(((NBTTagShort)base).getShort());
 		}
 		if(base instanceof NBTTagString){
 			return new JsonPrimitive(((NBTTagString)base).getString());

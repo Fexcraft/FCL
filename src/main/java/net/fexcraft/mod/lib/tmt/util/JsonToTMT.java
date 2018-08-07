@@ -87,8 +87,6 @@ public class JsonToTMT {
 				break;
 			}
 		}
-		//
-		model.rotorder = JsonUtil.getIfExists(obj, oldrot, model.rotorder);
 		model.mirror = JsonUtil.getIfExists(obj, mirror, false);
 		model.flip = JsonUtil.getIfExists(obj, flip, false);
 		//

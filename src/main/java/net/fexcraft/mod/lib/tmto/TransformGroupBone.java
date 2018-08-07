@@ -1,4 +1,4 @@
-package net.fexcraft.mod.lib.tmt;
+package net.fexcraft.mod.lib.tmto;
 
 import net.fexcraft.mod.lib.util.math.Vec3f;
 import net.minecraft.util.math.MathHelper;
@@ -13,9 +13,9 @@ public class TransformGroupBone extends TransformGroup {
 	protected Angle3D baseAngles;
 	protected Vec3f baseVector;
 	protected Bone attachedBone;
-	protected double weight;
+	protected float weight;
 	
-	public TransformGroupBone(Bone bone, double wght){
+	public TransformGroupBone(Bone bone, float wght){
 		baseVector = bone.getPosition();
 		baseAngles = bone.getAbsoluteAngle();
 		attachedBone = bone;
@@ -46,7 +46,7 @@ public class TransformGroupBone extends TransformGroup {
 		return attachedBone.getPosition();
 	}
 	
-	public double getWeight(){
+	public float getWeight(){
 		return weight;
 	}
 	

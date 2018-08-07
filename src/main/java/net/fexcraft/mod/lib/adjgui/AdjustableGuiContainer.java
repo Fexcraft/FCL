@@ -25,7 +25,7 @@ public class AdjustableGuiContainer extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float pt, int mouseX, int mouseY){
-		this.drawDefaultBackground();
+		//this.drawDefaultBackground();
         this.mc.getTextureManager().bindTexture(TEXTURE);
         border_color.glColorApply();
         this.drawTexturedModalRect(guiLeft - 4,     guiTop - 4,       0,   0,     4,     4);

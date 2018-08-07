@@ -1,12 +1,10 @@
-package net.fexcraft.mod.lib.tmt;
+package net.fexcraft.mod.lib.tmto;
 
 import java.util.ArrayList;
 
 import net.fexcraft.mod.lib.util.math.Vec3f;
-import net.minecraft.client.model.PositionTextureVertex;
-import net.minecraft.util.math.Vec3d;
 
-public class PositionTransformVertex extends PositionTextureVertex {
+public class PositionTransformVertex extends TexturedVertex {
 	
 	public Vec3f neutralVector;
 	public ArrayList<TransformGroup> transformGroups = new ArrayList<TransformGroup>();
@@ -15,40 +13,40 @@ public class PositionTransformVertex extends PositionTextureVertex {
 		this(new Vec3f(x, y, z), u, v);
 	}
 	
-	public PositionTransformVertex(PositionTextureVertex vertex, float u, float v){
+	public PositionTransformVertex(TexturedVertex vertex, float u, float v){
 		super(vertex, u, v);
 		if(vertex instanceof PositionTransformVertex){
 			neutralVector = ((PositionTransformVertex)vertex).neutralVector;
 		}
 		else{
-			neutralVector = new Vec3f(vertex.vector3D.x, vertex.vector3D.y, vertex.vector3D.z);
+			neutralVector = new Vec3f(vertex.vector.xCoord, vertex.vector.yCoord, vertex.vector.zCoord);
 		}
 	}
 	
-	public PositionTransformVertex(PositionTextureVertex vertex){
-		this(vertex, vertex.texturePositionX, vertex.texturePositionY);
+	public PositionTransformVertex(TexturedVertex vertex){
+		this(vertex, vertex.texX, vertex.texY);
 	}
 	
 	public PositionTransformVertex(Vec3f vector, float u, float v){
-		super(vector.toDouble(), u, v);
+		super(vector, u, v);
 		neutralVector = new Vec3f(vector.xCoord, vector.yCoord, vector.zCoord);
 	}
 	
 	public void setTransformation(){
 		if(transformGroups.size() == 0){
-			vector3D = neutralVector.toDouble();
+			vector = neutralVector;
 			return;
 		}
-		double weight = 0D;
+		float weight = 0f;
 		for(TransformGroup group : transformGroups){
 			weight += group.getWeight();
 		}
-		vector3D = new Vec3d(0, 0, 0);
+		vector = new Vec3f(0, 0, 0);
 		for(int i = 0; i < transformGroups.size(); i++){
 			TransformGroup group = transformGroups.get(i);
-			double cWeight = group.getWeight() / weight;
+			float cWeight = group.getWeight() / weight;
 			Vec3f vector = group.doTransformation(this);
-			vector3D.addVector(cWeight * vector.xCoord, cWeight * vector.yCoord, cWeight * vector.zCoord);
+			vector.addVector(cWeight * vector.xCoord, cWeight * vector.yCoord, cWeight * vector.zCoord);
 		}
 	}
 	

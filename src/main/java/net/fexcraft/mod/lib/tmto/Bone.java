@@ -1,4 +1,4 @@
-package net.fexcraft.mod.lib.tmt;
+package net.fexcraft.mod.lib.tmto;
 
 import java.util.ArrayList;
 import java.util.HashMap;

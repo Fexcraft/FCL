@@ -191,4 +191,12 @@ public class Static{
 		}
 	}
 	
+	public static float divide(float x, float y){
+		return x == 0 || y == 0 ? 0 : x / y;
+	}
+	
+	public static double divide(double x, double y){
+		return x == 0 || y == 0 ? 0 : x / y;
+	}
+	
 }

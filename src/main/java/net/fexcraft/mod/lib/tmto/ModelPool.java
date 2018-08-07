@@ -1,4 +1,4 @@
-package net.fexcraft.mod.lib.tmt;
+package net.fexcraft.mod.lib.tmto;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,14 +27,20 @@ public class ModelPool {
 		IResource resource;
 		try {
 			resource = Minecraft.getMinecraft().getResourceManager().getResource(location);
-			if(resource == null){ return null; }
+			if(resource == null){
+				return null;
+			}
 		}
 		catch(IOException e){
 			System.out.println("The model with the name " + location + " does not exist.");
 			e.printStackTrace();
 			return null;
 		}
+		entry.groups = new HashMap<String, TransformGroupBone>();
+		entry.textures = new HashMap<String, TextureGroup>();
 		entry.name = location.toString();
+		entry.setGroup("0");
+		entry.setTextureGroup("0");
 		entry.getModel(resource);
 		modelMap.put(location.toString(), entry);
 		return entry;

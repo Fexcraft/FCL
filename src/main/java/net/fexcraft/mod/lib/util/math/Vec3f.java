@@ -13,21 +13,16 @@ import net.minecraft.util.math.Vec3i;
  */
 public class Vec3f {
 	
-    public static final Vec3f ZERO = new Vec3f(0.0F, 0.0F, 0.0F);
     public float xCoord;
     public float yCoord;
     public float zCoord;
+    
+    public Vec3f(){ xCoord = yCoord = zCoord = 0; }
 
     public Vec3f(float x, float y, float z){
-        if(x == -0.0F){
-            x = 0.0F;
-        }
-        if(y == -0.0F){
-            y = 0.0F;
-        }
-        if(z == -0.0F){
-            z = 0.0F;
-        }
+        if(x == -0.0F){ x = 0.0F; }
+        if(y == -0.0F){ y = 0.0F; }
+        if(z == -0.0F){ z = 0.0F; }
         this.xCoord = x;
         this.yCoord = y;
         this.zCoord = z;
@@ -35,6 +30,10 @@ public class Vec3f {
 
     public Vec3f(Vec3i vector){
         this(vector.getX(), vector.getY(), vector.getZ());
+    }
+
+    public Vec3f(Vec3f vector){
+        this(vector.xCoord, vector.yCoord, vector.zCoord);
     }
     
     public Vec3f(Vec3d vector){
@@ -51,7 +50,7 @@ public class Vec3f {
     
     public Vec3f normalize(){
         float d0 = MathHelper.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
-        return d0 < 1.0E-4D ? ZERO : new Vec3f(this.xCoord / d0, this.yCoord / d0, this.zCoord / d0);
+        return d0 < 1.0E-4D ? new Vec3f() : new Vec3f(this.xCoord / d0, this.yCoord / d0, this.zCoord / d0);
     }
 
     public float dotProduct(Vec3f vec){

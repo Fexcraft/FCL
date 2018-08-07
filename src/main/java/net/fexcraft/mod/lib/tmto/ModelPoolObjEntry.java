@@ -1,11 +1,9 @@
-package net.fexcraft.mod.lib.tmt;
+package net.fexcraft.mod.lib.tmto;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import net.fexcraft.mod.lib.fmr.TexturedPolygon;
-import net.fexcraft.mod.lib.fmr.TexturedVertex;
 import net.fexcraft.mod.lib.util.common.Static;
 import net.fexcraft.mod.lib.util.math.Vec3f;
 import net.minecraft.client.resources.IResource;
@@ -21,7 +19,7 @@ public class ModelPoolObjEntry extends ModelPoolEntry {
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(res.getInputStream(), "UTF-8"));
 			String s;
-			ArrayList<TexturedVertex> verts = new ArrayList<TexturedVertex>();
+			ArrayList<PositionTransformVertex> verts = new ArrayList<PositionTransformVertex>();
 			ArrayList<float[]> uvs = new ArrayList<float[]>();
 			ArrayList<float[]> normals = new ArrayList<float[]>();
 			ArrayList<TexturedPolygon> face = new ArrayList<TexturedPolygon>();
@@ -32,7 +30,7 @@ public class ModelPoolObjEntry extends ModelPoolEntry {
 				s = s.trim();
 				if(s.equals("")){ continue; }
 				if(s.startsWith("g ")){
-					//setTextureGroup(s.substring(s.indexOf(" ") + 1).trim());
+					setTextureGroup(s.substring(s.indexOf(" ") + 1).trim());
 					continue;
 				}
 				if(s.startsWith("v ")){
@@ -51,7 +49,7 @@ public class ModelPoolObjEntry extends ModelPoolEntry {
 					float flt = v[2];
 					v[2] = -v[1];
 					v[1] = flt;
-					verts.add(new TexturedVertex(v[0], v[1], v[2], 0, 0));
+					verts.add(new PositionTransformVertex(v[0], v[1], v[2], 0, 0));
 					continue;
 				}
 				if(s.startsWith("vt ")){
@@ -156,9 +154,9 @@ public class ModelPoolObjEntry extends ModelPoolEntry {
 						normal[2]+= curNormals[2];
 						if(vInt < verts.size()){
 							v.add(verts.get(vInt).setTexturePosition(curUV[0], curUV[1]));
-							/*if(verts.get(vInt) instanceof PositionTransformVertex){
+							if(verts.get(vInt) instanceof PositionTransformVertex){
 								((PositionTransformVertex)verts.get(vInt)).addGroup(group);
-							}*/
+							}
 						}
 						if(ind > -1){
 							s = s.substring(s.indexOf(" ") + 1).trim();
@@ -177,20 +175,18 @@ public class ModelPoolObjEntry extends ModelPoolEntry {
 						vToArr[i] = v.get(i);
 					}
 					TexturedPolygon poly = new TexturedPolygon(vToArr);
-					poly.setNormals(normal[0], normal[1], normal[2]);
-					poly.setNormals(iNormal);
-					face.add(poly); //texture.addPoly(poly);
+					face.add(poly);
+					texture.addPoly(poly);
 					continue;					
 				}
 			}
-			vertices = new TexturedVertex[verts.size()];
+			vertices = new PositionTransformVertex[verts.size()];
 			for(int i = 0; i < verts.size(); i++){
 				vertices[i] = verts.get(i);
 			}
 			faces = new TexturedPolygon[face.size()];
 			for(int i = 0; i < face.size(); i++){
 				faces[i] = face.get(i);
-				faces[i].clearNormals();
 			}
 			in.close();
 		}

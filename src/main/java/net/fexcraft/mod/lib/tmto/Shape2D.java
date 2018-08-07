@@ -1,9 +1,7 @@
-package net.fexcraft.mod.lib.tmt;
+package net.fexcraft.mod.lib.tmto;
 
 import java.util.ArrayList;
 
-import net.fexcraft.mod.lib.fmr.TexturedPolygon;
-import net.fexcraft.mod.lib.fmr.TexturedVertex;
 import net.fexcraft.mod.lib.util.math.Vec3f;
 import net.minecraft.util.math.MathHelper;
 
@@ -31,9 +29,9 @@ public class Shape2D {
 	}
 	
 	public Shape3D extrude(float x, float y, float z, float rotX, float rotY, float rotZ, float depth, int u, int v, float textureWidth, float textureHeight, int shapeTextureWidth, int shapeTextureHeight, int sideTextureWidth, int sideTextureHeight, float[] faceLengths){
-		TexturedVertex[] verts = new TexturedVertex[coords.size() * 2];
-		TexturedVertex[] vertsTop = new TexturedVertex[coords.size()];
-		TexturedVertex[] vertsBottom = new TexturedVertex[coords.size()];
+		PositionTransformVertex[] verts = new PositionTransformVertex[coords.size() * 2];
+		PositionTransformVertex[] vertsTop = new PositionTransformVertex[coords.size()];
+		PositionTransformVertex[] vertsBottom = new PositionTransformVertex[coords.size()];
 		TexturedPolygon[] poly = new TexturedPolygon[coords.size() + 2];
 		Vec3f extrudeVector = new Vec3f(0, 0, depth);
 
@@ -51,13 +49,16 @@ public class Shape2D {
 			float texV = ((float)(curCoord.vCoord + v) / (float)textureHeight);
 			Vec3f vecCoord = new Vec3f(curCoord.xCoord, curCoord.yCoord, 0);
 			setVectorRotations(vecCoord, rotX, rotY, rotZ);
-			verts[idx] = new TexturedVertex(
-				x + vecCoord.xCoord, y + vecCoord.yCoord, z + vecCoord.zCoord, texU1, texV);
-			verts[idx + coords.size()] = new TexturedVertex(
-				x + vecCoord.xCoord - extrudeVector.xCoord, y + vecCoord.yCoord - extrudeVector.yCoord,
-				z + vecCoord.zCoord - extrudeVector.zCoord, texU2, texV);
-			vertsTop[idx] = new TexturedVertex(verts[idx]);
-			vertsBottom[coords.size() - idx - 1] = new TexturedVertex(verts[idx + coords.size()]);
+			verts[idx] = new PositionTransformVertex(
+													x + vecCoord.xCoord,
+													y + vecCoord.yCoord,
+													z + vecCoord.zCoord, texU1, texV);
+			verts[idx + coords.size()] = new PositionTransformVertex(
+													x + vecCoord.xCoord - extrudeVector.xCoord,
+													y + vecCoord.yCoord - extrudeVector.yCoord,
+													z + vecCoord.zCoord - extrudeVector.zCoord, texU2, texV);
+			vertsTop[idx] = new PositionTransformVertex(verts[idx]);
+			vertsBottom[coords.size() - idx - 1] = new PositionTransformVertex(verts[idx + coords.size()]);
 			if(faceLengths != null){
 				totalLength+= faceLengths[idx];
 			}
@@ -82,11 +83,11 @@ public class Shape2D {
 			float texU2 = ((float)(ratioPosition * (float)sideTextureWidth + u) / (float)textureWidth);
 			float texV1 = (((float)v + (float)shapeTextureHeight) / (float)textureHeight);
 			float texV2 = (((float)v + (float)shapeTextureHeight + (float)sideTextureHeight) / (float)textureHeight);
-			TexturedVertex[] polySide = new TexturedVertex[4];
-			polySide[0] = new TexturedVertex(verts[idx], texU2, texV1);
-			polySide[1] = new TexturedVertex(verts[coords.size() + idx], texU2, texV2);
-			polySide[2] = new TexturedVertex(verts[coords.size() + ((idx + 1) % coords.size())], texU1, texV2);
-			polySide[3] = new TexturedVertex(verts[(idx + 1) % coords.size()], texU1, texV1);
+			PositionTransformVertex[] polySide = new PositionTransformVertex[4];
+			polySide[0] = new PositionTransformVertex(verts[idx], texU2, texV1);
+			polySide[1] = new PositionTransformVertex(verts[coords.size() + idx], texU2, texV2);
+			polySide[2] = new PositionTransformVertex(verts[coords.size() + ((idx + 1) % coords.size())], texU1, texV2);
+			polySide[3] = new PositionTransformVertex(verts[(idx + 1) % coords.size()], texU1, texV1);
 			poly[idx] = new TexturedPolygon(polySide);
 			currentLengthPosition -= currentLength;
 		}

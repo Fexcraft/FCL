@@ -97,6 +97,12 @@ public class Print{
 			log(obj);
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T debugR(Object obj){
+		if(Static.dev()){ log(obj); }
+		return (T)obj;
+	}
 
 	public static void debug(Object... objs){
 		if(Static.dev()){

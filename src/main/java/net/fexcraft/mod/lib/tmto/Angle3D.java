@@ -1,4 +1,4 @@
-package net.fexcraft.mod.lib.tmt;
+package net.fexcraft.mod.lib.tmto;
 
 /**
  * This class handles angles. Basically all it does it store angles. You can
