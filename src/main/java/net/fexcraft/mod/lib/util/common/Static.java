@@ -84,31 +84,6 @@ public class Static{
 		}
 	}
 	
-	public static void exception(int i){
-		exception(i, null);
-	}
-	
-	/**
-	 * Alternative to {@link #halt()} or {@link #stop()} which will only work in a developement workspace, nice for debugging.
-	 * <br>
-	 * Which also prints the caller classes into console.
-	 * <br>
-	 * See also {@link #dev()}
-	 */
-	public static void exception(int i, String string){
-		Exception ex = new Exception();
-		for(int j = i; j > 0; j--){
-			StackTraceElement elm = ex.getStackTrace()[j];
-			Print.log(elm.getClassName() + " <<#>> "  + elm.getMethodName() + " <@> " + elm.getLineNumber());
-		}
-		if(string != null){
-			Print.log(string);
-		}
-		if(dev()){
-			halt();
-		}
-	}
-	
 	private static boolean dev = true, cdev = false;
 	
 	/**
@@ -197,6 +172,16 @@ public class Static{
 	
 	public static double divide(double x, double y){
 		return x == 0 || y == 0 ? 0 : x / y;
+	}
+	
+	/** 
+	 * Generic command to print (throw) exceptions/errors into console/log without the need for extra writing of try/catch.
+	 * @param exception the exception to be printed into console/log
+	 * @param stop if the game should be force-closed
+	 * **/
+	public static void exception(Exception exception, boolean stop){
+		try{ throw exception; } catch(Exception ex){ ex.printStackTrace(); }
+		if(stop) halt();
 	}
 	
 }

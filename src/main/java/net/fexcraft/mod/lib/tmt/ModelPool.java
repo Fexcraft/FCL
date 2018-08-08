@@ -25,7 +25,7 @@ public class ModelPool {
 			return null;
 		}
 		IResource resource;
-		try {
+		try{
 			resource = Minecraft.getMinecraft().getResourceManager().getResource(location);
 			if(resource == null){ return null; }
 		}
