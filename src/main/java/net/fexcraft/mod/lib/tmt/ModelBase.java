@@ -51,7 +51,7 @@ public abstract class ModelBase extends net.minecraft.client.model.ModelBase {
 	
 	/** Legacy Method */
 	protected void flip(ModelRendererTurbo[] model){
-		this.fixRotations(model);
+		fixRotations(model);
 	}
 	
 	/** Legacy Method */
@@ -63,7 +63,7 @@ public abstract class ModelBase extends net.minecraft.client.model.ModelBase {
 	 * Based on @EternalBlueFlame's fix.
 	 * @param array ModelRendererTurbo Array
 	 */
-	public void fixRotations(ModelRendererTurbo[] array){
+	public static void fixRotations(ModelRendererTurbo[] array){
         for(ModelRendererTurbo model : array){
             if(model.isShape3D){
                 model.rotateAngleY = -model.rotateAngleY;

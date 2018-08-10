@@ -27,8 +27,12 @@ public class Cylinder extends PolygonShape {
 
 	@Override
 	protected void populateJsonObject(JsonObject obj){
-		// TODO Auto-generated method stub
-		
+		obj.addProperty("radius", radius);
+		obj.addProperty("length", length);
+		if(basescale != 1f) obj.addProperty("basescale", basescale);
+		if(topscale != 1f) obj.addProperty("topscale", topscale);
+		obj.addProperty("segments", segments);
+		obj.addProperty("direction", direction);
 	}
 
 	@Override /** Based on TMT */

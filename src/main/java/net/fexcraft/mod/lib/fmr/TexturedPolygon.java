@@ -1,6 +1,7 @@
 package net.fexcraft.mod.lib.fmr;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -72,6 +73,18 @@ public class TexturedPolygon {
 
 	public void clearNormals(){
 		normals = new float[0]; list = new ArrayList<Vec3f>();
+	}
+
+	public boolean isInverted(){
+		return invert;
+	}
+
+	public float[] getNormals(){
+		return normals;
+	}
+
+	public List<Vec3f> getVectors(){
+		return list;
 	}
 	
 }

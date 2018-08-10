@@ -20,12 +20,14 @@ public class Sphere extends PolygonShape {
 
 	@Override
 	protected void populateJsonObject(JsonObject obj){
-		//TODO
+		obj.addProperty("radius", radius);
+		obj.addProperty("segments", segments);
+		obj.addProperty("rings", rings);
 	}
 
 	@Override /** Based on TMT. **/
 	protected PolygonShape compileShape(){
-    	if(segments < 3){ segments = 3; } rings++;
+    	if(segments < 3){ segments = 3; } int rings = this.rings + 1;
     	TexturedVertex[] verts0 = new TexturedVertex[segments * (rings - 1) + 2];
     	TexturedPolygon[] poly = new TexturedPolygon[segments * rings];
     	float x = offsetX, y = offsetY, z = offsetZ;

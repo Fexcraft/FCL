@@ -4,6 +4,9 @@ import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import net.fexcraft.mod.lib.fmr.polygons.Imported;
 import net.fexcraft.mod.lib.tmt.ModelRendererTurbo;
 import net.minecraft.client.renderer.GLAllocation;
@@ -23,6 +26,7 @@ public class ModelCompound {
 	public float rotAngleX = 0, rotAngleY = 0, rotAngleZ = 0, rotPointX = 0, rotPointY = 0, rotPointZ = 0;
     private PolygonShape[] polygons;
 	public boolean visible = true;
+	private String[] animations;
 	private Integer dislist;
 	//
     public static final int DIR_FRONT = 0, DIR_BACK = 1, DIR_LEFT = 2, DIR_RIGHT = 3, DIR_TOP = 4, DIR_BOTTOM = 5;
@@ -130,6 +134,43 @@ public class ModelCompound {
 	public void queueRecompile(){
 		GLAllocation.deleteDisplayLists(dislist);
 		dislist = null; for(PolygonShape shape : polygons) shape.queueRecompile();
+	}
+	
+	public JsonObject toJsonObject(){
+		JsonObject obj = new JsonObject();
+		if(animations != null){
+			JsonArray array = new JsonArray();
+			for(String str : animations) array.add(str);
+			obj.add("animations", array);
+		}
+		obj.addProperty("texture_size_x", textureSizeX);
+		obj.addProperty("texture_size_y", textureSizeY);
+		obj.addProperty("rot_x", rotAngleX); obj.addProperty("rot_y", rotAngleY); obj.addProperty("rot_z", rotAngleZ);
+		obj.addProperty("pos_x", rotPointX); obj.addProperty("pos_y", rotPointY); obj.addProperty("pos_z", rotPointZ);
+		JsonArray array = new JsonArray();
+		for(PolygonShape poly : polygons) array.add(poly.toJsonObject());
+		obj.add("shapes", array);
+		return obj;
+	}
+
+	public void translate(float x, float y, float z){
+		this.rotPointX += x; this.rotPointY += y; this.rotPointZ += z;
+	}
+
+	public void rotate(float x, float y, float z){
+		this.rotAngleX += x; this.rotAngleY += y; this.rotAngleZ += z;
+	}
+
+	public boolean shouldRender(){
+		return /*visible && dislist != null &&*/ polygons.length > 0;
+	}
+
+	public ModelCompound setPosition(float x, float y, float z){
+		this.rotPointX = x; this.rotPointY = y; this.rotPointZ = z; return this;
+	}
+
+	public ModelCompound setRotation(float x, float y, float z){
+		this.rotAngleX = x; this.rotAngleY = y; this.rotAngleZ = z; return this;
 	}
 
 }

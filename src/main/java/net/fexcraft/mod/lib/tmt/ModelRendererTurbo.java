@@ -9,8 +9,6 @@ import net.fexcraft.mod.lib.fmr.FexcraftModelRenderer;
 import net.fexcraft.mod.lib.fmr.Tessellator;
 import net.fexcraft.mod.lib.fmr.TexturedPolygon;
 import net.fexcraft.mod.lib.fmr.TexturedVertex;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -59,7 +57,7 @@ public class ModelRendererTurbo {
     public static final int MR_TOP = 4;
     public static final int MR_BOTTOM = 5;
 	
-	public ModelRendererTurbo(ModelBase modelbase, String s){
+	public ModelRendererTurbo(Object modelbase, String s){
 		//super(modelbase, s);
     	flip = false; mirror = false; showModel = true;
         vertices = new TexturedVertex[0];
@@ -67,7 +65,7 @@ public class ModelRendererTurbo {
         forcedRecompile = false; boxName = s;
 	}
 	
-	public ModelRendererTurbo(ModelBase modelbase){
+	public ModelRendererTurbo(Object modelbase){
 		this(modelbase, null);
 	}
 	
@@ -78,7 +76,7 @@ public class ModelRendererTurbo {
 	 * @param textureX the x-coordinate on the texture
 	 * @param textureY the y-coordinate on the texture
 	 */
-    public ModelRendererTurbo(ModelBase modelbase, int textureX, int textureY){
+    public ModelRendererTurbo(Object modelbase, int textureX, int textureY){
     	this(modelbase, textureX, textureY, 64, 32);
     }
 
@@ -92,7 +90,7 @@ public class ModelRendererTurbo {
      * @param textureU
      * @param textureV
      */
-    public ModelRendererTurbo(ModelBase modelbase, int textureX, int textureY, int textureU, int textureV){
+    public ModelRendererTurbo(Object modelbase, int textureX, int textureY, int textureU, int textureV){
     	this(modelbase);
         texoffx = textureX;
         texoffy = textureY;
@@ -1340,7 +1338,7 @@ public class ModelRendererTurbo {
     		GL11.glCallList(displayList);
             if(childModels != null){
                 for(Object child : childModels){
-                    ((ModelRenderer)child).render(scale);
+                    ((ModelRendererTurbo)child).render(scale);
                 }
             }
             GL11.glPopMatrix();
@@ -1350,7 +1348,7 @@ public class ModelRendererTurbo {
     		GL11.glCallList(displayList);
             if(childModels != null){
                 for(Object child : childModels){
-                    ((ModelRenderer)child).render(scale);
+                    ((ModelRendererTurbo)child).render(scale);
                 }
             }
             GL11.glTranslatef(-rotationPointX * scale, -rotationPointY * scale, -rotationPointZ * scale);
@@ -1359,7 +1357,7 @@ public class ModelRendererTurbo {
     		GL11.glCallList(displayList);
         	if(childModels != null){
                 for(Object child : childModels){
-                    ((ModelRenderer)child).render(scale);
+                    ((ModelRendererTurbo)child).render(scale);
                 }
             }
         }

@@ -6,6 +6,8 @@ import net.fexcraft.mod.lib.fmr.polygons.Cuboid;
 import net.fexcraft.mod.lib.fmr.polygons.Cylinder;
 import net.fexcraft.mod.lib.fmr.polygons.Imported;
 import net.fexcraft.mod.lib.fmr.polygons.Shapebox;
+import net.fexcraft.mod.lib.fmr.polygons.Sphere;
+import net.fexcraft.mod.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.lib.util.json.JsonUtil;
 import net.minecraft.util.ResourceLocation;
 
@@ -93,20 +95,27 @@ public abstract class PolygonShape {
 				int direction = JsonUtil.getIfExists(obj, "direction", 0).intValue();
 				return new Cylinder(flip, mirror).setRadius(radius).setLength(length).setSegments(segments)
 					.setScale(base, top).setDirection(direction).setOffset(offset[0], offset[1], offset[2])
-					.setTexture(texx, texy).setPosition(pos[0], pos[1], pos[2]);
+					.setTexture(texx, texy).setPosition(pos[0], pos[1], pos[2]).setName(name);
 			}
 			case SPHERE:{
-				//TODO
-				break;
+				float radius = JsonUtil.getIfExists(obj, "radius", 0).floatValue();
+				int rings = JsonUtil.getIfExists(obj, "rings", 4).intValue();
+				int segments = JsonUtil.getIfExists(obj, "segments", 0).intValue();
+				return new Sphere(flip, mirror).setRadius(radius).setRings(rings).setSegments(segments)
+					.setOffset(offset[0], offset[1], offset[2]).setTexture(texx, texy)
+					.setPosition(pos[0], pos[1], pos[2]).setName(name);
 			}
 			case IMPORTED:{
 				if(objs != null && objs[0] != null){
-					//TODO
+					if(objs[0] instanceof ModelRendererTurbo){
+						ModelRendererTurbo turbo = (ModelRendererTurbo)objs[0];
+						return new Imported(Shape.IMPORTED, turbo.flip, turbo.mirror).importTMT(turbo);
+					}
 				}
-				return null;
+				return new Imported(Shape.IMPORTED).importFMRJSON(obj).setName(name).setScale(scale)
+					.setOffset(offset[0], offset[1], offset[2]).setPosition(pos[0], pos[1], pos[2]);
 			}
-			case POLYGON: //TODO
-				break;
+			case POLYGON: return null; //TODO
 			case WAVEFRONT_OBJ:{
 				if(objs != null && objs[0] != null){
 					if(objs[0] instanceof String){
@@ -122,7 +131,6 @@ public abstract class PolygonShape {
 			case UNDEFINED:
 			default: return null;
 		}
-		return null;
 	}
 
 	public JsonObject toJsonObject(){

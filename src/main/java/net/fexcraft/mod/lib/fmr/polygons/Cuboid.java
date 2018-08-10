@@ -31,6 +31,10 @@ public class Cuboid extends PolygonShape {
 		}
 	}
 	
+	public Cuboid(){ this(Shape.BOX); }
+	
+	public Cuboid(boolean flip, boolean mirror){ this(Shape.BOX, flip, mirror); }
+	
 	public Cuboid(Shape type, boolean flip, boolean mirror, float width, float height, float depth, float posx, float posy, float posz, float offx, float offy, float offz){
 		super(type = type == null ? Shape.BOX : type, flip, mirror);
 		this.setSize(width, height, depth).setPosition(posx, posy, posz).setOffset(offx, offy, offx);

@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.fexcraft.mod.lib.fmr.FexcraftModelRenderer;
 import net.fexcraft.mod.lib.fmr.PolygonShape;
 import net.fexcraft.mod.lib.fmr.Shape;
 import net.fexcraft.mod.lib.fmr.TexturedPolygon;
 import net.fexcraft.mod.lib.fmr.TexturedVertex;
 import net.fexcraft.mod.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.lib.util.common.Static;
+import net.fexcraft.mod.lib.util.json.JsonUtil;
 import net.fexcraft.mod.lib.util.math.Vec3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResource;
@@ -39,7 +43,7 @@ public class Imported extends PolygonShape {
 	}
 	
 	public Imported importTMT(ModelRendererTurbo turbo){
-    	faces = turbo.getFaces(); vertices = turbo.getVertices();
+    	faces = turbo.getFaces(); vertices = turbo.getVertices(); this.name = turbo.boxName;
         rotationPointX = turbo.rotationPointX; rotationPointY = turbo.rotationPointY; rotationPointZ = turbo.rotationPointZ;
         rotateAngleX = turbo.rotateAngleX; rotateAngleY = turbo.rotateAngleY; rotateAngleZ = turbo.rotateAngleZ;
         return this;
@@ -187,10 +191,102 @@ public class Imported extends PolygonShape {
 		}
 		return this;
 	}
+	
+	/** UNTESTED **/
+	public Imported importFMRJSON(JsonObject obj){
+		vertices = new TexturedVertex[]{};
+		JsonArray array = obj.has("faces") ? obj.get("faces").getAsJsonArray() : new JsonArray();
+		faces = new TexturedPolygon[array.size()];
+		for(int k = 0; k < faces.length; k++){
+			JsonObject elm = array.get(k).getAsJsonObject();
+			JsonArray vertices = elm.get("vertices").getAsJsonArray();
+			TexturedVertex[] verts = new TexturedVertex[vertices.size()];
+			for(int i = 0; i < vertices.size(); i++){
+				JsonObject fjsn = vertices.get(i).getAsJsonObject();
+				float tx = JsonUtil.getIfExists(fjsn, "tx", 0).floatValue();
+				float ty = JsonUtil.getIfExists(fjsn, "ty", 0).floatValue();
+				float  x = JsonUtil.getIfExists(fjsn,  "x", 0).floatValue();
+				float  y = JsonUtil.getIfExists(fjsn,  "y", 0).floatValue();
+				float  z = JsonUtil.getIfExists(fjsn,  "z", 0).floatValue();
+				verts[i] = new TexturedVertex(new Vec3f(x, y, z), tx, ty);
+			}
+			ArrayList<Vec3f> list = new ArrayList<Vec3f>();
+			if(elm.has("vectors")){
+				for(JsonElement jsn : elm.get("vectors").getAsJsonArray()){
+					JsonObject objj = jsn.getAsJsonObject();
+					list.add(new Vec3f(
+						JsonUtil.getIfExists(objj, "x", 0).floatValue(),
+						JsonUtil.getIfExists(objj, "y", 0).floatValue(),
+						JsonUtil.getIfExists(objj, "z", 0).floatValue()
+					));
+				}
+			}
+			float[] normals = new float[3];
+			if(elm.has("normals")){
+				JsonArray err = elm.getAsJsonObject().get("normals").getAsJsonArray();
+				normals = new float[err.size()];
+				for(int i = 0; i < err.size(); i++) normals[i] = err.get(i).getAsFloat();
+			} else { normals[0] = 0; normals[1] = 0; normals[2] = 0; }
+			faces[k] = new TexturedPolygon(verts);
+			faces[k].setInvert(elm.has("invert") && elm.get("invert").getAsBoolean());
+			faces[k].setNormals(normals[0], normals[1], normals[2]);
+			faces[k].setNormals(list);
+		}
+		return this;
+	}
 
 	@Override
 	protected void populateJsonObject(JsonObject obj){
-		//TODO
+		if(!FexcraftModelRenderer.GENERIC_BOOLEAN){ return; }
+		JsonObject elm = null; JsonArray array = null;
+		if(vertices.length > 0){
+			array = new JsonArray();
+			for(TexturedVertex vertex : vertices){
+				elm = new JsonObject();
+				elm.addProperty("tx", vertex.textureX);
+				elm.addProperty("ty", vertex.textureY);
+				elm.addProperty("x", vertex.vector.xCoord);
+				elm.addProperty("y", vertex.vector.yCoord);
+				elm.addProperty("z", vertex.vector.zCoord);
+			}
+			obj.add("vertices", array);
+		}
+		array = new JsonArray();
+		for(TexturedPolygon poly : faces){
+			elm = new JsonObject();
+			JsonArray elms = new JsonArray();
+			for(TexturedVertex vertex : poly.getVertices()){
+				JsonObject jsn = new JsonObject();
+				jsn.addProperty("tx", vertex.textureX);
+				jsn.addProperty("ty", vertex.textureY);
+				jsn.addProperty("x", vertex.vector.xCoord);
+				jsn.addProperty("y", vertex.vector.yCoord);
+				jsn.addProperty("z", vertex.vector.zCoord);
+				elms.add(jsn);
+			}
+			elm.add("vertices", elms);
+			if(poly.isInverted()){
+				elm.addProperty("invert", poly.isInverted());
+			}
+			if(poly.getNormals() != null && poly.getNormals().length > 0){
+				elms = new JsonArray();
+				for(float f : poly.getNormals()) elms.add(f);
+				if(elms.size() > 0) elm.add("normals", elms);
+			}
+			if(poly.getVectors().size() > 0){
+				elms = new JsonArray();
+				for(Vec3f vec : poly.getVectors()){
+					JsonObject jsn = new JsonObject();
+					jsn.addProperty("x", vec.xCoord);
+					jsn.addProperty("y", vec.yCoord);
+					jsn.addProperty("z", vec.zCoord);
+					elms.add(jsn);
+				}
+				elm.add("vectors", elms);
+			}
+			array.add(elm);
+		}
+		obj.add("faces", array);
 	}
 
 	@Override
