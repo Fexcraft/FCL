@@ -54,9 +54,9 @@ public class Pos {
     }
 
     public static Pos fromJSON(JsonObject obj){
-        float x = obj.get("x").getAsFloat();
-        float y = obj.get("y").getAsFloat();
-        float z = obj.get("z").getAsFloat();
+        float x = obj.has("x") ? obj.get("x").getAsFloat() : 0f;
+        float y = obj.has("y") ? obj.get("y").getAsFloat() : 0f;
+        float z = obj.has("z") ? obj.get("z").getAsFloat() : 0f;
         return new Pos(x, y, z);
     }
 
@@ -95,5 +95,9 @@ public class Pos {
     public Vec3d to16Double(){
         return new Vec3d(this.to16FloatX(), this.to16FloatY(), this.to16FloatZ());
     }
+
+	public Vec3f to16Float(){
+		return new Vec3f(this.to16FloatX(), this.to16FloatY(), this.to16FloatZ());
+	}
 
 }
