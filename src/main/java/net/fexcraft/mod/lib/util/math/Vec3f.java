@@ -44,6 +44,10 @@ public class Vec3f {
 		this((float)xVec, (float)yVec, (float)zVec);
 	}
 
+	public Vec3f(Vec3i pos, boolean center){
+		this(pos); if(center){ xCoord += 0.5f; yCoord += 0.5f; zCoord += 0.5f; }
+	}
+
 	public Vec3f subtractReverse(Vec3f vec){
         return new Vec3f(vec.xCoord - this.xCoord, vec.yCoord - this.yCoord, vec.zCoord - this.zCoord);
     }
@@ -179,9 +183,12 @@ public class Vec3f {
         return i;
     }
 
-    public String toString(){
-        return "[" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + "]";
-    }
+    //public String toString(){ return "[" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + "]"; }
+	
+	@Override
+	public String toString(){
+		return String.format("Vec3f[ %s, %s, %s ]", xCoord, yCoord, zCoord);
+	}
 
     public Vec3f rotatePitch(float pitch){
         float f = MathHelper.cos(pitch);
@@ -215,6 +222,42 @@ public class Vec3f {
     
     public Vec3d toDouble(){
     	return new Vec3d(xCoord, yCoord, zCoord);
+    }
+
+	public Vec3f middle(Vec3f target){
+		return new Vec3f((xCoord + target.xCoord) * 0.5, (yCoord + target.yCoord) * 0.5, (zCoord + target.zCoord) * 0.5);
+	}
+	
+	//based on fvtm rail entity stuff
+
+	public Vec3f distance(Vec3f dest, float am){
+		Vec3f vec = new Vec3f((xCoord + dest.xCoord) * 0.5, (yCoord + dest.yCoord) * 0.5, (zCoord + dest.zCoord) * 0.5);
+    	vec = direction(vec.xCoord - xCoord, vec.yCoord - yCoord, vec.zCoord - zCoord);
+		return new Vec3f(xCoord + (vec.xCoord * am), yCoord + (vec.yCoord * am), zCoord + (vec.zCoord * am));
+	}
+	
+    public double length(){
+        return Math.sqrt(xCoord * xCoord + yCoord * yCoord + zCoord * zCoord);
+    }
+    
+    public static double length(float... arr){
+        return Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1] + arr[2] * arr[2]);
+    }
+    
+    public static double length(Vec3f vec){
+        return Math.sqrt(vec.xCoord * vec.xCoord + vec.yCoord * vec.yCoord + vec.zCoord * vec.zCoord);
+    }
+    
+    /*public double distanceTo(Vec3f other){
+        return length(other.xCoord - xCoord, other.yCoord - yCoord, other.zCoord - zCoord);
+    }*/
+    
+    public static Vec3f direction(float... arr){
+    	double l = length(arr[0], arr[1], arr[2]); return new Vec3f(arr[0] / l, arr[1] / l, arr[2] / l);
+    }
+    
+    public static Vec3f direction(Vec3f vec){
+    	double l = length(vec.xCoord, vec.yCoord, vec.zCoord); return new Vec3f(vec.xCoord / l, vec.yCoord / l, vec.zCoord / l);
     }
     
 }

@@ -1,4 +1,4 @@
-package net.fexcraft.mod.lib.tmt.util;
+package net.fexcraft.mod.lib.fmr;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -32,13 +32,13 @@ import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-public class TMTItemModelLoader implements ICustomModelLoader {
+public class FCLItemModelLoader implements ICustomModelLoader {
 	
-	public static final TMTItemModelLoader INSTANCE = new TMTItemModelLoader();
-	private static final TreeMap<ResourceLocation, TMTItemModel> MAP = new TreeMap<ResourceLocation, TMTItemModel>();
+	public static final FCLItemModelLoader INSTANCE = new FCLItemModelLoader();
+	private static final TreeMap<ResourceLocation, FCLItemModel> MAP = new TreeMap<ResourceLocation, FCLItemModel>();
 	//private static final ArrayList<String> DOMAINS = new ArrayList<String>();
 	
-	public TMTItemModelLoader(){}
+	public FCLItemModelLoader(){}
 
 	@Override
 	public void onResourceManagerReload(IResourceManager resmag){
@@ -52,7 +52,7 @@ public class TMTItemModelLoader implements ICustomModelLoader {
 	}
 	
 	@Nullable
-	public static final Object addItemModel(ResourceLocation loc, TMTItemModel model){
+	public static final Object addItemModel(ResourceLocation loc, FCLItemModel model){
 		if(!loc.toString().contains(":models/item/")){
 			ResourceLocation rs = new ResourceLocation(loc.getResourceDomain(), "models/item/" + loc.getResourcePath());
 			return MAP.put(rs, model);//This specifically a fix for FVTM, but if it works with other mods well, I don't know.
@@ -61,7 +61,7 @@ public class TMTItemModelLoader implements ICustomModelLoader {
 	}
 	
 	@Nullable
-	public TMTItemModel getItemModel(ResourceLocation modelloc){
+	public FCLItemModel getItemModel(ResourceLocation modelloc){
 		return MAP.get(modelloc);
 	}
 
@@ -127,7 +127,7 @@ public class TMTItemModelLoader implements ICustomModelLoader {
 		
 		@Override
 		public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType perspective){
-			TMTItemModel model = TMTItemModelLoader.INSTANCE.getItemModel(modelloc);
+			FCLItemModel model = FCLItemModelLoader.INSTANCE.getItemModel(modelloc);
 			if(model != null){
 				model.renderItem(perspective, state.stack, state.entity);
 			}

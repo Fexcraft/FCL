@@ -39,5 +39,9 @@ public class Formatter {
 	public static net.minecraft.util.text.ITextComponent newTextComponentString(String string){
 		return new net.minecraft.util.text.TextComponentString(format(string));
 	}
+
+	public static String format(String string, Object... objs){
+		return format(String.format(string, objs));
+	}
 	
 }

@@ -57,7 +57,7 @@ public class FCL {
 			RecipeRegistry.initialize();
 		}
 		if(event.getSide().isClient()){
-			net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(net.fexcraft.mod.lib.tmt.util.TMTItemModelLoader.getInstance());
+			net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(net.fexcraft.mod.lib.fmr.FCLItemModelLoader.getInstance());
 		}
 	}
 	
@@ -103,6 +103,14 @@ public class FCL {
 	
 	public File getConfigDirectory(){
 		return configdir;
+	}
+
+	public static final String getVersion(){
+		return version;
+	}
+
+	public static final String getMinecraftVersion(){
+		return mcv;
 	}
 	
 }
