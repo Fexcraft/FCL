@@ -115,7 +115,7 @@ public class RegistryUtil {
 					}
 					//TileEntity
 					if(mBlock instanceof ITileEntityProvider){
-						try{ GameRegistry.registerTileEntity(block.tileentity(), mBlock.getRegistryName().toString()); }
+						try{ GameRegistry.registerTileEntity(block.tileentity(), mBlock.getRegistryName()); }
 						catch(IllegalArgumentException e){ if(Static.dev()) e.printStackTrace(); }
 					}
 					Print.debug("Registered Block: " + mBlock.getRegistryName().toString());
