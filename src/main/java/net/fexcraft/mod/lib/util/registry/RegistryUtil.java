@@ -116,7 +116,14 @@ public class RegistryUtil {
 					//TileEntity
 					if(mBlock instanceof ITileEntityProvider){
 						try{ GameRegistry.registerTileEntity(block.tileentity(), mBlock.getRegistryName()); }
-						catch(IllegalArgumentException e){ if(Static.dev()) e.printStackTrace(); }
+						catch(IllegalArgumentException e){
+							if(Static.dev()){
+								e.printStackTrace();
+								if(e.getMessage() == null || !e.getMessage().equals("value already present: class net.minecraft.tileentity.TileEntity")){
+									Static.halt();
+								}
+							}
+						}
 					}
 					Print.debug("Registered Block: " + mBlock.getRegistryName().toString());
 				}

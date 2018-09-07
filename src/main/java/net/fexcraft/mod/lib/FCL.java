@@ -3,7 +3,6 @@ package net.fexcraft.mod.lib;
 import java.io.File;
 import java.util.UUID;
 
-import net.fexcraft.mod.lib.adjgui.GuiPacketListener;
 import net.fexcraft.mod.lib.capabilities.sign.SignCapability;
 import net.fexcraft.mod.lib.capabilities.sign.SignCapabilityUtil;
 import net.fexcraft.mod.lib.crafting.RecipeRegistry;
@@ -85,10 +84,6 @@ public class FCL {
 		MinecraftForge.EVENT_BUS.register(new SignCapabilityUtil.EventHandler());
 		CapabilityManager.INSTANCE.register(SignCapability.class, new SignCapabilityUtil.Storage(), new SignCapabilityUtil.Callable());
 		SignCapabilityUtil.addListener(net.fexcraft.mod.lib.capabilities.sign.ExampleListener.class);
-		//
-		for(Side side : Side.values()){
-			PacketHandler.registerListener(PacketHandler.PacketHandlerType.NBT, side, new GuiPacketListener(side));
-		}
 		//RecipeRegistry.importVanillaRecipes();
 		Print.log("Loading complete.");
 	}
