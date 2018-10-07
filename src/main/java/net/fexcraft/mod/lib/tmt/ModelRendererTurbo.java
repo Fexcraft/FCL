@@ -1440,4 +1440,8 @@ public class ModelRendererTurbo {
 		return vertices;
 	}
 	
+	public Integer displaylist(){
+		return displayList;
+	}
+	
 }
