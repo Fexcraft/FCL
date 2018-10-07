@@ -60,16 +60,12 @@ public class RGB {
 	
 	public RGB(byte[] i){
 		this(i.length >= 1 ? i[0] : 0, i.length >= 2 ? i[1] : 0, i.length >= 3 ? i[2] : 0);
-		if(i.length >= 4){
-			alpha = i[3] / 255;
-		}
+		if(i.length >= 4){ alpha = i[3] / 255; }
 	}
 	
 	public RGB(int[] i){
 		this(i.length >= 1 ? i[0] : 0, i.length >= 2 ? i[1] : 0, i.length >= 3 ? i[2] : 0);
-		if(i.length >= 4){
-			alpha = i[3] / 255;
-		}
+		if(i.length >= 4){ alpha = i[3] / 255; }
 	}
 	
 	public static RGB fromStrings(String x, String y, String z){

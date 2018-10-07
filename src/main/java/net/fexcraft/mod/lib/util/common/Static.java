@@ -180,7 +180,7 @@ public class Static{
 	 * @param stop if the game should be force-closed
 	 * **/
 	public static void exception(Exception exception, boolean stop){
-		try{ throw exception; } catch(Exception ex){ ex.printStackTrace(); }
+		try{ throw exception == null ? new Exception() : exception; } catch(Exception ex){ ex.printStackTrace(); }
 		if(stop) halt();
 	}
 	

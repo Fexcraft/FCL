@@ -237,7 +237,7 @@ public class ModelRendererTurbo {
      * @param h the height (over the y-direction)
      * @param d the depth (over the z-direction)
      */
-    public ModelRendererTurbo addBox(float x, float y, float z, int w, int h, int d){
+    public ModelRendererTurbo addBox(float x, float y, float z, float w, float h, float d){
         addBox(x, y, z, w, h, d, 0.0F);
         return this;
     }
@@ -252,7 +252,7 @@ public class ModelRendererTurbo {
      * @param d the depth (over the z-direction)
      * @param expansion the expansion of the box. It increases the size in each direction by that many.
      */
-    public void addBox(float x, float y, float z, int w, int h, int d, float expansion){
+    public void addBox(float x, float y, float z, float w, float h, float d, float expansion){
     	addBox(x, y, z, w, h, d, expansion, 1F);
     }
     
