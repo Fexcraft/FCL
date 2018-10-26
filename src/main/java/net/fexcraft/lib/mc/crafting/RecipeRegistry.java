@@ -9,7 +9,7 @@ import net.fexcraft.lib.common.lang.ArrayList;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.PacketHandler.PacketHandlerType;
 import net.fexcraft.lib.mc.registry.RegistryUtil;
-import net.fexcraft.lib.mc.util.Print;
+import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

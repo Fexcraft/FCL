@@ -6,7 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.util.Print;
+import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.command.ICommandSender;
 
 public class Browser {

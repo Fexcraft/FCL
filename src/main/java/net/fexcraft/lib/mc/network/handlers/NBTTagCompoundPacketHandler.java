@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import net.fexcraft.lib.mc.api.IPacketListener;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
-import net.fexcraft.lib.mc.util.Print;
+import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.FMLCommonHandler;

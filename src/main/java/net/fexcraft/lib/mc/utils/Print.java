@@ -1,4 +1,4 @@
-package net.fexcraft.lib.mc.util;
+package net.fexcraft.lib.mc.utils;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -29,7 +29,7 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Print{
+public class Print extends net.fexcraft.lib.common.utils.Print {
 	
 	private static final Logger logger = LogManager.getLogger("FCL");
 	

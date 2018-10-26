@@ -17,7 +17,7 @@ import net.fexcraft.lib.mc.api.fModel;
 import net.fexcraft.lib.mc.api.fRecipeHolder;
 import net.fexcraft.lib.mc.api.fTESR;
 import net.fexcraft.lib.mc.render.ModelType;
-import net.fexcraft.lib.mc.util.Print;
+import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;

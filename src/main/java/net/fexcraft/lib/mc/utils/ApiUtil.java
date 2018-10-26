@@ -1,4 +1,4 @@
-package net.fexcraft.lib.mc.util;
+package net.fexcraft.lib.mc.utils;
 
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketEntityUpdate;

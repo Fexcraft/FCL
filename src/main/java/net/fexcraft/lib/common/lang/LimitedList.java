@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import net.fexcraft.lib.mc.util.Print;
+import net.fexcraft.lib.common.utils.Print;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -15,8 +15,9 @@ import net.fexcraft.lib.mc.util.Print;
  * //TODO improve // see arraylist in this package
  * @param <E>
  */
-public class LimitedList<E> implements List<E> {
+public class LimitedList<E> extends ArrayList<E> {
 	
+	private static final long serialVersionUID = 1L;
 	private static final int DEFAULT_SIZE_LIMIT = 10;
 	private ArrayList<E> list;
 	private int maxsize;

@@ -13,7 +13,7 @@ import net.fexcraft.lib.mc.network.packet.PacketJsonObject;
 import net.fexcraft.lib.mc.network.packet.PacketKeyInput;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.network.packet.PacketTileEntityUpdate;
-import net.fexcraft.lib.mc.util.Print;
+import net.fexcraft.lib.mc.utils.Print;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;

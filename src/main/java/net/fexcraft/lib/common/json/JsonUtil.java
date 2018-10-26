@@ -22,7 +22,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 import net.fexcraft.lib.common.lang.ArrayList;
-import net.fexcraft.lib.mc.util.Print;
+import net.fexcraft.lib.common.utils.Print;
 import net.minecraft.util.ResourceLocation;
 
 /**

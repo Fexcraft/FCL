@@ -8,9 +8,9 @@ import com.google.gson.JsonObject;
 
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.util.FclConfig;
-import net.fexcraft.lib.mc.util.Formatter;
-import net.fexcraft.lib.mc.util.Print;
+import net.fexcraft.lib.mc.utils.FclConfig;
+import net.fexcraft.lib.mc.utils.Formatter;
+import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

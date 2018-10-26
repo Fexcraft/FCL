@@ -1,9 +1,6 @@
 package net.fexcraft.lib.mc.network;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
@@ -14,9 +11,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.common.json.JsonUtil;
+import net.fexcraft.lib.common.utils.HttpUtil;
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.util.Print;
+import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -41,71 +38,12 @@ public class Network{
 		}
 	}
 	
-	/** Requests a JsonObject from the given adress and parameters, using the POST HTML method. */
-	public static JsonObject request(String adress, String parameters){
-		/*if(!isConnected()){
-			Static.stop();
-			return null;
-		}*/
-		try{
-			URL url = new URL(adress);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-				connection.setRequestMethod("POST");
-				connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-				connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-				connection.setConnectTimeout(5000);
-				connection.setDoOutput(true);
-				
-			DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-				wr.writeBytes(parameters);
-				wr.flush();
-				wr.close();
-			
-			JsonObject obj = JsonUtil.getObjectFromInputStream(connection.getInputStream()).getAsJsonObject();	
-			
-			connection.disconnect();
-			return obj;
-		}
-		catch(SocketTimeoutException e){
-			e.printStackTrace();
-			return null;
-		}
-		catch(IOException e){
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public static JsonElement request(String adress){
-		try{
-			URL url = new URL(adress);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-				connection.setRequestMethod("GET");
-				connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-				connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-				connection.setConnectTimeout(5000);
-			
-			JsonElement obj = JsonUtil.getElementFromInputStream(connection.getInputStream());	
-			
-			connection.disconnect();
-			return obj;
-		}
-		catch(SocketTimeoutException e){
-			e.printStackTrace();
-			return null;
-		}
-		catch(IOException e){
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
 	public static JsonObject getModData(String modid){
 		return getModData(modid, null);
 	}
 	
 	public static JsonObject getModData(String modid, String current_version){
-		JsonObject obj = request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=" + modid);
+		JsonObject obj = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=" + modid);
 		if(obj == null){
 			return null;
 		}
@@ -130,7 +68,7 @@ public class Network{
 			}
 		}
 		else if(obj.has("blocked_versions") && current_version == null && !fcl_version_checked){
-			JsonObject fcl = request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=fcl");
+			JsonObject fcl = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=fcl");
 			ArrayList<String> arr = new ArrayList<String>();
 			for(JsonElement elm : fcl.get("blocked_versions").getAsJsonArray()){
 				arr.add(elm.getAsString());
@@ -156,7 +94,7 @@ public class Network{
 	
 	public static boolean isModRegistered(String modid){
 		try{
-			JsonObject obj = request("http://fexcraft.net/minecraft/fcl/request", "mode=exists&modid=" + modid);
+			JsonObject obj = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=exists&modid=" + modid);
 			return obj == null ? false : obj.get("exists").getAsBoolean();
 		}
 		catch(Exception e){
@@ -185,7 +123,7 @@ public class Network{
 
 		public static void initialize(){
 			String uuid = net.minecraft.client.Minecraft.getMinecraft().getSession().getPlayerID();
-			JsonObject elm = Network.request("http://fexcraft.net/minecraft/fcl/request", "mode=blacklist&id=" + uuid);
+			JsonObject elm = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=blacklist&id=" + uuid);
 			if(elm != null && elm.has("unbanned") && !elm.get("unbanned").getAsBoolean()){
 				Static.halt(0);
 			}
@@ -198,7 +136,7 @@ public class Network{
 		private static final Set<UUID> blist = new TreeSet<UUID>();
 
 		public static void initialize(){
-			JsonObject check = Network.request("http://fexcraft.net/minecraft/fcl/request", "mode=blacklist&id=server");
+			JsonObject check = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=blacklist&id=server");
 			if(check == null){
 				Print.log("Couldn't validate Server.");
 			}
@@ -208,7 +146,7 @@ public class Network{
 				Static.halt(0);
 			}
 			//
-			JsonObject obj = Network.request("http://fexcraft.net/minecraft/fcl/request", "mode=blacklist");
+			JsonObject obj = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=blacklist");
 			if(obj == null){
 				Print.log("Couldn't retrieve BL.");
 				return;

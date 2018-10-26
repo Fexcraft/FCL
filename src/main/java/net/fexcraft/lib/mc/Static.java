@@ -9,8 +9,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 
-import net.fexcraft.lib.mc.network.Network;
-import net.fexcraft.lib.mc.util.Print;
+import net.fexcraft.lib.common.utils.HttpUtil;
+import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -60,7 +60,7 @@ public class Static extends net.fexcraft.lib.common.Static {
 		}
 		GameProfile prof = getServer().getPlayerProfileCache().getProfileByUUID(uuid);
 		if(prof != null){ UUID_PLAYER_CACHE.put(uuid, prof.getName()); return prof.getName(); }
-		JsonElement obj = Network.request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
+		JsonElement obj = HttpUtil.request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
 		try{
 			JsonObject elm = obj.getAsJsonObject();
 			UUID_PLAYER_CACHE.put(uuid, elm.get("name").getAsString());

@@ -1,4 +1,4 @@
-package net.fexcraft.lib.mc.util;
+package net.fexcraft.lib.mc.utils;
 
 import java.io.File;
 

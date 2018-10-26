@@ -1,4 +1,4 @@
-package net.fexcraft.lib.common.json;
+package net.fexcraft.lib.mc.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
