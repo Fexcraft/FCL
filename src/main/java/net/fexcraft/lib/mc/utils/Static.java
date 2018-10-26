@@ -1,4 +1,4 @@
-package net.fexcraft.lib.mc;
+package net.fexcraft.lib.mc.utils;
 
 import java.util.HashMap;
 import java.util.UUID;

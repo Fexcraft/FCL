@@ -2,10 +2,10 @@ package net.fexcraft.lib.mc.network.handlers;
 
 import java.util.HashSet;
 
-import net.fexcraft.lib.mc.Static;
 import net.fexcraft.lib.mc.api.IPacketListener;
 import net.fexcraft.lib.mc.api.IPacketReceiver;
 import net.fexcraft.lib.mc.network.packet.PacketTileEntityUpdate;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IThreadListener;

@@ -1,4 +1,4 @@
-package net.fexcraft.lib.mc;
+package net.fexcraft.lib.mc.utils;
 
 import net.fexcraft.lib.mc.api.fCommand;
 import net.fexcraft.lib.mc.utils.Print;

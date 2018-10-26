@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 
-import net.fexcraft.lib.mc.Static;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.block.BlockWallSign;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTBase;

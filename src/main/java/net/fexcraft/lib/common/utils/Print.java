@@ -1,6 +1,6 @@
 package net.fexcraft.lib.common.utils;
 
-import net.fexcraft.lib.mc.Static;
+import net.fexcraft.lib.common.Static;
 
 public class Print {
 
@@ -25,6 +25,10 @@ public class Print {
 		}
 		buff.append(" ]");
 		System.out.println(buff.toString());
+	}
+
+	public static boolean bool(boolean bool, String string){
+		log(string); return bool;
 	}
 	
 }

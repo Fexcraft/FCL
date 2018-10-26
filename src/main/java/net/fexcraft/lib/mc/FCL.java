@@ -13,6 +13,7 @@ import net.fexcraft.lib.mc.registry.CreativeTab;
 import net.fexcraft.lib.mc.registry.RegistryUtil;
 import net.fexcraft.lib.mc.utils.FclConfig;
 import net.fexcraft.lib.mc.utils.Print;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;

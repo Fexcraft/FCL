@@ -56,7 +56,7 @@ public class Static {
 	
 	public static void halt(int errid){
 		if(mclib){
-			net.fexcraft.lib.mc.Static.halt(errid);
+			net.fexcraft.lib.mc.utils.Static.halt(errid);
 		}
 		System.exit(errid);
 	}
@@ -67,14 +67,14 @@ public class Static {
 	
 	public static boolean isServer(){
 		if(mclib){
-			net.fexcraft.lib.mc.Static.isServer();
+			net.fexcraft.lib.mc.utils.Static.isServer();
 		}
 		return server;
 	}
 	
 	public static boolean isClient(){
 		if(mclib){
-			net.fexcraft.lib.mc.Static.isClient();
+			net.fexcraft.lib.mc.utils.Static.isClient();
 		}
 		return !server;
 	}
