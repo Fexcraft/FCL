@@ -1,39 +1,26 @@
 package net.fexcraft.lib.tmt;
 
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
 * @Author Ferdinand (FEX___96)
 * 
 */
-@SideOnly(Side.CLIENT)
-public class Tessellator extends net.minecraft.client.renderer.Tessellator {
+public class Tessellator {
 	
-	private static ByteBuffer bbuf = GLAllocation.createDirectByteBuffer(0x200000 * 4);
+	private static java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.allocateDirect(0x200000 * 4).order(java.nio.ByteOrder.nativeOrder());
 	private int rbs = 0, verts = 0, /*br = 0, c,*/ rbi = 0, /*vertices = 0,*/ dm, n;
 	private boolean ht = false, in = false, drawing = false;
 	public static Tessellator INSTANCE = new Tessellator();
-	private static FloatBuffer fbuf = bbuf.asFloatBuffer();
-	//private static ShortBuffer sbuf = bbuf.asShortBuffer();
-	private static IntBuffer ibuf = bbuf.asIntBuffer();
+	private static java.nio.FloatBuffer fbuf = bbuf.asFloatBuffer();
+	private static java.nio.IntBuffer ibuf = bbuf.asIntBuffer();
 	private double u, v, w, x, y, z;
 	private int[] rb;
 	
 	public static Tessellator getInstance(){
 		return INSTANCE;
-	}
-	
-	public Tessellator(){
-		super(2097152);
 	}
 	
 	public void startDrawing(int i){
@@ -44,7 +31,6 @@ public class Tessellator extends net.minecraft.client.renderer.Tessellator {
 		}
 	}
 	
-	@Override
 	public void draw(){
 		if(drawing){
 			drawing = false; int o = 0;
