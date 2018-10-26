@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
 
+import net.fexcraft.lib.common.math.RGB;
+
 /**
 * @Author Ferdinand (FEX___96)
 * 
@@ -17,7 +19,7 @@ public class Tessellator {
 	private static java.nio.FloatBuffer fbuf = bbuf.asFloatBuffer();
 	private static java.nio.IntBuffer ibuf = bbuf.asIntBuffer();
 	private double u, v, w, x, y, z;
-	private int[] rb;
+	private int[] rb; private RGB color;
 	
 	public static Tessellator getInstance(){
 		return INSTANCE;
@@ -32,39 +34,33 @@ public class Tessellator {
 	}
 	
 	public void draw(){
-		if(drawing){
-			drawing = false; int o = 0;
-			while(o < verts){
-				int vtc = Math.min(verts - o, 0x200000 >> 5);
-				ibuf.clear(); ibuf.put(rb, o * 10, vtc * 10); bbuf.position(0); bbuf.limit(vtc * 40); o += vtc;
-				if(ht){
-					fbuf.position(3);
-					GL11.glTexCoordPointer(4, 40, fbuf);
-					GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-				}
-				if(in){
-					bbuf.position(32);
-					GL11.glNormalPointer(40, bbuf);
-					GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
-				}
-				fbuf.position(0);
-				GL11.glVertexPointer(3, 40, fbuf);
-				GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-				GL11.glDrawArrays(dm, 0, vtc);
-				GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
-				if(ht){
-					GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-				}
-				if(in){
-					GL11.glDisableClientState(GL11.GL_NORMAL_ARRAY);
-				}
+		if(!drawing){ return; }
+		drawing = false; int o = 0;
+		while(o < verts){
+			int vtc = Math.min(verts - o, 0x200000 >> 5);
+			ibuf.clear(); ibuf.put(rb, o * 10, vtc * 10); bbuf.position(0); bbuf.limit(vtc * 40); o += vtc;
+			if(ht){
+				fbuf.position(3);
+				GL11.glTexCoordPointer(4, 40, fbuf);
+				GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 			}
-			if(rbs > 0x20000 && rbi < (rbs << 3)){
-				rbs = 0; rb = null;
+			if(in){
+				bbuf.position(32);
+				GL11.glNormalPointer(40, bbuf);
+				GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
 			}
-			reset();
-			return;
+			fbuf.position(0);
+			GL11.glVertexPointer(3, 40, fbuf);
+			GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+			if(dm == 3) RGB.BLACK.glColorApply(); else if(color != null) color.glColorApply();
+			GL11.glDrawArrays(dm, 0, vtc);
+			GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
+			if(ht){ GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY); }
+			if(in){ GL11.glDisableClientState(GL11.GL_NORMAL_ARRAY); }
+			if(dm == 3 || color != null) RGB.glColorReset();
 		}
+		if(rbs > 0x20000 && rbi < (rbs << 3)){ rbs = 0; rb = null; }
+		reset();
 	}
 	
 	private void reset(){
@@ -117,6 +113,10 @@ public class Tessellator {
 	
 	public void addTranslation(float x, float y, float z){
 		this.x += x; this.y += y; this.z += z;
+	}
+
+	public void setColor(RGB rgb){
+		this.color = rgb;
 	}
 	
 }

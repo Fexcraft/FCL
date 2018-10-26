@@ -29,12 +29,15 @@ public class TexturedPolygon {
 	
 	public void setNormals(ArrayList<Vec3f> normallist){ list = normallist; }
 	
-	public void draw(Tessellator tess, float scale){
-        switch(vertices.length){
-	        case 3: tess.startDrawing(GL11.GL_TRIANGLES); break;
-	        case 4: tess.startDrawing(GL11.GL_QUADS); break;
-	        default: tess.startDrawing(GL11.GL_POLYGON); break;
-        }
+	public void draw(Tessellator tess, float scale, boolean lines, RGB rgb){
+		if(lines){ tess.startDrawing(3); }
+		else{
+	        switch(vertices.length){
+		        case 3: tess.startDrawing(GL11.GL_TRIANGLES); break;
+		        case 4: tess.startDrawing(GL11.GL_QUADS); break;
+		        default: tess.startDrawing(GL11.GL_POLYGON); break;
+	        };
+		}
         if(list.isEmpty()){
 	        if(normals.length == 3){
 	        	if(invert){ tess.setNormal(-normals[0], -normals[1], -normals[2]); }
@@ -55,7 +58,13 @@ public class TexturedPolygon {
             	if(invert){ tess.setNormal(-list.get(i).xCoord, -list.get(i).yCoord, -list.get(i).zCoord); }
             	else{ tess.setNormal(list.get(i).xCoord, list.get(i).yCoord, list.get(i).zCoord); }
             }
-            tess.addVertexWithUV(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale, texvex.textureX, texvex.textureY);
+            if(rgb == null){
+            	tess.addVertexWithUV(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale, texvex.textureX, texvex.textureY);
+            }
+            else{
+            	tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
+            	tess.setColor(rgb);
+            }
         }
         tess.draw();
     }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import net.fexcraft.lib.common.Static;
+import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
 import net.minecraft.client.renderer.GLAllocation;
@@ -33,20 +34,17 @@ import net.minecraft.util.math.MathHelper;
 public class ModelRendererTurbo {
 	
 	//replaces reliance on ModelRenderer
-	public float textureWidth = 0, textureHeight = 0;
-	public float rotateAngleX = 0, rotateAngleY = 0, rotateAngleZ = 0;
-	public float rotationPointX = 0, rotationPointY = 0, rotationPointZ = 0;
-
+    public float textureWidth = 0, textureHeight = 0;
+    public float rotateAngleX = 0, rotateAngleY = 0, rotateAngleZ = 0;
+    public float rotationPointX = 0, rotationPointY = 0, rotationPointZ = 0;
+	//
     private TexturedVertex vertices[];
     private TexturedPolygon faces[];
-    public int texoffx;
-    public int texoffy;
+    public int texoffx, texoffy;
     private Integer displayList;
-    public boolean mirror;
-    public boolean flip;
-    public boolean showModel;
-    public boolean forcedRecompile;
-    public boolean isShape3D;
+    public boolean mirror, flip;
+    public boolean showModel, forcedRecompile;
+    public boolean isShape3D, lines, textured = true;
     public List<?> cubeList;
     public List<?> childModels;
     public String boxName;
@@ -1406,9 +1404,33 @@ public class ModelRendererTurbo {
         displayList = GLAllocation.generateDisplayLists(1);
         GL11.glNewList(displayList, 4864 /*GL_COMPILE*/);
         for(int i = 0; i < faces.length; i++){
-            faces[i].draw(Tessellator.INSTANCE, scale);
+            faces[i].draw(Tessellator.INSTANCE, scale, lines, getColor(i));
         }
         GL11.glEndList();
+    }
+    
+    private static RGB lightred   = new RGB(255, 127, 175);
+    private static RGB lightgreen = new RGB(175, 255, 127);
+    private static RGB lightblue  = new RGB(127, 175, 255);
+    
+    public final RGB getColor(int i){
+    	if(!textured){
+    		switch(i){
+    			case 0: return RGB.BLUE;
+    			case 1: return lightblue;
+    			case 2: return lightred;
+    			case 3: return RGB.RED;
+    			case 4: return lightgreen;
+    			case 5: return RGB.GREEN;
+    		}
+    		if(i < 192){
+    			if(i % 3 == 0) return new RGB(255, 127, 256 - (i * 4));
+    			if(i % 3 == 1) return new RGB(256 - (i * 4), 255, 127);
+    			if(i % 3 == 2) return new RGB(127, 256 - (i * 4), 255);
+    		}
+    		return RGB.WHITE;
+    	}
+    	return null;
     }
     
 	public void addShapeBox(float x, float y, float z, int w, int h, int d, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7){
