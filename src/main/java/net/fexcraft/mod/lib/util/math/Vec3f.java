@@ -259,5 +259,23 @@ public class Vec3f {
     public static Vec3f direction(Vec3f vec){
     	double l = length(vec.xCoord, vec.yCoord, vec.zCoord); return new Vec3f(vec.xCoord / l, vec.yCoord / l, vec.zCoord / l);
     }
+
+	public Vec3f cross(Vec3f other){
+		return new Vec3f(yCoord * other.zCoord - this.zCoord * other.yCoord,
+			other.xCoord * this.zCoord - other.zCoord * this.xCoord,
+			this.xCoord * other.yCoord - this.yCoord * other.xCoord);
+	}
+
+	public float dot(Vec3f other){
+		return this.xCoord * other.xCoord + this.yCoord * other.yCoord + this.zCoord * other.zCoord;
+	}
+
+	public Vec3f normalize(Vec3f dest){
+		float len = (float)length(); return dest == null ? new Vec3f(xCoord / len, yCoord / len, zCoord / len) : dest.set(xCoord / len, yCoord / len, zCoord / len);
+	}
+
+	private Vec3f set(float f, float g, float h){
+		this.xCoord = f; this.yCoord = g; this.zCoord = h; return this;
+	}
     
 }
