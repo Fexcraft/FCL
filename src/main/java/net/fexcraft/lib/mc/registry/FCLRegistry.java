@@ -194,15 +194,6 @@ public class FCLRegistry {
 				}
 			}
 			//
-			/*if(modid.equals("frsm")){
-				JsonArray array = new JsonArray();
-				for(ResourceLocation rs : recipes.keySet()){
-					array.add(rs.toString());
-				}
-				Print.log(array);
-				Static.stop();
-			}*///such hax
-			//
 			IForgeRegistry<IRecipe> reg = event.getRegistry();
 			for(Entry<ResourceLocation, IRecipe> entry : recipes.entrySet()){
 				try{
