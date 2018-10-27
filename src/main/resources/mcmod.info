@@ -7,8 +7,22 @@
 	  "mcversion": "${mcversion}",
 	  "url": "http://fexcraft.net",
 	  "updateUrl": "http://fexcraft.net",
-	  "authorList": ["FEX___96"],
+	  "authorList": [ "FEX___96" ],
 	  "credits": "",
+	  "logoFile": "",
+	  "screenshots": [],
+	  "dependencies": []
+	},
+	{
+	  "modid": "tmt",
+	  "name": "\u00a76(Fex's) Turbo Model Thingy",
+	  "description": "\u00a77FEX___96's branch of TMT, includes various old things fixed, compability with a few other TMT branches and new things.",
+	  "version": "\u00a7c${version}",
+	  "mcversion": "${mcversion}",
+	  "url": "http://fexcraft.net",
+	  "updateUrl": "http://fexcraft.net",
+	  "authorList": [ "GaryCXJk", "FEX___96" ],
+	  "credits": "\u00a77Thanks to all who didn't give up on TMT yet! And: EternalBlueFlame, Manus, jamioflan / TheFlansmodTeam",
 	  "logoFile": "",
 	  "screenshots": [],
 	  "dependencies": []
