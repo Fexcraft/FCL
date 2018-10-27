@@ -84,8 +84,7 @@ public class FCLRegistry {
 		private TreeMap<ResourceLocation, IRecipe> recipes = new TreeMap<ResourceLocation, IRecipe>();
 		
 		public AutoRegisterer(String mod){
-			regs.put(mod, this);
-			this.modid = mod;
+			regs.put(modid = mod, this);
 			MinecraftForge.EVENT_BUS.register(this);
 			//
 			TreeMap<String, Class<? extends Block>> mapb = getBlockMap(modid);
@@ -488,11 +487,15 @@ public class FCLRegistry {
 		}
 	}
 
-	public static void newAutoRegistry(String modid){
-		new AutoRegisterer(modid);
+	public static AutoRegisterer newAutoRegistry(String modid){
+		return new AutoRegisterer(modid);
 	}
 
-	public static AutoRegisterer get(String id){
+	public static AutoRegisterer getAutoRegisterer(String id){
+		return regs.get(id);
+	}
+
+	public static AutoRegisterer getAutoRegistry(String id){
 		return regs.get(id);
 	}
 	

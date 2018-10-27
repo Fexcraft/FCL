@@ -30,7 +30,7 @@ public class BluePrintTable extends Block {
     	this.setResistance(32.0F);
     	this.setCreativeTab(CreativeTabs.TOOLS);
     	
-    	FCLRegistry.get("fcl").addBlock("blueprinttable", this, null, 0, null);
+    	FCLRegistry.getAutoRegisterer("fcl").addBlock("blueprinttable", this, null, 0, null);
 	}
 	
 	@Override
