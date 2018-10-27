@@ -25,11 +25,8 @@ public class BluePrintTable extends Block {
     public BluePrintTable(){
     	super(Material.GLASS);
     	this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-    	this.setHarvestLevel("axe", 1);
-    	this.setHardness(1.0F);
-    	this.setResistance(32.0F);
+    	this.setHarvestLevel("axe", 1); this.setHardness(1.0F); this.setResistance(32.0F);
     	this.setCreativeTab(CreativeTabs.TOOLS);
-    	
     	FCLRegistry.getAutoRegisterer("fcl").addBlock("blueprinttable", this, null, 0, null);
 	}
 	

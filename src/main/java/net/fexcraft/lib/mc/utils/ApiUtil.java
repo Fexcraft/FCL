@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -52,16 +51,6 @@ public class ApiUtil{
 	
 	public static void sendEntityUpdatePacketToServer(Entity ent, NBTTagCompound nbt){
 		PacketHandler.getInstance().sendToServer(new PacketEntityUpdate(ent, nbt));
-	}
-	
-	public static BlockPos getPosFromFacing(EnumFacing facing, BlockPos pos){
-		switch(facing){
-			case NORTH: return new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1);
-			case SOUTH: return new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1);
-			case WEST:  return new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ());
-			case EAST:  return new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ());
-			default: return pos;
-		}
 	}
 	
 	/** For compatibility with the removed EnumColor */

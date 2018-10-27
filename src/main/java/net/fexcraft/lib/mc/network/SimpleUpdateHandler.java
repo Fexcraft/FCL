@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.utils.FclConfig;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -123,7 +122,8 @@ public class SimpleUpdateHandler{
 		return "null";
 	}
 
-	public static class EventHandler{
+	public static class EventHandler {
+		
 		@SubscribeEvent
 		public void onJoin(PlayerEvent.PlayerLoggedInEvent event){
 			for(String modid : mods_to_update){
@@ -135,12 +135,8 @@ public class SimpleUpdateHandler{
 			if(Static.isServer() && Network.isBanned(event.player.getGameProfile().getId())){
 				((EntityPlayerMP)event.player).connection.onDisconnect(new TextComponentString("[FCL] Blacklisted."));
 			}
-			if(FclConfig.remind){
-				//TODO check why the boolean is sometimes true on end-user client even if set to false in config
-				//Print.chat(event.player, FCL.prefix + "Please check the FCL config, there are some important settings regarding statistical data sent to the FCL Database.");
-				//Print.chat(event.player, FCL.prefix + TextFormatting.DARK_AQUA + "You can get rid of this reminder\n" + FCL.prefix + TextFormatting.DARK_AQUA + "message in the config also.");
-			}
 		}
+		
 	}
 		
 }

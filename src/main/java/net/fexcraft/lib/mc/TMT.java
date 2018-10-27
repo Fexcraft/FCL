@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * 
  * Placeholder class to register "TMT" as Mod, just for looking nice.
  */
-@Mod(modid = TMT.MODID, name = "(Fex's) Turbo Model Thingy", version = TMT.VERSION, acceptableRemoteVersions = "*", acceptedMinecraftVersions = "*", dependencies = "required-after:fcl")
+@Mod(modid = TMT.MODID, name = "(Fex's) Turbo Model Thingy", version = TMT.VERSION, clientSideOnly = true, acceptableRemoteVersions = "*", acceptedMinecraftVersions = "*", dependencies = "required-after:fcl")
 public class TMT {
 	
 	@Mod.Instance("tmt")
