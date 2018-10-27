@@ -3,7 +3,7 @@ package net.fexcraft.lib.mc.network.packet;
 import java.io.IOException;
 
 import io.netty.buffer.ByteBuf;
-import net.fexcraft.lib.mc.api.IPacket;
+import net.fexcraft.lib.mc.api.packet.IPacket;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;

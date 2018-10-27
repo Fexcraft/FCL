@@ -1,6 +1,6 @@
 package net.fexcraft.lib.mc.network;
 
-import net.fexcraft.lib.mc.api.IPacketListener;
+import net.fexcraft.lib.mc.api.packet.IPacketListener;
 import net.fexcraft.lib.mc.network.handlers.EntityUpdatePacketHandler;
 import net.fexcraft.lib.mc.network.handlers.ExamplePacketHandler;
 import net.fexcraft.lib.mc.network.handlers.JsonObjectPacketHandler;

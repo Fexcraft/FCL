@@ -1,6 +1,6 @@
 package net.fexcraft.lib.mc.crafting;
 
-import net.fexcraft.lib.mc.api.fRecipeHolder;
+import net.fexcraft.lib.mc.api.registry.fRecipeHolder;
 import net.fexcraft.lib.mc.registry.RegistryUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

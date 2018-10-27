@@ -32,7 +32,7 @@ public class LimitedList<E> extends ArrayList<E> {
 	@Override
 	public void add(int index, E element){
 		if(size() + 1 > maxsize){
-			Print.log("Array limit reached."); return;
+			Print.console("Array limit reached."); return;
 		} else add(index, element);
 	}
 

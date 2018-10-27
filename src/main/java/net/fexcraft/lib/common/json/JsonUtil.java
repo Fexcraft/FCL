@@ -132,7 +132,7 @@ public class JsonUtil{
 			if(b){
 				e.printStackTrace();
 			}
-			Print.log("File '" + file + "' seems to be missing, or has invalid format.");
+			Print.console("File '" + file + "' seems to be missing, or has invalid format.");
 			return def;
 		}
 	}
@@ -180,7 +180,7 @@ public class JsonUtil{
 			} catch (IOException e) {
 				if(b){
 					e.printStackTrace();
-					Print.log("[FCL] File '" + file + "' seems to be missing.");
+					Print.console("[FCL] File '" + file + "' seems to be missing.");
 				}
 				return null;
 			}

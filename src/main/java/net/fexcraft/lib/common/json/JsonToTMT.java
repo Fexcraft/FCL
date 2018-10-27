@@ -116,7 +116,7 @@ public class JsonToTMT {
 				Static.halt();
 			}
 			else{
-				Print.log("Provided Modelbase is NULL, expect errors!", object);
+				Print.console("Provided Modelbase is NULL, expect errors!", object);
 			}
 		}
 		if(object.has(string) && object.get(string).isJsonArray()){

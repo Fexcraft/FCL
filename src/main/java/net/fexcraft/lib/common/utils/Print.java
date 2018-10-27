@@ -5,18 +5,18 @@ import net.fexcraft.lib.common.Static;
 public class Print {
 
 	public static final void debug(String url){
-		if(!Static.devmode) return; log(url);
+		if(!Static.devmode) return; console(url);
 	}
 
-	public static final void log(String url){
+	public static final void console(String url){
 		System.out.println(url);
 	}
 	
-	public static final void log(Object... objects){
-		log(true, objects);
+	public static final void console(Object... objects){
+		console(true, objects);
 	}
 	
-	public static final void log(boolean newlines, Object... objects){
+	public static final void console(boolean newlines, Object... objects){
 		StringBuffer buff = new StringBuffer();
 		buff.append("[ " + (newlines ? "\n" : ""));
 		for(int i = 0; i < objects.length; i++){
@@ -28,7 +28,7 @@ public class Print {
 	}
 
 	public static boolean bool(boolean bool, String string){
-		log(string); return bool;
+		console(string); return bool;
 	}
 	
 }

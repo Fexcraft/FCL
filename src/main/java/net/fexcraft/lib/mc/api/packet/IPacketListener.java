@@ -1,4 +1,4 @@
-package net.fexcraft.lib.mc.api;
+package net.fexcraft.lib.mc.api.packet;
 
 public interface IPacketListener <PACKET extends IPacket> {
 	

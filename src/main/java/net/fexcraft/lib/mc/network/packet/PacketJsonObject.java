@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 
 import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.common.json.JsonUtil;
-import net.fexcraft.lib.mc.api.IPacket;
+import net.fexcraft.lib.mc.api.packet.IPacket;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PacketJsonObject implements IPacket, IMessage {

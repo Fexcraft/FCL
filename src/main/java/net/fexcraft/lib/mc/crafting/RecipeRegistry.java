@@ -101,19 +101,19 @@ public class RecipeRegistry {
 		}
 	}
 
-	public static WorkBench getWorkBench(){
+	/*public static WorkBench getWorkBench(){
 		return workbench;
-	}
+	}*/
 	
 	public static BluePrintTable getBluePrintTable(){
 		return blueprinttable;
 	}
 	
-	private static WorkBench workbench;
+	//private static WorkBench workbench;
 	private static BluePrintTable blueprinttable;
 
 	public static void initialize(){
-		workbench = new WorkBench();
+		//workbench = new WorkBench();
 		blueprinttable = new BluePrintTable();
 		PacketHandler.registerListener(PacketHandlerType.NBT, Side.SERVER, new BluePrintTableGui.SRBTP());
 	}

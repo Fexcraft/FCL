@@ -1,6 +1,6 @@
 package net.fexcraft.lib.mc.utils;
 
-import net.fexcraft.lib.mc.api.fCommand;
+import net.fexcraft.lib.mc.api.registry.fCommand;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;

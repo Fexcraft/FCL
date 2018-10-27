@@ -2,8 +2,8 @@ package net.fexcraft.lib.mc.network.handlers;
 
 import java.util.HashSet;
 
-import net.fexcraft.lib.mc.api.IPacketListener;
-import net.fexcraft.lib.mc.api.IPacketReceiver;
+import net.fexcraft.lib.mc.api.packet.IPacketListener;
+import net.fexcraft.lib.mc.api.packet.IPacketReceiver;
 import net.fexcraft.lib.mc.network.packet.PacketEntityUpdate;
 import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.client.Minecraft;

@@ -2,7 +2,7 @@ package net.fexcraft.lib.mc.network.handlers;
 
 import java.util.HashMap;
 
-import net.fexcraft.lib.mc.api.IPacketListener;
+import net.fexcraft.lib.mc.api.packet.IPacketListener;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.client.Minecraft;

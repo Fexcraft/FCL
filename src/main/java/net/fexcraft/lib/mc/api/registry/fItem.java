@@ -1,4 +1,4 @@
-package net.fexcraft.lib.mc.api;
+package net.fexcraft.lib.mc.api.registry;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,16 +7,14 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface fEntity {
+public @interface fItem {
 	
 	public String modid();
 	
 	public String name();
-
-	public int tracking_range() default 64;
-
-	public int update_frequency() default 1;
-
-	boolean send_velocity_updates() default true;
+	
+	public int variants() default 1;
+	
+	public String[] custom_variants() default {};
 	
 }

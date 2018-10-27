@@ -1,7 +1,6 @@
 package net.fexcraft.lib.mc.crafting;
 
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.registry.RegistryUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -23,15 +22,15 @@ public class WorkBench extends Block {
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	
-    public WorkBench() {
+    public WorkBench(){
     	super(Material.GLASS);
     	this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     	this.setHarvestLevel("axe", 1);
     	this.setHardness(1.0F);
     	this.setResistance(32.0F);
     	this.setCreativeTab(CreativeTabs.TOOLS);
-    	
-    	RegistryUtil.get("fcl").addBlock("workbench", this, null, 0, null);
+    	//
+    	//RegistryUtil.get("fcl").addBlock("workbench", this, null, 0, null);
 	}
 
     @Override

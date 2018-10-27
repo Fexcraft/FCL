@@ -1,4 +1,4 @@
-package net.fexcraft.lib.mc.api;
+package net.fexcraft.lib.mc.api.registry;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

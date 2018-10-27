@@ -1,7 +1,7 @@
 package net.fexcraft.lib.mc.network.packet;
 
 import io.netty.buffer.ByteBuf;
-import net.fexcraft.lib.mc.api.IPacket;
+import net.fexcraft.lib.mc.api.packet.IPacket;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

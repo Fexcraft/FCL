@@ -6,7 +6,7 @@ import org.lwjgl.input.Mouse;
 
 import net.fexcraft.lib.common.lang.ArrayList;
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.api.IPacketListener;
+import net.fexcraft.lib.mc.api.packet.IPacketListener;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Formatter;
