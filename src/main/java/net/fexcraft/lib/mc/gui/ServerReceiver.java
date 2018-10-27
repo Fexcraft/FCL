@@ -30,7 +30,7 @@ public class ServerReceiver implements IPacketListener<PacketNBTTagCompound> {
 			case "open_guicontainer":{
 				try{
 	                int[] err = packet.nbt.getIntArray("args"); NBTTagCompound compound = packet.nbt.getCompoundTag("data");
-					GenericGuiContainer container = GuiHandler.CONTAINERS.get(packet.nbt.getInteger("gui")).getConstructor(EntityPlayer.class, int[].class, NBTTagCompound.class).newInstance(player, err, compound);
+					GenericContainer container = GuiHandler.CONTAINERS.get(packet.nbt.getInteger("gui")).getConstructor(EntityPlayer.class, int[].class, NBTTagCompound.class).newInstance(player, err, compound);
 	                player.openContainer = container;
 	                PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(packet.nbt), player);
 				}
@@ -40,7 +40,7 @@ public class ServerReceiver implements IPacketListener<PacketNBTTagCompound> {
                 return;
 			}
             case "generic_gui":{
-                ((GenericGuiContainer)player.openContainer).packet(Side.SERVER, packet.nbt, player);
+                ((GenericContainer)player.openContainer).packet(Side.SERVER, packet.nbt, player);
             	return;
             }
             //

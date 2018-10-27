@@ -99,7 +99,7 @@ public class RecipeRegistry {
 
 	public static void initialize(){
 		workbench = new WorkBench(); blueprinttable = new BluePrintTable();
-		PacketHandler.registerListener(PacketHandlerType.NBT, Side.SERVER, new BluePrintTableGui.SRBTP());
+		PacketHandler.registerListener(PacketHandlerType.NBT, Side.SERVER, new BluePrintTableGuiOld.SRBTP());
 	}
 	
 	public static BluePrintTable getBluePrintTable(){

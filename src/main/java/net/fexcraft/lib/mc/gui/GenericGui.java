@@ -6,6 +6,8 @@ import java.util.TreeMap;
 
 import javax.annotation.Nullable;
 
+import org.lwjgl.input.Mouse;
+
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
@@ -18,7 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-public abstract class GenericGui<CONTAINER extends GenericGuiContainer> extends GuiContainer {
+public abstract class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer {
 
 	protected ResourceLocation texloc = null;
     protected TreeMap<String, BasicButton> buttons = new TreeMap<>();
@@ -30,8 +32,8 @@ public abstract class GenericGui<CONTAINER extends GenericGuiContainer> extends 
     protected EntityPlayer player;
     
     @SuppressWarnings("unchecked")
-	public GenericGui(ResourceLocation texture, GenericGuiContainer container, EntityPlayer player){
-    	super(container);
+	public GenericGui(ResourceLocation texture, GenericContainer container, EntityPlayer player){
+    	super(container == null ? new GenericContainer.DefImpl() : container);
     	this.texloc = texture == null ? new ResourceLocation("minecraft:textures/stone.png") : texture;
     	this.container = (CONTAINER)this.inventorySlots;
     	this.container.setPlayer(this.player = player);
@@ -93,6 +95,8 @@ public abstract class GenericGui<CONTAINER extends GenericGuiContainer> extends 
     protected abstract void drawbackground(float pticks, int mouseX, int mouseY);
 
 	protected abstract void buttonClicked(int mouseX, int mouseY, int mouseButton, String key, BasicButton button);
+
+	protected abstract void scrollwheel(int am, int x, int y);
     
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
@@ -134,6 +138,8 @@ public abstract class GenericGui<CONTAINER extends GenericGuiContainer> extends 
 			if(!visible) return; rgb = hovered ? enabled ? rgb_hover : rgb_disabled : rgb_none; RGB.glColorReset();
             rgb.glColorApply(); gui.drawTexturedModalRect(x, y, tx, ty, sizex, sizey); RGB.glColorReset();
 		}
+
+		public boolean scrollwheel(int am, int x, int y){ return false; }
     	
     }
 	
@@ -167,6 +173,15 @@ public abstract class GenericGui<CONTAINER extends GenericGuiContainer> extends 
     @Override
     public void handleMouseInput() throws IOException {
         super.handleMouseInput();
+		int e = Mouse.getEventDWheel(); if(e == 0){ return; }
+		int am = e > 0 ? -1 : 1;
+		int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+		int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+		boolean exit = false;
+		for(BasicButton button : buttons.values()){
+			if(exit) break; if(button.hovered(x, y)) exit = button.scrollwheel(am, x, y);
+		}
+		if(!exit) this.scrollwheel(am, x, y);
     }
 
 }

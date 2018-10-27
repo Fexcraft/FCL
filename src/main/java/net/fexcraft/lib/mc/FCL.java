@@ -68,6 +68,7 @@ public class FCL {
     public void init(FMLInitializationEvent event) throws Exception{
 		MinecraftForge.EVENT_BUS.register(new SimpleUpdateHandler.EventHandler());
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+		GuiHandler.GUIMODS.put("fcl", instance);
 	}
 	
 	@Mod.EventHandler

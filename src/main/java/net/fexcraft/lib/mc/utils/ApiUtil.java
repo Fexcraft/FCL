@@ -1,5 +1,6 @@
 package net.fexcraft.lib.mc.utils;
 
+import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketEntityUpdate;
 import net.fexcraft.lib.mc.network.packet.PacketTileEntityUpdate;
@@ -79,6 +80,44 @@ public class ApiUtil{
 			case "black":      return EnumDyeColor.BLACK;
 		}
 		return def;
+	}
+
+	/**
+	 * @param a additional name data to append into the nbt tag key
+	 */
+	public static final NBTTagCompound writeToNBT(RGB rgb, NBTTagCompound tag, String a){
+		try{
+			String s = a == null ? "" : "_" + a;
+			tag.setInteger("RGB" + s, rgb.packed);
+			tag.setFloat("RGBA" + s, rgb.alpha);
+			return tag;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return tag;
+		}
+	}
+	
+	/**
+	 * @param tag additional name data to retrieve the right nbt key.
+	 */
+	public static final void readFromNBT(RGB rgb, NBTTagCompound tag, String a){
+		try{
+			String s = a == null ? "" : "_" + a;
+			if(tag.hasKey("RGB_Red" + s)){
+				byte red = tag.getByte("RGB_Red" + s);
+				byte green = tag.getByte("RGB_Green" + s);
+				byte blue = tag.getByte("RGB_Blue" + s);
+				rgb.packed = new RGB(red, green, blue).packed;
+			}
+			else{
+				rgb.packed = tag.getInteger("RGB" + s);
+				rgb.alpha = tag.getFloat("RGBA" + s);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace(); rgb.packed = RGB.WHITE.packed;
+		}
 	}
 	
 }

@@ -1,3 +1,9 @@
+# Blocks / Tiles
 tile.fcl:workbench.name=Workbench
 tile.fcl:blueprinttable.name=Blueprint Table
-fcl.perm_cmd.info=FCL Permissions Management Command
+
+# GUIs
+gui.fcl.blueprinttable0.catdesc=Items: %s || Recipes: %s
+gui.fcl.recipe.testcat0=TestCategory0
+gui.fcl.recipe.testcat1=TestCategory1
+gui.fcl.recipe.testcat2=TestCategory2

@@ -9,11 +9,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class GenericGuiContainer extends Container {
+public abstract class GenericContainer extends Container {
 	
 	protected EntityPlayer player;
 	
-	public GenericGuiContainer(){}
+	public GenericContainer(){}
 
     @Override
     public boolean canInteractWith(EntityPlayer player){
@@ -36,7 +36,7 @@ public abstract class GenericGuiContainer extends Container {
 	
 	protected abstract void packet(Side side, NBTTagCompound packet, EntityPlayer player);
 	
-	public static class DefImpl extends GenericGuiContainer {
+	public static class DefImpl extends GenericContainer {
 
 		@Override
 		protected void packet(Side side, NBTTagCompound packet, EntityPlayer player){

@@ -39,7 +39,7 @@ public class Sql {
 			return c;
 		}
 		String url = "jdbc:mysql://" + hostname + ":" + port + (database == null ? "" : "/" + database);
-		Print.debug(url);
+		Print.devcon(url);
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 		}

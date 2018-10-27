@@ -4,7 +4,7 @@ import net.fexcraft.lib.common.Static;
 
 public class Print {
 
-	public static final void debug(String url){
+	public static final void devcon(String url){
 		if(!Static.devmode) return; console(url);
 	}
 

@@ -7,7 +7,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -124,45 +123,6 @@ public class RGB {
 			case GREEN: return 6192150;
 			case RED: return 11546150;
 			case BLACK: default: return 1908001;
-		}
-	}
-
-	/**
-	 * @param a additional name data to append into the nbt tag key
-	 */
-	public final NBTTagCompound writeToNBT(NBTTagCompound tag, String a){
-		try{
-			String s = a == null ? "" : "_" + a;
-			tag.setInteger("RGB" + s, packed);
-			tag.setFloat("RGBA" + s, alpha);
-			return tag;
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			return tag;
-		}
-	}
-	
-	/**
-	 * @param tag additional name data to retrieve the right nbt key.
-	 */
-	public final void readFromNBT(NBTTagCompound tag, String a){
-		try{
-			String s = a == null ? "" : "_" + a;
-			if(tag.hasKey("RGB_Red" + s)){
-				byte red = tag.getByte("RGB_Red" + s);
-				byte green = tag.getByte("RGB_Green" + s);
-				byte blue = tag.getByte("RGB_Blue" + s);
-				packed = new RGB(red, green, blue).packed;
-			}
-			else{
-				packed = tag.getInteger("RGB" + s);
-				alpha = tag.getFloat("RGBA" + s);
-			}
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			packed = WHITE.packed;
 		}
 	}
 	

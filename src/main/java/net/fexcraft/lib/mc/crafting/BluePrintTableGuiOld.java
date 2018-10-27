@@ -31,7 +31,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
-public class BluePrintTableGui {
+public class BluePrintTableGuiOld {
 	
 	private static final ResourceLocation texture = new ResourceLocation("fcl:textures/gui/blueprinttable.png");
 	

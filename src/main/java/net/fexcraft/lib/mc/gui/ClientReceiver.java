@@ -24,7 +24,7 @@ public class ClientReceiver implements IPacketListener<PacketNBTTagCompound> {
         EntityPlayer player = (EntityPlayer)objs[0];
 		switch(packet.nbt.getString("task")){
 	        case "generic_gui":{
-	            ((GenericGuiContainer)player.openContainer).packet(Side.CLIENT, packet.nbt, player);
+	            ((GenericContainer)player.openContainer).packet(Side.CLIENT, packet.nbt, player);
 	        	return;
 	        }
 	        case "open_guicontainer":{
