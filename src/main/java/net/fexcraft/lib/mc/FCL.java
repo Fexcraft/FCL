@@ -6,9 +6,11 @@ import java.util.UUID;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapabilityUtil;
 import net.fexcraft.lib.mc.crafting.RecipeRegistry;
+import net.fexcraft.lib.mc.gui.GuiHandler;
 import net.fexcraft.lib.mc.network.Network;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
+import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
 import net.fexcraft.lib.mc.registry.CreativeTab;
 import net.fexcraft.lib.mc.registry.RegistryUtil;
 import net.fexcraft.lib.mc.utils.FclConfig;
@@ -65,7 +67,7 @@ public class FCL {
 	@Mod.EventHandler
     public void init(FMLInitializationEvent event) throws Exception{
 		MinecraftForge.EVENT_BUS.register(new SimpleUpdateHandler.EventHandler());
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new RecipeRegistry.GuiHandler());
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 	}
 	
 	@Mod.EventHandler
@@ -87,6 +89,8 @@ public class FCL {
 		CapabilityManager.INSTANCE.register(SignCapability.class, new SignCapabilityUtil.Storage(), new SignCapabilityUtil.Callable());
 		SignCapabilityUtil.addListener(net.fexcraft.lib.mc.capabilities.sign.ExampleListener.class);
 		//RecipeRegistry.importVanillaRecipes();
+		NBTTagCompoundPacketHandler.addListener(Side.SERVER, new net.fexcraft.lib.mc.gui.ServerReceiver());
+		NBTTagCompoundPacketHandler.addListener(Side.CLIENT, new net.fexcraft.lib.mc.gui.ClientReceiver());
 		Print.log("Loading complete.");
 	}
 	
