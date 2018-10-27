@@ -21,7 +21,7 @@ public class BluePrintTableGui1 extends GenericGui<GenericContainer.DefImpl> {
 		super(texture, new GenericContainer.DefImpl(), player);
 		this.xSize = 256; this.ySize = 204; category = x;
 		if(BluePrintTableGui2.item >= 0 && BluePrintTableGui2.recipe >= 0){
-			this.openGui("fcl", 2, new int[]{ BluePrintTableGui2.item, BluePrintTableGui2.recipe, 0 });
+			this.openGui("fcl", 2, new int[]{ category, BluePrintTableGui2.item, BluePrintTableGui2.recipe });
 		}
 	}
 
@@ -75,7 +75,7 @@ public class BluePrintTableGui1 extends GenericGui<GenericContainer.DefImpl> {
 		}
 		if(key.startsWith("item_") || key.startsWith("i_")){
 			int i = Integer.parseInt(key.replace("item_", "").replace("i_", ""));
-			this.openGui("fcl", 2, new int[]{ i + scroll, 0, 0});
+			this.openGui("fcl", 2, new int[]{ category, i + scroll, 0 });
 		}
 	}
 

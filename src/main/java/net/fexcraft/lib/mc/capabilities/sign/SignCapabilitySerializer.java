@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import net.fexcraft.lib.mc.capabilities.FCLCapabilities;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability.Listener;
 import net.minecraft.block.BlockSign;
 import net.minecraft.block.state.IBlockState;
@@ -13,22 +14,19 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class SignCapabilityUtil implements ICapabilitySerializable<NBTBase>{
+public class SignCapabilitySerializer implements ICapabilitySerializable<NBTBase>{
 	
-	@CapabilityInject(SignCapability.class)
-	public static final Capability<SignCapability> SIGN_CAPABILITY = null;
 	public static final ResourceLocation REGISTRY_NAME = new ResourceLocation("fcl:sign");
 	private static final ArrayList<Class<? extends SignCapability.Listener>> listeners = new ArrayList<Class<? extends SignCapability.Listener>>();
 	private SignCapability instance;
 	
-	public SignCapabilityUtil(TileEntitySign object){
-		instance = SIGN_CAPABILITY.getDefaultInstance();
+	public SignCapabilitySerializer(TileEntitySign object){
+		instance = FCLCapabilities.SIGN_CAPABILITY.getDefaultInstance();
 		instance.setTileEntity(object);
 	}
 	
@@ -42,22 +40,22 @@ public class SignCapabilityUtil implements ICapabilitySerializable<NBTBase>{
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
-		return capability == SIGN_CAPABILITY;
+		return capability == FCLCapabilities.SIGN_CAPABILITY;
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
-		return capability == SIGN_CAPABILITY ? SIGN_CAPABILITY.<T>cast(this.instance) : null;
+		return capability == FCLCapabilities.SIGN_CAPABILITY ? FCLCapabilities.SIGN_CAPABILITY.<T>cast(this.instance) : null;
 	}
 
 	@Override
 	public NBTBase serializeNBT(){
-		return SIGN_CAPABILITY.getStorage().writeNBT(SIGN_CAPABILITY, instance, null);
+		return FCLCapabilities.SIGN_CAPABILITY.getStorage().writeNBT(FCLCapabilities.SIGN_CAPABILITY, instance, null);
 	}
 
 	@Override
 	public void deserializeNBT(NBTBase nbt){
-		SIGN_CAPABILITY.getStorage().readNBT(SIGN_CAPABILITY, instance, null, nbt);
+		FCLCapabilities.SIGN_CAPABILITY.getStorage().readNBT(FCLCapabilities.SIGN_CAPABILITY, instance, null, nbt);
 	}
 	
 	//
@@ -94,7 +92,7 @@ public class SignCapabilityUtil implements ICapabilitySerializable<NBTBase>{
 		@SubscribeEvent
 		public void onAttachEvent(AttachCapabilitiesEvent<net.minecraft.tileentity.TileEntity> event){
 			if(event.getObject() instanceof TileEntitySign){
-				event.addCapability(REGISTRY_NAME, new SignCapabilityUtil((TileEntitySign)event.getObject()));
+				event.addCapability(REGISTRY_NAME, new SignCapabilitySerializer((TileEntitySign)event.getObject()));
 			}
 		}
 		
@@ -106,7 +104,7 @@ public class SignCapabilityUtil implements ICapabilitySerializable<NBTBase>{
 				if(te_sign == null || te_sign.signText == null || te_sign.signText[0] == null){
 					return;
 				}
-				SignCapability cap = te_sign.getCapability(SIGN_CAPABILITY, null);
+				SignCapability cap = te_sign.getCapability(FCLCapabilities.SIGN_CAPABILITY, null);
 				if(cap != null){
 					cap.onPlayerInteract(event, state, te_sign);
 					return;

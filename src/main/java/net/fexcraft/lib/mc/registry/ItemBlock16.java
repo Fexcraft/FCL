@@ -21,9 +21,7 @@ public class ItemBlock16 extends net.minecraft.item.ItemBlock {
     }
 
 	public void setItemBurnTime(int burn_time){
-		if(burn_time < -1){
-			burn_time = -1;
-		}
+		if(burn_time < -1){ burn_time = -1; }
 		this.burn_time = burn_time;
 	}
 	

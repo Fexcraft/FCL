@@ -15,10 +15,7 @@ public class Formatter {
 	}
 
 	public static String fromInt(byte i){
-		if(i < 0){ i = 0; }
-		if(i < 10){
-			return "&" + i;
-		}
+		if(i < 0){ i = 0; } if(i < 10){ return "&" + i; }
 		switch(i){
 			case 10: return "&a";
 			case 11: return "&b";

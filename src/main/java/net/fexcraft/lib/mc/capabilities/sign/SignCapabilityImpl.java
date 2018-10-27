@@ -21,7 +21,7 @@ public class SignCapabilityImpl implements SignCapability {
 	
 	public SignCapabilityImpl(){
 		listeners = new ArrayList<SignCapability.Listener>();
-		SignCapabilityUtil.getListeners().forEach(clazz -> {
+		SignCapabilitySerializer.getListeners().forEach(clazz -> {
 			try{
 				listeners.add(clazz.newInstance());
 			}
@@ -84,9 +84,6 @@ public class SignCapabilityImpl implements SignCapability {
 
 	@Override
 	public boolean onPlayerInteract(PlayerInteractEvent event, IBlockState state, TileEntitySign tileentity){
-		/*if(Static.dev()){
-			Print.log((event.getWorld().isRemote ? "CLIENT" : "SERVER") + ": " + tileentity.writeToNBT(new NBTTagCompound()));
-		}*/
 		for(Listener listener : listeners){
 			if(listener.onPlayerInteract(this, event, state, tileentity)){
 				return true;

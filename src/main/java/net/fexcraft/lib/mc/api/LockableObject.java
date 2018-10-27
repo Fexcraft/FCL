@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+@Deprecated
 public interface LockableObject {
 	
 	public boolean isLocked();

@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3i;
 
 /**
  * @author Ferdinand
- * Based off the Vanilla Vec3d;
+ * Based off the (Minecraft) Vanilla Vec3d;
  */
 public class Vec3f {
 	

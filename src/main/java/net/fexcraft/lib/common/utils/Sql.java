@@ -15,6 +15,7 @@ import net.fexcraft.lib.common.lang.ArrayList;
  * Based off the SQL Util used on the fexcraft.net website.
  * @author Ferdinand (FEX___96)
  */
+@Deprecated //TODO update
 public class Sql {
 	
 	private final String user;

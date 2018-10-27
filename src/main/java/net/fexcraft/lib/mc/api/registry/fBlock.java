@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface fBlock{
+public @interface fBlock {
 	
 	public String modid();
 	

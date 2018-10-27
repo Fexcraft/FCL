@@ -1,5 +1,6 @@
 package net.fexcraft.lib.mc.render;
 
+@Deprecated
 public enum ModelType {
 	
 	JSON("json", "json"), JAVA("java", "class"), JTMT("jtmt", "jtmt"), TMT("tmt", "class"), OBJ("obj", "obj"), NONE("null", "");

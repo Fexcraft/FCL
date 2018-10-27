@@ -42,6 +42,7 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks){
         super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
     
     @Override
@@ -64,7 +65,10 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
     		button.hovered(mouseX, mouseY); button.draw(this, pticks, mouseX, mouseY);
     	});
     	texts.forEach((key, text) -> {
-            if(text.visible) mc.fontRenderer.drawString(text.string, text.x, text.y, text.color);
+            if(text.visible){
+            	text.hovered(mouseX, mouseY);
+            	mc.fontRenderer.drawString(text.string, text.x, text.y, text.hovered ? text.hovercolor : text.color);
+            }
     	});
     	fields.forEach((key, elm) -> elm.drawTextBox());
     }
@@ -146,14 +150,25 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 	public static class BasicText {
 		
 		private static final RGB defcolor = new RGB(128, 128, 128);
-		public int x, y, width, color;
+		public int x, y, width, color, hovercolor = new RGB(244, 215,  66, 0.5f).packed;
 		public String string;
-		public boolean visible = true;
+		public boolean visible = true, hovered, hoverable;
 		
 		public BasicText(int x, int y, int width, @Nullable Integer color, String string){
 			this.x = x; this.y = y; this.width = width;
 			this.string = string; this.color = color == null ? defcolor.packed : color;
 		}
+		
+		public BasicText(int x, int y, int width, @Nullable Integer color, String string, boolean hover, @Nullable Integer hovercolor){
+			this(x, y, width, color, string); this.hoverable = hover; if(hovercolor != null) this.hovercolor = hovercolor;
+		}
+		
+		public boolean hovered(int mouseX, int mouseY){
+			return hoverable ? hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + 8 : false;
+		}
+
+		public boolean scrollwheel(int am, int x, int y){ return false; }
+		
 	}
 	
 	//---///----////----///---//
@@ -179,6 +194,9 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 		int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 		boolean exit = false;
 		for(BasicButton button : buttons.values()){
+			if(exit) break; if(button.hovered(x, y)) exit = button.scrollwheel(am, x, y);
+		}
+		for(BasicText button : texts.values()){
 			if(exit) break; if(button.hovered(x, y)) exit = button.scrollwheel(am, x, y);
 		}
 		if(!exit) this.scrollwheel(am, x, y);

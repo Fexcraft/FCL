@@ -1,7 +1,7 @@
 package net.fexcraft.lib.mc.crafting;
 
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.registry.FCLRegistry;
+import net.fexcraft.lib.mc.api.registry.fBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -18,6 +18,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+@fBlock(modid = "fcl", name = "blueprinttable")
 public class BluePrintTable extends Block {
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
@@ -27,7 +28,7 @@ public class BluePrintTable extends Block {
     	this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     	this.setHarvestLevel("axe", 1); this.setHardness(1.0F); this.setResistance(32.0F);
     	this.setCreativeTab(CreativeTabs.TOOLS);
-    	FCLRegistry.getAutoRegisterer("fcl").addBlock("blueprinttable", this, null, 0, null);
+    	//FCLRegistry.getAutoRegisterer("fcl").addBlock("blueprinttable", this, null, 0, null);
 	}
 	
 	@Override
@@ -70,9 +71,7 @@ public class BluePrintTable extends Block {
 	@Override
     public IBlockState getStateFromMeta(int meta){
         EnumFacing enumfacing = EnumFacing.getFront(meta);
-        if (enumfacing.getAxis() == EnumFacing.Axis.Y){
-            enumfacing = EnumFacing.NORTH;
-        }
+        if(enumfacing.getAxis() == EnumFacing.Axis.Y){ enumfacing = EnumFacing.NORTH; }
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 	

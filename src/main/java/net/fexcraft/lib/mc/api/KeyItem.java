@@ -10,6 +10,8 @@ import net.minecraft.util.text.TextFormatting;
  * @author Ferdinand (FEX___96)
  * 
  */
+//TODO replace with capability
+@Deprecated
 public abstract class KeyItem extends Item {
 	
 	public abstract KeyType getType(ItemStack stack);

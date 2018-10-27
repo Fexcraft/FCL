@@ -6,8 +6,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import net.fexcraft.lib.common.lang.ArrayList;
-import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.PacketHandler.PacketHandlerType;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.item.ItemStack;
@@ -16,13 +14,10 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class RecipeRegistry {
 	
 	private static final TreeMap<String, TreeMap<String, List<BluePrintRecipe>>> RECIPES = new TreeMap<String, TreeMap<String, List<BluePrintRecipe>>>();
-	private static BluePrintTable blueprinttable;
-	private static WorkBench workbench;
 	
 	public static final void addBluePrintRecipe(String category, ItemStack stack, ItemStack... recipeComponents){
 		if(!RECIPES.containsKey(category)){
@@ -93,21 +88,6 @@ public class RecipeRegistry {
 
 	public static String getCategory(int x, int y){
 		return (String)getRecipes(x).keySet().toArray()[y];
-	}
-	
-	//
-
-	public static void initialize(){
-		workbench = new WorkBench(); blueprinttable = new BluePrintTable();
-		PacketHandler.registerListener(PacketHandlerType.NBT, Side.SERVER, new BluePrintTableGuiOld.SRBTP());
-	}
-	
-	public static BluePrintTable getBluePrintTable(){
-		return blueprinttable;
-	}
-
-	public static WorkBench getWorkBench(){
-		return workbench;
 	}
 	
 	public static List<BluePrintRecipe> getRecipes(String category, ItemStack stack){

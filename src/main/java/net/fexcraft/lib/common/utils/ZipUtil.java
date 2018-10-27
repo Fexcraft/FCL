@@ -26,19 +26,11 @@ public class ZipUtil {
 			ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			while(true){
-				ZipEntry entry = stream.getNextEntry();
-				if(entry == null){
-					break;
-				}
+				ZipEntry entry = stream.getNextEntry(); if(entry == null){ break; }
 				if(entry.getName().equals(target)){
-					obj = JsonUtil.getObjectFromInputStream(zip.getInputStream(entry));
-					break;
+					obj = JsonUtil.getObjectFromInputStream(zip.getInputStream(entry)); break;
 				}
-			}
-			reader.close();
-			zip.close();
-			stream.close();
-			return obj;
+			} reader.close(); zip.close(); stream.close(); return obj;
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -50,20 +42,11 @@ public class ZipUtil {
 		try{
 			ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
 			while(true){
-				ZipEntry entry = stream.getNextEntry();
-				if(entry == null){
-					break;
-				}
-				if(entry.getName().equals(target)){
-					stream.close();
-					return true;
-				}
-			}
-			stream.close();
+				ZipEntry entry = stream.getNextEntry(); if(entry == null){ break; }
+				if(entry.getName().equals(target)){ stream.close(); return true; }
+			} stream.close();
 		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+		catch(Exception e){ e.printStackTrace(); }
 		return false;
 	}
 
@@ -73,20 +56,13 @@ public class ZipUtil {
 			ZipFile zip = new ZipFile(file);
 			ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
 			while(true){
-				ZipEntry entry = stream.getNextEntry();
-				if(entry == null){
-					break;
-				}
+				ZipEntry entry = stream.getNextEntry(); if(entry == null){ break; }
 				if(entry.getName().startsWith(path) && entry.getName().endsWith(extension)){
 					array.add(JsonUtil.getObjectFromInputStream(zip.getInputStream(entry)));
 				}
-			}
-			zip.close();
-			stream.close();
+			} zip.close(); stream.close();
 		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+		catch(Exception e){ e.printStackTrace(); }
 		return array;
 	}
 	
@@ -96,20 +72,13 @@ public class ZipUtil {
 			ZipFile zip = new ZipFile(file);
 			ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
 			while(true){
-				ZipEntry entry = stream.getNextEntry();
-				if(entry == null){
-					break;
-				}
+				ZipEntry entry = stream.getNextEntry(); if(entry == null){ break; }
 				if(entry.getName().startsWith(path) && entry.getName().endsWith(extension)){
 					map.put(entry.getName().replace(path, "").replace(extension, ""), JsonUtil.getObjectFromInputStream(zip.getInputStream(entry)));
 				}
-			}
-			zip.close();
-			stream.close();
+			} zip.close(); stream.close();
 		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+		catch(Exception e){ e.printStackTrace(); }
 		return map;
 	}
 	
@@ -121,20 +90,13 @@ public class ZipUtil {
 			ZipFile zip = new ZipFile(file);
 			ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
 			while(true){
-				ZipEntry entry = stream.getNextEntry();
-				if(entry == null){
-					break;
-				}
+				ZipEntry entry = stream.getNextEntry(); if(entry == null){ break; }
 				if(entry.getName().startsWith(path) && entry.getName().endsWith(extension)){
 					array.add(JsonUtil.getElementFromInputStream(zip.getInputStream(entry)));
 				}
-			}
-			zip.close();
-			stream.close();
+			} zip.close(); stream.close();
 		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+		catch(Exception e){ e.printStackTrace(); }
 		return array;
 	}
 	
@@ -144,20 +106,13 @@ public class ZipUtil {
 			ZipFile zip = new ZipFile(file);
 			ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
 			while(true){
-				ZipEntry entry = stream.getNextEntry();
-				if(entry == null){
-					break;
-				}
+				ZipEntry entry = stream.getNextEntry(); if(entry == null){ break; }
 				if(entry.getName().startsWith(path) && entry.getName().endsWith(extension)){
 					map.put(entry.getName().replace(path, "").replace(extension, ""), JsonUtil.getElementFromInputStream(zip.getInputStream(entry)));
 				}
-			}
-			zip.close();
-			stream.close();
+			} zip.close(); stream.close();
 		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+		catch(Exception e){ e.printStackTrace(); }
 		return map;
 	}
 	

@@ -82,7 +82,7 @@ public class Static extends net.fexcraft.lib.common.Static {
 			return getPlayerNameByUUID(UUID.fromString(string));
 		}
 		catch(Exception e){
-			return "<null/uuid-parse-error>";
+			return "<null/parse_err>";
 		}
 	}
 	

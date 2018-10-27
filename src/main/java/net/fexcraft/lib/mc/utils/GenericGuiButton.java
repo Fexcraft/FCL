@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
+@Deprecated //Use the "new" Generic GUI instead.
 public class GenericGuiButton extends GuiButton {
 	
 	private int[] xpos = new int[4], ypos = new int[4], textpos = new int[2];

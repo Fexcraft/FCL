@@ -99,7 +99,7 @@ public class ApiUtil{
 	}
 	
 	/**
-	 * @param tag additional name data to retrieve the right nbt key.
+	 * @param a additional name data to retrieve the right nbt key.
 	 */
 	public static final void readFromNBT(RGB rgb, NBTTagCompound tag, String a){
 		try{

@@ -1,12 +1,16 @@
-package net.fexcraft.lib.common.math;
+package net.fexcraft.lib.mc.utils;
 
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.JsonObject;
 
+import net.fexcraft.lib.common.math.Vec3f;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.Vec3d;
 
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
 public class Pos {
 
     public float x, y, z;
