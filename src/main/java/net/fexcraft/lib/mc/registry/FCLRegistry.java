@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.annotation.Nullable;
+
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.api.registry.fBlock;
@@ -16,7 +18,6 @@ import net.fexcraft.lib.mc.api.registry.fItem;
 import net.fexcraft.lib.mc.api.registry.fModel;
 import net.fexcraft.lib.mc.api.registry.fRecipeHolder;
 import net.fexcraft.lib.mc.api.registry.fTESR;
-import net.fexcraft.lib.mc.render.ModelType;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -41,7 +42,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-public class RegistryUtil {
+public class FCLRegistry {
 	
 	private static final String block = fBlock.class.getCanonicalName();
 	private static final String item = fItem.class.getCanonicalName();
@@ -57,10 +58,8 @@ public class RegistryUtil {
 	private static Map<ResourceLocation, Object> models = new TreeMap<ResourceLocation, Object>();
 
 	public static void prepare(ASMDataTable asmData){
-		table = asmData;
-		new AutoRegisterer("fcl");
-		registerTESRs();
-		scanForModels();
+		table = asmData; new AutoRegisterer("fcl");
+		scanForModels(); registerTESRs();
 	}
 	
 	private static final void error(Exception e, String s){
@@ -431,7 +430,7 @@ public class RegistryUtil {
 		for(ASMData entry : data){
 			try{
 				fModel model = entry.getClass().getAnnotation(fModel.class);
-				models.put(new ResourceLocation(model.type().toString(), model.name()), entry.getClass().newInstance());
+				models.put(new ResourceLocation(model.registryname()), entry.getClass().newInstance());
 			}
 			catch(Exception e){
 				error(e, entry.getClassName());
@@ -439,21 +438,24 @@ public class RegistryUtil {
 		}
 	}
 	
-	public static Object getModel(ResourceLocation rs){
-		for(ResourceLocation res : models.keySet()){
-			if(res.equals(rs)){
-				return models.get(res);
-			}
-		}
-		return null;
+	@SuppressWarnings("unchecked") @Nullable
+	public static <T> T getModel(ResourceLocation loc){
+		return (T)models.get(loc);
 	}
 	
-	public static Object getModel(String rs){
+	public static <T> T getModel(String rs){
 		return getModel(new ResourceLocation(rs));
 	}
 	
-	public static Object getModel(ModelType type, String s){
-		return getModel(new ResourceLocation(type.toString(), s));
+	public static boolean addModelManually(String resloc, Object model, boolean override){
+		return addModelManually(new ResourceLocation(resloc), model, override);
+	}
+	
+	public static boolean addModelManually(ResourceLocation loc, Object model, boolean override){
+		if(models.containsKey(loc) && !override){
+			Print.format("Tried to register Model with RS[%s] and Class[%s] but key already exists, try setting override to true?", loc, model); return false;
+		}
+		else models.put(loc, model); return true;
 	}
 	
 	public static Material getMaterial(String material){

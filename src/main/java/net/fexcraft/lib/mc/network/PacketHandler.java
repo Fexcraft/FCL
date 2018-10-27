@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class PacketHandler{
+public class PacketHandler {
 	
 	private static final SimpleNetworkWrapper instance = NetworkRegistry.INSTANCE.newSimpleChannel("frsm");
 	public static int nextpacketid = 12;
@@ -44,7 +44,7 @@ public class PacketHandler{
 		return instance;
 	}
 	
-	public static enum PacketHandlerType{
+	public static enum PacketHandlerType {
 		TILEENTITY, KEYINPUT, ITEMSTACK, JSON, NBT, ENTITY;
 	}
 	

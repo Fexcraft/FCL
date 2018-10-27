@@ -14,9 +14,7 @@ public class ExternalTextureHelper {
 	private static final Map<String, UCResourceLocation> map = new HashMap<String, UCResourceLocation>();
 	
 	public static UCResourceLocation get(String s){
-		if(map.containsKey(s)){
-			return map.get(s);
-		}
+		if(map.containsKey(s)){ return map.get(s); }
 		UCResourceLocation texture = new UCResourceLocation("fcl:remote/", s);
 		ITextureObject object = Minecraft.getMinecraft().renderEngine.getTexture(texture);
         if(object == null){

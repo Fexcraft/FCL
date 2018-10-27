@@ -161,5 +161,13 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 		context.updateLoggers();
 		return context.getLogger(name);
 	}
+
+	public static void format(String string, Object... objs){
+		Print.log(String.format(string, objs));
+	}
+
+	public static void format(ICommandSender sender, String string, Object... objs){
+		Print.chat(sender, String.format(string, objs));
+	}
 	
 }

@@ -5,14 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import net.fexcraft.lib.mc.render.ModelType;
-
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface fModel {
 	
-	public String name();
-	
-	public ModelType type();
+	public String registryname();
 	
 }

@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import net.fexcraft.lib.common.lang.ArrayList;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.PacketHandler.PacketHandlerType;
-import net.fexcraft.lib.mc.registry.RegistryUtil;
+import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -62,7 +62,7 @@ public class RecipeRegistry {
 		NonNullList<Ingredient> list = NonNullList.<Ingredient>create();
 		list.addAll(Arrays.asList(ingredients));
 		//vrecipes.put(rs, new ShapelessRecipes(string == null ? "" : string, output, list));
-		RegistryUtil.get(rs.getResourceDomain()).addRecipe(rs, new ShapelessRecipes(string == null ? "" : string, output, list));
+		FCLRegistry.get(rs.getResourceDomain()).addRecipe(rs, new ShapelessRecipes(string == null ? "" : string, output, list));
 	}
 
 	public static void addShapedRecipe(String rs, String string, ItemStack output, int width, int height, Ingredient... ingredients){
@@ -79,7 +79,7 @@ public class RecipeRegistry {
 		NonNullList<Ingredient> list = NonNullList.<Ingredient>create();
 		list.addAll(Arrays.asList(ingredients));
 		//vrecipes.put(rs, new ShapedRecipes(string == null ? "" : string, width, height, list, output));
-		RegistryUtil.get(rs.getResourceDomain()).addRecipe(rs, new ShapedRecipes(string == null ? "" : string, width, height, list, output));
+		FCLRegistry.get(rs.getResourceDomain()).addRecipe(rs, new ShapedRecipes(string == null ? "" : string, width, height, list, output));
 	}
 	
 	public static class GuiHandler implements IGuiHandler {

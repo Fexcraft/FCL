@@ -1,7 +1,7 @@
 package net.fexcraft.lib.mc.crafting;
 
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.registry.RegistryUtil;
+import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -30,7 +30,7 @@ public class BluePrintTable extends Block {
     	this.setResistance(32.0F);
     	this.setCreativeTab(CreativeTabs.TOOLS);
     	
-    	RegistryUtil.get("fcl").addBlock("blueprinttable", this, null, 0, null);
+    	FCLRegistry.get("fcl").addBlock("blueprinttable", this, null, 0, null);
 	}
 	
 	@Override

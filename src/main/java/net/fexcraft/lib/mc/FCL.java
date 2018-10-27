@@ -12,7 +12,7 @@ import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
 import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
 import net.fexcraft.lib.mc.registry.CreativeTab;
-import net.fexcraft.lib.mc.registry.RegistryUtil;
+import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.utils.FclConfig;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
@@ -55,7 +55,7 @@ public class FCL {
 		Static.setAsMcLib(true); Static.setDevmode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment")); Static.setIsServer((side = event.getSide()).isServer());
 		configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
 		FclConfig.initalize(event, event.getSuggestedConfigurationFile());
-		RegistryUtil.prepare(event.getAsmData());
+		FCLRegistry.prepare(event.getAsmData());
 		if(!FclConfig.serverSideOnly){
 			RecipeRegistry.initialize();
 		}
@@ -72,7 +72,7 @@ public class FCL {
 	
 	@Mod.EventHandler
 	public void init(FMLServerStartingEvent event){
-		RegistryUtil.registerCommands(event);
+		FCLRegistry.registerCommands(event);
 	}
 	
 	@Mod.EventHandler
@@ -81,7 +81,7 @@ public class FCL {
 		SimpleUpdateHandler.setUpdateMessage("fcl", prefix + "Update available! (" + SimpleUpdateHandler.getLatestVersionOf("fcl") + ")");
 		SimpleUpdateHandler.postInit();
 		Network.initializeValidator(event.getSide());
-		RegistryUtil.clear(event);
+		FCLRegistry.clear(event);
 		PacketHandler.init();
 		CreativeTab.getIcons();
 		//
