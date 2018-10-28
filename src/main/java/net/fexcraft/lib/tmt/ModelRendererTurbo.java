@@ -1,5 +1,6 @@
 package net.fexcraft.lib.tmt;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,9 +10,6 @@ import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 /**
  * <span style='text-decoration:line-through;'>An extension to the ModelRenderer class.</span> It basically is a copy to ModelRenderer,
  * however, it contains various new methods to make your models.
@@ -879,10 +877,10 @@ public class ModelRendererTurbo {
     	int currentFace = 0;
     	for(int j = 1; j < rings; j++){
     		for(int i = 0; i < segs; i++){
-    			float yWidth = MathHelper.cos(-Static.PI / 2 + (Static.PI / rings) *  j);
-    			float yHeight = MathHelper.sin(-Static.PI / 2 + (Static.PI / rings) *  j);
-    			float xSize = MathHelper.sin((Static.PI / segs) * i * 2F + Static.PI) * yWidth;
-    			float zSize = -MathHelper.cos((Static.PI / segs) * i * 2F + Static.PI) * yWidth;
+    			float yWidth = (float)Math.cos(-Static.PI / 2 + (Static.PI / rings) *  j);
+    			float yHeight = (float)Math.sin(-Static.PI / 2 + (Static.PI / rings) *  j);
+    			float xSize = (float)(Math.sin((Static.PI / segs) * i * 2F + Static.PI) * yWidth);
+    			float zSize = (float)(-Math.cos((Static.PI / segs) * i * 2F + Static.PI) * yWidth);
     			int curVert = 1 + i + segs * (j - 1);
     			tempVerts[curVert] = new TexturedVertex(x + xSize * r, y + yHeight * r, z + zSize * r, 0, 0);
     			if(i > 0){
@@ -1121,8 +1119,8 @@ public class ModelRendererTurbo {
 		float sCur = (coneBase ? topScale : baseScale);
 		for(int repeat = 0; repeat < (coneBase || coneTop ? 1 : 2); repeat++){
 			for(int index = 0; index < segments; index++){
-				float xSize = (mirror ^ dirMirror ? -1 : 1) * MathHelper.sin((Static.PI / segments) * index * 2F + Static.PI) * radius * sCur;
-				float zSize = -MathHelper.cos((Static.PI / segments) * index * 2F + Static.PI) * radius * sCur;
+				float xSize = (float)((mirror ^ dirMirror ? -1 : 1) * Math.sin((Static.PI / segments) * index * 2F + Static.PI) * radius * sCur);
+				float zSize = (float)(-Math.cos((Static.PI / segments) * index * 2F + Static.PI) * radius * sCur);
 				float xPlace = xCur + (!dirSide ? xSize : 0);
 				float yPlace = yCur + (!dirTop ? zSize : 0);
 				float zPlace = zCur + (dirSide ? xSize : (dirTop ? zSize : 0));
@@ -1146,10 +1144,10 @@ public class ModelRendererTurbo {
 		TexturedVertex[] vert;
 		for(int index = 0; index < segments; index++){
 			int index2 = (index + 1) % segments;
-			float uSize = MathHelper.sin((Static.PI / segments) * index * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle - 2F * uOffset);
-			float vSize = MathHelper.cos((Static.PI / segments) * index * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle - 2F * vOffset);
-			float uSize1 = MathHelper.sin((Static.PI / segments) * index2 * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle - 2F * uOffset);
-			float vSize1 = MathHelper.cos((Static.PI / segments) * index2 * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle - 2F * vOffset);
+			float uSize = (float)(Math.sin((Static.PI / segments) * index * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle - 2F * uOffset));
+			float vSize = (float)(Math.cos((Static.PI / segments) * index * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle - 2F * vOffset));
+			float uSize1 = (float)(Math.sin((Static.PI / segments) * index2 * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle - 2F * uOffset));
+			float vSize1 = (float)(Math.cos((Static.PI / segments) * index2 * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle - 2F * vOffset));
 			vert = new TexturedVertex[3];	
 			vert[0] = tempVerts[0].setTexturePosition(uStart + 0.5F * uCircle, vStart + 0.5F * vCircle);
 			vert[1] = tempVerts[1 + index2].setTexturePosition(uStart + 0.5F * uCircle + uSize1, vStart + 0.5F * vCircle + vSize1);
@@ -1185,8 +1183,8 @@ public class ModelRendererTurbo {
      * Adds a Waveform .obj file as a model. Model files use the entire texture file.
      * @param location the ResourceLocation of the .obj file.
      */
-    public void addObj(String location){
-    	addModel(new ResourceLocation(location), ModelPool.OBJ);
+    public void addObj(String id, InputStream steam){
+    	addModel(id, steam, ModelPool.OBJ);
     }
     
     /**
@@ -1194,8 +1192,8 @@ public class ModelRendererTurbo {
      * @param file the location of the model file.
      * @param modelFormat the class of the model format interpreter
      */
-    public void addModel(ResourceLocation location, Class<?> modelFormat){
-    	ModelPoolEntry entry = ModelPool.addLocation(location, modelFormat);
+    public void addModel(String id, InputStream stream, Class<?> modelFormat){
+    	ModelPoolEntry entry = ModelPool.addLocation(id, stream, modelFormat);
     	if(entry == null){ return; }
     	TexturedVertex[] verts = Arrays.copyOf(entry.vertices, entry.vertices.length);
     	TexturedPolygon[] poly = Arrays.copyOf(entry.faces, entry.faces.length);
@@ -1401,7 +1399,7 @@ public class ModelRendererTurbo {
     }
     
     private void compileDisplayList(float scale){
-        displayList = GLAllocation.generateDisplayLists(1);
+        displayList = GL11.glGenLists(1);
         GL11.glNewList(displayList, 4864 /*GL_COMPILE*/);
         for(int i = 0; i < faces.length; i++){
             faces[i].draw(Tessellator.INSTANCE, scale, lines, getColor(i));

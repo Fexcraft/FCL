@@ -1,6 +1,7 @@
 package net.fexcraft.lib.tmt;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -8,7 +9,6 @@ import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.Vec3f;
-import net.minecraft.client.resources.IResource;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelPoolObjEntry extends ModelPoolEntry {
@@ -17,9 +17,9 @@ public class ModelPoolObjEntry extends ModelPoolEntry {
 		fileExtensions = new String[] {"obj"};
 	}
 	
-	public void getModel(IResource res){
+	public void getModel(InputStream stream){
 		try{
-			BufferedReader in = new BufferedReader(new InputStreamReader(res.getInputStream(), "UTF-8"));
+			BufferedReader in = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
 			String s;
 			ArrayList<TexturedVertex> verts = new ArrayList<TexturedVertex>();
 			ArrayList<float[]> uvs = new ArrayList<float[]>();

@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 * @Author Ferdinand Calo' (FEX___96)
 */
 
-public abstract class ModelBase extends net.minecraft.client.model.ModelBase {
+public abstract class ModelBase {
 	
 	public static final ModelBase EMPTY = new EmptyModelBase();
 	

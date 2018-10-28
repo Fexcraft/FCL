@@ -1,10 +1,10 @@
 package net.fexcraft.lib.tmt;
 
 import java.io.File;
+import java.io.InputStream;
 
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
-import net.minecraft.client.resources.IResource;
 
 public abstract class ModelPoolEntry {
 	
@@ -28,6 +28,6 @@ public abstract class ModelPoolEntry {
 		return file;
 	}
 	
-	public abstract void getModel(IResource resource);
+	public abstract void getModel(InputStream stream);
     
 }
