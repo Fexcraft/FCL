@@ -1,5 +1,7 @@
 package net.fexcraft.lib.mc.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -12,6 +14,7 @@ import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.utils.HttpUtil;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -103,6 +106,12 @@ public class Static extends net.fexcraft.lib.common.Static {
 		try{ throw exception == null ? new Exception() : exception; }
 		catch(Exception ex){ ex.printStackTrace(); }
 		if(stop) halt();
+	}
+
+	public static InputStream getResource(String str){
+		try{
+			return net.minecraft.client.Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(str)).getInputStream();
+		} catch(IOException e){ e.printStackTrace(); return null; }
 	}
 	
 }

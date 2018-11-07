@@ -1,5 +1,6 @@
 package net.fexcraft.lib.common;
 
+import java.io.InputStream;
 import java.util.Random;
 
 /**
@@ -77,6 +78,13 @@ public class Static {
 			net.fexcraft.lib.mc.utils.Static.isClient();
 		}
 		return !server;
+	}
+
+	public static InputStream getResource(String str){
+		if(mclib){
+			net.fexcraft.lib.mc.utils.Static.getResource(str);
+		}
+		return Static.class.getClassLoader().getResourceAsStream(str);
 	}
 	
 }

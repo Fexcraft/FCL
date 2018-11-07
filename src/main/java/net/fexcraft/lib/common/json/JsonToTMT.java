@@ -86,6 +86,16 @@ public class JsonToTMT {
 				model.addCone(x, y, z, get(radius, obj, 1f), get(length, obj, 1f), get(segments, obj, 12), get(basescale, obj, 1f), get(direction, obj, 4));
 				break;
 			}
+			case "obj":{
+				if(!obj.has("location")){
+					model.addSphere(x, y, z, 16, 16, 16, 16, 16);
+					model.textured = false; //"error model"
+				}
+				else{
+					String str = obj.get("location").getAsString();
+					model.addObj(str, Static.getResource(str));
+				}
+			}
 		}
 		model.mirror = JsonUtil.getIfExists(obj, mirror, false);
 		model.flip = JsonUtil.getIfExists(obj, flip, false);
