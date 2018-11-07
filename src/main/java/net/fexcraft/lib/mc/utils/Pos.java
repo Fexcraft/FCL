@@ -13,23 +13,17 @@ import net.minecraft.util.math.Vec3d;
  */
 public class Pos {
 
-    public float x, y, z;
+    public static final Pos NULL = new Pos(0, 0, 0);
+	public final float x, y, z;
 
     public Pos(float x, float y, float z){
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.x = x; this.y = y; this.z = z;
     }
 
     public Pos(float[] pos){
-        try{
-            x = pos[0];
-            y = pos[1];
-            z = pos[2];
-        }
-        catch(Exception e){
-            x = y = z = 0;
-        }
+    	x = pos.length >= 1 ? pos[0] : 0;
+    	y = pos.length >= 2 ? pos[0] : 0;
+    	z = pos.length >= 3 ? pos[0] : 0;
     }
 
     public Pos copy(){
