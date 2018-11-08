@@ -120,7 +120,7 @@ public class ModelRendererTurbo {
 		this.showModel = !bool; return this;
 	}
 	
-	public ModelRendererTurbo setname(String name){
+	public ModelRendererTurbo setName(String name){
 		this.boxName = name; return this;
 	}
     
