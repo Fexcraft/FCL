@@ -189,7 +189,7 @@ public class FCLRegistry {
 				}
 				catch(Exception e){
 					IRecipe recipe = entry.getValue();
-					Print.log(recipe.getRegistryName() + " | " + recipe.getRecipeOutput().toString());
+					Print.debug(recipe.getRegistryName() + " | " + recipe.getRecipeOutput().toString());
 					for(Ingredient ing : recipe.getIngredients()){
 						for(ItemStack stack : ing.getMatchingStacks()){
 							Print.log(stack.toString());
@@ -357,8 +357,9 @@ public class FCLRegistry {
 		Set<ASMData> data = table.getAll(model);
 		for(ASMData entry : data){
 			try{
-				fModel model = entry.getClass().getAnnotation(fModel.class);
-				models.put(new ResourceLocation(model.registryname()), entry.getClass().newInstance());
+				Class<?> clazz = Class.forName(entry.getClassName()); fModel model = clazz.getAnnotation(fModel.class);
+				models.put(new ResourceLocation(model.registryname()), clazz.newInstance());
+				Print.debug("Registered Model: " + model.registryname());
 			} catch(Exception e){ error(e, entry.getClassName()); }
 		}
 	}

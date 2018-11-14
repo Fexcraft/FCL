@@ -9,7 +9,6 @@ import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.Vec3f;
-import net.minecraft.util.math.MathHelper;
 
 public class ModelPoolObjEntry extends ModelPoolEntry {
 	
@@ -168,7 +167,7 @@ public class ModelPoolObjEntry extends ModelPoolEntry {
 						}
 					}
 					while(finalPhase < 1);
-					float d = MathHelper.sqrt(normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2]);
+					float d = (float)Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2]);
 					normal[0]/= d;
 					normal[1]/= d;
 					normal[2]/= d;
