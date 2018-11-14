@@ -52,7 +52,7 @@ public class Tessellator {
 			fbuf.position(0);
 			GL11.glVertexPointer(3, 40, fbuf);
 			GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-			if(dm == 3) RGB.BLACK.glColorApply(); else if(color != null) color.glColorApply();
+			if(dm == 3 || color != null) color.glColorApply();
 			GL11.glDrawArrays(dm, 0, vtc);
 			GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
 			if(ht){ GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY); }
@@ -65,7 +65,7 @@ public class Tessellator {
 	
 	private void reset(){
 		verts = rbi = 0;//vertices = 0;
-		
+		color = null;
 		bbuf.clear();
 	}
 	

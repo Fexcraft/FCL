@@ -29,8 +29,8 @@ public class TexturedPolygon {
 	
 	public void setNormals(ArrayList<Vec3f> normallist){ list = normallist; }
 	
-	public void draw(Tessellator tess, float scale, boolean lines, RGB rgb){
-		if(lines){ tess.startDrawing(3); }
+	public void draw(Tessellator tess, float scale, RGB lincol, RGB rgb){
+		if(lincol != null){ tess.setColor(lincol); tess.startDrawing(3); }
 		else{
 	        switch(vertices.length){
 		        case 3: tess.startDrawing(GL11.GL_TRIANGLES); break;
