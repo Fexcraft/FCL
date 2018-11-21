@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.json.JsonUtil;
+import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.common.utils.Print;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 
@@ -49,6 +50,9 @@ public class JsonToTMT {
 	public static final String[] basescale = new String[]{"base_scale", "basescale", "bs"};
 	public static final String[] topscale = new String[]{"top_scale", "topscale", "ts"};
 	public static final String[] direction = new String[]{"direction", "dir", "facing"};
+	public static final String[] topoffx = new String[]{"top_offset_x", "topoff_x", "topoffx", "tox"};
+	public static final String[] topoffy = new String[]{"top_offset_y", "topoff_y", "topoffy", "toy"};
+	public static final String[] topoffz = new String[]{"top_offset_z", "topoff_z", "topoffz", "toz"};
 	
 	public final static ModelRendererTurbo parse(@Nullable net.minecraft.client.model.ModelBase base, JsonObject obj, int tx, int ty){
 		ModelRendererTurbo model = new ModelRendererTurbo(base, get(texturex, obj, idef), get(texturey, obj, idef), tx, ty);
@@ -79,7 +83,9 @@ public class JsonToTMT {
 				break;
 			}
 			case "cylinder": case "cyl": case "c": {
-				model.addCylinder(x, y, z, get(radius, obj, 1f), get(length, obj, 1f), get(segments, obj, 16), get(basescale, obj, 1f), get(topscale, obj, 1f), get(direction, obj, 4));
+				Vec3f offset = null; float tox = get(topoffx, obj, 0f), toy = get(topoffy, obj, 0f), toz = get(topoffz, obj, 0f);
+				if(tox != 0f && toy != 0f && toz != 0f) offset = new Vec3f(tox, toy, toz);
+				model.addCylinder(x, y, z, get(radius, obj, 1f), get(length, obj, 1f), get(segments, obj, 16), get(basescale, obj, 1f), get(topscale, obj, 1f), get(direction, obj, 4), offset);
 				break;
 			}
 			case "cone": case "cn": {
