@@ -625,13 +625,9 @@ public class JsonUtil{
 	public static JsonObject getObjectFromInputStream(InputStream stream){
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(stream));
-			String input;
-			StringBuffer response = new StringBuffer();
-			while ((input = in.readLine()) != null) {
-				response.append(input);
-			}
-			in.close();
-			return JsonUtil.getFromString(response.toString()).getAsJsonObject();	
+			String input; StringBuffer response = new StringBuffer();
+			while((input = in.readLine()) != null){ response.append(input); }
+			in.close(); return JsonUtil.getFromString(response.toString()).getAsJsonObject();	
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -642,13 +638,9 @@ public class JsonUtil{
 	public static JsonElement getElementFromInputStream(InputStream stream){
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(stream));
-			String input;
-			StringBuffer response = new StringBuffer();
-			while ((input = in.readLine()) != null) {
-				response.append(input);
-			}
-			in.close();
-			return JsonUtil.getFromString(response.toString());	
+			String input; StringBuffer response = new StringBuffer();
+			while((input = in.readLine()) != null){ response.append(input); }
+			in.close(); return JsonUtil.getFromString(response.toString());	
 		}
 		catch(Exception e){
 			e.printStackTrace();
