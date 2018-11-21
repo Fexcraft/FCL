@@ -10,6 +10,7 @@ import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
+import net.fexcraft.lib.common.math.Vec3f;
 /**
  * <span style='text-decoration:line-through;'>An extension to the ModelRenderer class.</span> It basically is a copy to ModelRenderer,
  * however, it contains various new methods to make your models.
@@ -941,7 +942,7 @@ public class ModelRendererTurbo {
      * @param textureCircleDiameterH the diameter height of the circle on the texture
      */
     public ModelRendererTurbo addCone(float x, float y, float z, float radius, float length, int segments, float baseScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH){
-    	return addCylinder(x, y, z, radius, length, segments, baseScale, 0.0F, baseDirection, textureCircleDiameterW, textureCircleDiameterH, 1);
+    	return addCylinder(x, y, z, radius, length, segments, baseScale, 0.0F, baseDirection, textureCircleDiameterW, textureCircleDiameterH, 1, null);
     }
     
     /**
@@ -994,9 +995,13 @@ public class ModelRendererTurbo {
      * @param baseScale the scaling of the base. Can be negative.
      * @param topScale the scaling of the top. Can be negative.
      * @param baseDirection the direction it faces
-     */    
+     */
     public ModelRendererTurbo addCylinder(float x, float y, float z, float radius, float length, int segments, float baseScale, float topScale, int baseDirection){
-    	return addCylinder(x, y, z, radius, length, segments, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length));
+    	return addCylinder(x, y, z, radius, length, segments, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), null);
+    }
+    
+    public ModelRendererTurbo addCylinder(float x, float y, float z, float radius, float length, int segments, float baseScale, float topScale, int baseDirection, Vec3f topoff){
+    	return addCylinder(x, y, z, radius, length, segments, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), topoff);
     }
     
     /**
@@ -1024,7 +1029,7 @@ public class ModelRendererTurbo {
      * @param textureCircleDiameterH the diameter height of the circle on the texture
      * @param textureH the height of the texture of the body
      */
-	public ModelRendererTurbo addCylinder(float x, float y, float z, float radius, float length, int segments, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH){
+	public ModelRendererTurbo addCylinder(float x, float y, float z, float radius, float length, int segments, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, Vec3f topoff){
 		boolean dirTop = (baseDirection == MR_TOP || baseDirection == MR_BOTTOM);
 		boolean dirSide = (baseDirection == MR_RIGHT || baseDirection == MR_LEFT);
 		boolean dirFront = (baseDirection == MR_FRONT || baseDirection == MR_BACK);
@@ -1043,9 +1048,9 @@ public class ModelRendererTurbo {
 		float xStart = (dirMirror ? x + xLength : x);
 		float yStart = (dirMirror ? y + yLength : y);
 		float zStart = (dirMirror ? z + zLength : z);
-		float xEnd = (!dirMirror ? x + xLength : x);
-		float yEnd = (!dirMirror ? y + yLength : y);
-		float zEnd = (!dirMirror ? z + zLength : z);
+		float xEnd = (!dirMirror ? x + xLength : x) + (topoff == null ? 0 : topoff.xCoord);
+		float yEnd = (!dirMirror ? y + yLength : y) + (topoff == null ? 0 : topoff.yCoord);
+		float zEnd = (!dirMirror ? z + zLength : z) + (topoff == null ? 0 : topoff.zCoord);
 		tempVerts[0] = new TexturedVertex(xStart, yStart, zStart, 0, 0);
 		tempVerts[tempVerts.length - 1] = new TexturedVertex(xEnd, yEnd, zEnd, 0, 0);
 		float xCur = xStart;
