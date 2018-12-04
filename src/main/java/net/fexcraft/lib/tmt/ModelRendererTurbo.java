@@ -40,13 +40,13 @@ public class ModelRendererTurbo {
     public static final int MR_FRONT = 0, MR_BACK = 1, MR_LEFT = 2, MR_RIGHT = 3, MR_TOP = 4, MR_BOTTOM = 5;
     public boolean showModel, forcedRecompile, mirror, flip;
     public boolean isShape3D, textured = true;
+    public RGB linesColor, polygonColor;
     private TexturedVertex vertices[];
     private TexturedPolygon faces[];
     private Integer displayList;
     public int texoffx, texoffy;
     public List<?> childModels;
     public String boxName;
-    public RGB linesColor;
 	
 	public ModelRendererTurbo(Object modelbase, String s){
 		//super(modelbase, s);
@@ -116,6 +116,10 @@ public class ModelRendererTurbo {
 	
 	public ModelRendererTurbo setLines(RGB color){
 		this.linesColor = color; return this;
+	}
+	
+	public ModelRendererTurbo setColor(RGB color){
+		this.polygonColor = color; return this;
 	}
 	
 	public ModelRendererTurbo setVisible(boolean bool){
@@ -1334,14 +1338,19 @@ public class ModelRendererTurbo {
         }
         GL11.glEndList();
     }
-    
-    private static RGB lightred   = new RGB(255, 127, 175);
+
+	private static RGB lightred   = new RGB(255, 127, 175);
     private static RGB lightgreen = new RGB(175, 255, 127);
     private static RGB lightblue  = new RGB(127, 175, 255);
+
+    public RGB getColor(int face){
+		return getColor(this, face);
+	}
     
-    public final RGB getColor(int i){
-    	if(!textured){
-    		switch(i){
+    public static RGB getColor(ModelRendererTurbo turbo, int face){
+    	if(!turbo.textured){
+    		if(turbo.polygonColor != null) return turbo.polygonColor;
+    		switch(face){
     			case 0: return RGB.BLUE;
     			case 1: return lightblue;
     			case 2: return lightred;
@@ -1349,10 +1358,10 @@ public class ModelRendererTurbo {
     			case 4: return lightgreen;
     			case 5: return RGB.GREEN;
     		}
-    		if(i < 192){
-    			if(i % 3 == 0) return new RGB(255, 127, 256 - (i * 4));
-    			if(i % 3 == 1) return new RGB(256 - (i * 4), 255, 127);
-    			if(i % 3 == 2) return new RGB(127, 256 - (i * 4), 255);
+    		if(face < 192){
+    			if(face % 3 == 0) return new RGB(255, 127, 256 - (face * 4));
+    			if(face % 3 == 1) return new RGB(256 - (face * 4), 255, 127);
+    			if(face % 3 == 2) return new RGB(127, 256 - (face * 4), 255);
     		}
     		return RGB.WHITE;
     	}
@@ -1363,7 +1372,7 @@ public class ModelRendererTurbo {
     	return addShapeBox(x, y, z, (float)w, (float)h, (float)d, scale, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, x5, y5, z5, x6, y6, z6, x7, y7, z7);
 	}
 
-	/** Texture issue fixed by Ferdinand/FEX at 09-Nov-2018 */
+	//TODO /* Texture issue fixed by Ferdinand/FEX at 09-Nov-2018 */
 	public ModelRendererTurbo addShapeBox(float x, float y, float z, float w, float h, float d, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7){
     	float xw = x + w, yh = y + h, zd = z + d;
 		x -= scale; y -= scale; z -= scale;
