@@ -46,7 +46,8 @@ public class ModelConverter extends ModelBase {
 		render(steeringWheelModel);
 	}
 
-	public void translateAll(float x, float y, float z){
+	@Override
+	public void translate(float x, float y, float z){
 		translate(bodyModel, x, y, z);
 		translate(model, x, y, z);
 		translate(bodyDoorOpenModel, x, y, z);
@@ -68,7 +69,7 @@ public class ModelConverter extends ModelBase {
 	}
 
 	@Override
-	public void rotateAll(float x, float y, float z){
+	public void rotate(float x, float y, float z){
 		rotate(bodyModel, x, y, z);
 		rotate(model, x, y, z);
 		rotate(bodyDoorOpenModel, x, y, z);

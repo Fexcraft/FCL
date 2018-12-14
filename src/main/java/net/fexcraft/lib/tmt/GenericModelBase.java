@@ -21,7 +21,7 @@ public class GenericModelBase extends ModelBase {
 	}
 	
 	@Override
-	public void translateAll(float x, float y, float z){
+	public void translate(float x, float y, float z){
 		translate(base, x, y, z);
 		translate(open, x, y, z); translate(closed, x, y, z); translate(r0, x, y, z);
 		translate(r1, x, y, z); translate(r2, x, y, z); translate(r3, x, y, z);
@@ -30,7 +30,7 @@ public class GenericModelBase extends ModelBase {
 	}
 
 	@Override
-	public void rotateAll(float x, float y, float z){
+	public void rotate(float x, float y, float z){
 		rotate(base, x, y, z);
 		rotate(open, x, y, z); rotate(closed, x, y, z); rotate(r0, x, y, z);
 		rotate(r1, x, y, z); rotate(r2, x, y, z); rotate(r3, x, y, z);

@@ -32,9 +32,9 @@ import net.fexcraft.lib.common.math.Vec3f;
  */
 public class ModelRendererTurbo {
 	
-	//replaces reliance on ModelRenderer
     public float textureWidth = 0, textureHeight = 0;
-    public float rotateAngleX = 0, rotateAngleY = 0, rotateAngleZ = 0;
+    /** Changed from radians to degrees, please re-check your model rotations!**/
+    public float rotationAngleX = 0, rotationAngleY = 0, rotationAngleZ = 0;
     public float rotationPointX = 0, rotationPointY = 0, rotationPointZ = 0;
 	//
     public static final int MR_FRONT = 0, MR_BACK = 1, MR_LEFT = 2, MR_RIGHT = 3, MR_TOP = 4, MR_BOTTOM = 5;
@@ -103,7 +103,7 @@ public class ModelRendererTurbo {
 	 * @param z the z-angle point of the shape
 	 */
 	public ModelRendererTurbo setRotationAngle(float x, float y, float z){
-		this.rotateAngleX = x; this.rotateAngleY = y; this.rotateAngleZ = z; return this;
+		this.rotationAngleX = x; this.rotationAngleY = y; this.rotationAngleZ = z; return this;
 	}
 	
 	public ModelRendererTurbo setTextured(boolean bool){
@@ -1252,17 +1252,17 @@ public class ModelRendererTurbo {
         if(displayList == null || forcedRecompile){
             compileDisplayList(scale);
         }
-        if(rotateAngleX != 0.0F || rotateAngleY != 0.0F || rotateAngleZ != 0.0F){
+        if(rotationAngleX != 0.0F || rotationAngleY != 0.0F || rotationAngleZ != 0.0F){
             GL11.glPushMatrix();
             GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
-            if(rotateAngleY != 0.0F){
-                GL11.glRotatef(rotateAngleY * 57.29578F, 0.0F, 1.0F, 0.0F);
+            if(rotationAngleY != 0.0F){
+                GL11.glRotatef(rotationAngleY /** 57.29578F*/, 0.0F, 1.0F, 0.0F);
             }
-            if(rotateAngleZ != 0.0F){
-                GL11.glRotatef(rotateAngleZ * 57.29578F, 0.0F, 0.0F, 1.0F);
+            if(rotationAngleZ != 0.0F){
+                GL11.glRotatef(rotationAngleZ /** 57.29578F*/, 0.0F, 0.0F, 1.0F);
             }
-            if(rotateAngleX != 0.0F){
-                GL11.glRotatef(rotateAngleX * 57.29578F, 1.0F, 0.0F, 0.0F);
+            if(rotationAngleX != 0.0F){
+                GL11.glRotatef(rotationAngleX /** 57.29578F*/, 1.0F, 0.0F, 0.0F);
             }
     		GL11.glCallList(displayList);
             if(childModels != null){
@@ -1271,8 +1271,8 @@ public class ModelRendererTurbo {
                 }
             }
             GL11.glPopMatrix();
-        } else
-        if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
+        }
+        else if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
             GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
     		GL11.glCallList(displayList);
             if(childModels != null){
@@ -1297,14 +1297,14 @@ public class ModelRendererTurbo {
         if(displayList == null){ compileDisplayList(scale); }
         GL11.glPushMatrix();
         GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
-        if(rotateAngleY != 0.0F){
-            GL11.glRotatef(rotateAngleY * 57.29578F, 0.0F, 1.0F, 0.0F);
+        if(rotationAngleY != 0.0F){
+            GL11.glRotatef(rotationAngleY /** 57.29578F*/, 0.0F, 1.0F, 0.0F);
         }
-        if(rotateAngleX != 0.0F){
-            GL11.glRotatef(rotateAngleX * 57.29578F, 1.0F, 0.0F, 0.0F);
+        if(rotationAngleX != 0.0F){
+            GL11.glRotatef(rotationAngleX /** 57.29578F*/, 1.0F, 0.0F, 0.0F);
         }
-        if(rotateAngleZ != 0.0F){
-            GL11.glRotatef(rotateAngleZ * 57.29578F, 0.0F, 0.0F, 1.0F);
+        if(rotationAngleZ != 0.0F){
+            GL11.glRotatef(rotationAngleZ /** 57.29578F*/, 0.0F, 0.0F, 1.0F);
         }
 		GL11.glCallList(displayList);
         GL11.glPopMatrix();
@@ -1313,16 +1313,16 @@ public class ModelRendererTurbo {
     public void postRender(float scale){
         if(!showModel){ return; }
         if(displayList == null || forcedRecompile){ compileDisplayList(scale); }
-        if(rotateAngleX != 0.0F || rotateAngleY != 0.0F || rotateAngleZ != 0.0F){
+        if(rotationAngleX != 0.0F || rotationAngleY != 0.0F || rotationAngleZ != 0.0F){
             GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
-            if(rotateAngleZ != 0.0F){
-                GL11.glRotatef(rotateAngleZ * 57.29578F, 0.0F, 0.0F, 1.0F);
+            if(rotationAngleZ != 0.0F){
+                GL11.glRotatef(rotationAngleZ /** 57.29578F*/, 0.0F, 0.0F, 1.0F);
             }
-            if(rotateAngleY != 0.0F){
-                GL11.glRotatef(rotateAngleY * 57.29578F, 0.0F, 1.0F, 0.0F);
+            if(rotationAngleY != 0.0F){
+                GL11.glRotatef(rotationAngleY /** 57.29578F*/, 0.0F, 1.0F, 0.0F);
             }
-            if(rotateAngleX != 0.0F){
-                GL11.glRotatef(rotateAngleX * 57.29578F, 1.0F, 0.0F, 0.0F);
+            if(rotationAngleX != 0.0F){
+                GL11.glRotatef(rotationAngleX /** 57.29578F*/, 1.0F, 0.0F, 0.0F);
             }
         }
         else if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){

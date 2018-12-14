@@ -1,6 +1,5 @@
 package net.fexcraft.lib.tmt;
 
-import net.fexcraft.lib.common.Static;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
@@ -37,17 +36,17 @@ public abstract class ModelBase {
 		}
 	}
 	
-	public abstract void translateAll(float x, float y, float z);
+	public abstract void translate(float x, float y, float z);
 	
 	protected void rotate(ModelRendererTurbo[] model, float x, float y, float z){
 		for(ModelRendererTurbo mod : model){
-			mod.rotateAngleX += x;
-			mod.rotateAngleY += y;
-			mod.rotateAngleZ += z;
+			mod.rotationAngleX += x;
+			mod.rotationAngleY += y;
+			mod.rotationAngleZ += z;
 		}
 	}
 	
-	public abstract void rotateAll(float x, float y, float z);
+	public abstract void rotate(float x, float y, float z);
 	
 	/** Legacy Method */
 	protected void flip(ModelRendererTurbo[] model){
@@ -66,12 +65,12 @@ public abstract class ModelBase {
 	public static void fixRotations(ModelRendererTurbo[] array){
         for(ModelRendererTurbo model : array){
             if(model.isShape3D){
-                model.rotateAngleY = -model.rotateAngleY;
-                model.rotateAngleX = -model.rotateAngleX;
-                model.rotateAngleZ = -model.rotateAngleZ + Static.rad180;
+                model.rotationAngleY = -model.rotationAngleY;
+                model.rotationAngleX = -model.rotationAngleX;
+                model.rotationAngleZ = -model.rotationAngleZ + 180f;//Static.rad180;
             }
             else{
-                model.rotateAngleZ = -model.rotateAngleZ;
+                model.rotationAngleZ = -model.rotationAngleZ;
             }
         }
     }

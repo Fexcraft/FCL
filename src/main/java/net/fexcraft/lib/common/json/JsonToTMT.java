@@ -106,9 +106,9 @@ public class JsonToTMT {
 		model.mirror = JsonUtil.getIfExists(obj, mirror, false);
 		model.flip = JsonUtil.getIfExists(obj, flip, false);
 		//
-		model.rotateAngleX = get(rotx, obj, def);
-		model.rotateAngleY = get(roty, obj, def);
-		model.rotateAngleZ = get(rotz, obj, def);
+		model.rotationAngleX = get(rotx, obj, def);
+		model.rotationAngleY = get(roty, obj, def);
+		model.rotationAngleZ = get(rotz, obj, def);
 		//
 		model.boxName = obj.has("name") ? obj.get("name").getAsString() : null;
 		model.setRotationPoint(get(posx, obj, def), get(posy, obj, def), get(posz, obj, def));

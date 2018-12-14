@@ -86,5 +86,13 @@ public class Static {
 		}
 		return Static.class.getClassLoader().getResourceAsStream(str);
 	}
+
+	public static float toDegrees(float rad){
+		return (float)Math.toDegrees(rad);
+	}
+
+	public static float toRadians(float deg){
+		return (float)Math.toRadians(deg);
+	}
 	
 }

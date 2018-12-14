@@ -8,12 +8,12 @@ public class EmptyModelBase extends ModelBase {
 	}
 
 	@Override
-	public void translateAll(float x, float y, float z){
+	public void translate(float x, float y, float z){
 		//
 	}
 
 	@Override
-	public void rotateAll(float x, float y, float z){
+	public void rotate(float x, float y, float z){
 		//
 	}
 
