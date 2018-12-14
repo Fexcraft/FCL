@@ -28,7 +28,7 @@ public class EntityUpdatePacketHandler {
 				public void run(){
 					Entity entity = null;
 					for(Entity ent : Minecraft.getMinecraft().world.loadedEntityList){
-						if(ent.getEntityId() == packet.id){ entity = ent; }
+						if(ent.getEntityId() == packet.id){ entity = ent; break; }
 					}
 					if(entity != null && entity instanceof IPacketReceiver){
 						((IPacketReceiver<PacketEntityUpdate>)entity).processClientPacket(packet);
