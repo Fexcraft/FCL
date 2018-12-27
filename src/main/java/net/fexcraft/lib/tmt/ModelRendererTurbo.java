@@ -251,6 +251,39 @@ public class ModelRendererTurbo {
         }
         return copyTo(verts, poly);
     }
+    
+    /** 
+     * Mainly based on the "addRectShape" method, but adds support for custom texture positions for any face.
+     * @author Ferdinand Calo' (FEX___96)
+     * */
+    public ModelRendererTurbo addTexRectShape(float[] v0, float[] v1, float[] v2, float[] v3, float[] v4, float[] v5, float[] v6, float[] v7, float w, float h, float d, float[][] texpos){
+    	if(texpos == null || texpos.length < 6){
+    		return this.addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
+    	}//fallback to normal method if data is lacking
+    	try{
+        	TexturedVertex[] verts = new TexturedVertex[8]; TexturedPolygon[] poly = new TexturedPolygon[6];
+            TexturedVertex tv0 = new TexturedVertex(v0[0], v0[1], v0[2], 0.0F, 0.0F);
+            TexturedVertex tv1 = new TexturedVertex(v1[0], v1[1], v1[2], 0.0F, 8.0F);
+            TexturedVertex tv2 = new TexturedVertex(v2[0], v2[1], v2[2], 8.0F, 8.0F);
+            TexturedVertex tv3 = new TexturedVertex(v3[0], v3[1], v3[2], 8.0F, 0.0F);
+            TexturedVertex tv4 = new TexturedVertex(v4[0], v4[1], v4[2], 0.0F, 0.0F);
+            TexturedVertex tv5 = new TexturedVertex(v5[0], v5[1], v5[2], 0.0F, 8.0F);
+            TexturedVertex tv6 = new TexturedVertex(v6[0], v6[1], v6[2], 8.0F, 8.0F);
+            TexturedVertex tv7 = new TexturedVertex(v7[0], v7[1], v7[2], 8.0F, 0.0F);
+            verts[0] = tv0; verts[1] = tv1; verts[2] = tv2; verts[3] = tv3; verts[4] = tv4; verts[5] = tv5; verts[6] = tv6; verts[7] = tv7;
+            poly[0] = addPolygonReturn(new TexturedVertex[] { tv5, tv1, tv2, tv6 }, texpos[0][0], texpos[0][1], texpos[0][2], texpos[0][4]);
+            poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv4, tv7, tv3 }, texpos[1][0], texpos[1][1], texpos[1][2], texpos[1][4]);
+            poly[2] = addPolygonReturn(new TexturedVertex[] { tv5, tv4, tv0, tv1 }, texpos[2][0], texpos[2][1], texpos[2][2], texpos[2][4]);
+            poly[3] = addPolygonReturn(new TexturedVertex[] { tv2, tv3, tv7, tv6 }, texpos[3][0], texpos[3][1], texpos[3][2], texpos[3][4]);
+            poly[4] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, texpos[4][0], texpos[4][1], texpos[4][2], texpos[4][4]);
+            poly[5] = addPolygonReturn(new TexturedVertex[] { tv4, tv5, tv6, tv7 }, texpos[5][0], texpos[5][1], texpos[5][2], texpos[5][4]);
+            if(mirror ^ flip){ for(int l = 0; l < poly.length; l++){ poly[l].flipFace(); } } return copyTo(verts, poly);
+    	}
+    	catch(Exception e){
+    		return this.addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
+    		//also return in case something else breaks, due to e.g. other data missing
+    	}
+    }
 
     /**
      * Adds a new box to the model.
@@ -547,20 +580,11 @@ public class ModelRendererTurbo {
      * @param h the y-coordinate on the texture
      */
     public ModelRendererTurbo addPixel(float x, float y, float z, float[] scale, int w, int h){
-    	TexturedVertex[] verts = new TexturedVertex[8];
-	    TexturedPolygon[] poly = new TexturedPolygon[6];
-    	float x1 = x + scale[0];
-    	float y1 = y + scale[1];
-    	float z1 = z + scale[2];
-        float[] f = {x, y, z};
-        float[] f1 = {x1, y, z};
-        float[] f2 = {x1, y1, z};
-        float[] f3 = {x, y1, z};
-        float[] f4 = {x, y, z1};
-        float[] f5 = {x1, y, z1};
-        float[] f6 = {x1, y1, z1};
-        float[] f7 = {x, y1, z1};
-        TexturedVertex TexturedVertex = new TexturedVertex(f[0], f[1], f[2], 0.0F, 0.0F);
+    	TexturedVertex[] verts = new TexturedVertex[8]; TexturedPolygon[] poly = new TexturedPolygon[6];
+    	float x1 = x + scale[0], y1 = y + scale[1], z1 = z + scale[2];
+        float[] f0 = {x, y, z}, f1 = {x1, y, z}, f2 = {x1, y1, z}, f3 = {x, y1, z};
+        float[] f4 = {x, y, z1}, f5 = {x1, y, z1}, f6 = {x1, y1, z1}, f7 = {x, y1, z1};
+        TexturedVertex TexturedVertex0 = new TexturedVertex(f0[0], f0[1], f0[2], 0.0F, 0.0F);
         TexturedVertex TexturedVertex1 = new TexturedVertex(f1[0], f1[1], f1[2], 0.0F, 8F);
         TexturedVertex TexturedVertex2 = new TexturedVertex(f2[0], f2[1], f2[2], 8F, 8F);
         TexturedVertex TexturedVertex3 = new TexturedVertex(f3[0], f3[1], f3[2], 8F, 0.0F);
@@ -568,30 +592,24 @@ public class ModelRendererTurbo {
         TexturedVertex TexturedVertex5 = new TexturedVertex(f5[0], f5[1], f5[2], 0.0F, 8F);
         TexturedVertex TexturedVertex6 = new TexturedVertex(f6[0], f6[1], f6[2], 8F, 8F);
         TexturedVertex TexturedVertex7 = new TexturedVertex(f7[0], f7[1], f7[2], 8F, 0.0F);
-        verts[0] = TexturedVertex;
-        verts[1] = TexturedVertex1;
-        verts[2] = TexturedVertex2;
-        verts[3] = TexturedVertex3;
-        verts[4] = TexturedVertex4;
-        verts[5] = TexturedVertex5;
-        verts[6] = TexturedVertex6;
-        verts[7] = TexturedVertex7;
-        poly[0] = addPolygonReturn(new TexturedVertex[] {
+        verts[0] = TexturedVertex0; verts[1] = TexturedVertex1; verts[2] = TexturedVertex2; verts[3] = TexturedVertex3;
+        verts[4] = TexturedVertex4; verts[5] = TexturedVertex5; verts[6] = TexturedVertex6; verts[7] = TexturedVertex7;
+        poly[0] = addPolygonReturn(new TexturedVertex[]{
             TexturedVertex5, TexturedVertex1, TexturedVertex2, TexturedVertex6
         }, w, h, w + 1, h + 1);
-        poly[1] = addPolygonReturn(new TexturedVertex[] {
-            TexturedVertex, TexturedVertex4, TexturedVertex7, TexturedVertex3
+        poly[1] = addPolygonReturn(new TexturedVertex[]{
+            TexturedVertex0, TexturedVertex4, TexturedVertex7, TexturedVertex3
         }, w, h, w + 1, h + 1);
-        poly[2] = addPolygonReturn(new TexturedVertex[] {
-            TexturedVertex5, TexturedVertex4, TexturedVertex, TexturedVertex1
+        poly[2] = addPolygonReturn(new TexturedVertex[]{
+            TexturedVertex5, TexturedVertex4, TexturedVertex0, TexturedVertex1
         }, w, h, w + 1, h + 1);
-        poly[3] = addPolygonReturn(new TexturedVertex[] {
+        poly[3] = addPolygonReturn(new TexturedVertex[]{
             TexturedVertex2, TexturedVertex3, TexturedVertex7, TexturedVertex6
         }, w, h, w + 1, h + 1);
-        poly[4] = addPolygonReturn(new TexturedVertex[] {
-            TexturedVertex1, TexturedVertex, TexturedVertex3, TexturedVertex2
+        poly[4] = addPolygonReturn(new TexturedVertex[]{
+            TexturedVertex1, TexturedVertex0, TexturedVertex3, TexturedVertex2
         }, w, h, w + 1, h + 1);
-        poly[5] = addPolygonReturn(new TexturedVertex[] {
+        poly[5] = addPolygonReturn(new TexturedVertex[]{
             TexturedVertex4, TexturedVertex5, TexturedVertex6, TexturedVertex7
         }, w, h, w + 1, h + 1);
         return copyTo(verts, poly);
@@ -703,67 +721,16 @@ public class ModelRendererTurbo {
      * @param expansion the expansion of the sprite. It only increases the size in each direction by that many.
      */
     public ModelRendererTurbo addSprite(float x, float y, float z, String[] mask, int d, float pixelScale, boolean rotX, boolean rotY, boolean rotZ, boolean mirrorX, boolean mirrorY, float expansion){
-    	int w = mask[0].length();
-    	int h = mask.length;
-    	float x1 = x - expansion;
-    	float y1 = y - expansion;
-    	float z1 = z - expansion;
-    	int wDir = 0;
-    	int hDir = 0;
-    	int dDir = 0;
-    	float wScale = 1F + (expansion / ( w * pixelScale));
-    	float hScale = 1F + (expansion / ( h * pixelScale));	    	
+    	int w = mask[0].length(), h = mask.length, wDir = 0, hDir = 0, dDir = 0;
+    	float x1 = x - expansion, y1 = y - expansion, z1 = z - expansion;
+    	float wScale = 1F + (expansion / ( w * pixelScale)), hScale = 1F + (expansion / ( h * pixelScale));	    	
     	if(!rotX){
-    		if(!rotY){
-    			if(!rotZ){
-    				wDir = 0;
-    				hDir = 1;
-    				dDir = 2;
-    			}
-    			else{
-    				wDir = 1;
-    				hDir = 0;
-    				dDir = 2;
-    			}
-    		}
-    		else{
-    			if(!rotZ){
-    				wDir = 2;
-    				hDir = 1;
-    				dDir = 0;
-       			}
-    			else{
-    				wDir = 2;
-    				hDir = 0;
-    				dDir = 1;
-    			}
-    		}
+    		if(!rotY){ if(!rotZ){ wDir = 0; hDir = 1; dDir = 2; } else{ wDir = 1; hDir = 0; dDir = 2; } }
+    		else{ if(!rotZ){ wDir = 2; hDir = 1; dDir = 0; } else{ wDir = 2; hDir = 0; dDir = 1; } }
     	}
     	else{
-    		if(!rotY){
-    			if(!rotZ){
-    				wDir = 0;
-    				hDir = 2;
-    				dDir = 1;
-    			}
-    			else{
-    				wDir = 1;
-    				hDir = 2;
-    				dDir = 0;
-    			}
-    		}
-    		else{
-    			if(!rotZ){
-    				wDir = 2;
-    				hDir = 0;
-    				dDir = 1;
-       			}
-    			else{
-    				wDir = 2;
-    				hDir = 1;
-    				dDir = 0;
-    			}
-    		}
+    		if(!rotY){ if(!rotZ){ wDir = 0; hDir = 2; dDir = 1; } else{ wDir = 1; hDir = 2; dDir = 0; } }
+    		else{ if(!rotZ){ wDir = 2; hDir = 0; dDir = 1; } else{ wDir = 2; hDir = 1; dDir = 0; } }
     	}
     	int texStartX = texoffx + (mirrorX ? w * 1 - 1 : 0);
     	int texStartY = texoffy + (mirrorY ? h * 1 - 1 : 0);
@@ -776,9 +743,9 @@ public class ModelRendererTurbo {
     		for(int j = 0; j < h; j++){
     			if(mask[j].charAt(i) == '1'){
 	    			addPixel(x1 + getPixelSize(wScale, hScale, 0, wDir, hDir, 0, i, j),
-	    					 y1 + getPixelSize(wScale, hScale, 0, wDir, hDir, 1, i, j),
-	    					 z1 + getPixelSize(wScale, hScale, 0, wDir, hDir, 2, i, j),
-	    					 new float[] {wVoxSize, hVoxSize, dVoxSize}, texStartX + texDirX * i, texStartY + texDirY * j);
+	    				y1 + getPixelSize(wScale, hScale, 0, wDir, hDir, 1, i, j),
+	    				z1 + getPixelSize(wScale, hScale, 0, wDir, hDir, 2, i, j),
+	    				new float[] {wVoxSize, hVoxSize, dVoxSize}, texStartX + texDirX * i, texStartY + texDirY * j);
     			}
     		}
     	}
@@ -1371,94 +1338,23 @@ public class ModelRendererTurbo {
 	public ModelRendererTurbo addShapeBox(float x, float y, float z, int w, int h, int d, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7){
     	return addShapeBox(x, y, z, (float)w, (float)h, (float)d, scale, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, x5, y5, z5, x6, y6, z6, x7, y7, z7);
 	}
-
-	//TODO /* Texture issue fixed by Ferdinand/FEX at 09-Nov-2018 */
+	
 	public ModelRendererTurbo addShapeBox(float x, float y, float z, float w, float h, float d, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7){
-    	float xw = x + w, yh = y + h, zd = z + d;
-		x -= scale; y -= scale; z -= scale;
-		xw += scale; yh += scale; zd += scale;
+    	float xw = x + w, yh = y + h, zd = z + d; x -= scale; y -= scale; z -= scale; xw += scale; yh += scale; zd += scale;
 		if(mirror){ float fl = xw; xw = x; x = fl; }
-		//
 		float[] v0 = {x  - x0, y  - y0, z  - z0}, v1 = {xw + x1, y  - y1, z  - z1}, v2 = {xw + x5, yh + y5, z  - z5};
 		float[] v3 = {x  - x4, yh + y4, z  - z4}, v4 = {x  - x3, y  - y3, zd + z3}, v5 = {xw + x2, y  - y2, zd + z2};
 		float[] v6 = {xw + x6, yh + y6, zd + z6}, v7 = {x  - x7, yh + y7, zd + z7};
-		//
-		/*float tex0x = d + Math.max(Math.max(z2, z1), Math.max(z5, z6));//leftmax + rightmax, check if not < 0;
-		float tex0y = y + Math.max(Math.max(y2, y1), Math.max(y5, y6));
-		//
-		float tex1x = d + Math.max(Math.max(z0, z3), Math.max(z7, z4));
-		float tex1y = y + Math.max(Math.max(y0, y3), Math.max(y7, y4));
-		//
-		float tex2x = w + Math.max(Math.max(x2, x3), Math.max(x0, x1));
-		float tex2y = y + Math.max(Math.max(y2, y3), Math.max(y0, y1));
-		//
-		float tex3x = w + Math.max(Math.max(x5, x4), Math.max(x7, x6));
-		float tex3y = y + Math.max(Math.max(y5, y4), Math.max(y7, y6));
-		//
-		float tex4x = w + Math.max(Math.max(x1, x0), Math.max(x4, x5));
-		float tex4y = y + Math.max(Math.max(y1, y0), Math.max(y4, y5));
-		//
-		float tex5x = w + Math.max(Math.max(x3, x2), Math.max(x6, x7));
-		float tex5y = y + Math.max(Math.max(y3, y2), Math.max(y6, y7));
-		//
-		//bellow code is based on "addRectShape/addPolygonReturn", but adjusted
-    	TexturedVertex[] verts = new TexturedVertex[8];
-        TexturedPolygon[] poly = new TexturedPolygon[6];
-        TexturedVertex tv0 = new TexturedVertex(v0[0], v0[1], v0[2], 0.0F, 0.0F), tv1 = new TexturedVertex(v1[0], v1[1], v1[2], 0.0F, 8.0F);
-        TexturedVertex tv2 = new TexturedVertex(v2[0], v2[1], v2[2], 8.0F, 8.0F), tv3 = new TexturedVertex(v3[0], v3[1], v3[2], 8.0F, 0.0F);
-        TexturedVertex tv4 = new TexturedVertex(v4[0], v4[1], v4[2], 0.0F, 0.0F), tv5 = new TexturedVertex(v5[0], v5[1], v5[2], 0.0F, 8.0F);
-        TexturedVertex tv6 = new TexturedVertex(v6[0], v6[1], v6[2], 8.0F, 8.0F), tv7 = new TexturedVertex(v7[0], v7[1], v7[2], 8.0F, 0.0F);
-        verts[0] = tv0; verts[1] = tv1; verts[2] = tv2; verts[3] = tv3; verts[4] = tv4; verts[5] = tv5; verts[6] = tv6; verts[7] = tv7;
-        float uOffs = 1.0F / (textureWidth * 10.0F);
-    	float vOffs = 1.0F / (textureHeight * 10.0F); float[] tex;
-    	tex = new float[]{ texoffx + d + w, texoffy + d, texoffx + d + w + d, texoffy + d + h };
-        poly[0] = new TexturedPolygon(new TexturedVertex[]{
-	    	tv5.setTexturePosition((tex[2] + z2) / textureWidth - uOffs, (tex[1] - y2) / textureHeight + vOffs),
-	    	tv1.setTexturePosition((tex[0] - z1) / textureWidth + uOffs, (tex[1] - y1) / textureHeight + vOffs),
-	    	tv2.setTexturePosition((tex[0] - z5) / textureWidth + uOffs, (tex[3] + y5) / textureHeight - vOffs),
-	    	tv6.setTexturePosition((tex[2] + z6) / textureWidth - uOffs, (tex[3] + y6) / textureHeight - vOffs)});
-        //poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv4, tv7, tv3 }, texoffx + 0, texoffy + d, texoffx + d, texoffy + d + h);
-    	tex = new float[]{ texoffx + 0, texoffy + d, texoffx + d, texoffy + d + h };
-        poly[1] = new TexturedPolygon(new TexturedVertex[]{
-	    	tv0.setTexturePosition((tex[2] - z0) / textureWidth - uOffs, (tex[1] - y0) / textureHeight + vOffs),
-	    	tv4.setTexturePosition((tex[0] + z3) / textureWidth + uOffs, (tex[1] - y3) / textureHeight + vOffs),
-	    	tv7.setTexturePosition((tex[0] + z7) / textureWidth + uOffs, (tex[3] + y7) / textureHeight - vOffs),
-	    	tv3.setTexturePosition((tex[2] - z4) / textureWidth - uOffs, (tex[3] + y4) / textureHeight - vOffs)});
-        //poly[2] = addPolygonReturn(new TexturedVertex[] { tv5, tv4, tv0, tv1 }, texoffx + d, texoffy + 0, texoffx + d + w, texoffy + d);
-        tex = new float[]{ texoffx + d, texoffy + 0, texoffx + d + w, texoffy + d };
-        poly[2] = new TexturedPolygon(new TexturedVertex[]{
-	    	tv5.setTexturePosition((tex[2] + x2) / textureWidth - uOffs, (tex[1] - y2) / textureHeight + vOffs),
-	    	tv4.setTexturePosition((tex[0] - x3) / textureWidth + uOffs, (tex[1] - y3) / textureHeight + vOffs),
-	    	tv0.setTexturePosition((tex[0] - x0) / textureWidth + uOffs, (tex[3] - y0) / textureHeight - vOffs),
-	    	tv1.setTexturePosition((tex[2] + x1) / textureWidth - uOffs, (tex[3] - y1) / textureHeight - vOffs)});
-        //poly[3] = addPolygonReturn(new TexturedVertex[] { tv2, tv3, tv7, tv6 }, texoffx + d + w, texoffy + 0, texoffx + d + w + w, texoffy + d);
-        tex = new float[]{ texoffx + d + w, texoffy + 0, texoffx + d + w + w, texoffy + d };
-        poly[3] = new TexturedPolygon(new TexturedVertex[]{
-	    	tv2.setTexturePosition((tex[2] + x5) / textureWidth - uOffs, (tex[1] + y5) / textureHeight + vOffs),
-	    	tv3.setTexturePosition((tex[0] - x4) / textureWidth + uOffs, (tex[1] + y4) / textureHeight + vOffs),
-	    	tv7.setTexturePosition((tex[0] - x7) / textureWidth + uOffs, (tex[3] + y7) / textureHeight - vOffs),
-	    	tv6.setTexturePosition((tex[2] + x6) / textureWidth - uOffs, (tex[3] + y6) / textureHeight - vOffs)});
-        //poly[4] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, texoffx + d, texoffy + d, texoffx + d + w, texoffy + d + h);
-        tex = new float[]{ texoffx + d, texoffy + d, texoffx + d + w, texoffy + d + h };
-        poly[4] = new TexturedPolygon(new TexturedVertex[]{
-	    	tv1.setTexturePosition((tex[2] + x1) / textureWidth - uOffs, (tex[1] - z1) / textureHeight + vOffs),
-	    	tv0.setTexturePosition((tex[0] - x0) / textureWidth + uOffs, (tex[1] - z0) / textureHeight + vOffs),
-	    	tv3.setTexturePosition((tex[0] - x4) / textureWidth + uOffs, (tex[3] - z4) / textureHeight - vOffs),
-	    	tv2.setTexturePosition((tex[2] + x5) / textureWidth - uOffs, (tex[3] - z5) / textureHeight - vOffs)});
-        //poly[5] = addPolygonReturn(new TexturedVertex[] { tv4, tv5, tv6, tv7 }, texoffx + d + w + d, texoffy + d, texoffx + d + w + d + w, texoffy + d + h);
-        tex = new float[]{ texoffx + d + w + d, texoffy + d, texoffx + d + w + d + w, texoffy + d + h };
-        poly[5] = new TexturedPolygon(new TexturedVertex[]{
-	    	tv4.setTexturePosition((tex[2] - x3) / textureWidth - uOffs, (tex[1] + z3) / textureHeight + vOffs),
-	    	tv5.setTexturePosition((tex[0] + x2) / textureWidth + uOffs, (tex[1] + z2) / textureHeight + vOffs),
-	    	tv6.setTexturePosition((tex[0] + x6) / textureWidth + uOffs, (tex[3] + z6) / textureHeight - vOffs),
-	    	tv7.setTexturePosition((tex[2] - x7) / textureWidth - uOffs, (tex[3] + z7) / textureHeight - vOffs)});
-        if(mirror ^ flip){
-            for(int l = 0; l < poly.length; l++){
-            	poly[l].flipFace();
-            }
-        }
-        return copyTo(verts, poly);*/
 		return addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
+	}
+	
+	public ModelRendererTurbo addTexRect(float x, float y, float z, float w, float h, float d, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7, float[][] texpos){
+    	float xw = x + w, yh = y + h, zd = z + d; x -= scale; y -= scale; z -= scale; xw += scale; yh += scale; zd += scale;
+		if(mirror){ float fl = xw; xw = x; x = fl; }
+		float[] v0 = {x  - x0, y  - y0, z  - z0}, v1 = {xw + x1, y  - y1, z  - z1}, v2 = {xw + x5, yh + y5, z  - z5};
+		float[] v3 = {x  - x4, yh + y4, z  - z4}, v4 = {x  - x3, y  - y3, zd + z3}, v5 = {xw + x2, y  - y2, zd + z2};
+		float[] v6 = {xw + x6, yh + y6, zd + z6}, v7 = {x  - x7, yh + y7, zd + z7};
+		return addTexRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d, texpos);
 	}
 	
 	public String toString(String alt){
