@@ -62,10 +62,9 @@ public class FCLRegistry {
 		scanForModels(); registerTESRs();
 	}
 	
-	private static final void error(Exception e, String s){
+	private static final void error(Throwable thr, String s){
 		Print.log("Error while constructing " + s + "!");
-		e.printStackTrace();
-		Static.stop();
+		thr.printStackTrace(); //Uncomment for bug-hunting > Static.stop();
 	}
 	
 	public static final void clear(FMLPostInitializationEvent event){
@@ -360,7 +359,7 @@ public class FCLRegistry {
 				Class<?> clazz = Class.forName(entry.getClassName()); fModel model = clazz.getAnnotation(fModel.class);
 				models.put(new ResourceLocation(model.registryname()), clazz.newInstance());
 				Print.debug("Registered Model: " + model.registryname());
-			} catch(Exception e){ error(e, entry.getClassName()); }
+			} catch(Throwable e){ error(e, entry.getClassName()); }
 		}
 	}
 	
