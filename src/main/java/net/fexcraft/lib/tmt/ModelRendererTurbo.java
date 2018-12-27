@@ -257,7 +257,7 @@ public class ModelRendererTurbo {
      * @author Ferdinand Calo' (FEX___96)
      * */
     public ModelRendererTurbo addTexRectShape(float[] v0, float[] v1, float[] v2, float[] v3, float[] v4, float[] v5, float[] v6, float[] v7, float w, float h, float d, float[][] texpos){
-    	if(texpos == null || texpos.length < 6){
+    	if(texpos == null || texpos.length < 6){ Static.stop();
     		return this.addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
     	}//fallback to normal method if data is lacking
     	try{
@@ -271,15 +271,15 @@ public class ModelRendererTurbo {
             TexturedVertex tv6 = new TexturedVertex(v6[0], v6[1], v6[2], 8.0F, 8.0F);
             TexturedVertex tv7 = new TexturedVertex(v7[0], v7[1], v7[2], 8.0F, 0.0F);
             verts[0] = tv0; verts[1] = tv1; verts[2] = tv2; verts[3] = tv3; verts[4] = tv4; verts[5] = tv5; verts[6] = tv6; verts[7] = tv7;
-            poly[0] = addPolygonReturn(new TexturedVertex[] { tv5, tv1, tv2, tv6 }, texpos[0][0], texpos[0][1], texpos[0][2], texpos[0][4]);
-            poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv4, tv7, tv3 }, texpos[1][0], texpos[1][1], texpos[1][2], texpos[1][4]);
-            poly[2] = addPolygonReturn(new TexturedVertex[] { tv5, tv4, tv0, tv1 }, texpos[2][0], texpos[2][1], texpos[2][2], texpos[2][4]);
-            poly[3] = addPolygonReturn(new TexturedVertex[] { tv2, tv3, tv7, tv6 }, texpos[3][0], texpos[3][1], texpos[3][2], texpos[3][4]);
-            poly[4] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, texpos[4][0], texpos[4][1], texpos[4][2], texpos[4][4]);
-            poly[5] = addPolygonReturn(new TexturedVertex[] { tv4, tv5, tv6, tv7 }, texpos[5][0], texpos[5][1], texpos[5][2], texpos[5][4]);
+            poly[0] = addPolygonReturn(new TexturedVertex[] { tv5, tv1, tv2, tv6 }, texpos[0][0], texpos[0][1], texpos[0][2], texpos[0][3]);
+            poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv4, tv7, tv3 }, texpos[1][0], texpos[1][1], texpos[1][2], texpos[1][3]);
+            poly[2] = addPolygonReturn(new TexturedVertex[] { tv5, tv4, tv0, tv1 }, texpos[2][0], texpos[2][1], texpos[2][2], texpos[2][3]);
+            poly[3] = addPolygonReturn(new TexturedVertex[] { tv2, tv3, tv7, tv6 }, texpos[3][0], texpos[3][1], texpos[3][2], texpos[3][3]);
+            poly[4] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, texpos[4][0], texpos[4][1], texpos[4][2], texpos[4][3]);
+            poly[5] = addPolygonReturn(new TexturedVertex[] { tv4, tv5, tv6, tv7 }, texpos[5][0], texpos[5][1], texpos[5][2], texpos[5][3]);
             if(mirror ^ flip){ for(int l = 0; l < poly.length; l++){ poly[l].flipFace(); } } return copyTo(verts, poly);
     	}
-    	catch(Exception e){
+    	catch(Throwable thr){ if(Static.dev()) thr.printStackTrace();
     		return this.addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
     		//also return in case something else breaks, due to e.g. other data missing
     	}
