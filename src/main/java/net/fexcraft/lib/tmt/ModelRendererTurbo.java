@@ -167,10 +167,10 @@ public class ModelRendererTurbo {
      * @param v2
      */
     public void addPolygon(TexturedVertex[] verts, int u1, int v1, int u2, int v2){
-    	copyTo(verts, new TexturedPolygon[] {addPolygonReturn(verts, u1, v1, u2, v2)});
+    	copyTo(verts, new TexturedPolygon[]{ addPolygonReturn(verts, u1, v1, u2, v2) });
     }
     
-    private TexturedPolygon addPolygonReturn(TexturedVertex[] verts, float f, float g, float h, float j){
+    private TexturedPolygon addPolygonReturn(TexturedVertex[] verts, float x0, float y0, float x1, float y2){
     	if(verts.length < 3){ return null; }
     	float uOffs = 1.0F / (textureWidth * 10.0F);
     	float vOffs = 1.0F / (textureHeight * 10.0F);
@@ -187,10 +187,10 @@ public class ModelRendererTurbo {
     			yMax = Math.max(yMax, yPos);
     			yMin = (yMin < -1 ? yPos : Math.min(yMin, yPos));
     		}
-    		float uMin = f / textureWidth + uOffs;
-    		float vMin = g / textureHeight + vOffs;
-    		float uSize = (h - f) / textureWidth - uOffs * 2;
-    		float vSize = (j - g) / textureHeight - vOffs * 2;
+    		float uMin = x0 / textureWidth + uOffs;
+    		float vMin = y0 / textureHeight + vOffs;
+    		float uSize = (x1 - x0) / textureWidth - uOffs * 2;
+    		float vSize = (y2 - y0) / textureHeight - vOffs * 2;
     		float xSize = xMax - xMin;
     		float ySize = yMax - yMin;
     		for(int i = 0; i < verts.length; i++){
@@ -202,11 +202,22 @@ public class ModelRendererTurbo {
     		}
     	}
     	else{
-	    	verts[0] = verts[0].setTexturePosition(h / textureWidth - uOffs, g / textureHeight + vOffs);
-	    	verts[1] = verts[1].setTexturePosition(f / textureWidth + uOffs, g / textureHeight + vOffs);
-	    	verts[2] = verts[2].setTexturePosition(f / textureWidth + uOffs, j / textureHeight - vOffs);
-	    	verts[3] = verts[3].setTexturePosition(h / textureWidth - uOffs, j / textureHeight - vOffs);
+	    	verts[0] = verts[0].setTexturePosition(x1 / textureWidth - uOffs, y0 / textureHeight + vOffs);
+	    	verts[1] = verts[1].setTexturePosition(x0 / textureWidth + uOffs, y0 / textureHeight + vOffs);
+	    	verts[2] = verts[2].setTexturePosition(x0 / textureWidth + uOffs, y2 / textureHeight - vOffs);
+	    	verts[3] = verts[3].setTexturePosition(x1 / textureWidth - uOffs, y2 / textureHeight - vOffs);
     	}
+    	return new TexturedPolygon(verts);
+    }
+    
+    /** Specifically made for addTexRect() with texpos[x].length > 4 (== 8) */
+    private TexturedPolygon addPolygonReturn(TexturedVertex[] verts, float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3){
+    	if(verts.length < 3){ return null; }
+    	float uOffs = 1.0F / (textureWidth * 10.0F), vOffs = 1.0F / (textureHeight * 10.0F);
+    	verts[0] = verts[0].setTexturePosition(x0 / textureWidth - uOffs, y0 / textureHeight + vOffs);
+    	verts[1] = verts[1].setTexturePosition(x1 / textureWidth + uOffs, y1 / textureHeight + vOffs);
+    	verts[2] = verts[2].setTexturePosition(x2 / textureWidth + uOffs, y2 / textureHeight - vOffs);
+    	verts[3] = verts[3].setTexturePosition(x3 / textureWidth - uOffs, y3 / textureHeight - vOffs);
     	return new TexturedPolygon(verts);
     }
     
@@ -271,12 +282,22 @@ public class ModelRendererTurbo {
             TexturedVertex tv6 = new TexturedVertex(v6[0], v6[1], v6[2], 8.0F, 8.0F);
             TexturedVertex tv7 = new TexturedVertex(v7[0], v7[1], v7[2], 8.0F, 0.0F);
             verts[0] = tv0; verts[1] = tv1; verts[2] = tv2; verts[3] = tv3; verts[4] = tv4; verts[5] = tv5; verts[6] = tv6; verts[7] = tv7;
-            poly[0] = addPolygonReturn(new TexturedVertex[] { tv5, tv1, tv2, tv6 }, texpos[0][0], texpos[0][1], texpos[0][2], texpos[0][3]);
-            poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv4, tv7, tv3 }, texpos[1][0], texpos[1][1], texpos[1][2], texpos[1][3]);
-            poly[2] = addPolygonReturn(new TexturedVertex[] { tv5, tv4, tv0, tv1 }, texpos[2][0], texpos[2][1], texpos[2][2], texpos[2][3]);
-            poly[3] = addPolygonReturn(new TexturedVertex[] { tv2, tv3, tv7, tv6 }, texpos[3][0], texpos[3][1], texpos[3][2], texpos[3][3]);
-            poly[4] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, texpos[4][0], texpos[4][1], texpos[4][2], texpos[4][3]);
-            poly[5] = addPolygonReturn(new TexturedVertex[] { tv4, tv5, tv6, tv7 }, texpos[5][0], texpos[5][1], texpos[5][2], texpos[5][3]);
+    		if(texpos[0].length > 4){
+                poly[0] = addPolygonReturn(new TexturedVertex[] { tv5, tv1, tv2, tv6 }, texpos[0][0], texpos[0][1], texpos[0][2], texpos[0][3], texpos[0][4], texpos[0][5], texpos[0][6], texpos[0][7]);
+                poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv4, tv7, tv3 }, texpos[1][0], texpos[1][1], texpos[1][2], texpos[1][3], texpos[1][4], texpos[1][5], texpos[1][6], texpos[1][7]);
+                poly[2] = addPolygonReturn(new TexturedVertex[] { tv5, tv4, tv0, tv1 }, texpos[2][0], texpos[2][1], texpos[2][2], texpos[2][3], texpos[2][4], texpos[2][5], texpos[2][6], texpos[2][7]);
+                poly[3] = addPolygonReturn(new TexturedVertex[] { tv2, tv3, tv7, tv6 }, texpos[3][0], texpos[3][1], texpos[3][2], texpos[3][3], texpos[3][4], texpos[3][5], texpos[3][6], texpos[3][7]);
+                poly[4] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, texpos[4][0], texpos[4][1], texpos[4][2], texpos[4][3], texpos[4][4], texpos[4][5], texpos[4][6], texpos[4][7]);
+                poly[5] = addPolygonReturn(new TexturedVertex[] { tv4, tv5, tv6, tv7 }, texpos[5][0], texpos[5][1], texpos[5][2], texpos[5][3], texpos[5][4], texpos[5][5], texpos[5][6], texpos[5][7]);
+    		}
+    		else{
+                poly[0] = addPolygonReturn(new TexturedVertex[] { tv5, tv1, tv2, tv6 }, texpos[0][0], texpos[0][1], texpos[0][2], texpos[0][3]);
+                poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv4, tv7, tv3 }, texpos[1][0], texpos[1][1], texpos[1][2], texpos[1][3]);
+                poly[2] = addPolygonReturn(new TexturedVertex[] { tv5, tv4, tv0, tv1 }, texpos[2][0], texpos[2][1], texpos[2][2], texpos[2][3]);
+                poly[3] = addPolygonReturn(new TexturedVertex[] { tv2, tv3, tv7, tv6 }, texpos[3][0], texpos[3][1], texpos[3][2], texpos[3][3]);
+                poly[4] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, texpos[4][0], texpos[4][1], texpos[4][2], texpos[4][3]);
+                poly[5] = addPolygonReturn(new TexturedVertex[] { tv4, tv5, tv6, tv7 }, texpos[5][0], texpos[5][1], texpos[5][2], texpos[5][3]);
+    		}
             if(mirror ^ flip){ for(int l = 0; l < poly.length; l++){ poly[l].flipFace(); } } return copyTo(verts, poly);
     	}
     	catch(Throwable thr){ if(Static.dev()) thr.printStackTrace();
