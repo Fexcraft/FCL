@@ -45,18 +45,25 @@ public class WavefrontObjUtil {
 	}
 	
 	public static String[][] findValues(InputStream stream, String key){
-		return findValues(stream, key, " ");
+		return findValues(stream, new String[]{ key }, " ");
 	}
 	
-	public static String[][] findValues(InputStream stream, String key, String divident){
+	public static String[][] findValues(InputStream stream, String[] keys){
+		return findValues(stream, keys, " ");
+	}
+	
+	public static String[][] findValues(InputStream stream, String[] keys, String divident){
 		ArrayList<String[]> arr = new ArrayList<String[]>();
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(stream, "UTF-8")); String s;
 			while((s = in.readLine()) != null){
 				s = s.trim(); if(s.length() == 0) continue;
-				if(s.startsWith(key + " ")){
-					arr.add(s.replace(key + " ", "").split(divident));
-				} else continue;
+				for(String str : keys){
+					if(s.startsWith(str + " ")){
+						arr.add(s.replace(str + " ", "").split(divident));
+						continue;
+					}
+				} continue;
 			} in.close();
 		}
 		catch(Throwable e){ e.printStackTrace(); Static.stop(); }
@@ -112,7 +119,7 @@ public class WavefrontObjUtil {
 					passing = s.replace("g ", "").split(" ")[0].equals(group);
 				}
 				if(passing != null && !passing){
-					if(Static.dev()) Print.console("skipping: " + s); continue;
+					continue; //if(Static.dev()) Print.console("skipping: " + s);
 				}
 				//
 				if(s.startsWith("f ")){
