@@ -11,6 +11,7 @@ import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.utils.WavefrontObjUtil;
 /**
  * <span style='text-decoration:line-through;'>An extension to the ModelRenderer class.</span> It basically is a copy to ModelRenderer,
  * however, it contains various new methods to make your models.
@@ -1112,20 +1113,11 @@ public class ModelRendererTurbo {
      * Adds a Waveform .obj file as a model. Model files use the entire texture file.
      * @param location the ResourceLocation of the .obj file.
      */
-    public ModelRendererTurbo addObj(String id, InputStream steam){
-    	return addModel(id, steam, ModelPool.OBJ);
-    }
-    
-    /**
-     * Adds model format support. Model files use the entire texture file.
-     * @param file the location of the model file.
-     * @param modelFormat the class of the model format interpreter
-     */
-    public ModelRendererTurbo addModel(String id, InputStream stream, Class<?> modelFormat){
-    	ModelPoolEntry entry = ModelPool.addLocation(id, stream, modelFormat);
-    	if(entry == null){ return null; }
-    	TexturedVertex[] verts = Arrays.copyOf(entry.vertices, entry.vertices.length);
-    	TexturedPolygon[] poly = Arrays.copyOf(entry.faces, entry.faces.length);
+    public ModelRendererTurbo addObj(InputStream stream, String group){
+    	Object[][] source = WavefrontObjUtil.getVerticesAndPolygons(stream, group);
+    	if(source == null || source.length < 2) return this;
+    	TexturedVertex[] verts = (TexturedVertex[])Arrays.copyOf(source[0], source[0].length);
+    	TexturedPolygon[] poly = (TexturedPolygon[])Arrays.copyOf(source[1], source[1].length);
     	if(flip){ for(int l = 0; l < faces.length; l++){ faces[l].flipFace(); } }
     	return copyTo(verts, poly);
     }

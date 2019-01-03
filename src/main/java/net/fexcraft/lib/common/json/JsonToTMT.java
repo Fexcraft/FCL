@@ -99,7 +99,7 @@ public class JsonToTMT {
 				}
 				else{
 					String str = obj.get("location").getAsString();
-					model.addObj(str, Static.getResource(str));
+					model.addObj(Static.getResource(str), obj.has("group") ? obj.get("group").getAsString() : null);
 				}
 			}
 		}
