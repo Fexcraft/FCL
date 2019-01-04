@@ -102,7 +102,7 @@ public class WavefrontObjUtil {
 						else v[i] = Float.parseFloat(s.substring(0));
 						s = s.substring(s.indexOf(" ") + 1).trim();
 					}
-					uvs.add(new float[]{ v[0], 1F - v[1] }); continue;
+					uvs.add(new float[]{ v[0] < 0 ? -v[0] : v[0], v[1] < 0 ? -v[1] : v[1] }); continue;
 				}
 				if(s.startsWith("vn ")){
 					s = s.substring(s.indexOf(" ") + 1).trim(); v = new float[3];
