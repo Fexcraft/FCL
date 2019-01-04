@@ -71,7 +71,7 @@ public class WavefrontObjUtil {
 	}
 	
 	/** (Strongly) Based on the old OBJ parsing method in TMT/MRT. */
-	public static Object[][] getVerticesAndPolygons(InputStream stream, @Nullable String group){
+	public static Object[][] getVerticesAndPolygons(InputStream stream, @Nullable String group, boolean flipaxes){
 		TexturedVertex[] vertices = null; TexturedPolygon[] polygons = null; Boolean passing = null;
 		ArrayList<TexturedVertex> verts0 = new ArrayList<TexturedVertex>();
 		ArrayList<TexturedVertex> verts1 = new ArrayList<TexturedVertex>();
@@ -91,7 +91,8 @@ public class WavefrontObjUtil {
 						s = s.substring(s.indexOf(" ") + 1).trim();
 					}
 					float flt = v[2]; v[2] = -v[1]; v[1] = flt;
-					verts0.add(new TexturedVertex(v[0], v[1], v[2], 0, 0)); continue;
+					if(!flipaxes){ verts0.add(new TexturedVertex(v[0], v[1], v[2], 0, 0)); }
+					else{ verts0.add(new TexturedVertex(v[0], -v[2], v[1], 0, 0)); } continue;
 				}
 				if(s.startsWith("vt ")){
 					s = s.substring(s.indexOf(" ") + 1).trim(); v = new float[2];
