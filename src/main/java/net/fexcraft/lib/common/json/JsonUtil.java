@@ -651,5 +651,85 @@ public class JsonUtil{
 	public static String setPrettyPrinting(JsonObject obj){
 		return gson.toJson(obj);
 	}
+
+	public static JsonArray toJsonArray(float[] numbers){
+		JsonArray array = new JsonArray(); for(float number : numbers) array.add(number); return array;
+	}
+
+	public static JsonArray toJsonArray(double[] numbers){
+		JsonArray array = new JsonArray(); for(double number : numbers) array.add(number); return array;
+	}
+
+	public static JsonArray toJsonArray(int[] numbers){
+		JsonArray array = new JsonArray(); for(int number : numbers) array.add(number); return array;
+	}
+
+	public static JsonArray toJsonArray(byte[] numbers){
+		JsonArray array = new JsonArray(); for(byte number : numbers) array.add(number); return array;
+	}
+
+	public static JsonArray toJsonArray(short[] numbers){
+		JsonArray array = new JsonArray(); for(short number : numbers) array.add(number); return array;
+	}
+
+	public static JsonArray toJsonArray(char[] numbers){
+		JsonArray array = new JsonArray(); for(char number : numbers) array.add(number); return array;
+	}
+
+	public static JsonArray toJsonArray(long[] numbers){
+		JsonArray array = new JsonArray(); for(long number : numbers) array.add(number); return array;
+	}
+
+	public static JsonArray toJsonArray(Number[] numbers){
+		JsonArray array = new JsonArray(); for(Number number : numbers) array.add(number); return array;
+	}
+
+	public static float[] getFloatArray(JsonArray array){
+		float[] numbers = new float[array.size()];
+		for(int i = 0; i < numbers.length; i++) numbers[i] = array.get(i).getAsFloat();
+		return numbers;
+	}
+
+	public static double[] getDoubleArray(JsonArray array){
+		double[] numbers = new double[array.size()];
+		for(int i = 0; i < numbers.length; i++) numbers[i] = array.get(i).getAsDouble();
+		return numbers;
+	}
+
+	public static int[] getIntegerArray(JsonArray array){
+		int[] numbers = new int[array.size()];
+		for(int i = 0; i < numbers.length; i++) numbers[i] = array.get(i).getAsInt();
+		return numbers;
+	}
+
+	public static byte[] getByteArray(JsonArray array){
+		byte[] numbers = new byte[array.size()];
+		for(int i = 0; i < numbers.length; i++) numbers[i] = array.get(i).getAsByte();
+		return numbers;
+	}
+
+	public static short[] getShortArray(JsonArray array){
+		short[] numbers = new short[array.size()];
+		for(int i = 0; i < numbers.length; i++) numbers[i] = array.get(i).getAsShort();
+		return numbers;
+	}
+
+	public static char[] getCharArray(JsonArray array){
+		char[] numbers = new char[array.size()];
+		for(int i = 0; i < numbers.length; i++) numbers[i] = array.get(i).getAsCharacter();
+		return numbers;
+	}
+
+	public static long[] getLongArray(JsonArray array){
+		long[] numbers = new long[array.size()];
+		for(int i = 0; i < numbers.length; i++) numbers[i] = array.get(i).getAsLong();
+		return numbers;
+	}
+
+	public static Number[] getNumberArray(JsonArray array){
+		Number[] numbers = new Number[array.size()];
+		for(int i = 0; i < numbers.length; i++) numbers[i] = array.get(i).getAsNumber();
+		return numbers;
+	}
 	
 }
