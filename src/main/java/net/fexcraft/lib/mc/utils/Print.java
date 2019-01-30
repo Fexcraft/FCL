@@ -105,7 +105,8 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 		return (T)obj;
 	}
 
-	public static void debug(Object... objs){
+	@SafeVarargs
+	public static <T> void debug(T... objs){
 		if(Static.dev()){
 			String str = "[\n";
 			for(int i = 0; i < objs.length; i++){

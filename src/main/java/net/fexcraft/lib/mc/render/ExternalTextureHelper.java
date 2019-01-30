@@ -17,14 +17,10 @@ public class ExternalTextureHelper {
 		if(map.containsKey(s)){ return map.get(s); }
 		UCResourceLocation texture = new UCResourceLocation("fcl:remote/", s);
 		ITextureObject object = Minecraft.getMinecraft().renderEngine.getTexture(texture);
-        if(object == null){
-        	File file = new File(s);
+        if(object == null){ File file = new File(s);
     		ThreadDownloadImageData tdid = new ThreadDownloadImageData(file.exists() ? file : null, s, null, null);
-        	object = tdid;
-        	Minecraft.getMinecraft().renderEngine.loadTexture(texture, object);
-        }
-        map.put(s, texture);
-		return texture;
+        	Minecraft.getMinecraft().renderEngine.loadTexture(texture, (object = tdid));
+        } map.put(s, texture); return texture;
 	}
 	
 }

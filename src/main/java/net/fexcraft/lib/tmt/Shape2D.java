@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.Vec3f;
-import net.minecraft.util.math.MathHelper;
 
 public class Shape2D {
 	
@@ -94,20 +93,11 @@ public class Shape2D {
 	}
 	
 	protected Vec3f setVectorRotations(Vec3f extrudeVector, float xRot, float yRot, float zRot){
-		float x = xRot;
-		float y = yRot;
-		float z = zRot;
-        float xC = MathHelper.cos(x);
-        float xS = MathHelper.sin(x);
-        float yC = MathHelper.cos(y);
-        float yS = MathHelper.sin(y);
-        float zC = MathHelper.cos(z);
-        float zS = MathHelper.sin(z);
-        
-        double xVec = extrudeVector.xCoord;
-        double yVec = extrudeVector.yCoord;
-        double zVec = extrudeVector.zCoord;
-        
+		float x = xRot, y = yRot, z = zRot;
+        float xC = (float)Math.cos(x), xS = (float)Math.sin(x);
+        float yC = (float)Math.cos(y), yS = (float)Math.sin(y);
+        float zC = (float)Math.cos(z), zS = (float)Math.sin(z);
+        double xVec = extrudeVector.xCoord, yVec = extrudeVector.yCoord, zVec = extrudeVector.zCoord;
         // rotation around x
 		double xy = xC*yVec - xS*zVec;
 		double xz = xC*zVec + xS*yVec;
@@ -117,11 +107,8 @@ public class Shape2D {
 		// rotation around z
 		double zx = zC*yx - zS*xy;
 		double zy = zC*xy + zS*yx;
-		
-		xVec = zx;
-		yVec = zy;
-		zVec = yz;
-		
+		//
+		xVec = zx; yVec = zy; zVec = yz;
         return new Vec3f(xVec, yVec, zVec);
 	}
 	
