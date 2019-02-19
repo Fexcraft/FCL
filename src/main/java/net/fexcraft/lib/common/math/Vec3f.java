@@ -238,5 +238,13 @@ public class Vec3f {
 	private Vec3f set(float f, float g, float h){
 		this.xCoord = f; this.yCoord = g; this.zCoord = h; return this;
 	}
+
+	public float[] toFloatArray(){
+		return new float[]{ xCoord, yCoord, zCoord };
+	}
+
+	public double[] toDoubleArray(){
+		return new double[]{ xCoord, yCoord, zCoord };
+	}
     
 }
