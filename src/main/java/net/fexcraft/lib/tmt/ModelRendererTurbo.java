@@ -40,7 +40,7 @@ public class ModelRendererTurbo {
 	//
     public static final int MR_FRONT = 0, MR_BACK = 1, MR_LEFT = 2, MR_RIGHT = 3, MR_TOP = 4, MR_BOTTOM = 5;
     public boolean showModel, forcedRecompile, mirror, flip;
-    public boolean isShape3D, textured = true;
+    public boolean isShape3D, textured = true, triline;
     public RGB linesColor, polygonColor;
     private TexturedVertex vertices[];
     private TexturedPolygon faces[];
@@ -171,7 +171,7 @@ public class ModelRendererTurbo {
     	copyTo(verts, new TexturedPolygon[]{ addPolygonReturn(verts, u1, v1, u2, v2) });
     }
     
-    private TexturedPolygon addPolygonReturn(TexturedVertex[] verts, float x0, float y0, float x1, float y2){
+    private TexturedPolygon addPolygonReturn(TexturedVertex[] verts, float x0, float y0, float x1, float y1){
     	if(verts.length < 3){ return null; }
     	float uOffs = 1.0F / (textureWidth * 10.0F);
     	float vOffs = 1.0F / (textureHeight * 10.0F);
@@ -191,7 +191,7 @@ public class ModelRendererTurbo {
     		float uMin = x0 / textureWidth + uOffs;
     		float vMin = y0 / textureHeight + vOffs;
     		float uSize = (x1 - x0) / textureWidth - uOffs * 2;
-    		float vSize = (y2 - y0) / textureHeight - vOffs * 2;
+    		float vSize = (y1 - y0) / textureHeight - vOffs * 2;
     		float xSize = xMax - xMin;
     		float ySize = yMax - yMin;
     		for(int i = 0; i < verts.length; i++){
@@ -205,8 +205,8 @@ public class ModelRendererTurbo {
     	else{
 	    	verts[0] = verts[0].setTexturePosition(x1 / textureWidth - uOffs, y0 / textureHeight + vOffs);
 	    	verts[1] = verts[1].setTexturePosition(x0 / textureWidth + uOffs, y0 / textureHeight + vOffs);
-	    	verts[2] = verts[2].setTexturePosition(x0 / textureWidth + uOffs, y2 / textureHeight - vOffs);
-	    	verts[3] = verts[3].setTexturePosition(x1 / textureWidth - uOffs, y2 / textureHeight - vOffs);
+	    	verts[2] = verts[2].setTexturePosition(x0 / textureWidth + uOffs, y1 / textureHeight - vOffs);
+	    	verts[3] = verts[3].setTexturePosition(x1 / textureWidth - uOffs, y1 / textureHeight - vOffs);
     	}
     	return new TexturedPolygon(verts);
     }
@@ -1446,7 +1446,7 @@ public class ModelRendererTurbo {
         displayList = GL11.glGenLists(1);
         GL11.glNewList(displayList, 4864 /*GL_COMPILE*/);
         for(int i = 0; i < faces.length; i++){
-            faces[i].draw(Tessellator.INSTANCE, scale, linesColor, getColor(i));
+            faces[i].draw(Tessellator.INSTANCE, scale, linesColor, getColor(i), triline);
         }
         GL11.glEndList();
     }
