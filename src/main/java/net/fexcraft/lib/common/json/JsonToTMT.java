@@ -45,8 +45,10 @@ public class JsonToTMT {
 	public static final String[] flip = new String[]{"flip", "fl", "usd"};
 	//cyl
 	public static final String[] radius = new String[]{"radius", "rad", "r"};
+	public static final String[] radius2 = new String[]{"radius2", "rad2", "r2"};
 	public static final String[] length = new String[]{"length", "len", "l"};
 	public static final String[] segments = new String[]{"segments", "seg", "sg"};
+	public static final String[] seglimit = new String[]{"segment_limit", "segments_limit", "seglimit", "seg_limit", "sgl"};
 	public static final String[] basescale = new String[]{"base_scale", "basescale", "bs"};
 	public static final String[] topscale = new String[]{"top_scale", "topscale", "ts"};
 	public static final String[] direction = new String[]{"direction", "dir", "facing"};
@@ -84,8 +86,14 @@ public class JsonToTMT {
 			}
 			case "cylinder": case "cyl": case "c": {
 				Vec3f offset = null; float tox = get(topoffx, obj, 0f), toy = get(topoffy, obj, 0f), toz = get(topoffz, obj, 0f);
-				if(tox != 0f && toy != 0f && toz != 0f) offset = new Vec3f(tox, toy, toz);
-				model.addCylinder(x, y, z, get(radius, obj, 1f), get(length, obj, 1f), get(segments, obj, 16), get(basescale, obj, 1f), get(topscale, obj, 1f), get(direction, obj, 4), offset);
+				if(tox != 0f && toy != 0f && toz != 0f) offset = new Vec3f(tox, toy, toz); float rad2 = get(radius, obj, 0f);
+				if(rad2 == 0f){
+					model.addCylinder(x, y, z, get(radius, obj, 1f), get(length, obj, 1f), get(segments, obj, 16), get(basescale, obj, 1f), get(topscale, obj, 1f), get(direction, obj, 4), offset);
+				}
+				else{
+					model.addHollowCylinder(x, y, z, get(radius, obj, 1f), rad2, get(length, obj, 1f), get(segments, obj, 16),
+						get(seglimit, obj, 16), get(basescale, obj, 1f), get(topscale, obj, 1f), get(direction, obj, 4), offset);
+				}
 				break;
 			}
 			case "cone": case "cn": {
