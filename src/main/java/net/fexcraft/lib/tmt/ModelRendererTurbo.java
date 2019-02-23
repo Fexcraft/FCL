@@ -40,7 +40,7 @@ public class ModelRendererTurbo {
 	//
     public static final int MR_FRONT = 0, MR_BACK = 1, MR_LEFT = 2, MR_RIGHT = 3, MR_TOP = 4, MR_BOTTOM = 5;
     public boolean showModel, forcedRecompile, mirror, flip;
-    public boolean isShape3D, textured = true, triline;
+    public boolean isShape3D, textured = true;//, triline;
     public RGB linesColor, polygonColor;
     private TexturedVertex vertices[];
     private TexturedPolygon faces[];
@@ -1451,7 +1451,7 @@ public class ModelRendererTurbo {
         displayList = GL11.glGenLists(1);
         GL11.glNewList(displayList, 4864 /*GL_COMPILE*/);
         for(int i = 0; i < faces.length; i++){
-            faces[i].draw(Tessellator.INSTANCE, scale, linesColor, getColor(i), triline);
+            faces[i].draw(Tessellator.INSTANCE, scale, linesColor, getColor(i));
         }
         GL11.glEndList();
     }

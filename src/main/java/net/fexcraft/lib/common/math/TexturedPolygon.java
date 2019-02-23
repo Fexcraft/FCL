@@ -13,7 +13,7 @@ import net.fexcraft.lib.tmt.Tessellator;
  */
 public class TexturedPolygon {
 
-    private boolean invert, oppositetriangles;
+    private boolean invert;//, oppositetriangles;
     private float[] normals;
     private ArrayList<Vec3f> list;
     private TexturedVertex[] vertices;
@@ -29,11 +29,11 @@ public class TexturedPolygon {
 	
 	public void setNormals(ArrayList<Vec3f> normallist){ list = normallist; }
 	
-	public void draw(Tessellator tess, float scale, RGB lincol, RGB rgb, boolean triline){
+	public void draw(Tessellator tess, float scale, RGB lincol, RGB rgb){
 		if(lincol != null){
 			tess.startDrawing(GL11.GL_LINE_STRIP); tess.setColor(lincol);
 			//
-			if(triline && vertices.length == 4){
+			/*if(triline && vertices.length == 4){
 				TexturedVertex texvex = null;
 				//tess.startDrawing(GL11.GL_LINE_STRIP); tess.setColor(lincol);
             	texvex = vertices[0]; tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
@@ -43,7 +43,7 @@ public class TexturedPolygon {
             	texvex = vertices[2]; tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
             	texvex = vertices[3]; tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
 		        tess.draw(); return;
-			}
+			}*/
 		}
 		else{
 	        switch(vertices.length){
@@ -110,12 +110,12 @@ public class TexturedPolygon {
 		return list;
 	}
 
-	public TexturedPolygon setOppositeTriangles(boolean bool){
+	/*public TexturedPolygon setOppositeTriangles(boolean bool){
 		if(this.vertices.length != 4 || bool == oppositetriangles) return this;
 		TexturedVertex[] verts = new TexturedVertex[4];
 		verts[0] = vertices[1]; verts[1] = vertices[0];
 		verts[2] = vertices[3]; verts[3] = vertices[2];
 		vertices = verts; this.oppositetriangles = bool; return this;
-	}
+	}*/
 	
 }
