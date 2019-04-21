@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.fexcraft.lib.common.Static;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -64,6 +65,10 @@ public class RGB {
 	public RGB(int[] i){
 		this(i.length >= 1 ? i[0] : 0, i.length >= 2 ? i[1] : 0, i.length >= 3 ? i[2] : 0);
 		if(i.length >= 4){ alpha = i[3] / 255; }
+	}
+	
+	public RGB(String hex){
+		this(Integer.parseInt(hex.replace("#", ""), 16));
 	}
 	
 	public static RGB fromStrings(String x, String y, String z){
@@ -190,6 +195,10 @@ public class RGB {
 	
 	public static String format(double d){
 		return df.format(d);
+	}
+
+	public static RGB random(){
+		return new RGB(Static.random.nextInt(RGB.WHITE.packed));
 	}
 	
 }
