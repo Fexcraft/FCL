@@ -46,7 +46,7 @@ public class ModelRendererTurbo {
     private TexturedPolygon faces[];
     private Integer displayList;
     public int texoffx, texoffy;
-    public List<?> childModels;
+    public List<ModelRendererTurbo> childModels;
     public String boxName;
 	
 	public ModelRendererTurbo(Object modelbase, String s){
@@ -1322,6 +1322,7 @@ public class ModelRendererTurbo {
     public ModelRendererTurbo clear(){
     	vertices = new TexturedVertex[0];
     	faces = new TexturedPolygon[0];
+    	if(childModels != null) childModels.clear();
     	return this;
     }
     
@@ -1383,9 +1384,7 @@ public class ModelRendererTurbo {
             }
     		GL11.glCallList(displayList);
             if(childModels != null){
-                for(Object child : childModels){
-                    ((ModelRendererTurbo)child).render(scale);
-                }
+                for(ModelRendererTurbo child : childModels) child.render(scale);
             }
             GL11.glPopMatrix();
         }
@@ -1393,18 +1392,14 @@ public class ModelRendererTurbo {
             GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
     		GL11.glCallList(displayList);
             if(childModels != null){
-                for(Object child : childModels){
-                    ((ModelRendererTurbo)child).render(scale);
-                }
+                for(ModelRendererTurbo child : childModels) child.render(scale);
             }
             GL11.glTranslatef(-rotationPointX * scale, -rotationPointY * scale, -rotationPointZ * scale);
         }
         else{
     		GL11.glCallList(displayList);
         	if(childModels != null){
-                for(Object child : childModels){
-                    ((ModelRendererTurbo)child).render(scale);
-                }
+                for(ModelRendererTurbo child : childModels) child.render(scale);
             }
         }
     }
@@ -1657,6 +1652,15 @@ public class ModelRendererTurbo {
 		}
 		//
 		return addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
+	}
+
+	public ModelRendererTurbo createChildList(){
+		this.childModels = new ArrayList<>(); return this;
+	}
+
+	public ModelRendererTurbo addChild(ModelRendererTurbo model){
+		if(this.childModels == null) this.createChildList();
+		this.childModels.add(model); return this;
 	}
 	
 }
