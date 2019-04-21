@@ -21,7 +21,6 @@ import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.Time;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
@@ -119,7 +118,7 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 	@SideOnly(Side.CLIENT)
 	public static void debugChat(String string){
 		if(Static.dev()){
-			Minecraft.getMinecraft().player.sendMessage(new TextComponentString(string));
+			net.minecraft.client.Minecraft.getMinecraft().player.sendMessage(new TextComponentString(string));
 		}
 	}
 	
