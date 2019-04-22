@@ -1662,5 +1662,11 @@ public class ModelRendererTurbo {
 		if(this.childModels == null) this.createChildList();
 		this.childModels.add(model); return this;
 	}
+
+	public void integrateChildren(boolean removelist){
+		for(ModelRendererTurbo turbo : childModels){
+			this.copyTo(turbo.getVertices(), turbo.getFaces());
+		} if(removelist) childModels = null; else childModels.clear();
+	}
 	
 }

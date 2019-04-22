@@ -15,6 +15,7 @@ public class TexturedPolygon {
 
     private boolean invert;//, oppositetriangles;
     private float[] normals;
+    private RGB color = null;
     private ArrayList<Vec3f> list;
     private TexturedVertex[] vertices;
 	
@@ -72,12 +73,12 @@ public class TexturedPolygon {
             	if(invert){ tess.setNormal(-list.get(i).xCoord, -list.get(i).yCoord, -list.get(i).zCoord); }
             	else{ tess.setNormal(list.get(i).xCoord, list.get(i).yCoord, list.get(i).zCoord); }
             }
-            if(rgb == null){
+            if(rgb == null && color == null){
             	tess.addVertexWithUV(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale, texvex.textureX, texvex.textureY);
             }
             else{
             	tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
-            	tess.setColor(rgb);
+            	tess.setColor(color == null ? rgb : color);
             }
         }
         tess.draw();
@@ -108,6 +109,10 @@ public class TexturedPolygon {
 
 	public List<Vec3f> getVectors(){
 		return list;
+	}
+
+	public TexturedPolygon setColor(RGB rgb){
+		this.color = rgb; return this;
 	}
 
 	/*public TexturedPolygon setOppositeTriangles(boolean bool){
