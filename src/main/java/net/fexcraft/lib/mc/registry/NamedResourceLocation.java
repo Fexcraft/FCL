@@ -20,8 +20,8 @@ public class NamedResourceLocation extends ResourceLocation {
 	}
 	
 	public NamedResourceLocation(String onestring){
-		super(onestring.contains("|") ? onestring.split("|")[1] : onestring);
-		name = onestring.contains("|") ? onestring.split("|")[0] : defname;
+		super(onestring.contains(";") ? onestring.split(";")[1] : onestring);
+		name = onestring.contains(";") ? onestring.split(";")[0] : defname;
 	}
 
 	public String getName(){
