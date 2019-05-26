@@ -2,6 +2,7 @@ package net.fexcraft.lib.mc.utils;
 
 import org.lwjgl.opengl.GL11;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import net.fexcraft.lib.common.math.Vec3f;
@@ -51,34 +52,51 @@ public class Pos {
         return 0.0625f * z;
     }
 
-    public static Pos fromJSON(JsonObject obj){
-        float x = obj.has("x") ? obj.get("x").getAsFloat() : 0f;
-        float y = obj.has("y") ? obj.get("y").getAsFloat() : 0f;
-        float z = obj.has("z") ? obj.get("z").getAsFloat() : 0f;
-        return new Pos(x, y, z);
-    }
-
-    public JsonObject toJSON(){
-        JsonObject obj = new JsonObject();
-        obj.addProperty("x", x);
-        obj.addProperty("y", y);
-        obj.addProperty("z", z);
-        return obj;
+	public com.google.gson.JsonElement toJson(boolean asarray){
+		if(asarray){
+			JsonArray array = new JsonArray();
+			array.add(x); array.add(y); array.add(z);
+			return array;
+		}
+		else{
+	        JsonObject obj = new JsonObject();
+	        obj.addProperty("x", x);
+	        obj.addProperty("y", y);
+	        obj.addProperty("z", z);
+	        return obj;
+		}
+	}
+	
+	public static Pos fromJson(com.google.gson.JsonElement elm, boolean wasarray){
+		float x, y, z;
+		if(wasarray){
+			JsonArray array = elm.getAsJsonArray();
+			x = array.size() > 0 ? array.get(0).getAsFloat() : 0;
+			y = array.size() > 1 ? array.get(1).getAsFloat() : 0;
+			z = array.size() > 2 ? array.get(2).getAsFloat() : 0;
+		}
+		else{
+			JsonObject obj = elm.getAsJsonObject();
+			x = obj.has("x") ? obj.get("x").getAsFloat() : 0;
+			y = obj.has("y") ? obj.get("y").getAsFloat() : 0;
+			z = obj.has("z") ? obj.get("z").getAsFloat() : 0;
+		}
+		return new Pos(x, y, z);
+	}
+    
+    private static String prefix(String prefix){
+    	return prefix == null ? "" : prefix + "_";
     }
 
     public static Pos fromNBT(String prefix, NBTTagCompound compound){
-        String str = prefix == null ? "" : prefix + "_";
-        return new Pos(compound.getFloat(str + "x"), compound.getFloat(str + "y"), compound.getFloat(str + "z"));
+    	prefix = prefix(prefix); return new Pos(compound.getFloat(prefix + "x"), compound.getFloat(prefix + "y"), compound.getFloat(prefix + "z"));
     }
 
     public NBTTagCompound toNBT(String prefix, NBTTagCompound compound){
-        String str = prefix == null ? "" : prefix + "_";
-        if(compound == null){
-            compound = new NBTTagCompound();
-        }
-        compound.setFloat(str + "x", x);
-        compound.setFloat(str + "y", y);
-        compound.setFloat(str + "z", z);
+    	prefix = prefix(prefix); if(compound == null){ compound = new NBTTagCompound(); }
+        compound.setFloat(prefix + "x", x);
+        compound.setFloat(prefix + "y", y);
+        compound.setFloat(prefix + "z", z);
         return compound;
     }
 

@@ -13,7 +13,7 @@ public abstract class GenericContainer extends Container {
 	
 	protected EntityPlayer player;
 	
-	public GenericContainer(){}
+	public GenericContainer(EntityPlayer player){ this.player = player; }
 
     @Override
     public boolean canInteractWith(EntityPlayer player){
@@ -37,6 +37,8 @@ public abstract class GenericContainer extends Container {
 	protected abstract void packet(Side side, NBTTagCompound packet, EntityPlayer player);
 	
 	public static class DefImpl extends GenericContainer {
+
+		public DefImpl(EntityPlayer player){ super(player); }
 
 		@Override
 		protected void packet(Side side, NBTTagCompound packet, EntityPlayer player){

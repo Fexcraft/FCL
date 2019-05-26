@@ -1,7 +1,7 @@
 [
 	{
 	  "modid": "fcl",
-	  "name": "Fexcraft Common Library",
+	  "name": "\u00a72Fexcraft Common Library",
 	  "description": "A Library and API needed for most Fexcraft mods to run.",
 	  "version": "${version}",
 	  "mcversion": "${mcversion}",
@@ -25,6 +25,7 @@
 	  "credits": "\u00a77Thanks to all who didn't give up on TMT yet! And: EternalBlueFlame, Manus, jamioflan / TheFlansmodTeam",
 	  "logoFile": "",
 	  "screenshots": [],
-	  "dependencies": []
+	  "dependencies": [],
+	  "parent": "fcl"
 	}
 ]

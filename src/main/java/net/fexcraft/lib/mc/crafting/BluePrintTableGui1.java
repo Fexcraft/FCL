@@ -18,7 +18,7 @@ public class BluePrintTableGui1 extends GenericGui<GenericContainer.DefImpl> {
 	public static int category = -1;
 
 	public BluePrintTableGui1(EntityPlayer player, World world, int x, int y, int z){
-		super(texture, new GenericContainer.DefImpl(), player);
+		super(texture, new GenericContainer.DefImpl(player), player);
 		this.xSize = 256; this.ySize = 204; category = x;
 		if(BluePrintTableGui2.item >= 0 && BluePrintTableGui2.recipe >= 0){
 			this.openGui("fcl", 2, new int[]{ category, BluePrintTableGui2.item, BluePrintTableGui2.recipe });

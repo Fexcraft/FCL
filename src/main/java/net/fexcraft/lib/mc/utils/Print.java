@@ -67,6 +67,10 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 		sender.sendMessage(new TextComponentString(Formatter.format(string)));
 	}
 	
+	public static void chatnn(ICommandSender sender, String string){
+		if(sender == null) return; sender.sendMessage(new TextComponentString(Formatter.format(string)));
+	}
+	
 	public static void bar(EntityPlayer sender, String string){
 		sender.sendStatusMessage(new TextComponentString(Formatter.format(string)), true);
 	}

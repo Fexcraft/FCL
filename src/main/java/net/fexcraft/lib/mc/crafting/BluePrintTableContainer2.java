@@ -23,6 +23,7 @@ public class BluePrintTableContainer2 extends GenericContainer {
 	protected BluePrintRecipe recipe;
 
 	public BluePrintTableContainer2(EntityPlayer player, World world, int x, int y, int z){
+		super(player);
 		for(int row = 0; row < 5; row++){
 			for(int col = 0; col < 12; col++){
 				addSlotToContainer(new Slot(inv, col + row * 12, 6 + col * 18, 34 + row * 18));

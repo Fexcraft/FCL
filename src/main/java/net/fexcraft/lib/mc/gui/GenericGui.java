@@ -13,9 +13,11 @@ import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -25,7 +27,7 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 	protected ResourceLocation texloc = null;
     protected TreeMap<String, BasicButton> buttons = new TreeMap<>();
     protected TreeMap<String, BasicText> texts = new TreeMap<>();
-    protected TreeMap<String, GuiTextField> fields = new TreeMap<>();
+    protected TreeMap<String, TextField> fields = new TreeMap<>();
     protected CONTAINER container;
     protected boolean deftexrect = true;
     protected boolean defbackground = true;
@@ -33,8 +35,8 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
     
     @SuppressWarnings("unchecked")
 	public GenericGui(ResourceLocation texture, GenericContainer container, EntityPlayer player){
-    	super(container == null ? new GenericContainer.DefImpl() : container);
-    	this.texloc = texture == null ? new ResourceLocation("minecraft:textures/stone.png") : texture;
+    	super(container == null ? new GenericContainer.DefImpl(player) : container);
+    	this.texloc = texture == null ? new ResourceLocation("minecraft:textures/blocks/stone.png") : texture;
     	this.container = (CONTAINER)this.inventorySlots;
     	this.container.setPlayer(this.player = player);
     }
@@ -168,6 +170,55 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 		}
 
 		public boolean scrollwheel(int am, int x, int y){ return false; }
+
+		public void translate(){
+			this.string = I18n.format(string, new Object[0]);
+		}
+		
+	}
+	
+	public static class TextField extends GuiTextField {
+
+		public TextField(int id, FontRenderer renderer, int x, int y, int width, int height){
+			this(id, renderer, x, y, width, height, true);
+		}
+		
+		public TextField(int id, FontRenderer renderer, int x, int y, int width, int height, boolean draw){
+			super(id, renderer, x, y, width, height); this.setEnableBackgroundDrawing(draw);
+		}
+		
+		public Integer getIntegerValue(){
+			try{ return Integer.parseInt(this.getText()); }
+			catch(Exception e){ e.printStackTrace(); return null; }
+		}
+		
+		public Float getValue(){
+			try{ return Float.parseFloat(this.getText()); }
+			catch(Exception e){ e.printStackTrace(); return null; }
+		}
+		
+	}
+	
+	public static class NumberField extends TextField {
+		
+		private String regex = "[^\\d\\-\\.\\,]";
+
+		public NumberField(int id, FontRenderer renderer, int x, int y, int width, int height){
+			super(id, renderer, x, y, width, height, true);
+		}
+		
+		public NumberField(int id, FontRenderer renderer, int x, int y, int width, int height, boolean draw){
+			super(id, renderer, x, y, width, height, draw);
+		}
+		
+		public NumberField setRegex(String regex){
+			this.regex = regex; return this;
+		}
+		
+		@Override
+	    public void writeText(String text){
+	        super.writeText(text.replaceAll(regex, ""));
+	    }
 		
 	}
 	
@@ -175,12 +226,11 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 	
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException{
-        if(!fields.isEmpty() && !(this.mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode))){
-        	boolean bool = false;
-        	for(Entry<String, GuiTextField> entry : fields.entrySet()){
-        		if(entry.getValue().textboxKeyTyped(typedChar, keyCode)) bool = true;
+        if(!fields.isEmpty()){ boolean bool = false;
+        	for(Entry<String, TextField> entry : fields.entrySet()){
+        		if(bool) break; if(entry.getValue().textboxKeyTyped(typedChar, keyCode)) bool = true;
         	}
-            if(bool) super.keyTyped(typedChar, keyCode);
+            if(bool && !this.mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)) super.keyTyped(typedChar, keyCode);
         }
         if(keyCode == 1) player.closeScreen();
     }
@@ -201,5 +251,9 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 		}
 		if(!exit) this.scrollwheel(am, x, y);
     }
+
+	public ResourceLocation getTexLoc(){
+		return texloc;
+	}
 
 }

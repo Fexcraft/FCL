@@ -17,7 +17,7 @@ public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 	private static int scroll;
 
 	public BluePrintTableGui0(EntityPlayer player, World world, int x, int y, int z){
-		super(texture, new GenericContainer.DefImpl(), player);
+		super(texture, new GenericContainer.DefImpl(player), player);
 		this.xSize = 256; this.ySize = 204;
 		if(BluePrintTableGui1.category >= 0){
 			this.openGui("fcl", 1, new int[]{ BluePrintTableGui1.category, 0, 0 });

@@ -41,8 +41,7 @@ public class RGB {
 	}
 	
 	public RGB(byte i, byte j, byte k, float f){
-		this(i, j, k);
-		alpha = f;
+		this(i, j, k); alpha = f;
 	}
 	
 	public RGB(int r, int g, int b){
@@ -53,8 +52,7 @@ public class RGB {
 	}
 	
 	public RGB(int r, int g, int b, float a){
-		this(r, g, b);
-		alpha = a;
+		this(r, g, b); alpha = a;
 	}
 	
 	public RGB(byte[] i){
@@ -69,6 +67,10 @@ public class RGB {
 	
 	public RGB(String hex){
 		this(Integer.parseInt(hex.replace("#", ""), 16));
+	}
+	
+	public RGB(String hex, float alpha){
+		this(hex); this.alpha = alpha;
 	}
 	
 	public static RGB fromStrings(String x, String y, String z){
@@ -199,6 +201,14 @@ public class RGB {
 
 	public static RGB random(){
 		return new RGB(Static.random.nextInt(RGB.WHITE.packed));
+	}
+
+	public RGB setAlpha(float value){
+		this.alpha = value; return this;
+	}
+
+	public RGB copy(){
+		return new RGB(this);
 	}
 	
 }

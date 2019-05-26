@@ -13,21 +13,20 @@ import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.common.utils.WavefrontObjUtil;
 /**
- * <span style='text-decoration:line-through;'>An extension to the ModelRenderer class.</span> It basically is a copy to ModelRenderer,
- * however, it contains various new methods to make your models.
+ * <span style='text-decoration:line-through;'>An extension to the ModelRenderer class.</span> (not anymore)
  * <hr>
  * Since the ModelRendererTurbo class gets loaded during startup, the models made
  * can be very complex. This is why I can afford to add, for example, Wavefont OBJ
  * support or have the addSprite method, methods that add a lot of vertices and
  * polygons.
  * <hr>
- * This is a (by now) heavily modified version of TMT, it was and is being updated/maintained/improved by Ferdinand (FEX___96).
+ * This is a (by now) heavily modified version of TMT, it was and is being updated/maintained/improved by FEX___96.
  * Due to various circumstances, starting from version "XII.44" of FCL (October 2018) the license changes to the Fexcraft "Common" License for "Modifications".
  * <hr>
- * If you find any code here that shouldn't be, inform me and it will be removed <b>asap</b>.
+ * If you find any code here that shouldn't be, inform me and it will be removed <b>as soon as possible</b>.
  *
  * @originalAuthor GaryCXJk
- * @author Ferdinand (FEX___96)
+ * @author Ferdinand Calo' (FEX___96)
  * @license http://fexcraft.net/license?id=mods
  *
  */
@@ -1115,14 +1114,18 @@ public class ModelRendererTurbo {
 	}
 	
 	public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit,  float baseScale, float topScale, int baseDirection, Vec3f topoff){
-		return addHollowCylinder(true, x, y, z, radius, radius2, length, segments, seglimit, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), topoff);
+		return addHollowCylinder(x, y, z, radius, radius2, length, segments, seglimit, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), topoff, 0, new boolean[4]);
+	}
+	
+	public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit,  float baseScale, float topScale, int baseDirection, Vec3f topoff, float topangle, boolean[] bools){
+		return addHollowCylinder(x, y, z, radius, radius2, length, segments, seglimit, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), topoff, topangle, bools);
 	}
 	
 	/**
 	 * Based on the addCylinder method.
 	 * @author Ferdinand Calo' (FEX___96)
 	**/
-	public ModelRendererTurbo addHollowCylinder(boolean test, float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, Vec3f topoff){
+	public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, Vec3f topoff, float topangle, boolean[] bools){
 		boolean dirTop = (baseDirection == MR_TOP || baseDirection == MR_BOTTOM);
 		boolean dirSide = (baseDirection == MR_RIGHT || baseDirection == MR_LEFT);
 		boolean dirFront = (baseDirection == MR_FRONT || baseDirection == MR_BACK);
@@ -1181,26 +1184,28 @@ public class ModelRendererTurbo {
 			else{ verts3.addAll(verts0); verts3.addAll(verts1); }
 			float xSize, ySize; float mul = repeat == 0 ? 0.5f : 1.5f;
 			boolean bool = repeat == 0 ? dirFront ? false : true : dirFront ? true : false;
-			for(int i = 0; i < verts0.size(); i++){
-				if(i >= (verts0.size() - 1) || i >= seglimit) break;
-				TexturedVertex[] arr = new TexturedVertex[4];
-				xSize = (float)(Math.sin((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle - 2F * uOffset));
-				ySize = (float)(Math.cos((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle - 2F * vOffset));
-				arr[0] = verts0.get(i).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
-				//
-				xSize = (float)(Math.sin((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2 - 2F * uOffset));
-				ySize = (float)(Math.cos((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2 - 2F * vOffset));
-				arr[1] = verts1.get(i).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
-				//
-				xSize = (float)(Math.sin((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2 - 2F * uOffset));
-				ySize = (float)(Math.cos((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2 - 2F * vOffset));
-				arr[2] = verts1.get(i + 1).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
-				//
-				xSize = (float)(Math.sin((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle - 2F * uOffset));
-				ySize = (float)(Math.cos((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle - 2F * vOffset));
-				arr[3] = verts0.get(i + 1).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
-				polis.add(new TexturedPolygon(arr));
-				if(bool) polis.get(polis.size() - 1 ).flipFace();
+			if((repeat == 0 && !bools[0]) || (repeat == 1 && !bools[1])){
+				for(int i = 0; i < verts0.size(); i++){
+					if(i >= (verts0.size() - 1) || i >= seglimit) break;
+					TexturedVertex[] arr = new TexturedVertex[4];
+					xSize = (float)(Math.sin((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle - 2F * uOffset));
+					ySize = (float)(Math.cos((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle - 2F * vOffset));
+					arr[0] = verts0.get(i).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
+					//
+					xSize = (float)(Math.sin((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2 - 2F * uOffset));
+					ySize = (float)(Math.cos((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2 - 2F * vOffset));
+					arr[1] = verts1.get(i).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
+					//
+					xSize = (float)(Math.sin((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2 - 2F * uOffset));
+					ySize = (float)(Math.cos((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2 - 2F * vOffset));
+					arr[2] = verts1.get(i + 1).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
+					//
+					xSize = (float)(Math.sin((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle - 2F * uOffset));
+					ySize = (float)(Math.cos((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle - 2F * vOffset));
+					arr[3] = verts0.get(i + 1).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
+					polis.add(new TexturedPolygon(arr));
+					if(bool) polis.get(polis.size() - 1 ).flipFace();
+				}
 			}
 			verts0.clear(); verts1.clear(); xCur = xEnd; yCur = yEnd; zCur = zEnd; sCur = topScale;
 		}
@@ -1225,19 +1230,23 @@ public class ModelRendererTurbo {
 			}
 			if(i >= (halfv2 - 1)) break;
 			TexturedVertex[] arr = new TexturedVertex[4];
-			arr[0] = verts2.get(i + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle);
-			arr[1] = verts3.get(i + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle + vHeight);
-			arr[2] = verts3.get(i + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle + vHeight);
-			arr[3] = verts2.get(i + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle);
-			polis.add(new TexturedPolygon(arr));
-			if(dirFront) polis.get(polis.size() - 1 ).flipFace();
-			arr = new TexturedVertex[4];
-			arr[0] = verts2.get(i + halfv2 + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle + vHeight);
-			arr[1] = verts3.get(i + halfv2 + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle + vHeight + vHeight);
-			arr[2] = verts3.get(i + halfv2 + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle + vHeight + vHeight);
-			arr[3] = verts2.get(i + halfv2 + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle + vHeight);
-			polis.add(new TexturedPolygon(arr));
-			if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
+			if(!bools[2]){
+				arr[0] = verts2.get(i + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle);
+				arr[1] = verts3.get(i + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle + vHeight);
+				arr[2] = verts3.get(i + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle + vHeight);
+				arr[3] = verts2.get(i + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle);
+				polis.add(new TexturedPolygon(arr));
+				if(dirFront) polis.get(polis.size() - 1 ).flipFace();
+			}
+			if(!bools[3]){
+				arr = new TexturedVertex[4];
+				arr[0] = verts2.get(i + halfv2 + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle + vHeight);
+				arr[1] = verts3.get(i + halfv2 + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle + vHeight + vHeight);
+				arr[2] = verts3.get(i + halfv2 + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle + vHeight + vHeight);
+				arr[3] = verts2.get(i + halfv2 + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle + vHeight);
+				polis.add(new TexturedPolygon(arr));
+				if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
+			}
 		}
 		return copyTo(verts.toArray(new TexturedVertex[0]), polis.toArray(new TexturedPolygon[0]));
 	}
