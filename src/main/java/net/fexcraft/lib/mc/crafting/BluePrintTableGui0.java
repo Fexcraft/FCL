@@ -66,7 +66,7 @@ public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 	}
 
 	@Override
-	protected void buttonClicked(int mouseX, int mouseY, int mouseButton, String key, BasicButton button){
+	protected boolean buttonClicked(int mouseX, int mouseY, int mouseButton, String key, BasicButton button){
 		switch(key){
 			case "arrow_up":{ scroll = (scroll -= 1) < 0 ? 0 : scroll; break; }
 			case "arrow_down":{
@@ -78,6 +78,7 @@ public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 			int i = Integer.parseInt(key.replace("category_", "").replace("cat_", ""));
 			this.openGui("fcl", 1, new int[]{ i + scroll, 0, 0 });
 		}
+		return false;
 	}
 
 	@Override

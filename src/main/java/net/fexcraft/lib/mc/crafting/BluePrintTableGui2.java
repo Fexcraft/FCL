@@ -67,7 +67,7 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 	}
 
 	@Override
-	protected void buttonClicked(int mouseX, int mouseY, int mouseButton, String key, BasicButton button){
+	protected boolean buttonClicked(int mouseX, int mouseY, int mouseButton, String key, BasicButton button){
 		switch(key){
 			case "ingr_up":{ scroll = (scroll -= 1) < 0 ? 0 : scroll; container.refresh(scroll); break; }
 			case "ingr_down":{
@@ -79,6 +79,7 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 			case "prev":{ this.openGui("fcl", 2, new int[]{ BluePrintTableGui1.category, item, recipe - 1 }); break; }
 			case "next":{ this.openGui("fcl", 2, new int[]{ BluePrintTableGui1.category, item, recipe + 1 }); break; }
 		}
+		return false;
 	}
 
 	private void craft(){

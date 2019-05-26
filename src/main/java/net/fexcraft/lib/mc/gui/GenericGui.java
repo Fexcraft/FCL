@@ -100,7 +100,7 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
     
     protected abstract void drawbackground(float pticks, int mouseX, int mouseY);
 
-	protected abstract void buttonClicked(int mouseX, int mouseY, int mouseButton, String key, BasicButton button);
+	protected abstract boolean buttonClicked(int mouseX, int mouseY, int mouseButton, String key, BasicButton button);
 
 	protected abstract void scrollwheel(int am, int x, int y);
     
