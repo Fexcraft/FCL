@@ -75,7 +75,7 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
     	fields.forEach((key, elm) -> elm.drawTextBox());
     }
     
-    protected void openGui(String mod, int gui, int[] xyz){
+    public static void openGui(String mod, int gui, int[] xyz){
         NBTTagCompound compound = new NBTTagCompound();
         compound.setString("target_listener", "fcl_gui");
         compound.setString("task", "open_gui");
@@ -85,7 +85,7 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
         PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(compound));
     }
     
-    protected void openGenericGui(int gui, int[] xyz, NBTTagCompound data){
+    public static void openGenericGui(int gui, int[] xyz, NBTTagCompound data){
         NBTTagCompound compound = new NBTTagCompound();
         compound.setString("target_listener", "fcl_gui");
         compound.setString("task", "open_guicontainer");
@@ -112,10 +112,16 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
         			//can't add the forge event as it needs a _GuiButton_, this isn't one.
         			Print.debug("[GG] Button Pressed: " + entry.getKey());
         			buttonClicked(mouseX, mouseY, mouseButton, entry.getKey(), entry.getValue());
+        			return;
         		}
         	}
         }
-        if(!fields.isEmpty()) fields.values().forEach(elm -> elm.mouseClicked(mouseX, mouseY, mouseButton));
+        if(!fields.isEmpty()){
+        	for(TextField field : fields.values()){
+        		if(field.mouseClicked(mouseX, mouseY, mouseButton)) return;
+        	}
+        }
+        super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
 	public static class BasicButton {
@@ -196,6 +202,10 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 			try{ return Float.parseFloat(this.getText()); }
 			catch(Exception e){ e.printStackTrace(); return null; }
 		}
+		
+	    public TextField setMaxLength(int length){
+	        super.setMaxStringLength(length); return this;
+	    }
 		
 	}
 	
