@@ -22,3 +22,4 @@ eclipse
 run
 .nb*
 *.jar
+localrepos

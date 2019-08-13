@@ -11,6 +11,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class ServerReceiver implements IPacketListener<PacketNBTTagCompound> {
+	
+	public static ServerReceiver INSTANCE;
+	public ServerReceiver(){ INSTANCE = this; }
 
 	@Override
 	public String getId(){
