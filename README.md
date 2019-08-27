@@ -1,5 +1,5 @@
 # FCL
-Fexcraft Common Library (for Minecraft Mods)
+Fexcraft Common Library (for Minecraft Mods and other)
 
 # License
 http://fexcraft.net/license?id=mods
