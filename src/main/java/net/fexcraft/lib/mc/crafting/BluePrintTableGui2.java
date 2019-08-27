@@ -76,8 +76,8 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 			}
 			case "less":{ amount--; break; } case "more":{ amount++; break; } case "craft":{ craft(); break; }
 			case "exit":{ player.closeScreen(); break; }
-			case "prev":{ this.openGui("fcl", 2, new int[]{ BluePrintTableGui1.category, item, recipe - 1 }); break; }
-			case "next":{ this.openGui("fcl", 2, new int[]{ BluePrintTableGui1.category, item, recipe + 1 }); break; }
+			case "prev":{ openGui("fcl", 2, new int[]{ BluePrintTableGui1.category, item, recipe - 1 }); break; }
+			case "next":{ openGui("fcl", 2, new int[]{ BluePrintTableGui1.category, item, recipe + 1 }); break; }
 		}
 		return false;
 	}
@@ -98,7 +98,7 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 	
 	@Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException{
-        if(keyCode == 1){ item = -1; recipe = -1; this.openGui("fcl", 1, new int[]{ BluePrintTableGui1.category, 0, 0 }); return; }
+        if(keyCode == 1){ item = -1; recipe = -1; openGui("fcl", 1, new int[]{ BluePrintTableGui1.category, 0, 0 }); return; }
         super.keyTyped(typedChar, keyCode);
     }
 	
