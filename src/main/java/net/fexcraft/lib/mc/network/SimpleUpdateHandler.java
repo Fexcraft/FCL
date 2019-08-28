@@ -6,10 +6,10 @@ import java.util.HashSet;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -60,23 +60,28 @@ public class SimpleUpdateHandler{
 	}
 
 	public static void postInit(){
-		checkForMissingModData();
-		checkIfUpdateAvaible();
-		loaded = true;
+		new Thread("FCL-SUH"){
+			@Override
+			public void run(){
+				checkForMissingModData();
+				checkIfUpdateAvaible();
+				loaded = true;
+			}
+		}.start();
 	}
 	
 	private static void checkIfUpdateAvaible(){
-		Print.log("[SUH] Checking for available updates.");
+		Print.log("Checking for available updates.");
 		for(String modid : modids){
 			if(obj.has(modid)){
 				String latest_version = getLatestVersionOf(modid);
 				if(!latest_version.equals(versions.get(modid))){
-					Print.log("[SUH] Found update for '" + modid + "'!");
+					Print.log("Found update for '" + modid + "'!");
 					mods_to_update.add(modid);
 				}
 			}
 		}
-		Print.log("[SUH] Done checking for updates.");
+		Print.log("Done checking for updates.");
 	}
 	
 	/** 
@@ -126,15 +131,20 @@ public class SimpleUpdateHandler{
 		
 		@SubscribeEvent
 		public void onJoin(PlayerEvent.PlayerLoggedInEvent event){
-			for(String modid : mods_to_update){
-				String string = update_message_queue.get(modid);
-				if(string != null && string.length() > 4){
-					Print.chat(event.player, Formatter.format(update_message_queue.get(modid)));
+			new Thread("FCL-SUH"){
+				@Override
+				public void run(){
+					for(String modid : mods_to_update){
+						String string = update_message_queue.get(modid);
+						if(string != null && string.length() > 4){
+							Print.chat(event.player, Formatter.format(update_message_queue.get(modid)));
+						}
+					}
+					if(Static.isServer() && Network.isBanned(event.player.getGameProfile().getId())){
+						((EntityPlayerMP)event.player).connection.onDisconnect(new TextComponentString("[FCL] Blacklisted."));
+					}
 				}
-			}
-			if(Static.isServer() && Network.isBanned(event.player.getGameProfile().getId())){
-				((EntityPlayerMP)event.player).connection.onDisconnect(new TextComponentString("[FCL] Blacklisted."));
-			}
+			}.start();
 		}
 		
 	}
