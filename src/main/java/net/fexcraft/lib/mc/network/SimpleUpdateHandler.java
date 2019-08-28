@@ -44,9 +44,6 @@ public class SimpleUpdateHandler{
 	 * @param current_version Current version of the mod.
 	 */
 	public static void register(String modid, int userid, String current_version){
-		if(!Network.isConnected()){
-			return;
-		}
 		if(Network.isModRegistered(modid)){
 			obj.add(modid, Network.getModData(modid));
 			modids.add(modid);

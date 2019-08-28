@@ -17,7 +17,7 @@ import net.fexcraft.lib.common.json.JsonUtil;
 public class HttpUtil {
 	
 	/** Requests a JsonObject from the given adress and parameters, using the POST HTML method. */
-	public static JsonObject request(String adress, String parameters, String[] cookies){
+	public static JsonObject request(String adress, String parameters, String[] cookies, int timeout){
 		try{
 			URL url = new URL(adress);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -29,7 +29,7 @@ public class HttpUtil {
 					str += cookies[i]; if(i != cookies.length - 1){ str += "; "; }
 				} connection.setRequestProperty("Cookie", str);
 			}
-			connection.setConnectTimeout(5000);
+			connection.setConnectTimeout(timeout);
 			connection.setDoOutput(true);
 			//
 			DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
@@ -59,10 +59,22 @@ public class HttpUtil {
 	}
 	
 	public static JsonObject request(String adress, String parameters){
-		return request(adress, parameters, null);
+		return request(adress, parameters, null, 5000);
+	}
+	
+	public static JsonObject request(String adress, String parameters, int timeout){
+		return request(adress, parameters, null, timeout);
+	}
+	
+	public static JsonObject request(String adress, String parameters, String[] cookies){
+		return request(adress, parameters, cookies, 5000);
 	}
 	
 	public static JsonElement request(String adress, String[] cookies){
+		return request(adress, cookies, 5000);
+	}
+	
+	public static JsonElement request(String adress, String[] cookies, int timeout){
 		try{
 			URL url = new URL(adress);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -74,7 +86,7 @@ public class HttpUtil {
 					str += cookies[i]; if(i != cookies.length - 1){ str += "; "; }
 				} connection.setRequestProperty("Cookie", str);
 			}
-			connection.setConnectTimeout(5000);
+			connection.setConnectTimeout(timeout);
 			//
 			JsonObject cook = new JsonObject();
 			for(int i = 0;; i++){

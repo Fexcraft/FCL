@@ -31,6 +31,7 @@ public class Network{
 	private static boolean fcl_version_checked = false;
 
 	/** Checks if connection (to main server) is available. */
+	@Deprecated
 	public static boolean isConnected(){
 		try{
 			URL url = new URL("http://www.fexcraft.net/files/TXT/connection.test");
@@ -47,7 +48,7 @@ public class Network{
 	}
 	
 	public static JsonObject getModData(String modid, String current_version){
-		JsonObject obj = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=" + modid);
+		JsonObject obj = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=" + modid, 1000);
 		if(obj == null){
 			return null;
 		}
@@ -72,7 +73,7 @@ public class Network{
 			}
 		}
 		else if(obj.has("blocked_versions") && current_version == null && !fcl_version_checked){
-			JsonObject fcl = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=fcl");
+			JsonObject fcl = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=fcl", 1000);
 			ArrayList<String> arr = new ArrayList<String>();
 			for(JsonElement elm : fcl.get("blocked_versions").getAsJsonArray()){
 				arr.add(elm.getAsString());
@@ -98,7 +99,7 @@ public class Network{
 	
 	public static boolean isModRegistered(String modid){
 		try{
-			JsonObject obj = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=exists&modid=" + modid);
+			JsonObject obj = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=exists&modid=" + modid, 1000);
 			return obj == null ? false : obj.get("exists").getAsBoolean();
 		}
 		catch(Exception e){
@@ -127,7 +128,7 @@ public class Network{
 
 		public static void initialize(){
 			String uuid = net.minecraft.client.Minecraft.getMinecraft().getSession().getPlayerID();
-			JsonObject elm = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=blacklist&id=" + uuid);
+			JsonObject elm = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=blacklist&id=" + uuid, 1000);
 			if(elm != null && elm.has("unbanned") && !elm.get("unbanned").getAsBoolean()){
 				Static.halt(0);
 			}
@@ -140,7 +141,7 @@ public class Network{
 		private static final Set<UUID> blist = new TreeSet<UUID>();
 
 		public static void initialize(){
-			JsonObject check = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=blacklist&id=server");
+			JsonObject check = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=blacklist&id=server", 1000);
 			if(check == null){
 				Print.log("Couldn't validate Server.");
 			}
@@ -172,17 +173,11 @@ public class Network{
 	}
 	
 	public static void browse(ICommandSender sender, String url){
-	    Desktop d = Desktop.getDesktop();
-	    if(Network.isConnected()){
-	    	try{ d.browse(new URI(url)); }
-	    	catch(IOException | URISyntaxException e){
-				Print.chat(sender, FCL.prefix + "Error, couldn't open link.");
-				e.printStackTrace();
-			}
-	    }
-	    else{
-	    	Print.chat(sender, FCL.prefix + "Error, could not check for connection.");
-	    }
+    	try{ Desktop.getDesktop().browse(new URI(url)); }
+    	catch(IOException | URISyntaxException e){
+			Print.chat(sender, FCL.prefix + "Error, couldn't open link.");
+			e.printStackTrace();
+		}
 	}
 	
 }
