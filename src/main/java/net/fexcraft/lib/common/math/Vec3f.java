@@ -246,5 +246,9 @@ public class Vec3f {
 	public double[] toDoubleArray(){
 		return new double[]{ xCoord, yCoord, zCoord };
 	}
+
+	public void copyFrom(Vec3f pos){
+		this.xCoord = pos.xCoord; this.yCoord = pos.yCoord; this.zCoord = pos.zCoord;
+	}
     
 }
