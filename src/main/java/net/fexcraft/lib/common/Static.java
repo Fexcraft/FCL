@@ -25,6 +25,7 @@ public class Static {
 	// Radians > Degrees
 	public static final float rad180 = 3.14159f;
 	public static final float rad160 = 2.79253f;
+	public static final float rad135 = 2.35619f;
 	public static final float rad120 = 2.0944f;
 	public static final float rad90 = 1.5708f;
 	public static final float rad60 = 1.0472f;

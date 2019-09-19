@@ -70,9 +70,15 @@ public class Time {
 	}
 	
 	public static final String getAsString(long date){
-		return format.format(date >= 0 ? new Date(date) : new Date());
+		return getAsString(date, false);
+	}
+	
+	public static final String getAsString(Long date, boolean filenamevalid){
+		Date data = date == null || date < 0 ? new Date() : new Date(date);
+		return (filenamevalid ? fileformat : format).format(data);
 	}
 	
 	private static final SimpleDateFormat format = new SimpleDateFormat("dd|MM|yyyy HH:mm:ss");
+	private static final SimpleDateFormat fileformat = new SimpleDateFormat("dd.MM.yyyy HH-mm-ss");
 	
 }

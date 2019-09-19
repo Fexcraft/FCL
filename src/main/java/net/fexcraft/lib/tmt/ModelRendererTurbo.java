@@ -1589,6 +1589,9 @@ public class ModelRendererTurbo {
     	copyTo(verts, poly);
     }*/
     
+    /**
+     * Renders the shape. With a scale of 0.0625.
+     */
     public void render(){ render(0.0625F); }
     
     /**
