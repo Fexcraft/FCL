@@ -50,17 +50,18 @@ public abstract class GenericContainer extends Container {
     /** Server Side Method. */
     public static void openGui(String mod, int gui, int[] xyz, EntityPlayer player){
         NBTTagCompound compound = new NBTTagCompound();
+        compound.setString("target_listener", "fcl_gui");
         compound.setString("task", "open_gui");
         compound.setInteger("gui", gui);
         compound.setString("guimod", mod);
         if(xyz != null) compound.setIntArray("args", xyz);
-        Print.debug("opening", compound);
         ServerReceiver.INSTANCE.process(new PacketNBTTagCompound(compound), new Object[]{ player });
     }
 
     /** Server Side Method. */
     public static void openGenericGui(int gui, int[] xyz, NBTTagCompound data, EntityPlayer player){
         NBTTagCompound compound = new NBTTagCompound();
+        compound.setString("target_listener", "fcl_gui");
         compound.setString("task", "open_guicontainer");
         compound.setInteger("gui", gui); compound.setTag("data", data);
         if(xyz != null) compound.setIntArray("args", xyz);
