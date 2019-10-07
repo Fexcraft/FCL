@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.UUID;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
@@ -14,10 +12,8 @@ import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.utils.HttpUtil;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -110,7 +106,7 @@ public class Static extends net.fexcraft.lib.common.Static {
 
 	public static InputStream getResource(String str){
 		try{
-			return net.minecraft.client.Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(str)).getInputStream();
+			return net.minecraft.client.Minecraft.getMinecraft().getResourceManager().getResource(new Identifier(str)).getInputStream();
 		} catch(IOException e){ e.printStackTrace(); return null; }
 	}
 	

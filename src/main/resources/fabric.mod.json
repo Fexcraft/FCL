@@ -1,25 +1,25 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "fcl",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Fexcraft Common Library",
+  "description": "The Common Library of Fexcraft, for Fexcraft Mods & other!",
   "authors": [
-    "Me!"
+    "FEX___96"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://fexcraft.net/",
+    "sources": "https://github.com/Fexcraft/FCL"
   },
 
-  "license": "CC0-1.0",
+  "license": "Fexcraft Common License",
   "icon": "assets/modid/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.fexcraft.lib.mc.FCL"
     ]
   },
   "mixins": [

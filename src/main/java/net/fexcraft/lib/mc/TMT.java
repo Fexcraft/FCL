@@ -1,16 +1,11 @@
 package net.fexcraft.lib.mc;
 
-import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
-import net.fexcraft.lib.mc.utils.Formatter;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-
 /**
  * @author Ferdinand Calo' (FEX___96)
  * 
  * Placeholder class to register "TMT" as Mod, just for looking nice.
  */
-@Mod(modid = TMT.MODID, name = "(Fex's) Turbo Model Thingy", version = TMT.VERSION, clientSideOnly = true, acceptableRemoteVersions = "*", acceptedMinecraftVersions = "*", dependencies = "required-after:fcl")
+/*@Mod(modid = TMT.MODID, name = "(Fex's) Turbo Model Thingy", version = TMT.VERSION, clientSideOnly = true, acceptableRemoteVersions = "*", acceptedMinecraftVersions = "*", dependencies = "required-after:fcl")
 public class TMT {
 	
 	@Mod.Instance("tmt")
@@ -24,4 +19,4 @@ public class TMT {
 		SimpleUpdateHandler.setUpdateMessage(MODID, Formatter.format("&0[&9TMT&0]&7") + " Update available! (" + SimpleUpdateHandler.getLatestVersionOf("tmt") + ")");
 	}
 	
-}
+}*/

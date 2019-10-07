@@ -1,4 +1,4 @@
-package net.fexcraft.lib.mc.fabric;
+package net.fexcraft.lib.mc;
 
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
