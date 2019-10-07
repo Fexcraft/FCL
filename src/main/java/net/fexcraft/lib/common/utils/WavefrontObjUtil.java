@@ -8,8 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import javax.annotation.Nullable;
-
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
@@ -70,8 +68,9 @@ public class WavefrontObjUtil {
 		return arr.toArray(new String[0][]);
 	}
 	
-	/** (Strongly) Based on the old OBJ parsing method in TMT/MRT. */
-	public static Object[][] getVerticesAndPolygons(InputStream stream, @Nullable String group, boolean flipaxes){
+	/** (Strongly) Based on the old OBJ parsing method in TMT/MRT.
+	 * @param group can be null */
+	public static Object[][] getVerticesAndPolygons(InputStream stream, String group, boolean flipaxes){
 		TexturedVertex[] vertices = null; TexturedPolygon[] polygons = null; Boolean passing = null;
 		ArrayList<TexturedVertex> verts0 = new ArrayList<TexturedVertex>();
 		ArrayList<TexturedVertex> verts1 = new ArrayList<TexturedVertex>();

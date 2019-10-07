@@ -1,8 +1,6 @@
 package net.fexcraft.lib.common.lang;
 
-import java.util.List;
-
-import javax.annotation.Nullable;;
+import java.util.List;;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -29,7 +27,7 @@ public class ArrayList<T> extends java.util.ArrayList<T> {
 		}
 	}
 
-	@Override @Nullable
+	@Override //@Nullable
 	public T get(int i){
 		return this.isEmpty() ? null : i > this.size() ? super.get(0) : i < 0 ? null : super.get(i);
 	}

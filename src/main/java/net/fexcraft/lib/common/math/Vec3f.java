@@ -1,7 +1,5 @@
 package net.fexcraft.lib.common.math;
 
-import javax.annotation.Nullable;
-
 /**
  * @author Ferdinand
  * Based off the (Minecraft) Vanilla Vec3d;
@@ -109,7 +107,7 @@ public class Vec3f {
         return this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord;
     }
     
-    @Nullable
+    //@Nullable
     public Vec3f getIntermediateWithXValue(Vec3f vec, float x){
         float d0 = vec.xCoord - this.xCoord;
         float d1 = vec.yCoord - this.yCoord;
@@ -123,7 +121,7 @@ public class Vec3f {
         }
     }
     
-    @Nullable
+    //@Nullable
     public Vec3f getIntermediateWithYValue(Vec3f vec, float y){
         float d0 = vec.xCoord - this.xCoord;
         float d1 = vec.yCoord - this.yCoord;
@@ -141,7 +139,7 @@ public class Vec3f {
      * Returns a new vector with z value equal to the second parameter, along the line between this vector and the
      * passed in vector, or null if not possible.
      */
-    @Nullable
+    //@Nullable
     public Vec3f getIntermediateWithZValue(Vec3f vec, float z){
         float d0 = vec.xCoord - this.xCoord;
         float d1 = vec.yCoord - this.yCoord;

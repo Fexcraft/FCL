@@ -41,16 +41,16 @@ public class Tessellator {
 			ibuf.clear(); ibuf.put(rb, o * 10, vtc * 10); bbuf.position(0); bbuf.limit(vtc * 40); o += vtc;
 			if(ht){
 				fbuf.position(3);
-				GL11.glTexCoordPointer(4, 40, fbuf);
+				GL11.glTexCoordPointer(4, 40, 0, fbuf);//TODO stride
 				GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 			}
 			if(in){
 				bbuf.position(32);
-				GL11.glNormalPointer(40, bbuf);
+				GL11.glNormalPointer(40, 0, bbuf);//TODO stride
 				GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
 			}
 			fbuf.position(0);
-			GL11.glVertexPointer(3, 40, fbuf);
+			GL11.glVertexPointer(3, 40, 0, fbuf);//TODO stride
 			GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 			if(dm == 3 || color != null) color.glColorApply();
 			GL11.glDrawArrays(dm, 0, vtc);

@@ -1,7 +1,5 @@
 package net.fexcraft.lib.common.json;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -56,7 +54,8 @@ public class JsonToTMT {
 	public static final String[] topoffy = new String[]{"top_offset_y", "topoff_y", "topoffy", "toy"};
 	public static final String[] topoffz = new String[]{"top_offset_z", "topoff_z", "topoffz", "toz"};
 	
-	public final static ModelRendererTurbo parse(@Nullable net.minecraft.client.model.ModelBase base, JsonObject obj, int tx, int ty){
+	/** @param base can be null! */
+	public final static ModelRendererTurbo parse(net.minecraft.client.model.Model base, JsonObject obj, int tx, int ty){
 		ModelRendererTurbo model = new ModelRendererTurbo(base, get(texturex, obj, idef), get(texturey, obj, idef), tx, ty);
 		//
 		float x = get(offx, obj, def);
@@ -123,7 +122,7 @@ public class JsonToTMT {
 		return model;
 	}
 
-	public final static ModelRendererTurbo[] parse(net.minecraft.client.model.ModelBase base, JsonArray array, int tx, int ty){
+	public final static ModelRendererTurbo[] parse(net.minecraft.client.model.Model base, JsonArray array, int tx, int ty){
 		if(array != null){
 			ModelRendererTurbo[] model = new ModelRendererTurbo[array.size()];
 			for(int i = 0; i < array.size(); i++){
@@ -134,7 +133,7 @@ public class JsonToTMT {
 		return new ModelRendererTurbo[0];
 	}
 
-	public final static ModelRendererTurbo[] parse(net.minecraft.client.model.ModelBase base, String string, JsonObject object, int tx, int ty){
+	public final static ModelRendererTurbo[] parse(net.minecraft.client.model.Model base, String string, JsonObject object, int tx, int ty){
 		if(base == null){
 			if(Static.dev()){
 				Static.halt();

@@ -1,7 +1,7 @@
 package net.fexcraft.lib.tmt;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.Identifier;
 
 /**
 * Replaces the old `ModelBase` in this package.
@@ -75,8 +75,8 @@ public abstract class ModelBase {
         }
     }
 	
-	public static final void bindTexture(ResourceLocation rs){
-		Minecraft.getMinecraft().renderEngine.bindTexture(rs);
+	public static final void bindTexture(Identifier rs){
+		MinecraftClient.getInstance().getTextureManager().bindTexture(rs);
 		//TextureManager.bindTexture(rs);
 	}
 	
