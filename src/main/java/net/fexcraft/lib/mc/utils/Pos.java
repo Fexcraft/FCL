@@ -6,7 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import net.fexcraft.lib.common.math.Vec3f;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Vec3d;
 
 /**
@@ -88,15 +88,15 @@ public class Pos {
     	return prefix == null ? "" : prefix + "_";
     }
 
-    public static Pos fromNBT(String prefix, NBTTagCompound compound){
+    public static Pos fromNBT(String prefix, CompoundTag compound){
     	prefix = prefix(prefix); return new Pos(compound.getFloat(prefix + "x"), compound.getFloat(prefix + "y"), compound.getFloat(prefix + "z"));
     }
 
-    public NBTTagCompound toNBT(String prefix, NBTTagCompound compound){
-    	prefix = prefix(prefix); if(compound == null){ compound = new NBTTagCompound(); }
-        compound.setFloat(prefix + "x", x);
-        compound.setFloat(prefix + "y", y);
-        compound.setFloat(prefix + "z", z);
+    public CompoundTag toNBT(String prefix, CompoundTag compound){
+    	prefix = prefix(prefix); if(compound == null){ compound = new CompoundTag(); }
+        compound.putFloat(prefix + "x", x);
+        compound.putFloat(prefix + "y", y);
+        compound.putFloat(prefix + "z", z);
         return compound;
     }
 

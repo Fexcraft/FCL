@@ -1,17 +1,19 @@
 package net.fexcraft.lib.mc.registry;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlock16 extends net.minecraft.item.ItemBlock {
+public class BlockItem16 extends BlockItem {
 	
 	private int burn_time;
 	
-	public ItemBlock16(Block block){
-		super(block);
+	public BlockItem16(Block block, Item.Settings settings){
+		super(block, settings);
 	}
 
-	@Override
+	//@Override
 	public int getMetadata(int meta){
 		return meta;
 	}

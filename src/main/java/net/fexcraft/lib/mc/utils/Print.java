@@ -21,12 +21,10 @@ import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.Time;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.server.command.CommandOutput;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.LiteralText;
 
 public class Print extends net.fexcraft.lib.common.utils.Print {
 	
@@ -52,31 +50,32 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 		logger.info("[" + String.valueOf(prefix) + "]> " + String.valueOf(obj));
 	}
 	
-	public static void chat(ICommandSender sender, Object obj){
+	public static void chat(CommandOutput sender, Object obj){
 		if(sender == null){ log("SENDERNULL||" + obj.toString()); }
-		sender.sendMessage(new TextComponentString("[DEBUG]: " + obj.toString()));
+		sender.sendMessage(new LiteralText("[DEBUG]: " + obj.toString()));
 	}
 	
-	public static void chat(ICommandSender sender, Throwable obj){
+	public static void chat(CommandOutput sender, Throwable obj){
 		if(sender == null){ log("SENDERNULL||" + obj.toString()); }
-		sender.sendMessage(new TextComponentString(ExceptionUtils.getStackTrace(obj)));
+		sender.sendMessage(new LiteralText(ExceptionUtils.getStackTrace(obj)));
 	}
 	
-	public static void chat(ICommandSender sender, String string){
+	public static void chat(CommandOutput sender, String string){
 		if(sender == null){ log("SENDERNULL||" + string); }
-		sender.sendMessage(new TextComponentString(Formatter.format(string)));
+		sender.sendMessage(new LiteralText(Formatter.format(string)));
 	}
 	
-	public static void chatnn(ICommandSender sender, String string){
-		if(sender == null) return; sender.sendMessage(new TextComponentString(Formatter.format(string)));
+	public static void chatnn(CommandOutput sender, String string){
+		if(sender == null) return; sender.sendMessage(new LiteralText(Formatter.format(string)));
 	}
 	
-	public static void bar(EntityPlayer sender, String string){
-		sender.sendStatusMessage(new TextComponentString(Formatter.format(string)), true);
+	public static void bar(PlayerEntity sender, String string){
+		//TODO sender.sendStatusMessage(new LiteralText(Formatter.format(string)), true);
+		chat(sender, string);
 	}
 	
-	public static void link(ICommandSender sender, String string, String link){
-		TextComponentString textcomponent = new TextComponentString(Formatter.format(string));
+	public static void link(CommandOutput sender, String string, String link){
+		LiteralText textcomponent = new LiteralText(Formatter.format(string));
 		textcomponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link == null ? string : link));
 		sender.sendMessage(textcomponent);
 	}
@@ -119,14 +118,14 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 		}
 	}
 	
-	@SideOnly(Side.CLIENT)
+	//TODO @SideOnly(Side.CLIENT)
 	public static void debugChat(String string){
 		if(Static.dev()){
-			net.minecraft.client.Minecraft.getMinecraft().player.sendMessage(new TextComponentString(string));
+			net.minecraft.client.MinecraftClient.getInstance().player.sendMessage(new LiteralText(string));
 		}
 	}
 	
-	public static void stacktrace(ICommandSender sender, Exception e){
+	public static void stacktrace(CommandOutput sender, Exception e){
 		PrintWriter writer = new PrintWriter(new StringWriter());
 		e.printStackTrace(writer);
 		chat(sender, writer.toString());
@@ -170,7 +169,7 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 		Print.log(String.format(string, objs));
 	}
 
-	public static void format(ICommandSender sender, String string, Object... objs){
+	public static void format(CommandOutput sender, String string, Object... objs){
 		Print.chat(sender, String.format(string, objs));
 	}
 	

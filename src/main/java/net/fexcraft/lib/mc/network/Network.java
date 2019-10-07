@@ -17,11 +17,9 @@ import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.utils.HttpUtil;
 import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.utils.Print;
-import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.server.command.CommandOutput;
+import net.minecraft.util.Identifier;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -59,9 +57,9 @@ public class Network{
 			}
 			ArrayList<String> array = new ArrayList<String>();
 			for(String s : arr){
-				ResourceLocation rs = new ResourceLocation(s);
-				if(rs.getResourceDomain().equals(FCL.mcv)){
-					array.add(rs.getResourcePath());
+				Identifier rs = new Identifier(s);
+				if(rs.getNamespace().equals(FCL.mcv)){
+					array.add(rs.getPath());
 				}
 			}
 			for(String s : array){
@@ -80,8 +78,8 @@ public class Network{
 			}
 			ArrayList<String> array = new ArrayList<String>();
 			for(String s : arr){
-				ResourceLocation rs = new ResourceLocation(s);
-				if(rs.getResourceDomain().equals(FCL.mcv)){
+				Identifier rs = new Identifier(s);
+				if(rs.getNamespace().equals(FCL.mcv)){
 					array.add(s);
 				}
 			}
@@ -112,11 +110,11 @@ public class Network{
 	}
 
 	public static MinecraftServer getMinecraftServer(){
-		return FMLCommonHandler.instance().getMinecraftServerInstance();
+		return net.fexcraft.lib.mc.utils.Static.getServer();
 	}
 	
-	public static void initializeValidator(Side side){
-		if(side.isServer()){
+	public static void initializeValidator(boolean server){
+		if(server){
 			ServerValidator.initialize();
 		}
 		else{
@@ -127,7 +125,7 @@ public class Network{
 	public static class ClientValidator {
 
 		public static void initialize(){
-			String uuid = net.minecraft.client.Minecraft.getMinecraft().getSession().getPlayerID();
+			String uuid = net.minecraft.client.MinecraftClient.getInstance().getSession().getUuid();
 			JsonObject elm = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=blacklist&id=" + uuid, 1000);
 			if(elm != null && elm.has("unbanned") && !elm.get("unbanned").getAsBoolean()){
 				Static.halt(0);
@@ -172,7 +170,7 @@ public class Network{
 		
 	}
 	
-	public static void browse(ICommandSender sender, String url){
+	public static void browse(CommandOutput sender, String url){
     	try{ Desktop.getDesktop().browse(new URI(url)); }
     	catch(IOException | URISyntaxException e){
 			Print.chat(sender, FCL.prefix + "Error, couldn't open link.");

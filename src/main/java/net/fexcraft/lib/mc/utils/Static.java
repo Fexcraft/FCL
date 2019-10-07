@@ -25,39 +25,39 @@ public class Static extends net.fexcraft.lib.common.Static {
 	private static final HashMap<UUID, String> UUID_PLAYER_CACHE = new HashMap<UUID, String>();
 
 	public static final void halt(int errid){
-		FMLCommonHandler.instance().exitJava(errid, true);
+		System.exit(errid);//TODO see if fabric has a dedicated exit method
 	}
 
 	public static final boolean isServer(){
-		return FMLCommonHandler.instance().getSide().isServer();
+		return false; //TODO; FMLCommonHandler.instance().getSide().isServer();
 	}
 
 	public static final boolean isClient(){
-		return FMLCommonHandler.instance().getSide().isClient();
+		return false; //TODO; FMLCommonHandler.instance().getSide().isClient();
 	}
 	
 	public static final MinecraftServer getServer(){
-		return FMLCommonHandler.instance().getMinecraftServerInstance();
+		return null; //TODO; FMLCommonHandler.instance().getMinecraftServerInstance();
 	}
 	
-	public static final Side side(){
+	/*public static final Side side(){
 		return FMLCommonHandler.instance().getSide();
-	}
+	}*/
 	
-	public static final String sideString(){
+	/*public static final String sideString(){
 		return side().isClient() ? "Client" : "Server";
-	}
+	}*/
 	
 	public static final boolean isOp(String name){
-		return getServer().getPlayerList().getOppedPlayers().getGameProfileFromName(name) != null;
+		return false;//TODO getServer().getPlayerManager().getOpList().isOp(null);
 	}
 	
-	public static final String getPlayerNameByUUID(@Nullable UUID uuid){
+	public static final String getPlayerNameByUUID(UUID uuid){
 		if(uuid == null){ return "<null-uuid>"; }
 		if(UUID_PLAYER_CACHE.containsKey(uuid)){
 			return UUID_PLAYER_CACHE.get(uuid);
 		}
-		GameProfile prof = getServer().getPlayerProfileCache().getProfileByUUID(uuid);
+		GameProfile prof = getServer().getUserCache().getByUuid(uuid);
 		if(prof != null){ UUID_PLAYER_CACHE.put(uuid, prof.getName()); return prof.getName(); }
 		JsonElement obj = HttpUtil.request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
 		try{
@@ -106,7 +106,7 @@ public class Static extends net.fexcraft.lib.common.Static {
 
 	public static InputStream getResource(String str){
 		try{
-			return net.minecraft.client.Minecraft.getMinecraft().getResourceManager().getResource(new Identifier(str)).getInputStream();
+			return net.minecraft.client.MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(str)).getInputStream();
 		} catch(IOException e){ e.printStackTrace(); return null; }
 	}
 	

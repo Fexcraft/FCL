@@ -7,8 +7,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.annotation.Nullable;
-
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.api.registry.fBlock;
@@ -20,27 +18,11 @@ import net.fexcraft.lib.mc.api.registry.fRecipeHolder;
 import net.fexcraft.lib.mc.api.registry.fTESR;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
-import net.minecraft.command.CommandBase;
+import net.minecraft.block.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.discovery.ASMDataTable;
-import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraft.util.Identifier;
 
 public class FCLRegistry {
 	
@@ -54,8 +36,8 @@ public class FCLRegistry {
 	private static int eid = 0;
 	//
 	private static final Map<String, AutoRegisterer> regs = new TreeMap<String, AutoRegisterer>();
-	//private static Map<ResourceLocation, Entity> entities = new TreeMap<ResourceLocation, Entity>();
-	private static Map<ResourceLocation, Object> models = new TreeMap<ResourceLocation, Object>();
+	//private static Map<Identifier, Entity> entities = new TreeMap<Identifier, Entity>();
+	private static Map<Identifier, Object> models = new TreeMap<Identifier, Object>();
 
 	public static void prepare(ASMDataTable asmData){
 		table = asmData; new AutoRegisterer("fcl");
@@ -74,12 +56,12 @@ public class FCLRegistry {
 	public static final class AutoRegisterer {
 		
 		private final String modid;
-		private TreeMap<ResourceLocation, Block> blocks = new TreeMap<ResourceLocation, Block>();
-		private TreeMap<ResourceLocation, Item> items = new TreeMap<ResourceLocation, Item>();
-		private ArrayList<ItemBlock> itemblocks = new ArrayList<ItemBlock>();
-		private TreeMap<ResourceLocation, Integer> meta = new TreeMap<ResourceLocation, Integer>();
-		private TreeMap<ResourceLocation, String[]> arr = new TreeMap<ResourceLocation, String[]>();
-		private TreeMap<ResourceLocation, IRecipe> recipes = new TreeMap<ResourceLocation, IRecipe>();
+		private TreeMap<Identifier, Block> blocks = new TreeMap<Identifier, Block>();
+		private TreeMap<Identifier, Item> items = new TreeMap<Identifier, Item>();
+		private ArrayList<BlockItem> itemblocks = new ArrayList<BlockItem>();
+		private TreeMap<Identifier, Integer> meta = new TreeMap<Identifier, Integer>();
+		private TreeMap<Identifier, String[]> arr = new TreeMap<Identifier, String[]>();
+		private TreeMap<Identifier, IRecipe> recipes = new TreeMap<Identifier, IRecipe>();
 		
 		public AutoRegisterer(String mod){
 			regs.put(modid = mod, this); MinecraftForge.EVENT_BUS.register(this);
@@ -95,11 +77,11 @@ public class FCLRegistry {
 					mBlock.setUnlocalizedName(mBlock.getRegistryName().toString());
 					blocks.put(mBlock.getRegistryName(), mBlock);
 					//Item
-					ItemBlock iblock = block.item().getConstructor(Block.class).newInstance(mBlock);
+					BlockItem iblock = block.item().getConstructor(Block.class).newInstance(mBlock);
 					iblock.setRegistryName(mBlock.getRegistryName());
 					iblock.setUnlocalizedName(mBlock.getUnlocalizedName());
-					if(iblock instanceof ItemBlock16){
-						((ItemBlock16)iblock).setItemBurnTime(block.burn_time());
+					if(iblock instanceof BlockItem16){
+						((BlockItem16)iblock).setItemBurnTime(block.burn_time());
 					}
 					itemblocks.add(iblock);
 					if(block.variants() > 1){
@@ -163,7 +145,7 @@ public class FCLRegistry {
 				reg.register(item); this.registerModelLoc(item);
 			}
 			//
-			for(ItemBlock item : itemblocks){
+			for(BlockItem item : itemblocks){
 				reg.register(item); this.registerModelLoc(item);
 			}
 		}
@@ -180,7 +162,7 @@ public class FCLRegistry {
 			}
 			//
 			IForgeRegistry<IRecipe> reg = event.getRegistry();
-			for(Entry<ResourceLocation, IRecipe> entry : recipes.entrySet()){
+			for(Entry<Identifier, IRecipe> entry : recipes.entrySet()){
 				try{
 					entry.getValue().setRegistryName(entry.getKey());
 					reg.register(entry.getValue());
@@ -205,27 +187,27 @@ public class FCLRegistry {
 				int meta = this.meta.get(item.getRegistryName());
 				if(this.arr.get(item.getRegistryName()) == null){
 					for(int i = 0; i < meta; i++){
-						net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(item, i, new net.minecraft.client.renderer.block.model.ModelResourceLocation(item.getRegistryName() + "_" + i, "inventory"));
+						net.minecraftforge.client.model.ModelLoader.setCustomModelIdentifier(item, i, new net.minecraft.client.renderer.block.model.ModelIdentifier(item.getRegistryName() + "_" + i, "inventory"));
 					}
 				}
 				else{
 					String[] arr = this.arr.get(item.getRegistryName());
 					for(int i = 0; i < meta; i++){
-						net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(item, i, new net.minecraft.client.renderer.block.model.ModelResourceLocation(item.getRegistryName() + "_" + arr[i], "inventory"));
+						net.minecraftforge.client.model.ModelLoader.setCustomModelIdentifier(item, i, new net.minecraft.client.renderer.block.model.ModelIdentifier(item.getRegistryName() + "_" + arr[i], "inventory"));
 					}
 				}
 			}
 			else{
-				net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(item, 0, new net.minecraft.client.renderer.block.model.ModelResourceLocation(item.getRegistryName(), "inventory"));
+				net.minecraftforge.client.model.ModelLoader.setCustomModelIdentifier(item, 0, new net.minecraft.client.renderer.block.model.ModelIdentifier(item.getRegistryName(), "inventory"));
 			}
 		}
 		
-		public void addBlock(String name, Block block, Class<? extends ItemBlock> item, int meta, String[] custom){
+		public void addBlock(String name, Block block, Class<? extends BlockItem> item, int meta, String[] custom){
 			block.setRegistryName(modid, name);
 			block.setUnlocalizedName(block.getRegistryName().toString());
-			blocks.put(new ResourceLocation(modid, name), block);
+			blocks.put(new Identifier(modid, name), block);
 			if(item == null){
-				ItemBlock iblock = new ItemBlock16(block);
+				BlockItem iblock = new BlockItem16(block);
 				iblock.setRegistryName(block.getRegistryName());
 				iblock.setUnlocalizedName(block.getUnlocalizedName());
 				itemblocks.add(iblock);
@@ -241,12 +223,12 @@ public class FCLRegistry {
 		public void addItem(String name, Item item, int meta, String[] custom){
 			item.setRegistryName(modid, name);
 			item.setUnlocalizedName(item.getRegistryName().toString());
-			items.put(new ResourceLocation(modid, name), item);
+			items.put(new Identifier(modid, name), item);
 			if(meta > 1){ this.meta.put(item.getRegistryName(), meta); }
 			if(custom != null){ this.arr.put(item.getRegistryName(), custom); }
 		}
 		
-		public void addRecipe(ResourceLocation rs, IRecipe recipe){
+		public void addRecipe(Identifier rs, IRecipe recipe){
 			recipes.put(rs, recipe);
 		}
 		
@@ -291,15 +273,15 @@ public class FCLRegistry {
 	}
 	
 	public static Item getItem(String string){
-		return getItem(new ResourceLocation(string));
+		return getItem(new Identifier(string));
 	}
 
-	public static Item getItem(ResourceLocation rs){
+	public static Item getItem(Identifier rs){
 		if(regs.get(rs.getResourceDomain()) != null){
 			AutoRegisterer reg = regs.get(rs.getResourceDomain());
 			Item item = reg.items.get(rs);
 			if(item == null){
-				for(ItemBlock iblock : reg.itemblocks){
+				for(BlockItem iblock : reg.itemblocks){
 					if(iblock.getRegistryName().equals(rs)) item = iblock; break;
 				}
 			} return item;
@@ -307,10 +289,10 @@ public class FCLRegistry {
 	}
 	
 	public static Block getBlock(String string){
-		return getBlock(new ResourceLocation(string));
+		return getBlock(new Identifier(string));
 	}
 
-	public static Block getBlock(ResourceLocation rs){
+	public static Block getBlock(Identifier rs){
 		return regs.get(rs.getResourceDomain()) == null ? null : regs.get(rs.getResourceDomain()).blocks.get(rs);
 	}
 	
@@ -326,7 +308,7 @@ public class FCLRegistry {
 		for(Class<? extends Entity> clazz : map.values()){
 			try{
 				fEntity entity = clazz.getAnnotation(fEntity.class);
-				ResourceLocation rs = new ResourceLocation(entity.modid(), entity.name());
+				Identifier rs = new Identifier(entity.modid(), entity.name());
 				EntityRegistry.registerModEntity(rs, clazz, rs.toString(), eid++, entity.modid(), entity.tracking_range(), entity.update_frequency(), entity.send_velocity_updates());
 				Print.debug("Registered Entity: " + rs.toString());
 			} catch(Exception e){ error(e, clazz.getName()); }
@@ -346,7 +328,7 @@ public class FCLRegistry {
 	}
 	
 	public static void registerEntityManually(String modid, String name, Class<? extends Entity> clazz, int id, int tracking_range, int update_frequency, boolean send_velocity_updates){
-		ResourceLocation rs = new ResourceLocation(modid, name);
+		Identifier rs = new Identifier(modid, name);
 		EntityRegistry.registerModEntity(rs, clazz, rs.toString(), eid++, modid, tracking_range, update_frequency, send_velocity_updates);
 		Print.debug("Registered Entity: " + rs.toString());
 	}
@@ -356,68 +338,29 @@ public class FCLRegistry {
 		for(ASMData entry : data){
 			try{
 				Class<?> clazz = Class.forName(entry.getClassName()); fModel model = clazz.getAnnotation(fModel.class);
-				models.put(new ResourceLocation(model.registryname()), clazz.newInstance());
+				models.put(new Identifier(model.registryname()), clazz.newInstance());
 				Print.debug("Registered Model: " + model.registryname());
 			} catch(Throwable e){ error(e, entry.getClassName()); }
 		}
 	}
 	
 	@SuppressWarnings("unchecked") @Nullable
-	public static <T> T getModel(ResourceLocation loc){
+	public static <T> T getModel(Identifier loc){
 		return (T)models.get(loc);
 	}
 	
 	public static <T> T getModel(String rs){
-		return getModel(new ResourceLocation(rs));
+		return getModel(new Identifier(rs));
 	}
 	
 	public static boolean addModelManually(String resloc, Object model, boolean override){
-		return addModelManually(new ResourceLocation(resloc), model, override);
+		return addModelManually(new Identifier(resloc), model, override);
 	}
 	
-	public static boolean addModelManually(ResourceLocation loc, Object model, boolean override){
+	public static boolean addModelManually(Identifier loc, Object model, boolean override){
 		if(models.containsKey(loc) && !override){
 			Print.format("Tried to register Model with RS[%s] and Class[%s] but key already exists, try setting override to true?", loc, model); return false;
 		} else models.put(loc, model); return true;
-	}
-	
-	public static Material getMaterial(String material){
-		switch(material){
-			case "air": return Material.AIR;
-			case "grass": return Material.GRASS;
-			case "ground": return Material.GROUND;
-			case "wood": return Material.WOOD;
-			case "rock": return Material.ROCK;
-			case "iron": return Material.IRON;
-			case "anvil": return Material.ANVIL;
-			case "water": return Material.WATER;
-			case "lava": return Material.LAVA;
-			case "leaves": return Material.LEAVES;
-			case "plants": return Material.PLANTS;
-			case "vine": return Material.VINE;
-			case "sponge": return Material.SPONGE;
-			case "cloth": return Material.CLOTH;
-			case "fire": return Material.FIRE;
-			case "sand": return Material.SAND;
-			case "circuits": return Material.CIRCUITS;
-			case "carpet": return Material.CARPET;
-			case "glass": return Material.GLASS;
-			case "redstone_light": return Material.REDSTONE_LIGHT;
-			case "tnt": return Material.TNT;
-			case "coral": return Material.CORAL;
-			case "ice": return Material.ICE;
-			case "packed_ice": return Material.PACKED_ICE;
-			case "snow": return Material.SNOW;
-			case "crafted_snow": return Material.CRAFTED_SNOW;
-			case "cactus": return Material.CACTUS;
-			case "clay": return Material.CLAY;
-			case "gourd": return Material.GOURD;
-			case "dragon_egg": return Material.DRAGON_EGG;
-			case "portal": return Material.PORTAL;
-			case "cake": return Material.CAKE;
-			case "web": return Material.WEB;
-			default: return Material.AIR;
-		}
 	}
 
 	public static AutoRegisterer newAutoRegistry(String modid){

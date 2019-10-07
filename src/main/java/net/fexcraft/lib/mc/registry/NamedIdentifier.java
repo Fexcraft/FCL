@@ -1,25 +1,25 @@
 package net.fexcraft.lib.mc.registry;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 /** 
  * @author Ferdinand Calo' (FEX___96)
  *
  */
-public class NamedResourceLocation extends ResourceLocation {
+public class NamedIdentifier extends Identifier {
 	
 	private static final String defname = "Unnamed";
 	private String name;
 
-	public NamedResourceLocation(String name, String domain, String path){
+	public NamedIdentifier(String name, String domain, String path){
 		super(domain, path); if(name == null) name = defname; this.name = name;
     }
 
-	public NamedResourceLocation(String name, ResourceLocation rs){
-		this(name, rs.getResourceDomain(), rs.getResourcePath());
+	public NamedIdentifier(String name, Identifier id){
+		this(name, id.getNamespace(), id.getPath());
 	}
 	
-	public NamedResourceLocation(String onestring){
+	public NamedIdentifier(String onestring){
 		super(onestring.contains(";") ? onestring.split(";")[1] : onestring);
 		name = onestring.contains(";") ? onestring.split(";")[0] : defname;
 	}
@@ -28,7 +28,7 @@ public class NamedResourceLocation extends ResourceLocation {
 		return name;
 	}
 	
-	public NamedResourceLocation setName(String newname){
+	public NamedIdentifier setName(String newname){
 		this.name = newname; return this;
 	}
 	

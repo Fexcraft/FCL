@@ -1,38 +1,7 @@
 package net.fexcraft.lib.mc.render;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.TreeMap;
-import java.util.function.Function;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.vecmath.Matrix4f;
-import org.apache.commons.lang3.tuple.Pair;
-
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.client.model.ICustomModelLoader;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.model.IModelPart;
-import net.minecraftforge.common.model.IModelState;
-import net.minecraftforge.common.model.TRSRTransformation;
-
-public class FCLItemModelLoader implements ICustomModelLoader {
+@Deprecated
+public class FCLItemModelLoader {} /*implements ICustomModelLoader {
 	
 	public static final FCLItemModelLoader INSTANCE = new FCLItemModelLoader();
 	private static final TreeMap<ResourceLocation, FCLItemModel> MAP = new TreeMap<ResourceLocation, FCLItemModel>();
@@ -67,7 +36,7 @@ public class FCLItemModelLoader implements ICustomModelLoader {
 
 	@Override
 	public boolean accepts(ResourceLocation modelloc){
-		return /*DOMAINS.contains(modelloc.getResourceDomain()) ||*/ MAP.containsKey(modelloc);
+		return /*DOMAINS.contains(modelloc.getResourceDomain()) ||*//* MAP.containsKey(modelloc);
 	}
 
 	@Override
@@ -195,4 +164,4 @@ public class FCLItemModelLoader implements ICustomModelLoader {
 
 	}
 	
-}
+}*/

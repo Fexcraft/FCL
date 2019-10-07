@@ -5,9 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import net.fexcraft.lib.mc.registry.ItemBlock16;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.tileentity.TileEntity;
+import net.fexcraft.lib.mc.registry.BlockItem16;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.BlockItem;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -21,9 +21,9 @@ public @interface fBlock {
 	
 	public String[] custom_variants() default {};
 	
-	public Class<? extends ItemBlock> item() default ItemBlock16.class;
+	public Class<? extends BlockItem> item() default BlockItem16.class;
 	
-	public Class<? extends TileEntity> tileentity() default TileEntity.class;
+	public Class<? extends BlockEntity> tileentity() default BlockEntity.class;
 
 	public int burn_time() default -1;
 	

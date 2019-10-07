@@ -4,15 +4,17 @@ import java.lang.reflect.Field;
 
 import org.apache.commons.lang3.Validate;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
-public class UCResourceLocation extends ResourceLocation {
+//TODO check if this works correctly
+@Deprecated //<- till confirmed working, that is.
+public class UCResourceLocation extends Identifier {
 	
 	public UCResourceLocation(String... resourceName){
-		super(0, resourceName.length < 2 ? new String[]{"§", resourceName[0]} : resourceName);
-		Field domain = ResourceLocation.class.getDeclaredFields()[0];
+		super(resourceName.length < 2 ? new String[]{"§", resourceName[0]} : resourceName);
+		Field domain = Identifier.class.getDeclaredFields()[0];
 		domain.setAccessible(true);
-		Field path = ResourceLocation.class.getDeclaredFields()[1];
+		Field path = Identifier.class.getDeclaredFields()[1];
 		path.setAccessible(true);
 		try {
 			domain.set(this, resourceName[0].replace("§", ""));
@@ -21,11 +23,11 @@ public class UCResourceLocation extends ResourceLocation {
 		catch(IllegalArgumentException | IllegalAccessException e){
 			e.printStackTrace();
 		}
-        Validate.notNull(this.resourcePath);
+        Validate.notNull(this.path);
     }
 
-	public UCResourceLocation(ResourceLocation rs){
-		this(rs.getResourceDomain(), rs.getResourcePath());
+	public UCResourceLocation(Identifier rs){
+		this(rs.getNamespace(), rs.getPath());
 	}
 	
 }

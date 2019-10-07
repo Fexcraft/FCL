@@ -8,35 +8,24 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagByte;
-import net.minecraft.nbt.NBTTagByteArray;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagDouble;
-import net.minecraft.nbt.NBTTagFloat;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagIntArray;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagLong;
-import net.minecraft.nbt.NBTTagShort;
-import net.minecraft.nbt.NBTTagString;
+import net.minecraft.nbt.*;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
 public class NBTToJson {
 	
-	public static final JsonObject getJsonFromTag(NBTTagCompound compound){
+	public static final JsonObject getJsonFromTag(CompoundTag compound){
 		return convert(compound, true);
 	}
 	
-	public static final JsonObject getJsonFromTag(NBTTagCompound compound, boolean sort){
+	public static final JsonObject getJsonFromTag(CompoundTag compound, boolean sort){
 		return convert(compound, sort);
 	}
 
-	private static final JsonObject convert(NBTTagCompound compound, boolean sort){
+	private static final JsonObject convert(CompoundTag compound, boolean sort){
 		JsonObject obj = new JsonObject();
-		ArrayList<String> list = new ArrayList<String>(compound.getKeySet());
+		ArrayList<String> list = new ArrayList<String>(compound.getKeys());
 		if(sort){
 			Collections.sort(list);
 		}
@@ -47,44 +36,44 @@ public class NBTToJson {
 		return obj;
 	}
 	
-	private static final JsonElement element(NBTBase base, boolean sort){
-		if(base instanceof NBTTagByte){
-			return new JsonPrimitive(((NBTTagByte)base).getByte());
+	private static final JsonElement element(Tag base, boolean sort){
+		if(base instanceof ByteTag){
+			return new JsonPrimitive(((ByteTag)base).getByte());
 		}
-		if(base instanceof NBTTagByteArray){
-			byte[] arr = ((NBTTagByteArray)base).getByteArray();
+		if(base instanceof ByteArrayTag){
+			byte[] arr = ((ByteArrayTag)base).getByteArray();
 			JsonArray array = new JsonArray();
 			for(int i = 0; i < arr.length; i++){
 				array.add(arr[i]);
 			}
 			return array;
 		}
-		if(base instanceof NBTTagCompound){
-			return convert((NBTTagCompound)base, sort);
+		if(base instanceof CompoundTag){
+			return convert((CompoundTag)base, sort);
 		}
-		if(base instanceof NBTTagDouble){
-			return new JsonPrimitive(((NBTTagDouble)base).getDouble());
+		if(base instanceof DoubleTag){
+			return new JsonPrimitive(((DoubleTag)base).getDouble());
 		}
-		if(base instanceof NBTTagFloat){
-			return new JsonPrimitive(((NBTTagFloat)base).getFloat());
+		if(base instanceof FloatTag){
+			return new JsonPrimitive(((FloatTag)base).getFloat());
 		}
-		if(base instanceof NBTTagInt){
-			return new JsonPrimitive(((NBTTagInt)base).getInt());
+		if(base instanceof IntTag){
+			return new JsonPrimitive(((IntTag)base).getInt());
 		}
-		if(base instanceof NBTTagIntArray){
-			int[] arr = ((NBTTagIntArray)base).getIntArray();
+		if(base instanceof IntArrayTag){
+			int[] arr = ((IntArrayTag)base).getIntArray();
 			JsonArray array = new JsonArray();
 			for(int i = 0; i < arr.length; i++){
 				array.add(arr[i]);
 			}
 			return array;
 		}
-		if(base instanceof NBTTagList){
+		if(base instanceof ListTag){
 			JsonArray array = new JsonArray();
-			NBTTagList list = (NBTTagList)base;
-			for(NBTBase nbt : list){
-				if(nbt instanceof NBTTagCompound){
-					array.add(convert((NBTTagCompound)nbt, sort));
+			ListTag list = (ListTag)base;
+			for(Tag nbt : list){
+				if(nbt instanceof CompoundTag){
+					array.add(convert((CompoundTag)nbt, sort));
 				}
 				else{
 					array.add(element(nbt, sort));
@@ -92,14 +81,14 @@ public class NBTToJson {
 			}
 			return array;
 		}
-		if(base instanceof NBTTagLong){
-			return new JsonPrimitive(((NBTTagLong)base).getLong());
+		if(base instanceof LongTag){
+			return new JsonPrimitive(((LongTag)base).getLong());
 		}
-		if(base instanceof NBTTagShort){
-			return new JsonPrimitive(((NBTTagShort)base).getShort());
+		if(base instanceof ShortTag){
+			return new JsonPrimitive(((ShortTag)base).getShort());
 		}
-		if(base instanceof NBTTagString){
-			return new JsonPrimitive(((NBTTagString)base).getString());
+		if(base instanceof StringTag){
+			return new JsonPrimitive(((StringTag)base).asString());
 		}
 		return null;
 	}
