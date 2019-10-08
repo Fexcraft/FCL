@@ -2,15 +2,15 @@ package net.fexcraft.lib.mc.gui;
 
 import java.lang.reflect.InvocationTargetException;
 
-import net.fexcraft.lib.mc.api.packet.IPacketListener;
+import net.fexcraft.lib.mc.network.IPacketListener;
 import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
+import net.fexcraft.lib.mc.network.packet.CompoundTagPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class ServerReceiver implements IPacketListener<PacketNBTTagCompound> {
+public class ServerReceiver implements IPacketListener<CompoundTagPacket> {
 	
 	public static ServerReceiver INSTANCE;
 	public ServerReceiver(){ INSTANCE = this; }
@@ -21,7 +21,7 @@ public class ServerReceiver implements IPacketListener<PacketNBTTagCompound> {
 	}
 
 	@Override
-	public void process(PacketNBTTagCompound packet, Object[] objs){
+	public void process(CompoundTagPacket packet, Object[] objs){
 		if(!packet.nbt.hasKey("task")) return;
 		EntityPlayerMP player = (EntityPlayerMP)objs[0];
 		switch(packet.nbt.getString("task")){
@@ -35,7 +35,7 @@ public class ServerReceiver implements IPacketListener<PacketNBTTagCompound> {
 	                int[] err = packet.nbt.getIntArray("args"); NBTTagCompound compound = packet.nbt.getCompoundTag("data");
 					GenericContainer container = GuiHandler.CONTAINERS.get(packet.nbt.getInteger("gui")).getConstructor(EntityPlayer.class, int[].class, NBTTagCompound.class).newInstance(player, err, compound);
 	                player.openContainer = container;
-	                PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(packet.nbt), player);
+	                PacketHandler.getInstance().sendTo(new CompoundTagPacket(packet.nbt), player);
 				}
 				catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 					e.printStackTrace();

@@ -1,7 +1,7 @@
 package net.fexcraft.lib.mc.gui;
 
 import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
+import net.fexcraft.lib.mc.network.packet.CompoundTagPacket;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -27,10 +27,10 @@ public abstract class GenericContainer extends Container {
 	public void send(Side target, NBTTagCompound packet){
         packet.setString("target_listener", "fcl_gui"); packet.setString("task", "generic_gui"); Print.debug(target, packet);
     	if(target == Side.SERVER){
-    		PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(packet));
+    		PacketHandler.getInstance().sendToServer(new CompoundTagPacket(packet));
     	}
     	else{
-    		PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(packet), (EntityPlayerMP)player);
+    		PacketHandler.getInstance().sendTo(new CompoundTagPacket(packet), (EntityPlayerMP)player);
     	}
 	}
 	
@@ -55,7 +55,7 @@ public abstract class GenericContainer extends Container {
         compound.setInteger("gui", gui);
         compound.setString("guimod", mod);
         if(xyz != null) compound.setIntArray("args", xyz);
-        ServerReceiver.INSTANCE.process(new PacketNBTTagCompound(compound), new Object[]{ player });
+        ServerReceiver.INSTANCE.process(new CompoundTagPacket(compound), new Object[]{ player });
     }
 
     /** Server Side Method. */
@@ -65,7 +65,7 @@ public abstract class GenericContainer extends Container {
         compound.setString("task", "open_guicontainer");
         compound.setInteger("gui", gui); compound.setTag("data", data);
         if(xyz != null) compound.setIntArray("args", xyz);
-        ServerReceiver.INSTANCE.process(new PacketNBTTagCompound(compound), new Object[]{ player });
+        ServerReceiver.INSTANCE.process(new CompoundTagPacket(compound), new Object[]{ player });
     }
 
 }

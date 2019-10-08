@@ -1,6 +1,6 @@
-package net.fexcraft.lib.mc.api.packet;
+package net.fexcraft.lib.mc.network;
 
-public interface IPacketReceiver<PACKET extends IPacket> {
+public interface IPacketReceiver<PACKET> {
 	
 	public default void processServerPacket(PACKET pkt){}
 	

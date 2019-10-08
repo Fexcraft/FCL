@@ -1,92 +1,63 @@
 package net.fexcraft.lib.mc.network;
 
-import net.fexcraft.lib.mc.api.packet.IPacketListener;
-import net.fexcraft.lib.mc.network.handlers.EntityUpdatePacketHandler;
-import net.fexcraft.lib.mc.network.handlers.ExamplePacketHandler;
-import net.fexcraft.lib.mc.network.handlers.JsonObjectPacketHandler;
-import net.fexcraft.lib.mc.network.handlers.KeyInputPacketHandler;
-import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
-import net.fexcraft.lib.mc.network.handlers.TileEntityUpdatePacketHandler;
-import net.fexcraft.lib.mc.network.packet.Packet;
-import net.fexcraft.lib.mc.network.packet.PacketEntityUpdate;
-import net.fexcraft.lib.mc.network.packet.PacketJsonObject;
-import net.fexcraft.lib.mc.network.packet.PacketKeyInput;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
-import net.fexcraft.lib.mc.network.packet.PacketTileEntityUpdate;
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fexcraft.lib.mc.network.handlers.EntityPacketHandler;
+import net.fexcraft.lib.mc.network.handlers.CompoundTagPacketHandler;
+import net.fexcraft.lib.mc.network.handlers.BlockEntityPacketHandler;
 import net.fexcraft.lib.mc.utils.Print;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.PacketByteBuf;
 
 public class PacketHandler {
 	
-	private static final SimpleNetworkWrapper instance = NetworkRegistry.INSTANCE.newSimpleChannel("frsm");
-	public static int nextpacketid = 12;
-	
-	public static void init(){
-		Print.log("Initialising Packet Handler.");
-		instance.registerMessage(ExamplePacketHandler.class,                  Packet.class,                  0, Side.SERVER);
-		instance.registerMessage(TileEntityUpdatePacketHandler.Client.class,  PacketTileEntityUpdate.class,  1, Side.CLIENT);
-		instance.registerMessage(TileEntityUpdatePacketHandler.Server.class,  PacketTileEntityUpdate.class,  2, Side.SERVER);
-		instance.registerMessage(KeyInputPacketHandler.class,                 PacketKeyInput.class,          3, Side.SERVER);
-		//instance.registerMessage(ISUPacketHandler.Server.class,               PacketItemStackUpdate.class,   4, Side.SERVER);
-		//instance.registerMessage(ISUPacketHandler.Client.class,               PacketItemStackUpdate.class,   5, Side.CLIENT);
-		instance.registerMessage(JsonObjectPacketHandler.Server.class,        PacketJsonObject.class,        6, Side.SERVER);
-		instance.registerMessage(JsonObjectPacketHandler.Client.class,        PacketJsonObject.class,        7, Side.CLIENT);
-		instance.registerMessage(NBTTagCompoundPacketHandler.Server.class,    PacketNBTTagCompound.class,    8, Side.SERVER);
-		instance.registerMessage(NBTTagCompoundPacketHandler.Client.class,    PacketNBTTagCompound.class,    9, Side.CLIENT);
-		instance.registerMessage(EntityUpdatePacketHandler.Server.class,      PacketEntityUpdate.class,     10, Side.SERVER);
-		instance.registerMessage(EntityUpdatePacketHandler.Client.class,      PacketEntityUpdate.class,     11, Side.CLIENT);
-		Print.log("Done initialising Packet Handler.");
+	public static Identifier PACKET_NBT = new Identifier("fcl:nbt");
+	public static Identifier PACKET_ENTITY = new Identifier("fcl:entity");
+	public static Identifier PACKET_BLOCKENTITY = new Identifier("fcl:blockentity");
+
+	public static void registerPackets(boolean server){
+		if(server){
+			ServerSidePacketRegistry.INSTANCE.register(PACKET_NBT, new CompoundTagPacketHandler());
+			ServerSidePacketRegistry.INSTANCE.register(PACKET_ENTITY, new EntityPacketHandler());
+			ServerSidePacketRegistry.INSTANCE.register(PACKET_BLOCKENTITY, new BlockEntityPacketHandler());
+		}
+		else{
+			ClientSidePacketRegistry.INSTANCE.register(PACKET_NBT, new CompoundTagPacketHandler());
+			ClientSidePacketRegistry.INSTANCE.register(PACKET_ENTITY, new EntityPacketHandler());
+			ClientSidePacketRegistry.INSTANCE.register(PACKET_BLOCKENTITY, new BlockEntityPacketHandler());
+		}
 	}
 	
-	public static SimpleNetworkWrapper getInstance(){
-		return instance;
+	public static enum Type {
+		BLOCKENTITY, NBT, ENTITY;
 	}
 	
-	public static enum PacketHandlerType {
-		TILEENTITY, KEYINPUT, ITEMSTACK, JSON, NBT, ENTITY;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static void registerListener(PacketHandlerType type, Side side, IPacketListener<?> listener){
+	public static void registerListener(Type type, boolean server, IPacketListener<CompoundTag> listener){
 		switch(type){
-			/*case ITEMSTACK:{
-				ISUPacketHandler.addListener(side, (IPacketListener<PacketItemStackUpdate>)listener);
-				break;
-			}*/
-			case JSON:{
-				JsonObjectPacketHandler.addListener(side, (IPacketListener<PacketJsonObject>)listener);
-				break;
-			}
 			case NBT:{
-				NBTTagCompoundPacketHandler.addListener(side, (IPacketListener<PacketNBTTagCompound>) listener);
-				break;
+				CompoundTagPacketHandler.addListener(server, (IPacketListener<CompoundTag>)listener); break;
 			}
-			case KEYINPUT:{
-				if(side.isServer()){
-					KeyInputPacketHandler.addListener((IPacketListener<PacketKeyInput>) listener);
-				}
-				break;
-			}
-			case TILEENTITY:{
-				if(side.isClient()){
-					TileEntityUpdatePacketHandler.Client.addListener((IPacketListener<PacketTileEntityUpdate>) listener);
-				}
-				if(side.isServer()){
-					TileEntityUpdatePacketHandler.Server.addListener((IPacketListener<PacketTileEntityUpdate>) listener);
-				}
-				break;
+			case BLOCKENTITY:{
+				BlockEntityPacketHandler.addListener(server, (IPacketListener<CompoundTag>)listener); break;
 			}
 			case ENTITY:{
-				if(side.isClient()){
-					EntityUpdatePacketHandler.Client.addListener((IPacketListener<PacketEntityUpdate>) listener);
-				}
-				if(side.isServer()){
-					EntityUpdatePacketHandler.Server.addListener((IPacketListener<PacketEntityUpdate>) listener);
-				}
-				break;
+				EntityPacketHandler.addListener(server, (IPacketListener<CompoundTag>)listener); break;
 			}
 			default: break;
 		}
-		Print.log("[FCL] Registered new PacketListener with ID '" + listener.getId() + "' and type " + type.name() + " for Side:" + (side.isClient() ? "Client" : "Server") + ".");
+		Print.log("Registered new PacketListener with ID '" + listener.getId() + "' and type " + type.name() + " for Side:" + (!server ? "Client" : "Server") + ".");
 	}
+	
+	public static void sendTo(PlayerEntity player, Identifier id, PacketByteBuf buf){
+		ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, id, buf);
+	}
+	
+	public static void sendToAll(){
+		//TODO
+	}
+	
+	//TODO more send methods
 	
 }

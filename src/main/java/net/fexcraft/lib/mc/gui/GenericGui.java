@@ -10,7 +10,7 @@ import org.lwjgl.input.Mouse;
 
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
+import net.fexcraft.lib.mc.network.packet.CompoundTagPacket;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -83,7 +83,7 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
         compound.setInteger("gui", gui);
         compound.setString("guimod", mod);
         if(xyz != null) compound.setIntArray("args", xyz);
-        PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(compound));
+        PacketHandler.getInstance().sendToServer(new CompoundTagPacket(compound));
     }
 
 	/** Client Side Method. */
@@ -93,7 +93,7 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
         compound.setString("task", "open_guicontainer");
         compound.setInteger("gui", gui); compound.setTag("data", data);
         if(xyz != null) compound.setIntArray("args", xyz);
-        PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(compound));
+        PacketHandler.getInstance().sendToServer(new CompoundTagPacket(compound));
     }
     
     protected abstract void init();

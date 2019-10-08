@@ -32,7 +32,7 @@ public class Network{
 	@Deprecated
 	public static boolean isConnected(){
 		try{
-			URL url = new URL("http://www.fexcraft.net/files/TXT/connection.test");
+			URL url = new URL("http://fexcraft.net/index");
 			url.openConnection().connect();
 			return true;
 		}

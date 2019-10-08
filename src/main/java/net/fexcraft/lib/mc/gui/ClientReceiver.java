@@ -5,13 +5,13 @@ import java.lang.reflect.InvocationTargetException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import net.fexcraft.lib.mc.api.packet.IPacketListener;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
+import net.fexcraft.lib.mc.network.IPacketListener;
+import net.fexcraft.lib.mc.network.packet.CompoundTagPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class ClientReceiver implements IPacketListener<PacketNBTTagCompound> {
+public class ClientReceiver implements IPacketListener<CompoundTagPacket> {
 
 	@Override
 	public String getId(){
@@ -19,7 +19,7 @@ public class ClientReceiver implements IPacketListener<PacketNBTTagCompound> {
 	}
 
 	@Override
-	public void process(PacketNBTTagCompound packet, Object[] objs){
+	public void process(CompoundTagPacket packet, Object[] objs){
 		if(!packet.nbt.hasKey("task")) return;
         EntityPlayer player = (EntityPlayer)objs[0];
 		switch(packet.nbt.getString("task")){
