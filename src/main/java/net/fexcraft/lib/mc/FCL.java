@@ -2,6 +2,7 @@ package net.fexcraft.lib.mc;
 
 import java.util.UUID;
 
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fexcraft.lib.mc.network.PacketHandler;
@@ -36,7 +37,7 @@ public class FCL implements ModInitializer {
 	public void onInitialize(){
 		Print.log("Starting FCL!"); INSTANCE = this; Static.setAsMcLib(true);
 		Static.setDevmode(FabricLoader.getInstance().isDevelopmentEnvironment());
-		Static.setIsServer(true);//TODO
+		Static.setIsServer(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER);
 		Registry.register(Registry.ITEM, new Identifier("fcl", "fnprf"), FEXCRAFT_PROFILE);//test
 		//
 		/*if(event.getSide().isClient()){

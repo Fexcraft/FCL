@@ -19,6 +19,8 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.Time;
 import net.minecraft.server.command.CommandOutput;
@@ -118,7 +120,7 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 		}
 	}
 	
-	//TODO @SideOnly(Side.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static void debugChat(String string){
 		if(Static.dev()){
 			net.minecraft.client.MinecraftClient.getInstance().player.sendMessage(new LiteralText(string));

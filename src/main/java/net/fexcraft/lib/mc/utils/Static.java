@@ -9,6 +9,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fexcraft.lib.common.utils.HttpUtil;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.server.MinecraftServer;
@@ -29,24 +31,24 @@ public class Static extends net.fexcraft.lib.common.Static {
 	}
 
 	public static final boolean isServer(){
-		return false; //TODO; FMLCommonHandler.instance().getSide().isServer();
+		return FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER;
 	}
 
 	public static final boolean isClient(){
-		return false; //TODO; FMLCommonHandler.instance().getSide().isClient();
+		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
 	}
 	
 	public static final MinecraftServer getServer(){
-		return null; //TODO; FMLCommonHandler.instance().getMinecraftServerInstance();
+		return null;//TODO find how to get server instance
 	}
 	
-	/*public static final Side side(){
-		return FMLCommonHandler.instance().getSide();
-	}*/
+	public static final EnvType side(){
+		return FabricLoader.getInstance().getEnvironmentType();
+	}
 	
-	/*public static final String sideString(){
-		return side().isClient() ? "Client" : "Server";
-	}*/
+	public static final String sideString(){
+		return side() == EnvType.CLIENT ? "Client" : "Server";
+	}
 	
 	public static final boolean isOp(String name){
 		return false;//TODO getServer().getPlayerManager().getOpList().isOp(null);
