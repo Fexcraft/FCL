@@ -64,4 +64,15 @@ public class FCL implements ModInitializer {
 		Print.log("[FCL] Loading complete.");
 	}
 	
+	/**
+	 * Things to re-implement:
+	 * 
+	 * - Gui Lib
+	 * - FCLItemModel (if applicable/necessary)
+	 * - Sign "Capability" (unless easily replaceable by mixins)
+	 * - "BluePrintTable" (better than ever, tabbed)
+	 * - ... I forgot? I forgot.
+	 * 
+	 */
+	
 }
