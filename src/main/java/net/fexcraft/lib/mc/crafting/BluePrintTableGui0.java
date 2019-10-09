@@ -5,10 +5,6 @@ import java.util.List;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.gui.GenericContainer;
 import net.fexcraft.lib.mc.gui.GenericGui;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {

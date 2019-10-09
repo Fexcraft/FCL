@@ -66,7 +66,7 @@ public class SimpleUpdateHandler{
 	}
 	
 	private static void checkIfUpdateAvaible(){
-		Print.log("Checking for available updates.");
+		Print.log("[FCL] Checking for available updates.");
 		for(String modid : modids){
 			if(obj.has(modid)){
 				String latest_version = getLatestVersionOf(modid);
@@ -76,7 +76,7 @@ public class SimpleUpdateHandler{
 				}
 			}
 		}
-		Print.log("Done checking for updates.");
+		Print.log("[FCL] Done checking for updates.");
 	}
 	
 	/** 

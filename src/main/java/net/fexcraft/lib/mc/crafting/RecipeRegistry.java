@@ -6,14 +6,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import net.fexcraft.lib.common.lang.ArrayList;
-import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 
 public class RecipeRegistry {
 	

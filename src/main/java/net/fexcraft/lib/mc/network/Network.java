@@ -13,6 +13,7 @@ import java.util.UUID;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.fabricmc.api.EnvType;
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.utils.HttpUtil;
 import net.fexcraft.lib.mc.FCL;
@@ -113,8 +114,8 @@ public class Network{
 		return net.fexcraft.lib.mc.utils.Static.getServer();
 	}
 	
-	public static void initializeValidator(boolean server){
-		if(server){
+	public static void initializeValidator(EnvType side){
+		if(side == EnvType.SERVER){
 			ServerValidator.initialize();
 		}
 		else{

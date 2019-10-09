@@ -1,13 +1,7 @@
 package net.fexcraft.lib.mc.gui;
 
 import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.packet.CompoundTagPacket;
 import net.fexcraft.lib.mc.utils.Print;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class GenericContainer extends Container {
 	

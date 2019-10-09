@@ -1,7 +1,6 @@
 package net.fexcraft.lib.mc.crafting;
 
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.api.registry.fBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;

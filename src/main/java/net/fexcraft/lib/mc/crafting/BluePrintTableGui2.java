@@ -3,13 +3,7 @@ package net.fexcraft.lib.mc.crafting;
 import java.io.IOException;
 
 import net.fexcraft.lib.mc.gui.GenericGui;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 	

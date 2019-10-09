@@ -1,26 +1,20 @@
 package net.fexcraft.lib.mc.gui;
 
-import java.lang.reflect.InvocationTargetException;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
+import net.fabricmc.api.EnvType;
 import net.fexcraft.lib.mc.network.IPacketListener;
-import net.fexcraft.lib.mc.network.packet.CompoundTagPacket;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundTag;
 
-public class ClientReceiver implements IPacketListener<CompoundTagPacket> {
+public class ClientReceiver implements IPacketListener<CompoundTag> {
 
 	@Override
 	public String getId(){
 		return "fcl_gui";
 	}
 
-	@Override
-	public void process(CompoundTagPacket packet, Object[] objs){
-		if(!packet.nbt.hasKey("task")) return;
+	@Override //TODO
+	public void process(CompoundTag packet, PlayerEntity player, EnvType side){
+		/*if(!packet.nbt.hasKey("task")) return;
         EntityPlayer player = (EntityPlayer)objs[0];
 		switch(packet.nbt.getString("task")){
 	        case "generic_gui":{
@@ -50,7 +44,7 @@ public class ClientReceiver implements IPacketListener<CompoundTagPacket> {
 	        	return;
 	        }
 	        //
-		}
+		}*/
 	}
 	
 }

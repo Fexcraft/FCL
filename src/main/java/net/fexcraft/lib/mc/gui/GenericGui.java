@@ -4,23 +4,9 @@ import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import javax.annotation.Nullable;
-
-import org.lwjgl.input.Mouse;
-
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.packet.CompoundTagPacket;
 import net.fexcraft.lib.mc.utils.Print;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 
 public abstract class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer {
 

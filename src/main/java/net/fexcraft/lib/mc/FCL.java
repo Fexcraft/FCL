@@ -6,8 +6,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.server.ServerStartCallback;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fexcraft.lib.mc.network.Network;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
+import net.fexcraft.lib.mc.network.handlers.CompoundTagPacketHandler;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.item.Item;
@@ -37,7 +39,7 @@ public class FCL implements ModInitializer {
 	
 	@Override
 	public void onInitialize(){
-		Print.log("Starting FCL!"); INSTANCE = this; Static.setAsMcLib(true);
+		Print.log("[FCL] Starting FCL!"); INSTANCE = this; Static.setAsMcLib(true);
 		Static.setDevmode(FabricLoader.getInstance().isDevelopmentEnvironment());
 		Static.setIsServer(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER);
 		Registry.register(Registry.ITEM, new Identifier("fcl", "fnprf"), FEXCRAFT_PROFILE);//test
@@ -46,7 +48,9 @@ public class FCL implements ModInitializer {
 			//net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(net.fexcraft.lib.mc.render.FCLItemModelLoader.getInstance());
 			//TODO see about custom models
 		}
-		ServerStartCallback.EVENT.register((server) -> { Static.SERVER = server; SimpleUpdateHandler.postInit(); });
+		ServerStartCallback.EVENT.register((server) -> {
+			Static.SERVER = server; SimpleUpdateHandler.postInit(); Network.initializeValidator(Static.side());
+		});
 		//TODO see if server start is a good place for the update handler post init
 		SimpleUpdateHandler.register("fcl", 1, version);
 		SimpleUpdateHandler.setUpdateMessage("fcl", prefix + "Update available! (" + SimpleUpdateHandler.getLatestVersionOf("fcl") + ")");
@@ -54,18 +58,13 @@ public class FCL implements ModInitializer {
 		//NetworkRegistry.INSTANCE.registerGuiHandler(instance, ghand = new GuiHandler());
 		//GuiHandler.register("fcl", instance);
 		//
-		//Network.initializeValidator(event.getSide());
-		Print.log("Registering Server Packets"); PacketHandler.registerPackets(true);
+		Print.log("[FCL] Registering Server Packets"); PacketHandler.registerPackets(true);
 		//
-		/*MinecraftForge.EVENT_BUS.register(new SignCapabilitySerializer.EventHandler());
-		CapabilityManager.INSTANCE.register(SignCapability.class, new SignCapabilitySerializer.Storage(), new SignCapabilitySerializer.Callable());
-		SignCapabilitySerializer.addListener(net.fexcraft.lib.mc.capabilities.sign.ExampleListener.class);
-		//RecipeRegistry.importVanillaRecipes();
-		NBTTagCompoundPacketHandler.addListener(Side.SERVER, new net.fexcraft.lib.mc.gui.ServerReceiver());
-		if(event.getSide().isClient()){
-			NBTTagCompoundPacketHandler.addListener(Side.CLIENT, new net.fexcraft.lib.mc.gui.ClientReceiver());
-		}*/
-		Print.log("Loading complete.");
+		CompoundTagPacketHandler.addListener(true, new net.fexcraft.lib.mc.gui.ServerReceiver());
+		if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT){
+			CompoundTagPacketHandler.addListener(false, new net.fexcraft.lib.mc.gui.ClientReceiver());
+		}
+		Print.log("[FCL] Loading complete.");
 	}
 	
 }

@@ -1,16 +1,11 @@
 package net.fexcraft.lib.mc.gui;
 
-import java.lang.reflect.InvocationTargetException;
-
+import net.fabricmc.api.EnvType;
 import net.fexcraft.lib.mc.network.IPacketListener;
-import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.packet.CompoundTagPacket;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundTag;
 
-public class ServerReceiver implements IPacketListener<CompoundTagPacket> {
+public class ServerReceiver implements IPacketListener<CompoundTag> {
 	
 	public static ServerReceiver INSTANCE;
 	public ServerReceiver(){ INSTANCE = this; }
@@ -20,9 +15,9 @@ public class ServerReceiver implements IPacketListener<CompoundTagPacket> {
 		return "fcl_gui";
 	}
 
-	@Override
-	public void process(CompoundTagPacket packet, Object[] objs){
-		if(!packet.nbt.hasKey("task")) return;
+	@Override //TODO update
+	public void process(CompoundTag packet, PlayerEntity player, EnvType side){
+		/*if(!packet.nbt.hasKey("task")) return;
 		EntityPlayerMP player = (EntityPlayerMP)objs[0];
 		switch(packet.nbt.getString("task")){
 			case "open_gui":{
@@ -47,7 +42,7 @@ public class ServerReceiver implements IPacketListener<CompoundTagPacket> {
             	return;
             }
             //
-		}
+		}*/
 	}
 	
 }
