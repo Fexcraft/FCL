@@ -15,8 +15,6 @@ import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 /**
  * 
@@ -42,7 +40,6 @@ public class FCL implements ModInitializer {
 		Print.log("[FCL] Starting FCL!"); INSTANCE = this; Static.setAsMcLib(true);
 		Static.setDevmode(FabricLoader.getInstance().isDevelopmentEnvironment());
 		Static.setIsServer(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER);
-		Registry.register(Registry.ITEM, new Identifier("fcl", "fnprf"), FEXCRAFT_PROFILE);//test
 		//
 		if(Static.isClient()){
 			//net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(net.fexcraft.lib.mc.render.FCLItemModelLoader.getInstance());
