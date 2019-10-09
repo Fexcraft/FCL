@@ -3,7 +3,7 @@
   "package": "net.fexcraft.lib.mc.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-  	
+  	"PlayerManagerMixin"
   ],
   "client": [
     "ClientMixin"

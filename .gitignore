@@ -4,6 +4,8 @@ build/
 out/
 classes/
 logs/
+.fabric
+.mixin.out
 
 # eclipse
 *.launch

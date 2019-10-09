@@ -25,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 public class Static extends net.fexcraft.lib.common.Static {
 	
 	private static final HashMap<UUID, String> UUID_PLAYER_CACHE = new HashMap<UUID, String>();
+	public static MinecraftServer SERVER;
 
 	public static final void halt(int errid){
 		System.exit(errid);//TODO see if fabric has a dedicated exit method
@@ -38,8 +39,9 @@ public class Static extends net.fexcraft.lib.common.Static {
 		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
 	}
 	
+	/** May be null before the server started. *///TODO see for instant alternatives, if possible
 	public static final MinecraftServer getServer(){
-		return null;//TODO find how to get server instance
+		return SERVER;
 	}
 	
 	public static final EnvType side(){

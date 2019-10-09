@@ -7,8 +7,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.fexcraft.lib.mc.FCL;
+import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 
 public class SimpleUpdateHandler{
 	
@@ -119,26 +122,21 @@ public class SimpleUpdateHandler{
 		return "null";
 	}
 
-	public static class EventHandler {
-		
-		//TODO @SubscribeEvent
-		public void onJoin(/*PlayerEvent.PlayerLoggedInEvent event*/){
-			new Thread("FCL-SUH"){
-				@Override
-				public void run(){
-					/*for(String modid : mods_to_update){
-						String string = update_message_queue.get(modid);
-						if(string != null && string.length() > 4){
-							Print.chat(event.player, Formatter.format(update_message_queue.get(modid)));
-						}
+	public static final void checkPlayer(ServerPlayerEntity player){
+		new Thread("FCL-SUH"){
+			@Override
+			public void run(){
+				for(String modid : mods_to_update){
+					String string = update_message_queue.get(modid);
+					if(string != null && string.length() > 4){
+						Print.chat(player, Formatter.format(update_message_queue.get(modid)));
 					}
-					if(Static.isServer() && Network.isBanned(event.player.getGameProfile().getId())){
-						((EntityPlayerMP)event.player).connection.onDisconnect(new TextComponentString("[FCL] Blacklisted."));
-					}*/
 				}
-			}.start();
-		}
-		
+				if(Static.isServer() && Network.isBanned(player.getGameProfile().getId())){
+					player.networkHandler.disconnect(new LiteralText("[FCL] Blacklisted."));
+				}
+			}
+		}.start();;
 	}
 		
 }

@@ -4,8 +4,10 @@ import java.util.UUID;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.server.ServerStartCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fexcraft.lib.mc.network.PacketHandler;
+import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.item.Item;
@@ -40,22 +42,22 @@ public class FCL implements ModInitializer {
 		Static.setIsServer(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER);
 		Registry.register(Registry.ITEM, new Identifier("fcl", "fnprf"), FEXCRAFT_PROFILE);//test
 		//
-		/*if(event.getSide().isClient()){
-			net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(net.fexcraft.lib.mc.render.FCLItemModelLoader.getInstance());
-		}*/
-		//MinecraftForge.EVENT_BUS.register(new SimpleUpdateHandler.EventHandler());
+		if(Static.isClient()){
+			//net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(net.fexcraft.lib.mc.render.FCLItemModelLoader.getInstance());
+			//TODO see about custom models
+		}
+		ServerStartCallback.EVENT.register((server) -> { Static.SERVER = server; SimpleUpdateHandler.postInit(); });
+		//TODO see if server start is a good place for the update handler post init
+		SimpleUpdateHandler.register("fcl", 1, version);
+		SimpleUpdateHandler.setUpdateMessage("fcl", prefix + "Update available! (" + SimpleUpdateHandler.getLatestVersionOf("fcl") + ")");
+		//
 		//NetworkRegistry.INSTANCE.registerGuiHandler(instance, ghand = new GuiHandler());
 		//GuiHandler.register("fcl", instance);
 		//
-		/*SimpleUpdateHandler.register("fcl", 1, version);
-		SimpleUpdateHandler.setUpdateMessage("fcl", prefix + "Update available! (" + SimpleUpdateHandler.getLatestVersionOf("fcl") + ")");
-		SimpleUpdateHandler.postInit();
-		Network.initializeValidator(event.getSide());
-		FCLRegistry.clear(event);*/
+		//Network.initializeValidator(event.getSide());
 		Print.log("Registering Server Packets"); PacketHandler.registerPackets(true);
-		/*CreativeTab.getIcons();
 		//
-		MinecraftForge.EVENT_BUS.register(new SignCapabilitySerializer.EventHandler());
+		/*MinecraftForge.EVENT_BUS.register(new SignCapabilitySerializer.EventHandler());
 		CapabilityManager.INSTANCE.register(SignCapability.class, new SignCapabilitySerializer.Storage(), new SignCapabilitySerializer.Callable());
 		SignCapabilitySerializer.addListener(net.fexcraft.lib.mc.capabilities.sign.ExampleListener.class);
 		//RecipeRegistry.importVanillaRecipes();
