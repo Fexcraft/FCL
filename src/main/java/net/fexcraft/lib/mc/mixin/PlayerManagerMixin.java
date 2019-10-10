@@ -15,7 +15,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class PlayerManagerMixin {
 	
 	@Inject(at = @At("RETURN"), method = "onPlayerConnect()V")
-	private void init(ClientConnection conn, ServerPlayerEntity player, CallbackInfo info){
+	private void onPlayerConn(ClientConnection conn, ServerPlayerEntity player, CallbackInfo info){
 		Print.debug("Checking Player: " + player.getDisplayName().asString()); SimpleUpdateHandler.checkPlayer(player);
 	}
 

@@ -10,6 +10,8 @@ import net.fexcraft.lib.mc.network.Network;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
 import net.fexcraft.lib.mc.network.handlers.CompoundTagPacketHandler;
+import net.fexcraft.lib.mc.signhook.ExampleImpl;
+import net.fexcraft.lib.mc.signhook.SignInteractionHook;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.item.Item;
@@ -55,6 +57,8 @@ public class FCL implements ModInitializer {
 		//NetworkRegistry.INSTANCE.registerGuiHandler(instance, ghand = new GuiHandler());
 		//GuiHandler.register("fcl", instance);
 		//
+		SignInteractionHook.KEYWORDS.put("[fcl-uc]", ExampleImpl.class);
+		SignInteractionHook.REGISTRY.put(ExampleImpl.ID, ExampleImpl.class);
 		Print.log("[FCL] Registering Server Packets"); PacketHandler.registerPackets(true);
 		//
 		CompoundTagPacketHandler.addListener(true, new net.fexcraft.lib.mc.gui.ServerReceiver());
@@ -69,7 +73,6 @@ public class FCL implements ModInitializer {
 	 * 
 	 * - Gui Lib
 	 * - FCLItemModel (if applicable/necessary)
-	 * - Sign "Capability" (unless easily replaceable by mixins)
 	 * - "BluePrintTable" (better than ever, tabbed)
 	 * - ... I forgot? I forgot.
 	 * 

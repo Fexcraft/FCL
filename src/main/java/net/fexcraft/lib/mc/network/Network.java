@@ -74,21 +74,23 @@ public class Network{
 		else if(obj.has("blocked_versions") && current_version == null && !fcl_version_checked){
 			JsonObject fcl = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=fcl", 1000);
 			ArrayList<String> arr = new ArrayList<String>();
-			for(JsonElement elm : fcl.get("blocked_versions").getAsJsonArray()){
-				arr.add(elm.getAsString());
-			}
-			ArrayList<String> array = new ArrayList<String>();
-			for(String s : arr){
-				Identifier rs = new Identifier(s);
-				if(rs.getNamespace().equals(FCL.mcv)){
-					array.add(s);
+			if(fcl.has("blocked_versions") && fcl.get("blocked_versions").isJsonArray()){
+				for(JsonElement elm : fcl.get("blocked_versions").getAsJsonArray()){
+					arr.add(elm.getAsString());
 				}
-			}
-			for(String s : array){
-				if(s.equals(current_version)){
-					Print.log("THIS VERSION OF " + modid.toUpperCase() + " IS BLOCKED/REMOVED;");
-					Static.halt(1);
-					break;
+				ArrayList<String> array = new ArrayList<String>();
+				for(String s : arr){
+					Identifier rs = new Identifier(s);
+					if(rs.getNamespace().equals(FCL.mcv)){
+						array.add(s);
+					}
+				}
+				for(String s : array){
+					if(s.equals(current_version)){
+						Print.log("THIS VERSION OF " + modid.toUpperCase() + " IS BLOCKED/REMOVED;");
+						Static.halt(1);
+						break;
+					}
 				}
 			}
 			fcl_version_checked = true;

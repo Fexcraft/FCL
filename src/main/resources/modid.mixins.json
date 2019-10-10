@@ -3,7 +3,9 @@
   "package": "net.fexcraft.lib.mc.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-  	"PlayerManagerMixin"
+  	"PlayerManagerMixin",
+  	"SignBlockMixin",
+  	"SignEntityMixin"
   ],
   "client": [
     "ClientMixin"
