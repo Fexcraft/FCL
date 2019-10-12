@@ -6,6 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.server.ServerStartCallback;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fexcraft.lib.mc.crafting.WorkBench;
 import net.fexcraft.lib.mc.network.Network;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
@@ -14,9 +15,13 @@ import net.fexcraft.lib.mc.signhook.ExampleImpl;
 import net.fexcraft.lib.mc.signhook.SignInteractionHook;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
+import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 /**
  * 
@@ -35,13 +40,15 @@ public class FCL implements ModInitializer {
 	public static final UUID[] authors = new UUID[]{ UUID.fromString("01e4af9b-2a30-471e-addf-f6338ffce04b") };
 	public static FCL INSTANCE;
 	//
-	public static final Item FEXCRAFT_PROFILE = new Item(new Item.Settings().group(ItemGroup.MISC));
+	public static final Block WORKBENCH = new WorkBench();
 	
 	@Override
 	public void onInitialize(){
 		Print.log("[FCL] Starting FCL!"); INSTANCE = this; Static.setAsMcLib(true);
 		Static.setDevmode(FabricLoader.getInstance().isDevelopmentEnvironment());
 		Static.setIsServer(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER);
+		Registry.register(Registry.BLOCK, new Identifier("fcl:workbench"), WORKBENCH);
+		Registry.register(Registry.ITEM, new Identifier("fcl:workbench"), new BlockItem(WORKBENCH, new Item.Settings().group(ItemGroup.TOOLS)));
 		//
 		if(Static.isClient()){
 			//net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(net.fexcraft.lib.mc.render.FCLItemModelLoader.getInstance());

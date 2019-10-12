@@ -1,9 +1,9 @@
 {
 "__comment": "Designed by Ferdinand (FEX___96) with BDcraft Cubik PRO 0.96 Beta",
 "textures": {
-    "particle": "minecraft:blocks/anvil_base",
-    "texture": "fcl:blocks/workbench",
-    "anvil_base": "minecraft:blocks/anvil_base"
+    "particle": "minecraft:block/anvil",
+    "texture": "fcl:block/workbench",
+    "anvil_base": "minecraft:block/anvil"
 },
 "elements": [ 
 {

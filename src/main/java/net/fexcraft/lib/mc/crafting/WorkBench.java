@@ -1,76 +1,51 @@
 package net.fexcraft.lib.mc.crafting;
 
-import net.fexcraft.lib.mc.FCL;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.block.BlockRenderLayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Material;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.StateFactory;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.math.Direction;
 
-@fBlock(modid = "fcl", name = "workbench")
 public class WorkBench extends Block {
-	
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	
-    public WorkBench(){
-    	super(Material.GLASS);
-    	this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-    	this.setHarvestLevel("axe", 1); this.setHardness(1.0F); this.setResistance(32.0F);
-    	this.setCreativeTab(CreativeTabs.TOOLS);
-    	//FCLRegistry.getAutoRegisterer("fcl").addBlock("workbench", this, null, 0, null);
+
+	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+
+	public WorkBench(){
+		super(FabricBlockSettings.of(Material.WOOD, DyeColor.BROWN).strength(1f, 32f).sounds(BlockSoundGroup.WOOD).build());
+		this.setDefaultState(getStateFactory().getDefaultState().with(FACING, Direction.NORTH));
 	}
 
-    @Override
-	public boolean isFullBlock(IBlockState state) {
-		return false;
+	@Environment(EnvType.CLIENT)
+	public BlockRenderLayer getRenderLayer(){
+		return BlockRenderLayer.CUTOUT;
 	}
-	
-	@Override
-	public boolean isFullCube(IBlockState state){
-        return false;
-    }
-	
-	@Override
-	public boolean isOpaqueCube(IBlockState state){
-        return false;
-    }
-	
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(!world.isRemote){
-			if(!player.isSneaking()){
-				player.openGui(FCL.getInstance(), 0, world, pos.getX(), pos.getY(), pos.getZ());
-				player.addStat(StatList.CRAFTING_TABLE_INTERACTION);
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	@Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand){
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-    }
 
 	@Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack){
-        worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
-    }
-	
-	@Override
-    public IBlockState getStateFromMeta(int meta){
-        EnumFacing enumfacing = EnumFacing.getFront(meta);
-        if(enumfacing.getAxis() == EnumFacing.Axis.Y){ enumfacing = EnumFacing.NORTH; }
-        return this.getDefaultState().withProperty(FACING, enumfacing);
-    }
-	
-	@Override
-    public int getMetaFromState(IBlockState state){
-        return ((EnumFacing)state.getValue(FACING)).getIndex();
-    }
-	
-	@Override
-    protected BlockStateContainer createBlockState(){
-        return new BlockStateContainer(this, new IProperty[] {FACING});
-    }
-	
+	protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory){
+		stateFactory.add(FACING);
+	}
+
+	public BlockState getPlacementState(ItemPlacementContext ipc){
+		return (BlockState) this.getDefaultState().with(FACING, ipc.getPlayerFacing().getOpposite());
+	}
+
+	public BlockState rotate(BlockState state, BlockRotation blockRotation_1){
+		return state.with(FACING, blockRotation_1.rotate((Direction)state.get(FACING)));
+	}
+
+	public BlockState mirror(BlockState state, BlockMirror mirror){
+		return state.rotate(mirror.getRotation((Direction)state.get(FACING)));
+	}
+
 }
