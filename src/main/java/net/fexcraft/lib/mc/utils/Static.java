@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 
 import net.fexcraft.lib.common.utils.HttpUtil;
-import net.fexcraft.lib.mc.utils.Print;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -54,6 +54,10 @@ public class Static extends net.fexcraft.lib.common.Static {
 	
 	public static final boolean isOp(String name){
 		return getServer().getPlayerList().getOppedPlayers().getGameProfileFromName(name) != null;
+	}
+
+	public static boolean isOp(EntityPlayer player){
+		return getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null;
 	}
 	
 	public static final String getPlayerNameByUUID(@Nullable UUID uuid){
