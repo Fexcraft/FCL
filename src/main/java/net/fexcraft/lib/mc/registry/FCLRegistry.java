@@ -64,7 +64,8 @@ public class FCLRegistry {
 	
 	private static final void error(Throwable thr, String s){
 		Print.log("Error while constructing " + s + "!");
-		thr.printStackTrace(); //Uncomment for bug-hunting > Static.stop();
+		thr.printStackTrace(); //Uncomment for bug-hunting >
+		Static.stop();
 	}
 	
 	public static final void clear(FMLPostInitializationEvent event){
@@ -122,7 +123,7 @@ public class FCLRegistry {
 					}
 					Print.debug("Registered Block: " + mBlock.getRegistryName().toString());
 				}
-				catch(Exception e){ error(e, clazz.getName()); }
+				catch(Exception e){ error(e, clazz.getName());}
 			}
 			//
 			TreeMap<String, Class<? extends Item>> mapi = getItemMap(modid);
