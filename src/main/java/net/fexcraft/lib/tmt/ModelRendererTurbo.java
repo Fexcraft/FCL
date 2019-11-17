@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import net.fexcraft.lib.common.Static;
@@ -1684,9 +1685,12 @@ public class ModelRendererTurbo {
         GL11.glEndList();
     }
 
-	private static RGB lightred   = new RGB(255, 127, 175);
-    private static RGB lightgreen = new RGB(175, 255, 127);
-    private static RGB lightblue  = new RGB(127, 175, 255);
+	private static RGB red1 = new RGB(138,  65,  92);//new RGB(255, 127, 175);
+    private static RGB gre1 = new RGB( 92, 138,  65);//new RGB(175, 255, 127);
+    private static RGB blu1 = new RGB( 65,  92, 138);//new RGB(127, 175, 255);
+	private static RGB red0 = new RGB(150,   0,   0);
+    private static RGB gre0 = new RGB(  0, 150,   0);
+    private static RGB blu0 = new RGB(  0,   0, 150);
 
     public RGB getColor(int face){
 		return getColor(this, face);
@@ -1696,17 +1700,17 @@ public class ModelRendererTurbo {
     	if(!turbo.textured){
     		if(turbo.polygonColor != null) return turbo.polygonColor;
     		switch(face){
-    			case 0: return RGB.BLUE;
-    			case 1: return lightblue;
-    			case 2: return lightred;
-    			case 3: return RGB.RED;
-    			case 4: return lightgreen;
-    			case 5: return RGB.GREEN;
+    			case 0: return blu0;
+    			case 1: return blu1;
+    			case 2: return red1;
+    			case 3: return red0;
+    			case 4: return gre1;
+    			case 5: return gre0;
     		}
     		if(face < 192){
-    			if(face % 3 == 0) return new RGB(255, 127, 256 - (face * 4));
-    			if(face % 3 == 1) return new RGB(256 - (face * 4), 255, 127);
-    			if(face % 3 == 2) return new RGB(127, 256 - (face * 4), 255);
+    			if(face % 3 == 0) return new RGB(138, 92, 256 - (face * 4));
+    			if(face % 3 == 1) return new RGB(256 - (face * 4), 138, 92);
+    			if(face % 3 == 2) return new RGB(92, 256 - (face * 4), 138);
     		}
     		return RGB.WHITE;
     	}

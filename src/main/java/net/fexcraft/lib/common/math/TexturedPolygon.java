@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.tmt.Tessellator;
 
 /**
