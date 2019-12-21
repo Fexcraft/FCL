@@ -264,6 +264,23 @@ public class ModelRendererTurbo {
         return copyTo(verts, poly);
     }
     
+    /**
+     * Alternative method for flat rectangular polygons.
+     * @author Ferdinand Calo' (FEX___96)
+     */
+    public ModelRendererTurbo addFlatRect(float[] v0, float[] v1, float[] v2, float[] v3, float w, float h){
+    	TexturedVertex[] verts = new TexturedVertex[4]; TexturedPolygon[] poly = new TexturedPolygon[2];
+        TexturedVertex tv0 = new TexturedVertex(v0[0], v0[1], v0[2], 0.0F, 0.0F);
+        TexturedVertex tv1 = new TexturedVertex(v1[0], v1[1], v1[2], 0.0F, 8.0F);
+        TexturedVertex tv2 = new TexturedVertex(v2[0], v2[1], v2[2], 8.0F, 8.0F);
+        TexturedVertex tv3 = new TexturedVertex(v3[0], v3[1], v3[2], 8.0F, 0.0F);
+        verts[0] = tv0; verts[1] = tv1; verts[2] = tv2; verts[3] = tv3;
+        poly[0] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, texoffx, texoffy, texoffx+ w, texoffy + h);
+        poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv1, tv2, tv3 }, texoffx + w, texoffy, texoffx + w + w, texoffy + h);
+        if(mirror ^ flip){ for(int l = 0; l < poly.length; l++){ poly[l].flipFace(); } }
+        return copyTo(verts, poly);
+    }
+    
     /** 
      * Mainly based on the "addRectShape" method, but adds support for custom texture positions for any face.
      * @author Ferdinand Calo' (FEX___96)
@@ -309,6 +326,20 @@ public class ModelRendererTurbo {
     }
 
     /**
+     * Adds a new face/quad to the model.
+     * @param x the starting x-position
+     * @param y the starting y-position
+     * @param w the width (over the x-direction)
+     * @param h the height (over the y-direction)
+     * @author Ferdinand
+     */
+    public ModelRendererTurbo addQuad(float x, float y, float z, float w, float h){
+    	if(w == 0) w = 0.01F; if(h == 0) h = 0.01F; if(mirror){ float xTemp = w; w = x; x = xTemp; }
+        float[] v0 = { x, y, z }, v1 = { w, y, z }, v2 = { w, h, z }, v3 = { x, h, z };
+        return addFlatRect(v0, v1, v2, v3, w, h);
+    }
+
+    /**
      * Adds a new box to the model.
      * @param x the starting x-position
      * @param y the starting y-position
@@ -347,7 +378,7 @@ public class ModelRendererTurbo {
      * @param scale
      */
     public ModelRendererTurbo addBox(float x, float y, float z, float w, float h, float d, float expansion, float scale){
-    	if(w == 0){ w = 0.01F; } if(h == 0){ h = 0.01F; } if(d == 0){ d = 0.01F; }
+    	boolean noz = d == 0; if(w == 0) w = 0.01F; if(h == 0) h = 0.01F; if(d == 0) d = 0.01F;
         float scaleX = w * scale, scaleY = h * scale, scaleZ = d * scale;
         float x1 = x + scaleX, y1 = y + scaleY, z1 = z + scaleZ;
         float expX = expansion + scaleX - w;
@@ -360,7 +391,7 @@ public class ModelRendererTurbo {
         //
         float[] v0 = {x, y, z}, v1 = {x1, y, z}, v2 = {x1, y1, z}, v3 = {x, y1, z};
         float[] v4 = {x, y, z1}, v5 = {x1, y, z1}, v6 = {x1, y1, z1}, v7 = {x, y1, z1};
-        return addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
+        return noz ? addFlatRect(v0, v1, v2, v3, w, h) : addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
     }
     
     /**
@@ -1739,6 +1770,12 @@ public class ModelRendererTurbo {
 		return addTexRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d, texpos);
 	}
 	
+	public ModelRendererTurbo addShapeQuad(float x, float y, float z, float w, float h, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3){
+    	float xw = x + w, yh = y + h; x -= scale; y -= scale; xw += scale; yh += scale; if(mirror){ float fl = xw; xw = x; x = fl; }
+		float[] v0 = { x - x0, y - y0, z - z0 }, v1 = { xw + x1, y - y1, z - z1 }, v2 = { xw + x3, yh + y3, z - z3 }, v3 = { x - x2, yh + y2, z - z2 };
+		return addFlatRect(v0, v1, v2, v3, w, h);
+	}
+	
 	public String toString(String alt){
 		String str = this.toString();
 		return str == null || str.equals("") ? alt : str;
@@ -1904,6 +1941,10 @@ public class ModelRendererTurbo {
 		for(ModelRendererTurbo turbo : childModels){
 			this.copyTo(turbo.getVertices(), turbo.getFaces());
 		} if(removelist) childModels = null; else childModels.clear();
+	}
+
+	public ModelRendererTurbo addVoxelShape(int divider, boolean[][][] content){
+		return new VoxelBuilder(this, divider).setVoxels(content).build();
 	}
 	
 }
