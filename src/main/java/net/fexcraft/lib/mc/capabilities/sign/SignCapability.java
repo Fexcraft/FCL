@@ -53,9 +53,11 @@ public interface SignCapability {
 		public void readNBT(Capability<SignCapability> capability, EnumFacing side, @Nullable NBTBase nbt);
 		
 		default void sendUpdate(TileEntitySign tileentity){
+			
 			Static.getServer().getPlayerList().getPlayers().forEach(player -> {
+				if(player.getPosition().distanceSq(tileentity.getPos()) < 256)
 				player.connection.sendPacket(tileentity.getUpdatePacket());
-			});//TODO make range based
+			});
 		}
 		
 		default BlockPos getPosAtBack(IBlockState state, TileEntitySign tileentity){
