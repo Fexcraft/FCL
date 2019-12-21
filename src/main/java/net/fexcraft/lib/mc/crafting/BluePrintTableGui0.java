@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+@Deprecated
 public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 	
 	private static final ResourceLocation texture = new ResourceLocation("fcl:textures/gui/bpt_0.png");
