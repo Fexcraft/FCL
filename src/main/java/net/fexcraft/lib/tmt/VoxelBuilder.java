@@ -65,8 +65,7 @@ public class VoxelBuilder {
 		for(int[] rect : rects){
 			int x = rect[3] - rect[0], y = rect[4] - rect[1], z = rect[5] - rect[2];
 			root.addBox(rect[0], rect[1], rect[2], x + 1, y + 1, z + 1);
-		}
-		return root;
+		} return root;
 	}
 
 	public ArrayList<int[]> buildCoords(){
