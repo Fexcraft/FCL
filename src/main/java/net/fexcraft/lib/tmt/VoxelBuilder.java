@@ -16,7 +16,7 @@ public class VoxelBuilder {
 	private int segments;
 	
 	public VoxelBuilder(ModelRendererTurbo turbo, int segments){
-		this.root = turbo == null ? new ModelRendererTurbo(null) : root; this.segments = segments;
+		this.root = turbo == null ? new ModelRendererTurbo(null) : turbo; this.segments = segments;
 	}
 
 	public VoxelBuilder setVoxels(boolean[][][] content){
