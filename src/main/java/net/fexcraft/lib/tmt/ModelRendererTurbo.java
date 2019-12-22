@@ -1722,6 +1722,7 @@ public class ModelRendererTurbo {
 	private static RGB red0 = new RGB(150,   0,   0);
     private static RGB gre0 = new RGB(  0, 150,   0);
     private static RGB blu0 = new RGB(  0,   0, 150);
+    private static RGB gray = new RGB( 89,  89,  89);
 
     public RGB getColor(int face){
 		return getColor(this, face);
@@ -1743,7 +1744,7 @@ public class ModelRendererTurbo {
     			if(face % 3 == 1) return new RGB(256 - (face * 4), 138, 92);
     			if(face % 3 == 2) return new RGB(92, 256 - (face * 4), 138);
     		}
-    		return RGB.WHITE;
+    		return gray;
     	}
     	return null;
     }
@@ -1943,8 +1944,8 @@ public class ModelRendererTurbo {
 		} if(removelist) childModels = null; else childModels.clear();
 	}
 
-	public ModelRendererTurbo addVoxelShape(int divider, boolean[][][] content){
-		return new VoxelBuilder(this, divider).setVoxels(content).build();
+	public ModelRendererTurbo addVoxelShape(int segmentation, boolean[][][] content){
+		return new VoxelBuilder(this, segmentation).setVoxels(content).build();
 	}
 	
 }
