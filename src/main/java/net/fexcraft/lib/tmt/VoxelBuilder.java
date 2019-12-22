@@ -68,6 +68,15 @@ public class VoxelBuilder {
 		}
 		return root;
 	}
+
+	public ArrayList<int[]> buildCoords(){
+		ArrayList<int[]> rects = rectangulate(), export = new ArrayList<>();
+		for(int[] rect : rects){
+			int x = rect[3] - rect[0], y = rect[4] - rect[1], z = rect[5] - rect[2];
+			export.add(new int[]{ rect[0], rect[1], rect[2], x + 1, y + 1, z + 1 });
+		}
+		return rects;
+	}
 	
 	private ArrayList<int[]> rectangulate(){
 		ArrayList<int[]> rects = new ArrayList<int[]>();
