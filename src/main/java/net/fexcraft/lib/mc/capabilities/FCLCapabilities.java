@@ -1,5 +1,6 @@
 package net.fexcraft.lib.mc.capabilities;
 
+import net.fexcraft.lib.mc.capabilities.paint.Paintable;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -11,5 +12,8 @@ public class FCLCapabilities {
 
 	@CapabilityInject(SignCapability.class)
 	public static final Capability<SignCapability> SIGN_CAPABILITY = null;
+	
+	@CapabilityInject(Paintable.class)
+	public static final Capability<Paintable> PAINTABLE = null;
 	
 }
