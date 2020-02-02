@@ -1166,6 +1166,7 @@ public class ModelRendererTurbo {
 		private int segments, seglimit, direction, texDiameterW, texDiameterH, texHeight;
 		private Vec3f topoff = new Vec3f();
 		private boolean[] togglesides;
+		private Axis3DL toprot;
 		//
 		private boolean radialtexture = false;
 		private float seg_width, seg_height;
@@ -1230,8 +1231,16 @@ public class ModelRendererTurbo {
 			this.direction = dir; return this;
 		}
 		
+		public CylinderBuilder setTopRotation(float x, float y, float z){
+			(toprot = new Axis3DL()).setAngles(x, y, z); return this;
+		}
+
+		public CylinderBuilder setTopRotation(Vec3f vec){
+			return setTopRotation(vec.xCoord, vec.yCoord, vec.zCoord);
+		}
+		
 		public ModelRendererTurbo build(){
-			if(radius2 == 0f){
+			if(radius2 == 0f && toprot == null){
 				return root.addCylinder(x, y, z, radius, length, segments, base_scale, top_scale, direction, texDiameterW, texDiameterH, texHeight, topoff);
 			}
 			if(radius < 1){ texDiameterW = 2; texDiameterH = 2; } if(length < 1){ texHeight = 2; }
@@ -1296,7 +1305,13 @@ public class ModelRendererTurbo {
 				boolean bool = repeat == 0 ? dirFront ? false : true : dirFront ? true : false;
 				if((repeat == 0 && !togglesides[0]) || (repeat == 1 && !togglesides[1])){
 					for(int i = 0; i < verts0.size(); i++){
-						if(i >= (verts0.size() - 1) || i >= seglimit) break;
+						if(i >= (verts0.size() - 1) || i >= seglimit){
+							if(repeat != 0 && toprot != null){
+								verts0.get(i).vector = toprot.getRelativeVector(verts0.get(i).vector);
+								verts1.get(i).vector = toprot.getRelativeVector(verts1.get(i).vector);
+							}
+							break;
+						}
 						TexturedVertex[] arr = new TexturedVertex[4];
 						if(!radialtexture){
 							xSize = (float)(Math.sin((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle - 2F * uOffset));
@@ -1321,6 +1336,12 @@ public class ModelRendererTurbo {
 							arr[1] = verts1.get(i).setTexturePosition(uStart + (i * seg_width) * uScale + diff, vStart + ((seg_height + mul) * vScale));
 							arr[2] = verts1.get(i + 1).setTexturePosition(uStart + ((i + 1) * seg_width) * uScale - diff, vStart + ((seg_height + mul) * vScale));
 							arr[3] = verts0.get(i + 1).setTexturePosition(uStart + ((i + 1) * seg_width) * uScale, vStart + (mul * vScale));
+						}
+						if(repeat != 0 && toprot != null){
+							arr[0].vector = verts0.get(i).vector = toprot.getRelativeVector(arr[0].vector);
+							arr[1].vector = verts1.get(i).vector = toprot.getRelativeVector(arr[1].vector);
+							arr[2].vector = /*verts1.get(i + 1).vector =*/ toprot.getRelativeVector(arr[2].vector);
+							arr[3].vector = /*verts0.get(i + 1).vector =*/ toprot.getRelativeVector(arr[3].vector);
 						}
 						polis.add(new TexturedPolygon(arr));
 						if(bool) polis.get(polis.size() - 1 ).flipFace();
