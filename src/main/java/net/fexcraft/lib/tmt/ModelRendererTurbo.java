@@ -891,6 +891,7 @@ public class ModelRendererTurbo {
 			poly[currentFace] = new TexturedPolygon(verts);
 			currentFace++;
 		}
+		if(!(flip || mirror)) for(TexturedPolygon poli : poly) poli.flipFace();
 		return copyTo(tempVerts, poly);
     }
     
@@ -1760,10 +1761,11 @@ public class ModelRendererTurbo {
     			case 4: return gre1;
     			case 5: return gre0;
     		}
-    		if(face < 192){
-    			if(face % 3 == 0) return new RGB(138, 92, 256 - (face * 4));
-    			if(face % 3 == 1) return new RGB(256 - (face * 4), 138, 92);
-    			if(face % 3 == 2) return new RGB(92, 256 - (face * 4), 138);
+    		if(face > 32) face %= 32;
+    		if(face < 32){
+    			if(face % 3 == 0) return new RGB(138, 92, 192 - (face * 4));
+    			if(face % 3 == 1) return new RGB(192 - (face * 4), 138, 92);
+    			if(face % 3 == 2) return new RGB(92, 192 - (face * 4), 138);
     		}
     		return gray;
     	}
