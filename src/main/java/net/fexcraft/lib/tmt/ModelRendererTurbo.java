@@ -1733,7 +1733,7 @@ public class ModelRendererTurbo {
         displayList = GL11.glGenLists(1);
         GL11.glNewList(displayList, 4864 /*GL_COMPILE*/);
         for(int i = 0; i < faces.length; i++){
-            faces[i].draw(Tessellator.INSTANCE, scale, linesColor, getColor(i));
+            faces[i].draw(scale, linesColor, getColor(i));
         }
         GL11.glEndList();
     }

@@ -10,6 +10,7 @@ import net.fexcraft.lib.common.math.RGB;
 * @Author Ferdinand (FEX___96)
 * 
 */
+@Deprecated
 public class Tessellator {
 	
 	private static java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.allocateDirect(0x200000 * 4).order(java.nio.ByteOrder.nativeOrder());

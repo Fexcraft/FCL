@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import net.fexcraft.lib.tmt.Tessellator;
-
 /**
  * Based on TMT, also compatible/required by the TMT branch shipped with FCL.
  */
@@ -29,9 +27,9 @@ public class TexturedPolygon {
 	
 	public void setNormals(ArrayList<Vec3f> normallist){ list = normallist; }
 	
-	public void draw(Tessellator tess, float scale, RGB lincol, RGB rgb){
+	public void draw(float scale, RGB lincol, RGB rgb){
 		if(lincol != null){
-			tess.startDrawing(GL11.GL_LINE_STRIP); tess.setColor(lincol);
+			GL11.glBegin(GL11.GL_LINE_STRIP); lincol.glColorApply();
 			//
 			/*if(triline && vertices.length == 4){
 				TexturedVertex texvex = null;
@@ -47,40 +45,41 @@ public class TexturedPolygon {
 		}
 		else{
 	        switch(vertices.length){
-		        case 3: tess.startDrawing(GL11.GL_TRIANGLES); break;
-		        case 4: tess.startDrawing(GL11.GL_QUADS); break;
-		        default: tess.startDrawing(GL11.GL_POLYGON); break;
+		        case 3: GL11.glBegin(GL11.GL_TRIANGLES); break;
+		        case 4: GL11.glBegin(GL11.GL_QUADS); break;
+		        default: GL11.glBegin(GL11.GL_POLYGON); break;
 	        };
 		}
         if(list.isEmpty()){
 	        if(normals.length == 3){
-	        	if(invert){ tess.setNormal(-normals[0], -normals[1], -normals[2]); }
-	        	else{ tess.setNormal(normals[0], normals[1], normals[2]); }
+	        	if(invert){ GL11.glNormal3f(-normals[0], -normals[1], -normals[2]); }
+	        	else{ GL11.glNormal3f(normals[0], normals[1], normals[2]); }
 	        }
 	        else if(vertices.length >= 3){
 		        Vec3f vec0 = new Vec3f(vertices[1].vector.subtract(vertices[0].vector));
 		        Vec3f vec1 = new Vec3f(vertices[1].vector.subtract(vertices[2].vector));
 		        Vec3f vec2 = vec1.crossProduct(vec0).normalize();
-		        if(invert){ tess.setNormal(-vec2.xCoord, -vec2.yCoord, -vec2.zCoord); }
-		        else{ tess.setNormal(vec2.xCoord, vec2.yCoord, vec2.zCoord); }
+		        if(invert){ GL11.glNormal3f(-vec2.xCoord, -vec2.yCoord, -vec2.zCoord); }
+		        else{ GL11.glNormal3f(vec2.xCoord, vec2.yCoord, vec2.zCoord); }
 	        }
 	        else{ return; }
         }
         for(int i = 0; i < vertices.length; i++){
         	TexturedVertex texvex = vertices[i];
             if(i < list.size()){
-            	if(invert){ tess.setNormal(-list.get(i).xCoord, -list.get(i).yCoord, -list.get(i).zCoord); }
-            	else{ tess.setNormal(list.get(i).xCoord, list.get(i).yCoord, list.get(i).zCoord); }
+            	if(invert){ GL11.glNormal3f(-list.get(i).xCoord, -list.get(i).yCoord, -list.get(i).zCoord); }
+            	else{ GL11.glNormal3f(list.get(i).xCoord, list.get(i).yCoord, list.get(i).zCoord); }
             }
             if(rgb == null && color == null){
-            	tess.addVertexWithUV(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale, texvex.textureX, texvex.textureY);
+            	GL11.glTexCoord2f(texvex.textureX, texvex.textureY);
+            	GL11.glVertex3f(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
             }
             else{
-            	tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
-            	tess.setColor(color == null ? rgb : color);
+            	(color == null ? rgb : color).glColorApply();
+            	GL11.glVertex3f(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
             }
         }
-        tess.draw();
+        GL11.glEnd();
     }
 
     public void flipFace(){
