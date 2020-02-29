@@ -29,13 +29,13 @@ public class CreativeTab extends CreativeTabs {
 	}
 
 	@Override
-	public ItemStack getTabIconItem(){
+	public ItemStack createIcon(){
 		return new ItemStack(Item.getByNameOrId(item), 1, meta);
 	}
 	
 	public static void getIcons(){
 		for(CreativeTab tab : tabs){
-			tab.getTabIconItem();
+			tab.createIcon();
 		}
 	}
 	

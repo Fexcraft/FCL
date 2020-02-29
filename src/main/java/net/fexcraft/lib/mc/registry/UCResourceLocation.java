@@ -21,11 +21,11 @@ public class UCResourceLocation extends ResourceLocation {
 		catch(IllegalArgumentException | IllegalAccessException e){
 			e.printStackTrace();
 		}
-        Validate.notNull(this.resourcePath);
+        Validate.notNull(this.path);
     }
 
 	public UCResourceLocation(ResourceLocation rs){
-		this(rs.getResourceDomain(), rs.getResourcePath());
+		this(rs.getNamespace(), rs.getPath());
 	}
 	
 }

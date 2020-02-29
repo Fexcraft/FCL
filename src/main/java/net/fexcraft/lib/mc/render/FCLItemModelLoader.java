@@ -10,6 +10,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.block.state.IBlockState;
@@ -54,7 +55,7 @@ public class FCLItemModelLoader implements ICustomModelLoader {
 	@Nullable
 	public static final Object addItemModel(ResourceLocation loc, FCLItemModel model){
 		if(!loc.toString().contains(":models/item/")){
-			ResourceLocation rs = new ResourceLocation(loc.getResourceDomain(), "models/item/" + loc.getResourcePath());
+			ResourceLocation rs = new ResourceLocation(loc.getNamespace(), "models/item/" + loc.getPath());
 			return MAP.put(rs, model);//This specifically a fix for FVTM, but if it works with other mods well, I don't know.
 		}
 		return MAP.put(loc, model);

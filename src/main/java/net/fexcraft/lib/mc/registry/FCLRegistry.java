@@ -93,12 +93,12 @@ public class FCLRegistry {
 					Block mBlock = clazz.newInstance();
 					Print.log(block.modid() + " | " + block.name());
 					mBlock.setRegistryName(block.modid(), block.name());
-					mBlock.setUnlocalizedName(mBlock.getRegistryName().toString());
+					mBlock.setTranslationKey(mBlock.getRegistryName().toString());
 					blocks.put(mBlock.getRegistryName(), mBlock);
 					//Item
 					ItemBlock iblock = block.item().getConstructor(Block.class).newInstance(mBlock);
 					iblock.setRegistryName(mBlock.getRegistryName());
-					iblock.setUnlocalizedName(mBlock.getUnlocalizedName());
+					iblock.setTranslationKey(mBlock.getTranslationKey());
 					if(iblock instanceof ItemBlock16){
 						((ItemBlock16)iblock).setItemBurnTime(block.burn_time());
 					}
@@ -132,7 +132,7 @@ public class FCLRegistry {
 					fItem item = clazz.getAnnotation(fItem.class);
 					Item mItem = clazz.newInstance();
 					mItem.setRegistryName(item.modid(), item.name());
-					mItem.setUnlocalizedName(mItem.getRegistryName().toString());
+					mItem.setTranslationKey(mItem.getRegistryName().toString());
 					items.put(mItem.getRegistryName(), mItem);
 					if(item.variants() > 1){
 						meta.put(mItem.getRegistryName(), item.variants());
@@ -223,12 +223,12 @@ public class FCLRegistry {
 		
 		public void addBlock(String name, Block block, Class<? extends ItemBlock> item, int meta, String[] custom){
 			block.setRegistryName(modid, name);
-			block.setUnlocalizedName(block.getRegistryName().toString());
+			block.setTranslationKey(block.getRegistryName().toString());
 			blocks.put(new ResourceLocation(modid, name), block);
 			if(item == null){
 				ItemBlock iblock = new ItemBlock16(block);
 				iblock.setRegistryName(block.getRegistryName());
-				iblock.setUnlocalizedName(block.getUnlocalizedName());
+				iblock.setTranslationKey(block.getTranslationKey());
 				itemblocks.add(iblock);
 			}
 			else{
@@ -241,7 +241,7 @@ public class FCLRegistry {
 		
 		public void addItem(String name, Item item, int meta, String[] custom){
 			item.setRegistryName(modid, name);
-			item.setUnlocalizedName(item.getRegistryName().toString());
+			item.setTranslationKey(item.getRegistryName().toString());
 			items.put(new ResourceLocation(modid, name), item);
 			if(meta > 1){ this.meta.put(item.getRegistryName(), meta); }
 			if(custom != null){ this.arr.put(item.getRegistryName(), custom); }
@@ -296,8 +296,8 @@ public class FCLRegistry {
 	}
 
 	public static Item getItem(ResourceLocation rs){
-		if(regs.get(rs.getResourceDomain()) != null){
-			AutoRegisterer reg = regs.get(rs.getResourceDomain());
+		if(regs.get(rs.getNamespace()) != null){
+			AutoRegisterer reg = regs.get(rs.getNamespace());
 			Item item = reg.items.get(rs);
 			if(item == null){
 				for(ItemBlock iblock : reg.itemblocks){
@@ -312,7 +312,7 @@ public class FCLRegistry {
 	}
 
 	public static Block getBlock(ResourceLocation rs){
-		return regs.get(rs.getResourceDomain()) == null ? null : regs.get(rs.getResourceDomain()).blocks.get(rs);
+		return regs.get(rs.getNamespace()) == null ? null : regs.get(rs.getNamespace()).blocks.get(rs);
 	}
 	
 	public static void registerEntitiesOf(String modid){

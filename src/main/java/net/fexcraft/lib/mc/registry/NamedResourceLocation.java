@@ -16,7 +16,7 @@ public class NamedResourceLocation extends ResourceLocation {
     }
 
 	public NamedResourceLocation(String name, ResourceLocation rs){
-		this(name, rs.getResourceDomain(), rs.getResourcePath());
+		this(name, rs.getNamespace(), rs.getPath());
 	}
 	
 	public NamedResourceLocation(String onestring){

@@ -26,7 +26,7 @@ public class RecipeRegistry {
 			RECIPES.put(category, new TreeMap<>());
 			Print.debug("[BPT] Created Category: " + category);
 		}
-		String reg = stack.getUnlocalizedName();
+		String reg = stack.getTranslationKey();
 		if(!RECIPES.get(category).containsKey(reg)){
 			Print.log("[BPT] Created Stack: " + reg.toString());
 			RECIPES.get(category).put(reg, new ArrayList<BluePrintRecipe>());
@@ -46,7 +46,7 @@ public class RecipeRegistry {
 	public static void addShapelessRecipe(ResourceLocation rs, String string, ItemStack output, Ingredient... ingredients){
 		if(ingredients.length < 1 || rs == null){ return; }
 		NonNullList<Ingredient> list = NonNullList.<Ingredient>create(); list.addAll(Arrays.asList(ingredients));
-		FCLRegistry.getAutoRegisterer(rs.getResourceDomain()).addRecipe(rs, new ShapelessRecipes(string == null ? "" : string, output, list));
+		FCLRegistry.getAutoRegisterer(rs.getNamespace()).addRecipe(rs, new ShapelessRecipes(string == null ? "" : string, output, list));
 	}
 
 	public static void addShapedRecipe(String rs, String string, ItemStack output, int width, int height, Ingredient... ingredients){
@@ -58,7 +58,7 @@ public class RecipeRegistry {
 		NonNullList<Ingredient> list = NonNullList.<Ingredient>create();
 		list.addAll(Arrays.asList(ingredients));
 		//vrecipes.put(rs, new ShapedRecipes(string == null ? "" : string, width, height, list, output));
-		FCLRegistry.getAutoRegisterer(rs.getResourceDomain()).addRecipe(rs, new ShapedRecipes(string == null ? "" : string, width, height, list, output));
+		FCLRegistry.getAutoRegisterer(rs.getNamespace()).addRecipe(rs, new ShapedRecipes(string == null ? "" : string, width, height, list, output));
 	}
 	
 	//
@@ -100,7 +100,7 @@ public class RecipeRegistry {
 	@Deprecated
 	public static List<BluePrintRecipe> getRecipes(String category, ItemStack stack){
 		TreeMap<String, List<BluePrintRecipe>> cat = RECIPES.get(category == null ? "" : category);
-		return cat == null ? null : cat.get(stack.getUnlocalizedName());
+		return cat == null ? null : cat.get(stack.getTranslationKey());
 	}
 	
 }

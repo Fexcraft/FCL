@@ -60,8 +60,8 @@ public class Network{
 			ArrayList<String> array = new ArrayList<String>();
 			for(String s : arr){
 				ResourceLocation rs = new ResourceLocation(s);
-				if(rs.getResourceDomain().equals(FCL.mcv)){
-					array.add(rs.getResourcePath());
+				if(rs.getNamespace().equals(FCL.mcv)){
+					array.add(rs.getPath());
 				}
 			}
 			for(String s : array){
@@ -81,7 +81,7 @@ public class Network{
 			ArrayList<String> array = new ArrayList<String>();
 			for(String s : arr){
 				ResourceLocation rs = new ResourceLocation(s);
-				if(rs.getResourceDomain().equals(FCL.mcv)){
+				if(rs.getNamespace().equals(FCL.mcv)){
 					array.add(s);
 				}
 			}

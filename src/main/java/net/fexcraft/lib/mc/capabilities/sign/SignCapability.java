@@ -61,7 +61,7 @@ public interface SignCapability {
 		}
 		
 		default BlockPos getPosAtBack(IBlockState state, TileEntitySign tileentity){
-			EnumFacing facing = state.getBlock() instanceof BlockWallSign ? EnumFacing.getFront(tileentity.getBlockMetadata()) : EnumFacing.UP;
+			EnumFacing facing = state.getBlock() instanceof BlockWallSign ? EnumFacing.byIndex(tileentity.getBlockMetadata()) : EnumFacing.UP;
 			if(facing == EnumFacing.UP){
 				facing = EnumFacing.fromAngle((tileentity.getBlockMetadata() * 360) / 16.0);
 			}

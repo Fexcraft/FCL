@@ -27,7 +27,7 @@ public class TileEntityUpdatePacketHandler{
 				@SuppressWarnings("unchecked")
 				@Override
 				public void run() {
-					Chunk ck = Minecraft.getMinecraft().world.getChunkFromBlockCoords(packet.pos);
+					Chunk ck = Minecraft.getMinecraft().world.getChunk(packet.pos);
 					if(ck.isLoaded()){
 						TileEntity te = Minecraft.getMinecraft().world.getTileEntity(packet.pos);
 						if(te instanceof IPacketReceiver){
@@ -63,7 +63,7 @@ public class TileEntityUpdatePacketHandler{
 				@SuppressWarnings("unchecked")
 				@Override
 				public void run() {
-					Chunk ck = Static.getServer().worlds[packet.dim].getChunkFromBlockCoords(packet.pos);
+					Chunk ck = Static.getServer().worlds[packet.dim].getChunk(packet.pos);
 					if(ck.isLoaded()){
 						TileEntity te = Static.getServer().worlds[packet.dim].getTileEntity(packet.pos);
 						if(te instanceof IPacketReceiver){
