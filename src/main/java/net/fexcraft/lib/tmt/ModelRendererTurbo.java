@@ -8,6 +8,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import net.fexcraft.lib.common.Static;
+import net.fexcraft.lib.common.math.Axis3DL;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;

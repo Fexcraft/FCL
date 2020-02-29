@@ -1,4 +1,4 @@
-package net.fexcraft.lib.tmt;
+package net.fexcraft.lib.common.math;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
