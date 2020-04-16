@@ -17,7 +17,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Deprecated
 public class BluePrintTableContainer2 extends GenericContainer {
 	
 	private Inventory inv = new Inventory();

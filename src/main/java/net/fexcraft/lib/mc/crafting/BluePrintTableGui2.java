@@ -11,7 +11,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Deprecated
 public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 	
 	private static final ResourceLocation texture = new ResourceLocation("fcl:textures/gui/bpt_2.png");

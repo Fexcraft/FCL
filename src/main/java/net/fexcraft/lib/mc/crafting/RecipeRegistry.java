@@ -17,10 +17,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class RecipeRegistry {
 	
-	@Deprecated
 	private static final TreeMap<String, TreeMap<String, List<BluePrintRecipe>>> RECIPES = new TreeMap<String, TreeMap<String, List<BluePrintRecipe>>>();
 	
-	@Deprecated
 	public static final void addBluePrintRecipe(String category, ItemStack stack, ItemStack... recipeComponents){
 		if(!RECIPES.containsKey(category)){
 			RECIPES.put(category, new TreeMap<>());
@@ -63,7 +61,7 @@ public class RecipeRegistry {
 	
 	//
 	
-	@SuppressWarnings("unchecked") @Deprecated
+	@SuppressWarnings("unchecked")
 	public static List<BluePrintRecipe> getRecipes(int x, int y){
 		TreeMap<String, List<BluePrintRecipe>> cat = getRecipes(x);
 		//ItemStackComparable stack = cat == null ? null : (ItemStackComparable)cat.keySet().toArray()[y];
@@ -71,33 +69,27 @@ public class RecipeRegistry {
 		return cat == null ? null : (List<BluePrintRecipe>)cat.values().toArray()[y];
 	}
 	
-	@Deprecated
 	public static TreeMap<String, List<BluePrintRecipe>> getRecipes(String category){
 		return category == null ? null : RECIPES.get(category);
 	}
 
-	@Deprecated
 	public static TreeMap<String, List<BluePrintRecipe>> getRecipes(int x){
 		String key = (String)RECIPES.keySet().toArray()[x];
 		return RECIPES.get(key);
 	}
 	
-	@Deprecated
 	public static Set<String> getCategories(){
 		return RECIPES.keySet();
 	}
 
-	@Deprecated
 	public static String getCategory(int x){
 		return (String)RECIPES.keySet().toArray()[x];
 	}
 
-	@Deprecated
 	public static String getCategory(int x, int y){
 		return (String)getRecipes(x).keySet().toArray()[y];
 	}
 	
-	@Deprecated
 	public static List<BluePrintRecipe> getRecipes(String category, ItemStack stack){
 		TreeMap<String, List<BluePrintRecipe>> cat = RECIPES.get(category == null ? "" : category);
 		return cat == null ? null : cat.get(stack.getTranslationKey());

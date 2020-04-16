@@ -2,7 +2,6 @@ package net.fexcraft.lib.mc.crafting;
 
 import net.minecraft.item.ItemStack;
 
-@Deprecated
 public class BluePrintRecipe {
 	
 	public BluePrintRecipe(String category, ItemStack stack, ItemStack[] components){

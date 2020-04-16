@@ -10,3 +10,4 @@ gui.fcl.blueprinttable2.craftmissing=&7Missing components to craft the Selected 
 gui.fcl.recipe.testcat0=TestCategory0
 gui.fcl.recipe.testcat1=TestCategory1
 gui.fcl.recipe.testcat2=TestCategory2
+gui.fcl.recipe.generic=Generic Essentials
