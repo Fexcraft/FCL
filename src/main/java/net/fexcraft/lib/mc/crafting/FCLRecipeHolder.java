@@ -31,6 +31,20 @@ public class FCLRecipeHolder {
 			//
 			//for(int i = 0; i < 7; i ++ ){ RecipeRegistry.addBluePrintRecipe("TestCategory0" + i, new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.DIRT, 32)); }
 		}
+		RecipeRegistry.addBluePrintRecipe("gui.fcl.recipe.generic", new ItemStack(Blocks.PLANKS, 64, 0), new ItemStack(Blocks.LOG, 16, 0));
+		RecipeRegistry.addBluePrintRecipe("gui.fcl.recipe.generic", new ItemStack(Blocks.PLANKS, 64, 1), new ItemStack(Blocks.LOG, 16, 1));
+		RecipeRegistry.addBluePrintRecipe("gui.fcl.recipe.generic", new ItemStack(Blocks.PLANKS, 64, 2), new ItemStack(Blocks.LOG, 16, 2));
+		RecipeRegistry.addBluePrintRecipe("gui.fcl.recipe.generic", new ItemStack(Blocks.PLANKS, 64, 3), new ItemStack(Blocks.LOG, 16, 3));
+		RecipeRegistry.addBluePrintRecipe("gui.fcl.recipe.generic", new ItemStack(Blocks.PLANKS, 64, 4), new ItemStack(Blocks.LOG2, 16, 0));
+		RecipeRegistry.addBluePrintRecipe("gui.fcl.recipe.generic", new ItemStack(Blocks.PLANKS, 64, 5), new ItemStack(Blocks.LOG2, 16, 1));
+		RecipeRegistry.addBluePrintRecipe("gui.fcl.recipe.generic", new ItemStack(Blocks.COBBLESTONE_WALL, 64), new ItemStack(Blocks.COBBLESTONE, 64, 0));
+		RecipeRegistry.addBluePrintRecipe("gui.fcl.recipe.generic", new ItemStack(Blocks.STONE_STAIRS, 64), new ItemStack(Blocks.COBBLESTONE, 64, 0));
+		RecipeRegistry.addBluePrintRecipe("gui.fcl.recipe.generic", new ItemStack(Blocks.STONE_SLAB, 64, 3), new ItemStack(Blocks.COBBLESTONE, 32, 0));
+		for(int i = 0; i < 3; i++){
+			RecipeRegistry.addBluePrintRecipe("gui.fcl.recipe.generic", new ItemStack(Blocks.STONE, 64, 2 + (i * 2)),
+				new ItemStack(Blocks.STONE, 64, 1 + (i * 2)), new ItemStack(Blocks.STONE, 64, 1 + (i * 2)),
+				new ItemStack(Blocks.STONE, 64, 1 + (i * 2)), new ItemStack(Blocks.STONE, 64, 1 + (i * 2)));
+		}
 	}
 	
 }

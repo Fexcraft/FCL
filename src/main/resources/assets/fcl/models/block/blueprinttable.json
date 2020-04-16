@@ -1,5 +1,6 @@
 {
 	"__comment": "Designed by Ferdinand (FEX___96) with Cubik Studio",
+	"parent": "block/cube_all",
 	"textures": {
 		"particle": "blocks/anvil_base",
 		"texture": "blocks/iron_block",
