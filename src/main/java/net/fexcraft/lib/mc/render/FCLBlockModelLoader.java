@@ -68,6 +68,7 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 		manager = resourcemanager;
 		MODELS.clear();
 		BAKEDMODELS.clear();
+		BakedModel.tempres.clear();
 	}
 
 	@Nullable
@@ -184,11 +185,11 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 
 	}
 
-	@SuppressWarnings("unused")
 	private static class BakedModel implements IBakedModel {
 
 		private final ResourceLocation modellocation;
 		private HashMap<ResourceLocation, TextureAtlasSprite> textures;
+		public static TreeMap<String, ResourceLocation> tempres = new TreeMap<>();
 		private TextureAtlasSprite deftex;
 		private VertexFormat format;
 		private List<BakedQuad> quads;
@@ -205,7 +206,9 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 			this.root = state;
 			this.model = blockmodel;
 			this.textures = textures;
-			deftex = textures.get(new ResourceLocation(modellocation.toString().replace("models/block", "blocks")));
+			if(blockmodel.getTextures() == null || blockmodel.getTextures().isEmpty()){
+				deftex = textures.get(new ResourceLocation(modellocation.toString().replace("models/block", "blocks")));
+			}
 		}
 
 		@Override
@@ -237,6 +240,7 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 			else axis1.setAngles(180, 180, 0);
 			Collection<ModelRendererTurbo> mrts = model.getPolygons(root.customdata);
 			for(ModelRendererTurbo mrt : mrts){
+				TextureAtlasSprite sprite = mrt.texName == null ? deftex : getTex(mrt.texName);
 				axis.setAngles(-mrt.rotationAngleY, -mrt.rotationAngleZ, -mrt.rotationAngleX);
 				for(TexturedPolygon polygon : mrt.getFaces()){
 					if(polygon.getVertices().length != 4) continue;
@@ -248,15 +252,22 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 					UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
 					builder.setContractUVs(true);
 					builder.setQuadOrientation(EnumFacing.getFacingFromVector(vec2.xCoord, vec2.yCoord, vec2.zCoord));
-					builder.setTexture(deftex);
-					putVertexData(builder, mrt, polygon.getVertices()[0], vec2, TextureCoordinate.getDefaultUVs()[0], deftex);
-					putVertexData(builder, mrt, polygon.getVertices()[1], vec2, TextureCoordinate.getDefaultUVs()[1], deftex);
-					putVertexData(builder, mrt, polygon.getVertices()[2], vec2, TextureCoordinate.getDefaultUVs()[2], deftex);
-					putVertexData(builder, mrt, polygon.getVertices()[3], vec2, TextureCoordinate.getDefaultUVs()[3], deftex);
+					builder.setTexture(sprite);
+					putVertexData(builder, mrt, polygon.getVertices()[0], vec2, TextureCoordinate.getDefaultUVs()[0], sprite);
+					putVertexData(builder, mrt, polygon.getVertices()[1], vec2, TextureCoordinate.getDefaultUVs()[1], sprite);
+					putVertexData(builder, mrt, polygon.getVertices()[2], vec2, TextureCoordinate.getDefaultUVs()[2], sprite);
+					putVertexData(builder, mrt, polygon.getVertices()[3], vec2, TextureCoordinate.getDefaultUVs()[3], sprite);
 					quads.add(builder.build());
 				}
 			}
 			return quads;
+		}
+
+		private TextureAtlasSprite getTex(String texName){
+			if(!tempres.containsKey(texName)){
+				tempres.put(texName, new ResourceLocation(texName));
+			}
+			return textures.get(tempres.get(texName));
 		}
 
 		private final void putVertexData(Builder builder, ModelRendererTurbo mrt, TexturedVertex vert, Vec3f normal, TextureCoordinate textureCoordinate, TextureAtlasSprite texture){
