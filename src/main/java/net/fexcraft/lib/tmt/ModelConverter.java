@@ -1,10 +1,16 @@
 package net.fexcraft.lib.tmt;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+
+import net.fexcraft.lib.mc.render.FCLBlockModel;
+
 /**
 * Converter to use Flansmod-Type vehicle models.
 * @Author Ferdinand Calo' (FEX___96)
 */
-public class ModelConverter extends ModelBase {
+public class ModelConverter extends ModelBase implements FCLBlockModel {
 	
 	public ModelRendererTurbo bodyModel[] = new ModelRendererTurbo[0];
 	public ModelRendererTurbo model[] = new ModelRendererTurbo[0];
@@ -110,6 +116,33 @@ public class ModelConverter extends ModelBase {
 		flip(leftTrackWheelModels);
 		flip(trailerModel);
 		flip(steeringWheelModel);
+	}
+
+	@Override
+	public Collection<ModelRendererTurbo> getPolygons(Map<String, String> args){
+		ArrayList<ModelRendererTurbo> mrts = new ArrayList<>();
+		addAll(mrts, bodyModel);
+		addAll(mrts, model);
+		addAll(mrts, bodyDoorCloseModel);
+		addAll(mrts, turretModel);
+		addAll(mrts, barrelModel);
+		addAll(mrts, frontWheelModel);
+		addAll(mrts, backWheelModel);
+		addAll(mrts, leftFrontWheelModel);
+		addAll(mrts, rightFrontWheelModel);
+		addAll(mrts, leftBackWheelModel);
+		addAll(mrts, rightBackWheelModel);
+		addAll(mrts, rightTrackModel);
+		addAll(mrts, leftTrackModel);
+		addAll(mrts, rightTrackWheelModels);
+		addAll(mrts, leftTrackWheelModels);
+		addAll(mrts, trailerModel);
+		addAll(mrts, steeringWheelModel);
+		return mrts;
+	}
+
+	private void addAll(ArrayList<ModelRendererTurbo> mrts, ModelRendererTurbo[] array){
+		for(ModelRendererTurbo model : array) mrts.add(model);
 	}
 	
 }
