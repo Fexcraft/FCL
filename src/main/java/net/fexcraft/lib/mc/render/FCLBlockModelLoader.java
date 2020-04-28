@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Function;
@@ -14,6 +15,8 @@ import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 
 import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.collect.ImmutableMap;
 
 import net.fexcraft.lib.common.math.Axis3DL;
 import net.fexcraft.lib.common.math.TexturedPolygon;
@@ -45,7 +48,11 @@ import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-/** For part based on the OBJLoader in Forge. */
+/**
+ * Somewhat based on the OBJLoader in Forge/FML.
+ * 
+ * @author Ferdinand Calo' (FEX___96)
+ * */
 public enum FCLBlockModelLoader implements ICustomModelLoader {
 	
 	INSTANCE;
@@ -91,25 +98,43 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 	}
 
 	@Override
-	public IModel loadModel(ResourceLocation modellocation) throws Exception{
+	public IModel loadModel(ResourceLocation modellocation) throws Exception {
 		return new Model(modellocation);
 	}
+
+    @Override
+    public String toString(){
+        return "[FCL BLOCK MODEL LOADER]";
+    }
 
 	private static class Model implements IModel {
 
 		private final ResourceLocation modellocation;
 		private FCLBlockModel blockmodel;
-		private final IModelState defstate = new IModelState(){
+		private static final IModelState defstate = new IModelState(){
 			@Override
 			public Optional<TRSRTransformation> apply(Optional<? extends IModelPart> part){
 				return Optional.empty();
 			};
 		};
+		private Map<String, String> customdata;
 
 		private Model(ResourceLocation rs){
 			this.modellocation = rs;
 			MODELS.put(rs, this);
 			blockmodel = FCLRegistry.getModel(rs);
+		}
+
+		public Model(Model model, ImmutableMap<String, String> data){
+			this.modellocation = model.modellocation;
+			this.blockmodel = model.blockmodel;
+			customdata = data;
+			if(model.customdata == null) return;
+			for(Map.Entry<String, String> entry : model.customdata.entrySet()){
+				if(!customdata.containsKey(entry.getKey())){
+					customdata.put(entry.getKey(), entry.getValue());
+				}
+			}
 		}
 
 		@Override
@@ -128,7 +153,7 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 			for(ResourceLocation resloc : getTextures()){
 				textures.put(resloc, func.apply(resloc));
 			}
-			return new BakedModel(modellocation, state, format, blockmodel, textures);
+			return new BakedModel(modellocation, this, format, blockmodel, textures);
 		}
 
 		@Override
@@ -139,23 +164,45 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 			}
 			return blockmodel.getTextures();
 		}
+		
+		@Override
+		public IModel process(ImmutableMap<String, String> data){
+			if(customdata == null && data != null) return new Model(this, data);
+			else if(customdata == null && data.isEmpty()) return this;
+			else{
+				boolean same = true;
+				for(Map.Entry<String, String> entry : data.entrySet()){
+					if(customdata.containsKey(entry.getKey()) && customdata.get(entry.getKey()).equals(entry.getValue())) continue;
+					same = false; break;
+				}
+				if(!same){
+					return new Model(this, data);
+				}
+			}
+			return this;
+	    }
 
 	}
 
+	@SuppressWarnings("unused")
 	private static class BakedModel implements IBakedModel {
 
-		private final IModelState state;
 		private final ResourceLocation modellocation;
 		private HashMap<ResourceLocation, TextureAtlasSprite> textures;
 		private TextureAtlasSprite deftex;
 		private VertexFormat format;
 		private List<BakedQuad> quads;
 		private FCLBlockModel model;
+		private Model root;
+		//
+		private Vec3f translate;
+		private float scale = Static.sixteenth;
+		private Axis3DL axis, axis1, axis2;
 
-		public BakedModel(ResourceLocation modellocation, IModelState state, VertexFormat format, FCLBlockModel blockmodel, HashMap<ResourceLocation, TextureAtlasSprite> textures){
+		public BakedModel(ResourceLocation modellocation, Model state, VertexFormat format, FCLBlockModel blockmodel, HashMap<ResourceLocation, TextureAtlasSprite> textures){
 			this.modellocation = modellocation;
-			this.state = state;
 			this.format = format;
+			this.root = state;
 			this.model = blockmodel;
 			this.textures = textures;
 			deftex = textures.get(new ResourceLocation(modellocation.toString().replace("models/block", "blocks")));
@@ -166,9 +213,30 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 		public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand){
 			if(quads != null) return quads;
 			quads = new ArrayList<>();
-			Axis3DL axis = new Axis3DL(), axis1 = new Axis3DL();
-			axis1.setAngles(180, 180, 0);
-			for(ModelRendererTurbo mrt : model.getPolygons()){
+			axis = new Axis3DL();
+			axis1 = new Axis3DL();
+			axis2 = null;
+			translate = new Vec3f();
+			if(root.customdata != null && !root.customdata.isEmpty()){
+				float x = root.customdata.containsKey("x") ? Float.parseFloat(root.customdata.get("x")) : 0;
+				float y = root.customdata.containsKey("y") ? Float.parseFloat(root.customdata.get("y")) : 0;
+				float z = root.customdata.containsKey("z") ? Float.parseFloat(root.customdata.get("z")) : 0;
+				if(x != 0f || y != 0f || z != 0f){
+					axis2 = new Axis3DL();
+					axis2.setAngles(y, z, x);
+				}
+				boolean rectify = root.customdata.containsKey("rectify") ? Boolean.parseBoolean(root.customdata.get("rectify")) : true;
+				if(rectify){
+					axis1.setAngles(180, 180, 0);
+				}
+				translate.xCoord = root.customdata.containsKey("t-x") ? Float.parseFloat(root.customdata.get("t-x")) : 0;
+				translate.yCoord = root.customdata.containsKey("t-y") ? Float.parseFloat(root.customdata.get("t-y")) : 0;
+				translate.zCoord = root.customdata.containsKey("t-z") ? Float.parseFloat(root.customdata.get("t-z")) : 0;
+				scale = root.customdata.containsKey("scale") ? Float.parseFloat(root.customdata.get("scale")) : Static.sixteenth;
+			}
+			else axis1.setAngles(180, 180, 0);
+			Collection<ModelRendererTurbo> mrts = model.getPolygons(root.customdata);
+			for(ModelRendererTurbo mrt : mrts){
 				axis.setAngles(-mrt.rotationAngleY, -mrt.rotationAngleZ, -mrt.rotationAngleX);
 				for(TexturedPolygon polygon : mrt.getFaces()){
 					if(polygon.getVertices().length != 4) continue;
@@ -176,27 +244,29 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 					Vec3f vec1 = new Vec3f(polygon.getVertices()[1].vector.subtract(polygon.getVertices()[2].vector));
 					Vec3f vec2 = vec1.crossProduct(vec0).normalize();
 					vec2 = axis1.getRelativeVector(axis.getRelativeVector(vec2));
+					if(axis2 != null) vec2 = axis2.getRelativeVector(vec2);
 					UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
 					builder.setContractUVs(true);
 					builder.setQuadOrientation(EnumFacing.getFacingFromVector(vec2.xCoord, vec2.yCoord, vec2.zCoord));
 					builder.setTexture(deftex);
-					putVertexData(builder, mrt, polygon.getVertices()[0], axis, axis1, vec2, TextureCoordinate.getDefaultUVs()[0], deftex);
-					putVertexData(builder, mrt, polygon.getVertices()[1], axis, axis1, vec2, TextureCoordinate.getDefaultUVs()[1], deftex);
-					putVertexData(builder, mrt, polygon.getVertices()[2], axis, axis1, vec2, TextureCoordinate.getDefaultUVs()[2], deftex);
-					putVertexData(builder, mrt, polygon.getVertices()[3], axis, axis1, vec2, TextureCoordinate.getDefaultUVs()[3], deftex);
+					putVertexData(builder, mrt, polygon.getVertices()[0], vec2, TextureCoordinate.getDefaultUVs()[0], deftex);
+					putVertexData(builder, mrt, polygon.getVertices()[1], vec2, TextureCoordinate.getDefaultUVs()[1], deftex);
+					putVertexData(builder, mrt, polygon.getVertices()[2], vec2, TextureCoordinate.getDefaultUVs()[2], deftex);
+					putVertexData(builder, mrt, polygon.getVertices()[3], vec2, TextureCoordinate.getDefaultUVs()[3], deftex);
 					quads.add(builder.build());
 				}
 			}
 			return quads;
 		}
 
-		private final void putVertexData(Builder builder, ModelRendererTurbo mrt, TexturedVertex vert, Axis3DL axis, Axis3DL axis1, Vec3f normal, TextureCoordinate textureCoordinate, TextureAtlasSprite texture){
+		private final void putVertexData(Builder builder, ModelRendererTurbo mrt, TexturedVertex vert, Vec3f normal, TextureCoordinate textureCoordinate, TextureAtlasSprite texture){
 			for(int e = 0; e < format.getElementCount(); e++){
 				switch(format.getElement(e).getUsage()){
 					case POSITION:
 						Vec3f vec = axis.getRelativeVector(vert.vector);
-						vec = axis1.getRelativeVector(vec.addVector(mrt.rotationPointX + 8, mrt.rotationPointY, mrt.rotationPointZ - 8));
-						builder.put(e, vec.xCoord * Static.sixteenth, vec.yCoord * Static.sixteenth, vec.zCoord * Static.sixteenth, 1);
+						vec = axis1.getRelativeVector(vec.addVector(mrt.rotationPointX, mrt.rotationPointY, mrt.rotationPointZ));
+						if(axis2 != null) vec = axis2.getRelativeVector(vec);
+						builder.put(e, vec.xCoord * scale + translate.xCoord, vec.yCoord * scale + translate.yCoord, vec.zCoord * scale + translate.zCoord, 1);
 						break;
 					case COLOR:
 						if(mrt.getColor() != null){
