@@ -1773,6 +1773,10 @@ public class ModelRendererTurbo {
     	return null;
     }
     
+    public RGB getColor(){
+    	return polygonColor;
+    }
+    
 	public ModelRendererTurbo addShapeBox(float x, float y, float z, int w, int h, int d, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7){
     	return addShapeBox(x, y, z, (float)w, (float)h, (float)d, scale, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, x5, y5, z5, x6, y6, z6, x7, y7, z7);
 	}

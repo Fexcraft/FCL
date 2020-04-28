@@ -33,13 +33,12 @@ import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-public class FCLItemModelLoader implements ICustomModelLoader {
+public enum FCLItemModelLoader implements ICustomModelLoader {
 	
-	public static final FCLItemModelLoader INSTANCE = new FCLItemModelLoader();
+	INSTANCE;
+	
 	private static final TreeMap<ResourceLocation, FCLItemModel> MAP = new TreeMap<ResourceLocation, FCLItemModel>();
 	//private static final ArrayList<String> DOMAINS = new ArrayList<String>();
-	
-	public FCLItemModelLoader(){}
 
 	@Override
 	public void onResourceManagerReload(IResourceManager resmag){
@@ -48,13 +47,9 @@ public class FCLItemModelLoader implements ICustomModelLoader {
 		MAP.forEach((key, value) -> { value.onResourceManagerReload(resmag); });
 	}
 	
-	public static final ICustomModelLoader getInstance(){
-		return INSTANCE;
-	}
-	
 	@Nullable
 	public static final Object addItemModel(ResourceLocation loc, FCLItemModel model){
-		if(!loc.toString().contains(":models/item/")){
+		if(!loc.toString().contains(":models/item/") && !loc.toString().contains(":models/block/")){
 			ResourceLocation rs = new ResourceLocation(loc.getNamespace(), "models/item/" + loc.getPath());
 			return MAP.put(rs, model);//This specifically a fix for FVTM, but if it works with other mods well, I don't know.
 		}
