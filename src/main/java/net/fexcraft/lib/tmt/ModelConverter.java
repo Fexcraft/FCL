@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.fexcraft.lib.mc.render.FCLBlockModel;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 
 /**
 * Converter to use Flansmod-Type vehicle models.
@@ -119,7 +121,7 @@ public class ModelConverter extends ModelBase implements FCLBlockModel {
 	}
 
 	@Override
-	public Collection<ModelRendererTurbo> getPolygons(Map<String, String> args){
+	public Collection<ModelRendererTurbo> getPolygons(IBlockState state, EnumFacing side, Map<String, String> arguments, long rand){
 		ArrayList<ModelRendererTurbo> mrts = new ArrayList<>();
 		addAll(mrts, bodyModel);
 		addAll(mrts, model);
@@ -139,10 +141,6 @@ public class ModelConverter extends ModelBase implements FCLBlockModel {
 		addAll(mrts, trailerModel);
 		addAll(mrts, steeringWheelModel);
 		return mrts;
-	}
-
-	private void addAll(ArrayList<ModelRendererTurbo> mrts, ModelRendererTurbo[] array){
-		for(ModelRendererTurbo model : array) mrts.add(model);
 	}
 	
 }

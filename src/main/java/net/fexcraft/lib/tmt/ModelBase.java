@@ -1,5 +1,8 @@
 package net.fexcraft.lib.tmt;
 
+import java.util.ArrayList;
+
+import net.fexcraft.lib.common.math.RGB;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
@@ -78,6 +81,14 @@ public abstract class ModelBase {
 	public static final void bindTexture(ResourceLocation rs){
 		Minecraft.getMinecraft().renderEngine.bindTexture(rs);
 		//TextureManager.bindTexture(rs);
+	}
+
+	public static void addAll(ArrayList<ModelRendererTurbo> mrts, ModelRendererTurbo[] array){
+		for(ModelRendererTurbo model : array) mrts.add(model);
+	}
+
+	public static void applyColor(ModelRendererTurbo[] array, RGB color){
+		for(ModelRendererTurbo model : array) model.setColor(color);
 	}
 	
 }

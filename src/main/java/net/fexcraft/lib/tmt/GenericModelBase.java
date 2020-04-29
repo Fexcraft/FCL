@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.fexcraft.lib.mc.render.FCLBlockModel;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 
 /**
 * Similar to 'FlansMod'-type Models, for a fast convert.
@@ -45,7 +47,7 @@ public class GenericModelBase extends ModelBase implements FCLBlockModel {
 	}
 
 	@Override
-	public Collection<ModelRendererTurbo> getPolygons(Map<String, String> args){
+	public Collection<ModelRendererTurbo> getPolygons(IBlockState state, EnumFacing side, Map<String, String> arguments, long rand){
 		ArrayList<ModelRendererTurbo> mrts = new ArrayList<>();
 		addAll(mrts, base);
 		addAll(mrts, open);
@@ -61,10 +63,6 @@ public class GenericModelBase extends ModelBase implements FCLBlockModel {
 		addAll(mrts, r8);
 		addAll(mrts, r9);
 		return mrts;
-	}
-
-	private void addAll(ArrayList<ModelRendererTurbo> mrts, ModelRendererTurbo[] array){
-		for(ModelRendererTurbo model : array) mrts.add(model);
 	}
 	
 }

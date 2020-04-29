@@ -1,13 +1,6 @@
 package net.fexcraft.lib.mc.render;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -25,6 +18,7 @@ import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -47,6 +41,8 @@ import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad.Builder;
 import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 /**
  * Somewhat based on the OBJLoader in Forge/FML.
@@ -69,6 +65,7 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 		MODELS.clear();
 		BAKEDMODELS.clear();
 		BakedModel.tempres.clear();
+		BakedModel.quads.clear();
 	}
 
 	@Nullable
@@ -190,9 +187,9 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 		private final ResourceLocation modellocation;
 		private HashMap<ResourceLocation, TextureAtlasSprite> textures;
 		public static TreeMap<String, ResourceLocation> tempres = new TreeMap<>();
+		private static HashMap<String, List<BakedQuad>> quads = new HashMap<>();
 		private TextureAtlasSprite deftex;
 		private VertexFormat format;
-		private List<BakedQuad> quads;
 		private FCLBlockModel model;
 		private Model root;
 		//
@@ -214,8 +211,9 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 		@Override
 		@Nonnull
 		public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand){
-			if(quads != null) return quads;
-			quads = new ArrayList<>();
+			String statekey = getStateKey(state);
+			if(quads.containsKey(statekey)) return quads.get(statekey);
+			List<BakedQuad> newquads = new ArrayList<>();
 			axis = new Axis3DL();
 			axis1 = new Axis3DL();
 			axis2 = null;
@@ -238,7 +236,7 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 				scale = root.customdata.containsKey("scale") ? Float.parseFloat(root.customdata.get("scale")) : Static.sixteenth;
 			}
 			else axis1.setAngles(180, 180, 0);
-			Collection<ModelRendererTurbo> mrts = model.getPolygons(root.customdata);
+			Collection<ModelRendererTurbo> mrts = model.getPolygons(state, side, root.customdata, rand);
 			for(ModelRendererTurbo mrt : mrts){
 				TextureAtlasSprite sprite = mrt.texName == null ? deftex : getTex(mrt.texName);
 				axis.setAngles(-mrt.rotationAngleY, -mrt.rotationAngleZ, -mrt.rotationAngleX);
@@ -257,10 +255,32 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 					putVertexData(builder, mrt, polygon.getVertices()[1], vec2, TextureCoordinate.getDefaultUVs()[1], sprite);
 					putVertexData(builder, mrt, polygon.getVertices()[2], vec2, TextureCoordinate.getDefaultUVs()[2], sprite);
 					putVertexData(builder, mrt, polygon.getVertices()[3], vec2, TextureCoordinate.getDefaultUVs()[3], sprite);
-					quads.add(builder.build());
+					newquads.add(builder.build());
 				}
 			}
-			return quads;
+			quads.put(statekey, newquads);
+			return newquads;
+		}
+
+		private String getStateKey(IBlockState state){
+			String key = new String();
+			Iterator<IProperty<?>> it = state.getPropertyKeys().iterator();
+			while(it.hasNext()){
+				IProperty<?> prop = it.next();
+				key += prop.getName() + "=" + state.getValue(prop);
+				if(it.hasNext()) key += ",";
+			}
+			if(state instanceof IExtendedBlockState){
+				IExtendedBlockState ext = (IExtendedBlockState)state;
+				if(key.length() > 0 && ext.getUnlistedNames().size() > 0) key += ",";
+				Iterator<IUnlistedProperty<?>> ite = ext.getUnlistedNames().iterator();
+				while(ite.hasNext()){
+					IUnlistedProperty<?> prop = ite.next();
+					key += prop.getName() + "=" + ext.getValue(prop);
+					if(ite.hasNext()) key += ",";
+				}
+			}
+			return key;
 		}
 
 		private TextureAtlasSprite getTex(String texName){
