@@ -7,7 +7,6 @@ import java.util.TreeMap;
 
 import net.fexcraft.lib.common.lang.ArrayList;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
-import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
@@ -22,18 +21,18 @@ public class RecipeRegistry {
 	public static final void addBluePrintRecipe(String category, ItemStack stack, ItemStack... recipeComponents){
 		if(!RECIPES.containsKey(category)){
 			RECIPES.put(category, new TreeMap<>());
-			Print.debug("[BPT] Created Category: " + category);
+			//Print.debug("[BPT] Created Category: " + category);
 		}
 		String reg = stack.getTranslationKey();
 		if(!RECIPES.get(category).containsKey(reg)){
-			Print.log("[BPT] Created Stack: " + reg.toString());
+			//Print.log("[BPT] Created Stack: " + reg.toString());
 			RECIPES.get(category).put(reg, new ArrayList<BluePrintRecipe>());
 		}
 		if(RECIPES.get(category).get(reg) == null){
-			Print.debug("[BPT] Fixing... " + reg.toString());
+			//Print.debug("[BPT] Fixing... " + reg.toString());
 			RECIPES.get(category).put(reg, new ArrayList<BluePrintRecipe>());
 		}
-		Print.debug("[BPT] Registering Recipe for Stack: " + stack.toString());
+		//Print.debug("[BPT] Registering Recipe for Stack: " + stack.toString());
 		RECIPES.get(category).get(reg).add(new BluePrintRecipe(category, stack, recipeComponents));
 	}
 	
