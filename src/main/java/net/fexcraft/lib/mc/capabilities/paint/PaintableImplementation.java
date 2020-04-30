@@ -22,15 +22,24 @@ public class PaintableImplementation implements Paintable {
 
 	@Override
 	public NBTBase writeToNBT(Capability<Paintable> capability, EnumFacing side){
-		NBTTagCompound compound = new NBTTagCompound(); compound.setInteger("color", color.packed);
+		NBTTagCompound compound = new NBTTagCompound();
+		compound.setInteger("color", color.packed);
 		if(color.alpha != 1f) compound.setFloat("alpha", color.alpha); return compound;
 	}
 
 	@Override
 	public void readNBT(Capability<Paintable> capability, EnumFacing side, NBTBase nbt){
 		if(nbt == null || nbt instanceof NBTTagCompound == false) return;
-		NBTTagCompound compound = (NBTTagCompound)nbt; color.packed = compound.getInteger("color");
+		NBTTagCompound compound = (NBTTagCompound)nbt;
+		color.packed = compound.getInteger("color");
 		if(compound.hasKey("alpha")) color.alpha = compound.getFloat("alpha");
+		//
+		if(container instanceof TileEntity){
+			TileEntity tile = getHolder();
+			if(tile.getWorld() != null){
+				tile.getWorld().markBlockRangeForRenderUpdate(tile.getPos(), tile.getPos());
+			}
+		}
 	}
 
 	@Override
