@@ -91,7 +91,7 @@ public class FCLRegistry {
 					//Block
 					fBlock block = clazz.getAnnotation(fBlock.class);
 					Block mBlock = clazz.newInstance();
-					Print.log(block.modid() + " | " + block.name());
+					////Print.log(block.modid() + " | " + block.name());
 					mBlock.setRegistryName(block.modid(), block.name());
 					mBlock.setTranslationKey(mBlock.getRegistryName().toString());
 					blocks.put(mBlock.getRegistryName(), mBlock);
@@ -121,7 +121,7 @@ public class FCLRegistry {
 							}
 						}
 					}
-					Print.debug("Registered Block: " + mBlock.getRegistryName().toString());
+					////Print.debug("Registered Block: " + mBlock.getRegistryName().toString());
 				}
 				catch(Exception e){ error(e, clazz.getName());}
 			}
@@ -142,7 +142,7 @@ public class FCLRegistry {
 					}
 					//GameRegistry.register(mItem);
 					//registerItemModelLocation(mItem, item.variants(), item.custom_variants());
-					Print.debug("Registered Item: " + mItem.getRegistryName().toString());
+					////Print.debug("Registered Item: " + mItem.getRegistryName().toString());
 				}
 				catch(Exception e){ error(e, clazz.getName()); }
 			}
@@ -329,7 +329,7 @@ public class FCLRegistry {
 				fEntity entity = clazz.getAnnotation(fEntity.class);
 				ResourceLocation rs = new ResourceLocation(entity.modid(), entity.name());
 				EntityRegistry.registerModEntity(rs, clazz, rs.toString(), eid++, entity.modid(), entity.tracking_range(), entity.update_frequency(), entity.send_velocity_updates());
-				Print.debug("Registered Entity: " + rs.toString());
+				////Print.debug("Registered Entity: " + rs.toString());
 			} catch(Exception e){ error(e, clazz.getName()); }
 		}
 	}
@@ -349,7 +349,7 @@ public class FCLRegistry {
 	public static void registerEntityManually(String modid, String name, Class<? extends Entity> clazz, int id, int tracking_range, int update_frequency, boolean send_velocity_updates){
 		ResourceLocation rs = new ResourceLocation(modid, name);
 		EntityRegistry.registerModEntity(rs, clazz, rs.toString(), eid++, modid, tracking_range, update_frequency, send_velocity_updates);
-		Print.debug("Registered Entity: " + rs.toString());
+		////Print.debug("Registered Entity: " + rs.toString());
 	}
 	
 	public static void scanForModels(){
@@ -358,7 +358,7 @@ public class FCLRegistry {
 			try{
 				Class<?> clazz = Class.forName(entry.getClassName()); fModel model = clazz.getAnnotation(fModel.class);
 				models.put(new ResourceLocation(model.registryname()), clazz.newInstance());
-				Print.debug("Registered Model: " + model.registryname());
+				////Print.debug("Registered Model: " + model.registryname());
 			} catch(Throwable e){ error(e, entry.getClassName()); }
 		}
 	}
