@@ -56,8 +56,7 @@ public class FCL {
 		configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
 		FCLRegistry.prepare(event.getAsmData());
 		if(event.getSide().isClient()){
-			net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(net.fexcraft.lib.mc.render.FCLItemModelLoader.INSTANCE);
-			net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(net.fexcraft.lib.mc.render.FCLBlockModelLoader.INSTANCE);
+			net.fexcraft.lib.mc.render.LoaderReg.ister();
 		}
 	}
 	

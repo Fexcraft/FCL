@@ -33,10 +33,9 @@ import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-public enum FCLItemModelLoader implements ICustomModelLoader {
+public class FCLItemModelLoader implements ICustomModelLoader {
 	
-	INSTANCE;
-	
+	private static final FCLItemModelLoader INSTANCE = new FCLItemModelLoader();
 	private static final TreeMap<ResourceLocation, FCLItemModel> MAP = new TreeMap<ResourceLocation, FCLItemModel>();
 	//private static final ArrayList<String> DOMAINS = new ArrayList<String>();
 
@@ -189,6 +188,10 @@ public enum FCLItemModelLoader implements ICustomModelLoader {
 			return org_model;
 		}
 
+	}
+
+	public static FCLItemModelLoader getInstance(){
+		return INSTANCE;
 	}
 	
 }

@@ -49,19 +49,15 @@ import net.minecraftforge.common.property.IUnlistedProperty;
  * 
  * @author Ferdinand Calo' (FEX___96)
  * */
-public enum FCLBlockModelLoader implements ICustomModelLoader {
-	
-	INSTANCE;
+public class FCLBlockModelLoader implements ICustomModelLoader {
 
-	@SuppressWarnings("unused")
-	private IResourceManager manager;
+	private static final FCLBlockModelLoader INSTANCE = new FCLBlockModelLoader();
 	private static final TreeMap<ResourceLocation, FCLBlockModel> MAP = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Model> MODELS = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Model> BAKEDMODELS = new TreeMap<>();
 
 	@Override
 	public void onResourceManagerReload(IResourceManager resourcemanager){
-		manager = resourcemanager;
 		MODELS.clear();
 		BAKEDMODELS.clear();
 		BakedModel.tempres.clear();
@@ -377,6 +373,10 @@ public enum FCLBlockModelLoader implements ICustomModelLoader {
 			return bakedmodel;
 		}
 
+	}
+
+	public static FCLBlockModelLoader getInstance(){
+		return INSTANCE;
 	}
 
 }
