@@ -13,5 +13,13 @@ public interface FCLBlockModel {
 	public Collection<ModelRendererTurbo> getPolygons(IBlockState state, EnumFacing side, Map<String, String> arguments, long rand);
 
 	public default Collection<ResourceLocation> getTextures(){ return null; }
+
+	public default boolean useDefaultCacheKey(){ return true; }
+
+	public default String getCacheKey(IBlockState state, EnumFacing side, Map<String, String> customdata, long rand){
+		return FCLBlockModelLoader.BakedModel.getStateKey(state);
+	}
+
+	public default void reset(IBlockState state, EnumFacing side, Map<String, String> customdata, long rand){}
 	
 }

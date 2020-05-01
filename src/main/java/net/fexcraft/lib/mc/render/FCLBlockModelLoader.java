@@ -178,7 +178,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 
 	}
 
-	private static class BakedModel implements IBakedModel {
+	public static class BakedModel implements IBakedModel {
 
 		private final ResourceLocation modellocation;
 		private HashMap<ResourceLocation, TextureAtlasSprite> textures;
@@ -207,7 +207,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 		@Override
 		@Nonnull
 		public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand){
-			String statekey = getStateKey(state);
+			String statekey = model.useDefaultCacheKey() ? getStateKey(state) : model.getCacheKey(state, side, root.customdata, rand);
 			if(quads.containsKey(statekey)) return quads.get(statekey);
 			List<BakedQuad> newquads = new ArrayList<>();
 			axis = new Axis3DL();
@@ -255,10 +255,11 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 				}
 			}
 			quads.put(statekey, newquads);
+			model.reset(state, side, root.customdata, rand);
 			return newquads;
 		}
 
-		private String getStateKey(IBlockState state){
+		public static final String getStateKey(IBlockState state){
 			String key = new String();
 			Iterator<IProperty<?>> it = state.getPropertyKeys().iterator();
 			while(it.hasNext()){
