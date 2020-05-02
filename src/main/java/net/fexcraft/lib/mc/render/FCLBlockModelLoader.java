@@ -260,7 +260,8 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 		}
 
 		public static final String getStateKey(IBlockState state){
-			String key = new String();
+			String key = state.getBlock().getRegistryName().toString();
+			if(state.getPropertyKeys().size() > 0) key += ",";
 			Iterator<IProperty<?>> it = state.getPropertyKeys().iterator();
 			while(it.hasNext()){
 				IProperty<?> prop = it.next();
