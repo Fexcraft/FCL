@@ -112,23 +112,27 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			};
 		};
 		private Map<String, String> customdata;
+		private Collection<ResourceLocation> textures;
 
 		private Model(ResourceLocation rs){
 			this.modellocation = rs;
 			MODELS.put(rs, this);
 			blockmodel = FCLRegistry.getModel(rs);
+			textures = getTexturesFromModel();
 		}
 
 		public Model(Model model, ImmutableMap<String, String> data){
 			this.modellocation = model.modellocation;
 			this.blockmodel = model.blockmodel;
 			customdata = data;
-			if(model.customdata == null) return;
-			for(Map.Entry<String, String> entry : model.customdata.entrySet()){
-				if(!customdata.containsKey(entry.getKey())){
-					customdata.put(entry.getKey(), entry.getValue());
+			if(model.customdata != null){
+				for(Map.Entry<String, String> entry : model.customdata.entrySet()){
+					if(!customdata.containsKey(entry.getKey())){
+						customdata.put(entry.getKey(), entry.getValue());
+					}
 				}
 			}
+			textures = getTexturesFromModel();
 		}
 
 		@Override
@@ -144,19 +148,23 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 		@Override
 		public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> func){
 			HashMap<ResourceLocation, TextureAtlasSprite> textures = new HashMap<>();
-			for(ResourceLocation resloc : getTextures()){
+			for(ResourceLocation resloc : this.textures){
 				textures.put(resloc, func.apply(resloc));
 			}
 			return new BakedModel(modellocation, this, format, blockmodel, textures);
 		}
 
+		private Collection<ResourceLocation> getTexturesFromModel(){
+			Collection<ResourceLocation> coll = blockmodel.getTextures(customdata);
+			if(coll == null || coll.isEmpty()){
+				coll = Collections.singleton(new ResourceLocation(modellocation.toString().replace("models/block", "blocks")));
+			}
+			return coll;
+		}
+
 		@Override
 		public Collection<ResourceLocation> getTextures(){
-			if(blockmodel.getTextures() == null || blockmodel.getTextures().isEmpty()){
-				ResourceLocation resloc = new ResourceLocation(modellocation.toString().replace("models/block", "blocks"));
-				return Collections.singleton(resloc);
-			}
-			return blockmodel.getTextures();
+			return textures;
 		}
 		
 		@Override
@@ -199,7 +207,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			this.root = state;
 			this.model = blockmodel;
 			this.textures = textures;
-			if(blockmodel.getTextures() == null || blockmodel.getTextures().isEmpty()){
+			if(blockmodel.getTextures(null) == null || blockmodel.getTextures(null).isEmpty()){
 				deftex = textures.get(new ResourceLocation(modellocation.toString().replace("models/block", "blocks")));
 			}
 		}

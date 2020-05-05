@@ -12,7 +12,7 @@ public interface FCLBlockModel {
 	
 	public Collection<ModelRendererTurbo> getPolygons(IBlockState state, EnumFacing side, Map<String, String> arguments, long rand);
 
-	public default Collection<ResourceLocation> getTextures(){ return null; }
+	public default Collection<ResourceLocation> getTextures(Map<String, String> customdata){ return null; }
 
 	public default boolean useDefaultCacheKey(){ return true; }
 
