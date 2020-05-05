@@ -1,7 +1,7 @@
 [
 	{
 	  "modid": "fcl",
-	  "name": "\u00a72Fexcraft Common Library",
+	  "name": "Fexcraft Common Library",
 	  "description": "A Library and API needed for most Fexcraft mods to run.",
 	  "version": "${version}",
 	  "mcversion": "${mcversion}",
@@ -15,14 +15,14 @@
 	},
 	{
 	  "modid": "tmt",
-	  "name": "\u00a76(Fex's) Turbo Model Thingy",
-	  "description": "\u00a77FEX___96's branch of TMT, includes various old things fixed, compability with a few other TMT branches and new things.",
-	  "version": "\u00a7c${version}",
+	  "name": "(Fex's) Turbo Model Thingy",
+	  "description": "FEX___96's branch of TMT, includes various old things fixed, compability with a few other TMT branches and new things.",
+	  "version": "${version}",
 	  "mcversion": "${mcversion}",
 	  "url": "http://fexcraft.net",
 	  "updateUrl": "http://fexcraft.net",
 	  "authorList": [ "GaryCXJk", "FEX___96" ],
-	  "credits": "\u00a77Thanks to all who didn't give up on TMT yet! And: EternalBlueFlame, Manus, jamioflan / TheFlansmodTeam",
+	  "credits": "Thanks to all who didn't give up on TMT yet! And: EternalBlueFlame, Manus, jamioflan / TheFlansmodTeam",
 	  "logoFile": "",
 	  "screenshots": [],
 	  "dependencies": [],
