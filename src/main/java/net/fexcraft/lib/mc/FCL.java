@@ -8,7 +8,6 @@ import net.fexcraft.lib.mc.capabilities.paint.PaintableSerializer;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapabilitySerializer;
 import net.fexcraft.lib.mc.gui.GuiHandler;
-import net.fexcraft.lib.mc.network.Network;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
 import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
@@ -77,7 +76,6 @@ public class FCL {
 		SimpleUpdateHandler.register("fcl", 1, version);
 		SimpleUpdateHandler.setUpdateMessage("fcl", prefix + "Update available! (" + SimpleUpdateHandler.getLatestVersionOf("fcl") + ")");
 		SimpleUpdateHandler.postInit();
-		Network.initializeValidator(event.getSide());
 		FCLRegistry.clear(event);
 		PacketHandler.init();
 		CreativeTab.getIcons();

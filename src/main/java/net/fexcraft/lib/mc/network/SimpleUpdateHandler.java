@@ -10,8 +10,6 @@ import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
@@ -137,9 +135,7 @@ public class SimpleUpdateHandler{
 							Print.chat(event.player, Formatter.format(update_message_queue.get(modid)));
 						}
 					}
-					if(Static.isServer() && Network.isBanned(event.player.getGameProfile().getId())){
-						((EntityPlayerMP)event.player).connection.onDisconnect(new TextComponentString("[FCL] Blacklisted."));
-					}
+					//TODO status message
 				}
 			}.start();
 		}
