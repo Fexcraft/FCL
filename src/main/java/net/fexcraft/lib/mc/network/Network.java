@@ -124,7 +124,12 @@ public class Network {
 				JsonArray notes = obj.get("notify").getAsJsonArray();
 				notifications = new String[notes.size()];
 				for(int i = 0; i < notes.size(); i++){
-					notifications[i] = notes.get(i).getAsString();
+					if(notes.get(i).isJsonPrimitive()){
+						notifications[i] = notes.get(i).getAsString();
+					}
+					else{
+						//TODO if necessary someday, advanced parsing and so on.
+					}
 				}
 			}
 			status_data = obj;
