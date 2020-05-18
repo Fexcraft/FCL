@@ -40,7 +40,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class FCL {
 	
 	public static final String prefix = TextFormatting.BLACK + "[" + TextFormatting.DARK_AQUA + "FCL" + TextFormatting.BLACK + "]" + TextFormatting.GRAY + " ";
-	public static final String version = "1.XII.53";
+	public static final String version = "1.XII.54";
 	public static final String mcv = "1.12.2";
 	public static final UUID[] authors = new UUID[]{ UUID.fromString("01e4af9b-2a30-471e-addf-f6338ffce04b") };
 	@Mod.Instance("fcl")
