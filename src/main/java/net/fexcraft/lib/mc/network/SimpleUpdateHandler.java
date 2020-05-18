@@ -60,6 +60,7 @@ public class SimpleUpdateHandler{
 			public void run(){
 				checkForMissingModData();
 				checkIfUpdateAvaible();
+				Network.checkStatus();
 				loaded = true;
 			}
 		}.start();
@@ -135,7 +136,9 @@ public class SimpleUpdateHandler{
 							Print.chat(event.player, Formatter.format(update_message_queue.get(modid)));
 						}
 					}
-					//TODO status message
+					if(Network.anyNewNotifications()){
+						Network.notify(event.player);
+					}
 				}
 			}.start();
 		}
