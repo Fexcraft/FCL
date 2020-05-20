@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.fexcraft.lib.common.utils.HttpUtil;
 import net.fexcraft.lib.common.utils.HttpsUtil;
 import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.utils.Formatter;
@@ -39,7 +40,7 @@ public class Network {
 	}
 	
 	public static JsonObject getModData(String modid, String current_version){
-		JsonObject obj = HttpsUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=" + modid, 1000);
+		JsonObject obj = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=" + modid, 1000);
 		if(obj == null){
 			return null;
 		}
@@ -64,7 +65,7 @@ public class Network {
 			}
 		}
 		else if(obj.has("blocked_versions") && current_version == null && !fcl_version_checked){
-			JsonObject fcl = HttpsUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=fcl", 1000);
+			JsonObject fcl = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=requestdata&modid=fcl", 1000);
 			ArrayList<String> arr = new ArrayList<String>();
 			for(JsonElement elm : fcl.get("blocked_versions").getAsJsonArray()){
 				arr.add(elm.getAsString());
@@ -90,7 +91,7 @@ public class Network {
 	
 	public static boolean isModRegistered(String modid){
 		try{
-			JsonObject obj = HttpsUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=exists&modid=" + modid, 1000);
+			JsonObject obj = HttpUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=exists&modid=" + modid, 1000);
 			return obj == null ? false : obj.get("exists").getAsBoolean();
 		}
 		catch(Exception e){
@@ -118,7 +119,7 @@ public class Network {
 			else{
 				id = "server";
 			}
-			JsonObject obj = HttpsUtil.request("http://fexcraft.net/minecraft/fcl/request", "mode=status&id=" + id, 1000);
+			JsonObject obj = HttpsUtil.request("https://fexcraft.net/minecraft/fcl/request", "mode=status&id=" + id, 1000);
 			if(obj != null && obj.entrySet().isEmpty()) return;
 			if(obj.has("notify")){
 				JsonArray notes = obj.get("notify").getAsJsonArray();
