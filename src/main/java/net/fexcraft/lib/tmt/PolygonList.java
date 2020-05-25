@@ -14,7 +14,7 @@ public class PolygonList extends ArrayList<ModelRendererTurbo> {
 
 	public static final PolygonList EMPTY = new PolygonList("fcl:empty");
 	public String name;
-	public boolean visible;
+	public boolean visible = true;
 	public float scale = Static.sixteenth;
 
 	public PolygonList(String name){
