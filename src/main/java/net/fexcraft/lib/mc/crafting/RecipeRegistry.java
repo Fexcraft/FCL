@@ -1,11 +1,11 @@
 package net.fexcraft.lib.mc.crafting;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
-import net.fexcraft.lib.common.lang.ArrayList;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;

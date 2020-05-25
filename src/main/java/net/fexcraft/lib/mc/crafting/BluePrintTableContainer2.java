@@ -1,6 +1,7 @@
 package net.fexcraft.lib.mc.crafting;
 
-import net.fexcraft.lib.common.lang.ArrayList;
+import java.util.ArrayList;
+
 import net.fexcraft.lib.mc.gui.GenericContainer;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
