@@ -11,7 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 
-import net.fexcraft.lib.common.utils.HttpUtil;
+import net.fexcraft.lib.common.utils.HttpsUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
@@ -22,10 +22,10 @@ import net.minecraftforge.fml.relauncher.Side;
 /**
  * @author Ferdinand Calo' (FEX___96)
  *
- * MC version/mirror of net.fexcraft.lib.common.Static.class
+ *         MC version/mirror of net.fexcraft.lib.common.Static.class
  */
 public class Static extends net.fexcraft.lib.common.Static {
-	
+
 	private static final HashMap<UUID, String> UUID_PLAYER_CACHE = new HashMap<UUID, String>();
 
 	public static final void halt(int errid){
@@ -39,19 +39,19 @@ public class Static extends net.fexcraft.lib.common.Static {
 	public static final boolean isClient(){
 		return FMLCommonHandler.instance().getSide().isClient();
 	}
-	
+
 	public static final MinecraftServer getServer(){
 		return FMLCommonHandler.instance().getMinecraftServerInstance();
 	}
-	
+
 	public static final Side side(){
 		return FMLCommonHandler.instance().getSide();
 	}
-	
+
 	public static final String sideString(){
 		return side().isClient() ? "Client" : "Server";
 	}
-	
+
 	public static final boolean isOp(String name){
 		return getServer().getPlayerList().getOppedPlayers().getGameProfileFromName(name) != null;
 	}
@@ -59,15 +59,20 @@ public class Static extends net.fexcraft.lib.common.Static {
 	public static boolean isOp(EntityPlayer player){
 		return getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null;
 	}
-	
+
 	public static final String getPlayerNameByUUID(@Nullable UUID uuid){
-		if(uuid == null){ return "<null-uuid>"; }
+		if(uuid == null){
+			return "<null-uuid>";
+		}
 		if(UUID_PLAYER_CACHE.containsKey(uuid)){
 			return UUID_PLAYER_CACHE.get(uuid);
 		}
 		GameProfile prof = getServer().getPlayerProfileCache().getProfileByUUID(uuid);
-		if(prof != null){ UUID_PLAYER_CACHE.put(uuid, prof.getName()); return prof.getName(); }
-		JsonElement obj = HttpUtil.request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
+		if(prof != null){
+			UUID_PLAYER_CACHE.put(uuid, prof.getName());
+			return prof.getName();
+		}
+		JsonElement obj = HttpsUtil.request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
 		try{
 			JsonObject elm = obj.getAsJsonObject();
 			UUID_PLAYER_CACHE.put(uuid, elm.get("name").getAsString());
@@ -92,30 +97,39 @@ public class Static extends net.fexcraft.lib.common.Static {
 			return "<null/parse_err>";
 		}
 	}
-	
+
 	public static float divide(float x, float y){
 		return x == 0 || y == 0 ? 0 : x / y;
 	}
-	
+
 	public static double divide(double x, double y){
 		return x == 0 || y == 0 ? 0 : x / y;
 	}
-	
-	/** 
+
+	/**
 	 * Generic command to print (throw) exceptions/errors into console/log without the need for extra writing of try/catch.
+	 * 
 	 * @param exception the exception to be printed into console/log
-	 * @param stop if the game should be force-closed
-	 * **/
+	 * @param stop      if the game should be force-closed
+	 **/
 	public static void exception(Exception exception, boolean stop){
-		try{ throw exception == null ? new Exception() : exception; }
-		catch(Exception ex){ ex.printStackTrace(); }
+		try{
+			throw exception == null ? new Exception() : exception;
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
 		if(stop) halt();
 	}
 
 	public static InputStream getResource(String str){
 		try{
 			return net.minecraft.client.Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(str)).getInputStream();
-		} catch(IOException e){ e.printStackTrace(); return null; }
+		}
+		catch(IOException e){
+			e.printStackTrace();
+			return null;
+		}
 	}
-	
+
 }
