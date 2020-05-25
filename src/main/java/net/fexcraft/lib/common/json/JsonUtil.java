@@ -11,8 +11,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.io.FilenameUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -105,20 +103,22 @@ public class JsonUtil{
 		return obj;
 	}
 	
-	
-	public static Reader getReader(String file_extension){
-		return new Reader(file_extension);
-	}
-	
 	/**
 	 * @param file the file to be parsed into json
-	 * @param b notify in logs about error in parsing, or file missing
+	 * @param print_err notify in logs about errors while parsing or file missing
 	 * @return JsonElement from given file, or null
 	 */
-	public static JsonElement read(File file, boolean b){
-		return read(file, b, null);
+	public static JsonElement read(File file, boolean print_err){
+		return read(file, print_err, null);
 	}
-	public static JsonElement read(File file, boolean b, @Nullable JsonElement def){
+
+	/**
+	 * @param file the file to be parsed into json
+	 * @param print_err notify in logs about errors while parsing or file missing
+	 * @param def default element to return in case there are errors while parsing
+	 * @return JsonElement from the given file, can be null
+	 */
+	public static JsonElement read(File file, boolean print_err, @Nullable JsonElement def){
 		try{
 			if(!file.getParentFile().exists()){
 				file.getParentFile().mkdirs();
@@ -128,8 +128,8 @@ public class JsonUtil{
 			fr.close();
 			return obj;
 		}
-		catch (Exception e) {
-			if(b){
+		catch (Exception e){
+			if(print_err){
 				e.printStackTrace();
 			}
 			Print.console("File '" + file + "' seems to be missing, or has invalid format.");
@@ -138,8 +138,8 @@ public class JsonUtil{
 	}
 	
 	/**
-	 * @param file file the file to be parsed into json
-	 * @return JsonObject from file, or new JsonObject if there are errors in previous methods
+	 * @param file the file to be parsed into json
+	 * @return JsonObject from file or a new JsonObject if there are errors in previous/super methods
 	 */
 	public static JsonObject get(File file){
 		JsonElement e = read(file, false);
@@ -150,59 +150,10 @@ public class JsonUtil{
 	}
 	
 	/**
-	 * @author Ferdinand (FEX___96)
-	 * @comment Reader.class which will only read files with specific extension.
-	 */
-	public static class Reader{
-		
-		private String file_extension;
-		
-		public Reader(String file_extension){
-			this.file_extension = file_extension;
-		}
-		
-		/**
-		 * @param file the file to be parsed into json
-		 * @param b notify in logs about error in parsing, or file missing
-		 * @return JsonElement from given file, or null
-		 */
-		public JsonElement read(File file, boolean b){
-			String ex = FilenameUtils.getExtension(file.getPath());
-			if(ex != file_extension){
-				return null;
-			}
-			FileReader fr;
-			try{
-				fr = new FileReader(file);
-				JsonElement obj = parser.parse(fr);
-				fr.close();
-				return obj;
-			} catch (IOException e) {
-				if(b){
-					e.printStackTrace();
-					Print.console("[FCL] File '" + file + "' seems to be missing.");
-				}
-				return null;
-			}
-		}
-		
-		/**
-		 * @param file file the file to be parsed into json
-		 * @return JsonObject from file, or new JsonObject if there are errors in previous methods
-		 */
-		public JsonObject getObject(File file){
-			JsonElement e = read(file, false);
-			if(e == null || e.isJsonObject() == false){
-				return new JsonObject();
-			}
-			else return e.getAsJsonObject();
-		}
-	}
-	
-	/**
-	 * Writes a JsonObject into the speficied file (Gson Pretty Printing Configuration)
+	 * Writes a JsonObject into the specified file (using Gson Pretty Printing)
 	 * @param file target file
 	 * @param obj JsonElement to be written into the file
+	 * @param check check if the parent file/folder exists
 	 */
 	public static void write(File file, JsonElement obj, boolean check){
 		try{
@@ -220,7 +171,12 @@ public class JsonUtil{
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Writes a JsonObject into the specified file (using Gson Pretty Printing)
+	 * @param file target file
+	 * @param obj JsonElement to be written into the file
+	 */
 	public static void write(File file, JsonElement obj){
 		write(file, obj, false);
 	}
