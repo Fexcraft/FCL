@@ -108,7 +108,7 @@ public class Format2Model {
 	}
 
 	public void add(String key, ModelRendererTurbo[] mrts){
-		this.groups.add(new PolygonList(key, mrts));
+		groups.add(new PolygonList(key, mrts));
 	}
 
 	public PolygonList get(String string, boolean allownull){
