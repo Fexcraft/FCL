@@ -6,17 +6,17 @@ import java.util.Random;
 /**
  * @author Ferdinand Calo' (FEX___96)
  *
- * General Class with (mostly) Static content.
+ *         General Class with (mostly) Static content.
  */
 public class Static {
-	
+
 	public static boolean mclib = false;
 	public static boolean devmode = false;
 	public static boolean server = false;
-	
+
 	public static final float MODELSCALE = 0.0625F;
 	public static final float PI = 3.14159265358979323846f;
-	
+
 	public static final float sixteenth = 0.0625F;
 	public static final float eighth = 0.125F;
 	public static final float quarter = 0.250F;
@@ -37,43 +37,57 @@ public class Static {
 	public static final float rad6 = 0.10472f;
 	public static final float rad5 = 0.0872665f;
 	public static final float rad1 = 0.0174533f;
-	
+
 	public static final String NULL_UUID_STRING = "00000000-0000-0000-0000-000000000000";
 	public static final String DEF1_UUID_STRING = "11111111-1111-1111-1111-111111111111";
 	public static final Random random = new Random();
-	
+
 	public static final String zero(long am){
 		StringBuffer buff = new StringBuffer();
-		for(long l = 0; l < am; l++) buff.append("0");
+		for(long l = 0; l < am; l++)
+			buff.append("0");
 		return buff.toString();
 	}
-	
-	public static final boolean setAsMcLib(boolean bool){ return mclib = bool; }
-	
-	public static final boolean setDevmode(boolean bool){ return devmode = bool; }
-	
-	public static final boolean setIsServer(boolean bool){ return server = bool; }
-	
-	public static final void halt(){ halt(1); }
-	
+
+	public static final boolean setAsMcLib(boolean bool){
+		return mclib = bool;
+	}
+
+	public static final boolean setDevmode(boolean bool){
+		return devmode = bool;
+	}
+
+	public static final boolean setIsServer(boolean bool){
+		return server = bool;
+	}
+
+	public static final void halt(){
+		halt(1);
+	}
+
 	public static void halt(int errid){
 		if(mclib){
 			net.fexcraft.lib.mc.utils.Static.halt(errid);
 		}
 		System.exit(errid);
 	}
-	
-	public static final void stop(){ if(devmode) halt(1); return; }
-	
-	public static final boolean dev(){ return devmode; }
-	
+
+	public static final void stop(){
+		if(devmode) halt(1);
+		return;
+	}
+
+	public static final boolean dev(){
+		return devmode;
+	}
+
 	public static boolean isServer(){
 		if(mclib){
 			net.fexcraft.lib.mc.utils.Static.isServer();
 		}
 		return server;
 	}
-	
+
 	public static boolean isClient(){
 		if(mclib){
 			net.fexcraft.lib.mc.utils.Static.isClient();
@@ -95,5 +109,5 @@ public class Static {
 	public static float toRadians(float deg){
 		return (float)Math.toRadians(deg);
 	}
-	
+
 }
