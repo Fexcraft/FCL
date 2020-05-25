@@ -57,13 +57,19 @@ public class Format2Model {
 		}
 	}
 
+	public void render(){
+		for(PolygonList list : groups){
+			list.render();
+		}
+	}
+
 	public PolygonList get(String name){
 		for(PolygonList group : groups){
 			if(group.name.equals(name)){ return group; }
 		}
 		return null;
 	}
-	
+
 	public boolean addToCreators(String str){
 		return creators.add(str);
 	}
@@ -75,10 +81,11 @@ public class Format2Model {
 	public void translate(float x, float y, float z){
 		groups.forEach(group -> group.translate(x, y, z));
 	}
+
 	public void rotate(float x, float y, float z, boolean apply){
 		groups.forEach(group -> group.rotate(x, y, z, apply));
 	}
-	
+
 	public void fixRotations(){
 		groups.forEach(group -> fixRotations(group));
 	}
@@ -86,26 +93,27 @@ public class Format2Model {
 	public void bindTexture(ResourceLocation texture){
 		ModelBase.bindTexture(texture);
 	}
-	
+
 	public static void fixRotations(PolygonList group){
-        for(ModelRendererTurbo model : group){
-            if(model.isShape3D){
-                model.rotationAngleY = -model.rotationAngleY;
-                model.rotationAngleX = -model.rotationAngleX;
-                model.rotationAngleZ = -model.rotationAngleZ + 180f;
-            }
-            else{
-                model.rotationAngleZ = -model.rotationAngleZ;
-            }
-        }
-    }
-	
+		for(ModelRendererTurbo model : group){
+			if(model.isShape3D){
+				model.rotationAngleY = -model.rotationAngleY;
+				model.rotationAngleX = -model.rotationAngleX;
+				model.rotationAngleZ = -model.rotationAngleZ + 180f;
+			}
+			else{
+				model.rotationAngleZ = -model.rotationAngleZ;
+			}
+		}
+	}
+
 	public void add(String key, ModelRendererTurbo[] mrts){
 		this.groups.add(new PolygonList(key, mrts));
 	}
 
 	public PolygonList get(String string, boolean allownull){
-		PolygonList list = get(string); return list == null ? allownull ? list : PolygonList.EMPTY : list;
+		PolygonList list = get(string);
+		return list == null ? allownull ? list : PolygonList.EMPTY : list;
 	}
 
 }
