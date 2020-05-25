@@ -10,10 +10,7 @@ import net.minecraft.util.ResourceLocation;
 * Replaces the old `ModelBase` in this package.
 * @Author Ferdinand Calo' (FEX___96)
 */
-
 public abstract class ModelBase {
-	
-	public static final ModelBase EMPTY = new EmptyModelBase();
 	
 	/** render whole model */
 	public abstract void render();
