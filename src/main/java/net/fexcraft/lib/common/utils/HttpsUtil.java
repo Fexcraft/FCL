@@ -50,6 +50,7 @@ public class HttpsUtil {
 	/** Requests a JsonObject from the given adress and parameters, using the POST HTML method. */
 	public static JsonObject request(String adress, String parameters, String[] cookies, int timeout){
 		try{
+			@SuppressWarnings("restriction")
 			URL url = new URL(null, adress, new sun.net.www.protocol.https.Handler());
 			old = HttpsURLConnection.getDefaultSSLSocketFactory();
 			HttpsURLConnection.setDefaultSSLSocketFactory(temp_off);
@@ -121,6 +122,7 @@ public class HttpsUtil {
 
 	public static JsonElement request(String adress, String[] cookies, int timeout){
 		try{
+			@SuppressWarnings("restriction")
 			URL url = new URL(null, adress, new sun.net.www.protocol.https.Handler());
 			old = HttpsURLConnection.getDefaultSSLSocketFactory();
 			HttpsURLConnection.setDefaultSSLSocketFactory(temp_off);
