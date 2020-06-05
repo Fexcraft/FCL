@@ -30,11 +30,11 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 			@Override
 			public boolean scrollwheel(int am, int x, int y){
 				if(am > 0 && buttons.get("next").enabled){
-					openGui("fcl", 2, new int[]{ BluePrintTableGui1.category, item, recipe + 1 });
+					openGui(2, new int[]{ BluePrintTableGui1.category, item, recipe + 1 }, null);
 					return true;
 				}
 				else if(am < 0 && buttons.get("prev").enabled){
-					openGui("fcl", 2, new int[]{ BluePrintTableGui1.category, item, recipe - 1 });
+					openGui(2, new int[]{ BluePrintTableGui1.category, item, recipe - 1 }, null);
 					return true;
 				}
 				else return false;
@@ -76,8 +76,8 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 			}
 			case "less":{ amount--; break; } case "more":{ amount++; break; } case "craft":{ craft(); break; }
 			case "exit":{ player.closeScreen(); break; }
-			case "prev":{ openGui("fcl", 2, new int[]{ BluePrintTableGui1.category, item, recipe - 1 }); break; }
-			case "next":{ openGui("fcl", 2, new int[]{ BluePrintTableGui1.category, item, recipe + 1 }); break; }
+			case "prev":{ openGui(2, new int[]{ BluePrintTableGui1.category, item, recipe - 1 }, null); break; }
+			case "next":{ openGui(2, new int[]{ BluePrintTableGui1.category, item, recipe + 1 }, null); break; }
 		}
 		return false;
 	}
@@ -98,7 +98,12 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 	
 	@Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException{
-        if(keyCode == 1){ item = -1; recipe = -1; openGui("fcl", 1, new int[]{ BluePrintTableGui1.category, 0, 0 }); return; }
+        if(keyCode == 1){
+        	item = -1;
+        	recipe = -1;
+        	openGui(1, new int[]{ BluePrintTableGui1.category, 0, 0 }, null);
+        	return;
+        }
         super.keyTyped(typedChar, keyCode);
     }
 	

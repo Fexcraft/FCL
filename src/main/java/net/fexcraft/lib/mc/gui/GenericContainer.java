@@ -25,7 +25,9 @@ public abstract class GenericContainer extends Container {
 	}
 	
 	public void send(Side target, NBTTagCompound packet){
-        packet.setString("target_listener", "fcl_gui"); packet.setString("task", "generic_gui"); //Print.debug(target, packet);
+        packet.setString("target_listener", "fcl_gui");
+        packet.setString("task", "generic_gui");
+        //Print.debug(target, packet);
         try{
         	if(target == Side.SERVER){
         		PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(packet));
@@ -53,22 +55,22 @@ public abstract class GenericContainer extends Container {
 	}
     
     /** Server Side Method. */
-    public static void openGui(String mod, int gui, int[] xyz, EntityPlayer player){
+    public static void openGui(int gui, int[] xyz, String listener, EntityPlayer player){
         NBTTagCompound compound = new NBTTagCompound();
-        compound.setString("target_listener", "fcl_gui");
+        compound.setString("target_listener", listener == null ? "fcl_gui" : listener);
         compound.setString("task", "open_gui");
         compound.setInteger("gui", gui);
-        compound.setString("guimod", mod);
         if(xyz != null) compound.setIntArray("args", xyz);
         ServerReceiver.INSTANCE.process(new PacketNBTTagCompound(compound), new Object[]{ player });
     }
 
     /** Server Side Method. */
-    public static void openGenericGui(int gui, int[] xyz, NBTTagCompound data, EntityPlayer player){
+    public static void openGui(int gui, int[] xyz, String listener, NBTTagCompound data, EntityPlayer player){
         NBTTagCompound compound = new NBTTagCompound();
-        compound.setString("target_listener", "fcl_gui");
+        compound.setString("target_listener", listener == null ? "fcl_gui" : listener);
         compound.setString("task", "open_guicontainer");
-        compound.setInteger("gui", gui); compound.setTag("data", data);
+        compound.setInteger("gui", gui);
+        compound.setTag("data", data);
         if(xyz != null) compound.setIntArray("args", xyz);
         ServerReceiver.INSTANCE.process(new PacketNBTTagCompound(compound), new Object[]{ player });
     }

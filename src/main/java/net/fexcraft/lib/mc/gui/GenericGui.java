@@ -49,13 +49,18 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
     
     @Override
     public void initGui(){
-        super.initGui(); buttons.clear(); texts.clear(); fields.clear(); init();
+        super.initGui();
+        buttons.clear();
+        texts.clear();
+        fields.clear();
+        init();
     }
 
 	@Override
     protected void drawGuiContainerBackgroundLayer(float pticks, int mouseX, int mouseY){
 		if(defbackground) super.drawDefaultBackground();
-    	predraw(pticks, mouseX, mouseY); this.mc.getTextureManager().bindTexture(texloc);
+    	predraw(pticks, mouseX, mouseY);
+    	this.mc.getTextureManager().bindTexture(texloc);
         if(deftexrect) this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
     	drawbackground(pticks, mouseX, mouseY);
     	//
@@ -76,22 +81,22 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
     }
     
 	/** Client Side Method. */
-    public static void openGui(String mod, int gui, int[] xyz){
+    public static void openGui(int gui, int[] xyz, String listener){
         NBTTagCompound compound = new NBTTagCompound();
-        compound.setString("target_listener", "fcl_gui");
+        compound.setString("target_listener", listener == null ? "fcl_gui" : listener);
         compound.setString("task", "open_gui");
         compound.setInteger("gui", gui);
-        compound.setString("guimod", mod);
         if(xyz != null) compound.setIntArray("args", xyz);
         PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(compound));
     }
 
 	/** Client Side Method. */
-    public static void openGenericGui(int gui, int[] xyz, NBTTagCompound data){
+    public static void openGui(int gui, int[] xyz, String listener, NBTTagCompound data){
         NBTTagCompound compound = new NBTTagCompound();
-        compound.setString("target_listener", "fcl_gui");
-        compound.setString("task", "open_guicontainer");
-        compound.setInteger("gui", gui); compound.setTag("data", data);
+        compound.setString("target_listener", listener == null ? "fcl_gui" : listener);
+        compound.setString("task", "open_gui");
+        compound.setInteger("gui", gui);
+        compound.setTag("data", data);
         if(xyz != null) compound.setIntArray("args", xyz);
         PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(compound));
     }
@@ -149,8 +154,12 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 		}
 
 		public void draw(GenericGui<?> gui, float pticks, int mouseX, int mouseY){
-			if(!visible) return; rgb = hovered ? enabled ? rgb_hover : rgb_disabled : rgb_none; RGB.glColorReset();
-            rgb.glColorApply(); gui.drawTexturedModalRect(x, y, tx, ty, sizex, sizey); RGB.glColorReset();
+			if(!visible) return;
+			rgb = hovered ? enabled ? rgb_hover : rgb_disabled : rgb_none;
+			RGB.glColorReset();
+            rgb.glColorApply();
+            gui.drawTexturedModalRect(x, y, tx, ty, sizex, sizey);
+            RGB.glColorReset();
 		}
 
 		public boolean scrollwheel(int am, int x, int y){ return false; }
@@ -170,7 +179,9 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 		}
 		
 		public BasicText(int x, int y, int width, @Nullable Integer color, String string, boolean hover, @Nullable Integer hovercolor){
-			this(x, y, width, color, string); this.hoverable = hover; if(hovercolor != null) this.hovercolor = hovercolor;
+			this(x, y, width, color, string);
+			this.hoverable = hover;
+			if(hovercolor != null) this.hovercolor = hovercolor;
 		}
 		
 		public boolean hovered(int mouseX, int mouseY){
@@ -192,7 +203,8 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 		}
 		
 		public TextField(int id, FontRenderer renderer, int x, int y, int width, int height, boolean draw){
-			super(id, renderer, x, y, width, height); this.setEnableBackgroundDrawing(draw);
+			super(id, renderer, x, y, width, height);
+			this.setEnableBackgroundDrawing(draw);
 		}
 		
 		public Integer getIntegerValue(){
@@ -238,9 +250,11 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 	
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException{
-        if(!fields.isEmpty()){ boolean bool = false;
+        if(!fields.isEmpty()){
+        	boolean bool = false;
         	for(Entry<String, TextField> entry : fields.entrySet()){
-        		if(bool) break; if(entry.getValue().textboxKeyTyped(typedChar, keyCode)) bool = true;
+        		if(bool) break;
+        		if(entry.getValue().textboxKeyTyped(typedChar, keyCode)) bool = true;
         	}
             if(bool && !this.mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)) super.keyTyped(typedChar, keyCode);
         }
@@ -256,10 +270,12 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 		int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 		boolean exit = false;
 		for(BasicButton button : buttons.values()){
-			if(exit) break; if(button.hovered(x, y)) exit = button.scrollwheel(am, x, y);
+			if(exit) break;
+			if(button.hovered(x, y)) exit = button.scrollwheel(am, x, y);
 		}
 		for(BasicText button : texts.values()){
-			if(exit) break; if(button.hovered(x, y)) exit = button.scrollwheel(am, x, y);
+			if(exit) break;
+			if(button.hovered(x, y)) exit = button.scrollwheel(am, x, y);
 		}
 		if(!exit) this.scrollwheel(am, x, y);
     }

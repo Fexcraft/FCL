@@ -47,7 +47,6 @@ public class FCL {
 	private static FCL instance;
 	private static Side side;
 	private static File configdir;
-	private static GuiHandler ghand;
 	
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) throws Exception{
@@ -64,8 +63,7 @@ public class FCL {
 	@Mod.EventHandler
     public void init(FMLInitializationEvent event) throws Exception{
 		MinecraftForge.EVENT_BUS.register(new SimpleUpdateHandler.EventHandler());
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, ghand = new GuiHandler());
-		GuiHandler.register("fcl", instance);
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 	}
 	
 	@Mod.EventHandler
@@ -112,10 +110,6 @@ public class FCL {
 
 	public static final String getMinecraftVersion(){
 		return mcv;
-	}
-
-	public static GuiHandler getGuiHandler(){
-		return ghand;
 	}
 	
 }

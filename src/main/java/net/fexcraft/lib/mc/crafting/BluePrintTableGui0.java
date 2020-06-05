@@ -3,6 +3,7 @@ package net.fexcraft.lib.mc.crafting;
 import java.util.List;
 
 import net.fexcraft.lib.common.math.RGB;
+import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.gui.GenericContainer;
 import net.fexcraft.lib.mc.gui.GenericGui;
 import net.minecraft.block.material.MapColor;
@@ -20,7 +21,7 @@ public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 		super(texture, new GenericContainer.DefImpl(player), player);
 		this.xSize = 256; this.ySize = 204;
 		if(BluePrintTableGui1.category >= 0){
-			openGui("fcl", 1, new int[]{ BluePrintTableGui1.category, 0, 0 });
+			openGui(0, new int[]{ BluePrintTableGui1.category, 0, 0 }, null);
 		}
 	}
 
@@ -76,7 +77,8 @@ public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 		}
 		if(key.startsWith("category_") || key.startsWith("cat_")){
 			int i = Integer.parseInt(key.replace("category_", "").replace("cat_", ""));
-			openGui("fcl", 1, new int[]{ i + scroll, 0, 0 });
+			player.openGui(FCL.getInstance(), 1, player.world, i + scroll, 0, 0);
+			openGui(1, new int[]{ i + scroll, 0, 0 }, null);
 		}
 		return false;
 	}
