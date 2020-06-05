@@ -1,6 +1,7 @@
 package net.fexcraft.lib.mc.gui;
 
 import net.fexcraft.lib.mc.network.PacketHandler;
+import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,6 +42,8 @@ public abstract class GenericContainer extends Container {
         }
 	}
 	
+	public void initPacket(NBTTagCompound compound){}
+	
 	protected abstract void packet(Side side, NBTTagCompound packet, EntityPlayer player);
 	
 	public static class DefImpl extends GenericContainer {
@@ -51,28 +54,35 @@ public abstract class GenericContainer extends Container {
 		protected void packet(Side side, NBTTagCompound packet, EntityPlayer player){
 			Print.debug("def, impl", side, packet, player);
 		}
+
+		@Override
+		public void initPacket(NBTTagCompound compound){
+			Print.debug("def, impl, init", compound);
+		}
 		
 	}
     
     /** Server Side Method. */
     public static void openGui(int gui, int[] xyz, String listener, EntityPlayer player){
         NBTTagCompound compound = new NBTTagCompound();
-        compound.setString("target_listener", listener == null ? "fcl_gui" : listener);
+        listener = listener == null ? "fcl_gui" : listener;
+        compound.setString("target_listener", listener);
         compound.setString("task", "open_gui");
         compound.setInteger("gui", gui);
         if(xyz != null) compound.setIntArray("args", xyz);
-        ServerReceiver.INSTANCE.process(new PacketNBTTagCompound(compound), new Object[]{ player });
+        NBTTagCompoundPacketHandler.getListener(listener, false).process(new PacketNBTTagCompound(compound), new Object[]{ player });
     }
 
     /** Server Side Method. */
     public static void openGui(int gui, int[] xyz, String listener, NBTTagCompound data, EntityPlayer player){
         NBTTagCompound compound = new NBTTagCompound();
-        compound.setString("target_listener", listener == null ? "fcl_gui" : listener);
-        compound.setString("task", "open_guicontainer");
+        listener = listener == null ? "fcl_gui" : listener;
+        compound.setString("target_listener", listener);
+        compound.setString("task", "open_gui");
         compound.setInteger("gui", gui);
         compound.setTag("data", data);
         if(xyz != null) compound.setIntArray("args", xyz);
-        ServerReceiver.INSTANCE.process(new PacketNBTTagCompound(compound), new Object[]{ player });
+        NBTTagCompoundPacketHandler.getListener(listener, false).process(new PacketNBTTagCompound(compound), new Object[]{ player });
     }
 
 }
