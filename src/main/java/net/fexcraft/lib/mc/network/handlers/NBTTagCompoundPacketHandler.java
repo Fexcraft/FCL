@@ -62,12 +62,21 @@ public class NBTTagCompoundPacketHandler {
 		}
 	}
 	
-	public static void addListener(Side side, IPacketListener<PacketNBTTagCompound> listener) {
+	public static void addListener(Side side, IPacketListener<PacketNBTTagCompound> listener){
 		if(side.isClient()){
 			cls.put(listener.getId(), listener);
 		}
 		else{
 			sls.put(listener.getId(), listener);
+		}
+	}
+
+	public static IPacketListener<PacketNBTTagCompound> getListener(String string, boolean remote){
+		if(remote){
+			return cls.get(string);
+		}
+		else{
+			return sls.get(string);
 		}
 	}
 	
