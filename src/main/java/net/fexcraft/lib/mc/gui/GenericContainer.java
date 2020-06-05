@@ -25,13 +25,18 @@ public abstract class GenericContainer extends Container {
 	}
 	
 	public void send(Side target, NBTTagCompound packet){
-        packet.setString("target_listener", "fcl_gui"); packet.setString("task", "generic_gui"); Print.debug(target, packet);
-    	if(target == Side.SERVER){
-    		PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(packet));
-    	}
-    	else{
-    		PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(packet), (EntityPlayerMP)player);
-    	}
+        packet.setString("target_listener", "fcl_gui"); packet.setString("task", "generic_gui"); //Print.debug(target, packet);
+        try{
+        	if(target == Side.SERVER){
+        		PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(packet));
+        	}
+        	else{
+        		PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(packet), (EntityPlayerMP)player);
+        	}
+        }
+        catch(Exception e){
+        	e.printStackTrace();
+        }
 	}
 	
 	protected abstract void packet(Side side, NBTTagCompound packet, EntityPlayer player);

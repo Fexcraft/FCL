@@ -120,7 +120,7 @@ public class Network {
 				id = "server";
 			}
 			JsonObject obj = HttpsUtil.request("https://fexcraft.net/minecraft/fcl/request", "mode=status&id=" + id, 1000);
-			if(obj != null && obj.entrySet().isEmpty()) return;
+			if(obj == null || obj.entrySet().isEmpty()) return;
 			if(obj.has("notify")){
 				JsonArray notes = obj.get("notify").getAsJsonArray();
 				notifications = new String[notes.size()];

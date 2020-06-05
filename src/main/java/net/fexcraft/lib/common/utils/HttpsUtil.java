@@ -25,15 +25,18 @@ import net.fexcraft.lib.common.json.JsonUtil;
  */
 public class HttpsUtil {
 
-	private static final TrustManager[] temp_toggle_off = new TrustManager[]{ new X509TrustManager(){
-		public java.security.cert.X509Certificate[] getAcceptedIssuers(){
-			return null;
-		}
-		public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType){}
-		public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType){}
-	} };
-	static{
+	private static SSLSocketFactory temp_off, old;
+	static {
 		try{
+			TrustManager[] temp_toggle_off = new TrustManager[]{
+				new X509TrustManager(){
+					public java.security.cert.X509Certificate[] getAcceptedIssuers(){
+						return null;
+					}
+					public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType){}
+					public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType){}
+				}
+			};
 			SSLContext sc = SSLContext.getInstance("SSL");
 			sc.init(null, temp_toggle_off, new java.security.SecureRandom());
 			temp_off = sc.getSocketFactory();
@@ -45,7 +48,6 @@ public class HttpsUtil {
 			e.printStackTrace();
 		}
 	}
-	private static SSLSocketFactory temp_off, old;
 
 	/** Requests a JsonObject from the given adress and parameters, using the POST HTML method. */
 	public static JsonObject request(String adress, String parameters, String[] cookies, int timeout){
