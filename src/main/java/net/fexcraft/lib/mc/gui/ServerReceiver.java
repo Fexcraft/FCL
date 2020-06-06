@@ -28,7 +28,7 @@ public class ServerReceiver implements IPacketListener<PacketNBTTagCompound> {
                 player.openGui(FCL.getInstance(), gui, player.world, args[0], args[1], args[2]);
                 return;
 			}
-            case "generic_gui":{
+            case "packet_gui":{
                 ((GenericContainer)player.openContainer).packet(Side.SERVER, packet.nbt, player);
             	return;
             }

@@ -27,7 +27,7 @@ public abstract class GenericContainer extends Container {
 	
 	public void send(Side target, NBTTagCompound packet){
         packet.setString("target_listener", "fcl_gui");
-        packet.setString("task", "generic_gui");
+        packet.setString("task", "packet_gui");
         //Print.debug(target, packet);
         try{
         	if(target == Side.SERVER){
@@ -43,6 +43,8 @@ public abstract class GenericContainer extends Container {
 	}
 	
 	public void initPacket(NBTTagCompound compound){}
+	
+	public boolean isInit(){ return true; }
 	
 	protected abstract void packet(Side side, NBTTagCompound packet, EntityPlayer player);
 	
@@ -63,6 +65,7 @@ public abstract class GenericContainer extends Container {
 	}
     
     /** Server Side Method. */
+	@Deprecated
     public static void openGui(int gui, int[] xyz, String listener, EntityPlayer player){
         NBTTagCompound compound = new NBTTagCompound();
         listener = listener == null ? "fcl_gui" : listener;
