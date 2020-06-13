@@ -116,4 +116,12 @@ public class Pos {
 		return new Vec3f(this.to16FloatX(), this.to16FloatY(), this.to16FloatZ());
 	}
 
+	public Pos add(Pos pos){
+		return new Pos(x + pos.x, y + pos.y, z + pos.z);
+	}
+
+	public Pos sub(Pos pos){
+		return new Pos(x - pos.x, y - pos.y, z - pos.z);
+	}
+
 }
