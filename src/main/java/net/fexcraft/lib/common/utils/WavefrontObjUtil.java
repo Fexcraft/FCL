@@ -55,25 +55,28 @@ public class WavefrontObjUtil {
 		return arr.toArray(new String[0]);
 	}
 
-	public static String[][] findValues(InputStream stream, String key){
-		return findValues(stream, new String[]{ key }, " ");
+	public static String[][] findValues(InputStream stream, Integer limit, String key){
+		return findValues(stream, limit, new String[]{ key }, " ");
 	}
 
-	public static String[][] findValues(InputStream stream, String[] keys){
-		return findValues(stream, keys, " ");
+	public static String[][] findValues(InputStream stream, Integer limit, String[] keys){
+		return findValues(stream, limit, keys, " ");
 	}
 
-	public static String[][] findValues(InputStream stream, String[] keys, String divident){
+	public static String[][] findValues(InputStream stream, Integer limit, String[] keys, String divident){
 		ArrayList<String[]> arr = new ArrayList<String[]>();
+		Integer counter = limit == null || limit <= 0 ? null : limit;
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
 			String s;
 			while((s = in.readLine()) != null){
+				if(counter != null && counter >= limit) break;
 				s = s.trim();
 				if(s.length() == 0) continue;
 				for(String str : keys){
 					if(s.startsWith(str + " ")){
 						arr.add(s.replace(str + " ", "").split(divident));
+						if(counter != null) counter++;
 						continue;
 					}
 				}
