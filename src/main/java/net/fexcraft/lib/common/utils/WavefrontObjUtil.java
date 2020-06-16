@@ -64,6 +64,12 @@ public class WavefrontObjUtil {
 	}
 
 	public static String[][] findValues(InputStream stream, Integer limit, String[] keys, String divident){
+		return findValues(stream, limit, keys, " ", null);
+	}
+
+	public static String[][] findValues(InputStream stream, Integer limit, String[] keys, String divident, String endat){
+		if(keys == null || keys.length == 0) return new String[0][0];
+		if(divident == null) divident = " ";
 		ArrayList<String[]> arr = new ArrayList<String[]>();
 		Integer counter = limit == null || limit <= 0 ? null : limit;
 		try{
@@ -73,6 +79,7 @@ public class WavefrontObjUtil {
 				if(counter != null && counter >= limit) break;
 				s = s.trim();
 				if(s.length() == 0) continue;
+				if(endat != null && s.startsWith(endat)) break;
 				for(String str : keys){
 					if(s.startsWith(str + " ")){
 						arr.add(s.replace(str + " ", "").split(divident));
