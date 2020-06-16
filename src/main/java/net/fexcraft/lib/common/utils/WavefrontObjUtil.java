@@ -114,9 +114,9 @@ public class WavefrontObjUtil {
 						else v[i] = Float.parseFloat(s.substring(0));
 						s = s.substring(s.indexOf(" ") + 1).trim();
 					}
-					float flt = v[2];
+					/*float flt = v[2];
 					v[2] = -v[1];
-					v[1] = flt;
+					v[1] = flt;*/
 					if(!flipaxes){
 						verts0.add(new TexturedVertex(v[0], v[1], v[2], 0, 0));
 					}
