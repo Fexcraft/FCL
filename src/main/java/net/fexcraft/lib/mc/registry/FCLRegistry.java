@@ -40,6 +40,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class FCLRegistry {
@@ -57,9 +58,13 @@ public class FCLRegistry {
 	//private static Map<ResourceLocation, Entity> entities = new TreeMap<ResourceLocation, Entity>();
 	private static Map<ResourceLocation, Object> models = new TreeMap<ResourceLocation, Object>();
 
-	public static void prepare(ASMDataTable asmData){
-		table = asmData; new AutoRegisterer("fcl");
-		scanForModels(); registerTESRs();
+	public static void prepare(Side side, ASMDataTable asmData){
+		table = asmData;
+		new AutoRegisterer("fcl");
+		if(side.isClient()){
+			scanForModels();
+			registerTESRs();
+		}
 	}
 	
 	private static final void error(Throwable thr, String s){
