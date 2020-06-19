@@ -54,7 +54,7 @@ public class FCL {
 		Static.setDevmode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
 		Static.setIsServer((side = event.getSide()).isServer());
 		configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
-		FCLRegistry.prepare(event.getAsmData());
+		FCLRegistry.prepare(event.getSide(), event.getAsmData());
 		if(event.getSide().isClient()){
 			net.fexcraft.lib.mc.render.LoaderReg.ister();
 		}
