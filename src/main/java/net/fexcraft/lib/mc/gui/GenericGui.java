@@ -189,6 +189,10 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 		}
 
 		public boolean scrollwheel(int am, int x, int y){ return false; }
+		
+		public void translate(){
+			this.string = I18n.format(string);
+		}
 
 		public void translate(Object... objects){
 			this.string = I18n.format(string, objects);
