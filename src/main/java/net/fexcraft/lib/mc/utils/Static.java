@@ -75,6 +75,8 @@ public class Static extends net.fexcraft.lib.common.Static {
 		JsonElement obj = HttpsUtil.request("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
 		try{
 			JsonObject elm = obj.getAsJsonObject();
+			getServer().getPlayerProfileCache().addEntry(new GameProfile(uuid, elm.get("name").getAsString()));
+			getServer().getPlayerProfileCache().save();
 			UUID_PLAYER_CACHE.put(uuid, elm.get("name").getAsString());
 			return elm.get("name").getAsString();
 		}
