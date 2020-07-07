@@ -10,7 +10,7 @@ import static net.fexcraft.lib.tmt.ModelRendererTurbo.MR_TOP;
 import java.util.ArrayList;
 
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.common.math.Axis3DL;
+import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.Vec3f;
@@ -26,7 +26,7 @@ public class CylinderBuilder {
 	private int segments, seglimit, direction, texDiameterW, texDiameterH, texHeight;
 	private Vec3f topoff = new Vec3f();
 	private boolean[] togglesides;
-	private Axis3DL toprot;
+	private AxisRotator toprot;
 	//
 	private boolean radialtexture = false;
 	private float seg_width, seg_height;
@@ -92,7 +92,7 @@ public class CylinderBuilder {
 	}
 	
 	public CylinderBuilder setTopRotation(float x, float y, float z){
-		(toprot = new Axis3DL()).setAngles(x, y, z); return this;
+		(toprot = AxisRotator.newDefInstance()).setAngles(x, y, z); return this;
 	}
 
 	public CylinderBuilder setTopRotation(Vec3f vec){
