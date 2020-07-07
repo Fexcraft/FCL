@@ -1780,10 +1780,16 @@ public class ModelRendererTurbo {
 		for(ModelRendererTurbo turbo : childModels){
 			this.copyTo(turbo.getVertices(), turbo.getFaces());
 		} if(removelist) childModels = null; else childModels.clear();
+	}	public ModelRendererTurbo addVoxelShape(int segmentation, boolean[][][] content){
+		return new VoxelBuilder(this, segmentation).setVoxels(content).build();
 	}
 
-	public ModelRendererTurbo addVoxelShape(int segmentation, boolean[][][] content){
-		return new VoxelBuilder(this, segmentation).setVoxels(content).build();
+	public ModelRendererTurbo addVoxelShape(int x, int y, int z, boolean[][][] content){
+		return new VoxelBuilder(this, x, y, z).setVoxels(content).build();
+	}
+
+	public ModelRendererTurbo addColorIndexedVoxelShape(int sx, int sy, int sz, int[][][] content, java.util.Map<Integer, RGB> colours){
+		return new ColorIndexedVoxelBuilder(this, sx, sy, sz).setColors(colours).setVoxels(content).build();
 	}
 	
 }
