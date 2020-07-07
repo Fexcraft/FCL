@@ -179,8 +179,8 @@ public class ModelRendererTurbo {
     
     private TexturedPolygon addPolygonReturn(TexturedVertex[] verts, float x0, float y0, float x1, float y1){
     	if(verts.length < 3){ return null; }
-    	float uOffs = 1.0F / (textureWidth * 10.0F);
-    	float vOffs = 1.0F / (textureHeight * 10.0F);
+    	float uOffs = 0;//1.0F / (textureWidth * 10.0F);
+    	float vOffs = 0;//1.0F / (textureHeight * 10.0F);
     	if(verts.length < 4){
     		float xMin = -1;
     		float yMin = -1;
@@ -220,7 +220,8 @@ public class ModelRendererTurbo {
     /** Specifically made for addTexRect() with texpos[x].length > 4 (== 8) */
     private TexturedPolygon addPolygonReturn(TexturedVertex[] verts, float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3){
     	if(verts.length < 3){ return null; }
-    	float uOffs = 1.0F / (textureWidth * 10.0F), vOffs = 1.0F / (textureHeight * 10.0F);
+    	float uOffs = 0;//1.0F / (textureWidth * 10.0F);
+    	float vOffs = 0;//1.0F / (textureHeight * 10.0F);
     	verts[0] = verts[0].setTexturePosition(x0 / textureWidth - uOffs, y0 / textureHeight + vOffs);
     	verts[1] = verts[1].setTexturePosition(x1 / textureWidth + uOffs, y1 / textureHeight + vOffs);
     	verts[2] = verts[2].setTexturePosition(x2 / textureWidth + uOffs, y2 / textureHeight - vOffs);
@@ -1135,8 +1136,8 @@ public class ModelRendererTurbo {
 		}
 		float uScale = 1.0F / textureWidth;
 		float vScale = 1.0F / textureHeight;
-		float uOffset = uScale / 20.0F;
-		float vOffset = vScale / 20.0F;
+		float uOffset = 0;//uScale / 20.0F;
+		float vOffset = 0;//vScale / 20.0F;
 		float uCircle = textureCircleDiameterW * uScale;
 		float vCircle = textureCircleDiameterH * vScale;
 		float uWidth = (uCircle * 2F - uOffset * 2F) / segments;
