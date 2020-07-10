@@ -357,7 +357,7 @@ public class ModelRendererTurbo {
     		}
             if(mirror ^ flip){ for(int l = 0; l < poly.length; l++){ poly[l].flipFace(); } } return copyTo(verts, poly);
     	}
-    	catch(Throwable thr){ if(Static.dev()) thr.printStackTrace();
+    	catch(Throwable thr){ //if(Static.dev()) thr.printStackTrace();
     		return this.addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
     		//also return in case something else breaks, due to e.g. other data missing
     	}
