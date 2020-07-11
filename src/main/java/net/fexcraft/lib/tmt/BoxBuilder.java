@@ -50,7 +50,7 @@ public class BoxBuilder {
 
 	public BoxBuilder removePolygon(boolean... sides){
 		for(int index = 0; index < 6; index++){
-			if(sides.length > (index + 1) && sides[index]) invisible[index] = true;
+			if(sides.length >= (index + 1) && sides[index]) invisible[index] = true;
 		}
 		return this;
 	}
