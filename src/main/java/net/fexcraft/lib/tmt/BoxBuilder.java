@@ -14,6 +14,7 @@ public class BoxBuilder {
 	private float x, y, z, expansion, w, h, d;
 	private boolean[] invisible = new boolean[6];
 	private float[][] uv = new float[6][];
+	private boolean[] detached = new boolean[6];
 	private Vec3f[] corners = new Vec3f[8];
 	private static final Vec3f NULLVEC = new Vec3f(0, 0, 0);
 	
@@ -73,6 +74,22 @@ public class BoxBuilder {
 		for(int index = 0; index < 6; index++){
 			if(index >= uvs.length) break;
 			setPolygonUV(index, uvs[index]);
+		}
+		return this;
+	}
+	
+	public BoxBuilder setDetachedUV(int... indices){
+		for(int index : indices){
+			if(index < 0 || index > 5) continue;
+			detached[index] = true;
+		}
+		return this;
+	}
+	
+	public BoxBuilder setDetachedUV(boolean[] bools){
+		for(int index = 0; index < 6; index++){
+			if(index >= bools.length) break;
+			setDetachedUV(index);
 		}
 		return this;
 	}
@@ -220,6 +237,10 @@ public class BoxBuilder {
 
 	private TexturedPolygon genPolygonWithUV(int index, TexturedVertex[] vertices, float tx, float ty, float x, float y, float ex, float ey){
 		float[] cuv = index < 0 || uv[index] == null ? null : uv[index];
+		if(detached[index]){
+			tx = 0;
+			ty = 0;
+		}
 		if(cuv == null){
 			float xs = tx + x;
 			float xe = tx + x + ex;
