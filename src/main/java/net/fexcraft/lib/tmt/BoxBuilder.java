@@ -237,7 +237,7 @@ public class BoxBuilder {
 
 	private TexturedPolygon genPolygonWithUV(int index, TexturedVertex[] vertices, float tx, float ty, float x, float y, float ex, float ey){
 		float[] cuv = index < 0 || uv[index] == null ? null : uv[index];
-		if(detached[index]){
+		if(index > -1 && detached[index]){
 			tx = 0;
 			ty = 0;
 		}
