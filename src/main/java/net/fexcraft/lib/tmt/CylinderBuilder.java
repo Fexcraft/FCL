@@ -103,7 +103,7 @@ public class CylinderBuilder {
 		if(radius2 == 0f && toprot == null){
 			return root.addCylinder(x, y, z, radius, length, segments, base_scale, top_scale, direction, texDiameterW, texDiameterH, texHeight, topoff);
 		}
-		if(radius < 1){ texDiameterW = 2; texDiameterH = 2; } if(length < 1){ texHeight = 2; }
+		if(radius < 1){ texDiameterW = 2; texDiameterH = 2; } if(length < 1){ texHeight = 1; }
 		//
 		boolean dirTop = (direction == MR_TOP || direction == MR_BOTTOM);
 		boolean dirSide = (direction == MR_RIGHT || direction == MR_LEFT);
@@ -123,7 +123,7 @@ public class CylinderBuilder {
 		float xCur = xStart, yCur = yStart, zCur = zStart, sCur = base_scale;
 		//Texture
 		float uScale = 1.0F / root.textureWidth, vScale = 1.0F / root.textureHeight;
-		float uOffset = uScale / 20.0F, vOffset = vScale / 20.0F;
+		float uOffset = 0/*uScale / 20.0F*/, vOffset = 0;//vScale / 20.0F;
 		float uCircle = texDiameterW * uScale;
 		float vCircle = texDiameterH * vScale;
 		float uCircle2 = ((int)Math.floor(radius2 * 2F)) * uScale;
