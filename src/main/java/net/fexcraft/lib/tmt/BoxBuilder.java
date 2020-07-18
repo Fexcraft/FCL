@@ -203,11 +203,11 @@ public class BoxBuilder {
             poly[5] = genPolygonWithUV(5, new TexturedVertex[] { tv4, tv5, tv6, tv7 }, tx, ty, d + w + d, d, w, h);
         }
         else{
-        	float yp = invisible[2] && invisible[3] ? 0 : d;
-        	float x0 = invisible[1] ? 0 : d;
-        	float x1 = invisible[2] ? 0 : w;
-        	float x2 = invisible[4] ? 0 : w;
-        	float x3 = invisible[0] ? 0 : d;
+        	float yp = detached(2) && detached(3) ? 0 : d;
+        	float x0 = detached(1) ? 0 : d;
+        	float x1 = detached(2) ? 0 : w;
+        	float x2 = detached(4) ? 0 : w;
+        	float x3 = detached(0) ? 0 : d;
             if(!invisible[0]) poly[0] = genPolygonWithUV(0, new TexturedVertex[] { tv5, tv1, tv2, tv6 }, tx, ty, x0 + x2, yp, d, h);
             if(!invisible[1]) poly[1] = genPolygonWithUV(1, new TexturedVertex[] { tv0, tv4, tv7, tv3 }, tx, ty, 0, yp, d, h);
             if(!invisible[2]) poly[2] = genPolygonWithUV(2, new TexturedVertex[] { tv5, tv4, tv0, tv1 }, tx, ty, x0, 0, w, d);
@@ -233,6 +233,10 @@ public class BoxBuilder {
         	poly = polygons;
         }
         return root.copyTo(verts, poly);
+	}
+
+	private boolean detached(int i){
+		return invisible[i] || detached[i];
 	}
 
 	private TexturedPolygon genPolygonWithUV(int index, TexturedVertex[] vertices, float tx, float ty, float x, float y, float ex, float ey){
