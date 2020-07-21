@@ -1198,6 +1198,10 @@ public class ModelRendererTurbo {
 		return new CylinderBuilder(this);
 	}	
 	
+	public BoxBuilder newBoxBuilder(){
+		return new BoxBuilder(this);
+	}	
+	
 	/**
 	 * Based on the addCylinder method. Not updated currently further, use the CylinderBuilder for newer features!
 	 * @author Ferdinand Calo' (FEX___96)
