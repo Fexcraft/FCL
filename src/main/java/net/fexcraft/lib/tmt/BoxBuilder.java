@@ -41,7 +41,13 @@ public class BoxBuilder {
 		return this;
 	}
 	
-	public BoxBuilder removePolygon(int... poly_indices){
+	public BoxBuilder removePolygon(int index){
+		if(index < 0 || index > 5) return this;
+		invisible[index] = true;
+		return this;
+	}
+	
+	public BoxBuilder removePolygons(int... poly_indices){
 		for(int index : poly_indices){
 			if(index < 0 || index > 5) continue;
 			invisible[index] = true;
@@ -49,7 +55,7 @@ public class BoxBuilder {
 		return this;
 	}
 
-	public BoxBuilder removePolygon(boolean... sides){
+	public BoxBuilder removePolygons(boolean... sides){
 		for(int index = 0; index < 6; index++){
 			if(sides.length >= (index + 1) && sides[index]) invisible[index] = true;
 		}
@@ -86,7 +92,7 @@ public class BoxBuilder {
 		return this;
 	}
 	
-	public BoxBuilder setDetachedUV(boolean[] bools){
+	public BoxBuilder setDetachedUV(boolean... bools){
 		for(int index = 0; index < 6; index++){
 			if(index >= bools.length) break;
 			setDetachedUV(index);
