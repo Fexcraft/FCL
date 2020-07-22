@@ -55,6 +55,28 @@ public class WavefrontObjUtil {
 		return arr.toArray(new String[0]);
 	}
 
+	public static String[] getObjects(InputStream stream){
+		ArrayList<String> arr = new ArrayList<String>();
+		try{
+			BufferedReader in = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+			String s;
+			while((s = in.readLine()) != null){
+				s = s.trim();
+				if(s.length() == 0) continue;
+				if(s.startsWith("o ")){
+					arr.add(s.replace("o ", "").split(" ")[0]);
+					continue;
+				}
+			}
+			in.close();
+		}
+		catch(Throwable e){
+			e.printStackTrace();
+			Static.stop();
+		}
+		return arr.toArray(new String[0]);
+	}
+
 	public static String[][] findValues(InputStream stream, Integer limit, String key){
 		return findValues(stream, limit, new String[]{ key }, " ");
 	}
@@ -99,10 +121,11 @@ public class WavefrontObjUtil {
 	}
 
 	/** (Strongly) Based on the old OBJ parsing method in TMT/MRT. */
-	public static Object[][] getVerticesAndPolygons(InputStream stream, @Nullable String group, boolean flipaxes){
+	public static Object[][] getVerticesAndPolygons(InputStream stream, @Nullable String group, boolean flipaxes, boolean objmode){
 		TexturedVertex[] vertices = null;
 		TexturedPolygon[] polygons = null;
 		Boolean passing = null;
+		String grouprefix = objmode ? "o " : "g ";
 		ArrayList<TexturedVertex> verts0 = new ArrayList<TexturedVertex>();
 		ArrayList<TexturedVertex> verts1 = new ArrayList<TexturedVertex>();
 		ArrayList<TexturedPolygon> faces = new ArrayList<TexturedPolygon>();
@@ -163,8 +186,8 @@ public class WavefrontObjUtil {
 					continue;
 				}
 				//
-				if(s.startsWith("g ") && group != null){
-					passing = s.replace("g ", "").split(" ")[0].equals(group);
+				if(s.startsWith(grouprefix) && group != null){
+					passing = s.replace(grouprefix, "").split(" ")[0].equals(group);
 				}
 				if(passing != null && !passing){
 					continue; // if(Static.dev()) Print.console("skipping: " + s);

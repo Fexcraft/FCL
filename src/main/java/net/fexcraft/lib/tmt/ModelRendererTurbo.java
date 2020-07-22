@@ -1342,7 +1342,11 @@ public class ModelRendererTurbo {
     }
     
     public ModelRendererTurbo addObj(InputStream stream, String group, boolean flipaxis){
-    	Object[][] source = WavefrontObjUtil.getVerticesAndPolygons(stream, group, flipaxis);
+    	return this.addObj(stream, group, flipaxis, false);
+    }
+    
+    public ModelRendererTurbo addObj(InputStream stream, String group, boolean flipaxis, boolean objmode){
+    	Object[][] source = WavefrontObjUtil.getVerticesAndPolygons(stream, group, flipaxis, objmode);
     	if(source == null || source.length < 2) return this;
     	TexturedVertex[] verts = (TexturedVertex[])Arrays.copyOf(source[0], source[0].length);
     	TexturedPolygon[] poly = (TexturedPolygon[])Arrays.copyOf(source[1], source[1].length);
