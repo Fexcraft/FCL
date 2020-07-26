@@ -223,7 +223,7 @@ public class BoxBuilder {
         }
         if(root.mirror ^ root.flip){
             for(int l = 0; l < poly.length; l++){
-            	poly[l].flipFace();
+            	if(poly != null) poly[l].flipFace();
             }
         }
         if(anyoff){
