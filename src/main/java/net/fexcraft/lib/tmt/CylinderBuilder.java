@@ -103,15 +103,27 @@ public class CylinderBuilder {
 		if(radius2 == 0f && toprot == null){
 			return root.addCylinder(x, y, z, radius, length, segments, base_scale, top_scale, direction, texDiameterW, texDiameterH, texHeight, topoff);
 		}
-		if(radius < 1){ texDiameterW = 2; texDiameterH = 2; } if(length < 1){ texHeight = 1; }
+		if(radius < 1){
+			int rad = radius < 0.5 ? 1 : 2;
+			if(texDiameterW < rad) texDiameterW = rad;
+			if(texDiameterH < rad) texDiameterH = rad;
+		}
+		if(length < 1) texHeight = 1;
 		//
 		boolean dirTop = (direction == MR_TOP || direction == MR_BOTTOM);
 		boolean dirSide = (direction == MR_RIGHT || direction == MR_LEFT);
 		boolean dirFront = (direction == MR_FRONT || direction == MR_BACK);
 		boolean dirMirror = (direction == MR_LEFT || direction == MR_BOTTOM || direction == MR_BACK);
-		if(base_scale == 0) base_scale = 1f; if(top_scale == 0) top_scale = 1f;
-		if(segments < 3) segments = 3; if(seglimit <= 0) seglimit = segments; boolean segl = seglimit < segments;
-		ArrayList<TexturedVertex> verts = new ArrayList<>(); ArrayList<TexturedPolygon> polis = new ArrayList<>();
+		if(base_scale == 0) base_scale = 1f;
+		if(top_scale == 0){
+			//top_scale = 1f;
+			togglesides[1] = true;
+		}
+		if(segments < 3) segments = 3;
+		if(seglimit <= 0) seglimit = segments;
+		boolean segl = seglimit < segments;
+		ArrayList<TexturedVertex> verts = new ArrayList<>();
+		ArrayList<TexturedPolygon> polis = new ArrayList<>();
 		//Vertex
 		float xLength = (dirSide ? length : 0), yLength = (dirTop ? length : 0), zLength = (dirFront ? length : 0);
 		float xStart = (dirMirror ? x + xLength : x);
@@ -158,10 +170,18 @@ public class CylinderBuilder {
 					TexturedVertex copy = new TexturedVertex(verts1.get(0)); verts1.add(copy);
 				}
 			}
-			verts.addAll(verts0); verts.addAll(verts1);
-			if(repeat == 0){ verts2.addAll(verts0); verts2.addAll(verts1); }
-			else{ verts3.addAll(verts0); verts3.addAll(verts1); }
-			float xSize, ySize; float mul = radialtexture ? repeat == 0 ? 0 : seg_height : repeat == 0 ? 0.5f : 1.5f;
+			verts.addAll(verts0);
+			verts.addAll(verts1);
+			if(repeat == 0){
+				verts2.addAll(verts0);
+				verts2.addAll(verts1);
+			}
+			else{
+				verts3.addAll(verts0);
+				verts3.addAll(verts1);
+			}
+			float xSize, ySize;
+			float mul = radialtexture ? repeat == 0 ? 0 : seg_height : repeat == 0 ? 0.5f : 1.5f;
 			boolean bool = repeat == 0 ? dirFront ? false : true : dirFront ? true : false;
 			if((repeat == 0 && !togglesides[0]) || (repeat == 1 && !togglesides[1])){
 				for(int i = 0; i < verts0.size(); i++){
@@ -204,7 +224,7 @@ public class CylinderBuilder {
 						arr[3].vector = /*verts0.get(i + 1).vector =*/ toprot.getRelativeVector(arr[3].vector);
 					}
 					polis.add(new TexturedPolygon(arr));
-					if(bool) polis.get(polis.size() - 1 ).flipFace();
+					if(bool) polis.get(polis.size() - 1).flipFace();
 				}
 			}
 			verts0.clear(); verts1.clear(); xCur = xEnd; yCur = yEnd; zCur = zEnd; sCur = top_scale;

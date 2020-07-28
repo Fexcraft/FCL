@@ -1098,7 +1098,12 @@ public class ModelRendererTurbo {
      * @param textureH the height of the texture of the body
      */
 	public ModelRendererTurbo addCylinder(float x, float y, float z, float radius, float length, int segments, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, Vec3f topoff){
-		if(radius < 1){ textureCircleDiameterW = 2; textureCircleDiameterH = 2; } if(length < 1){ textureH = 2; }
+		if(radius < 1){
+			int rad = radius < 0.5 ? 1 : 2;
+			if(textureCircleDiameterW < rad) textureCircleDiameterW = rad;
+			if(textureCircleDiameterH < rad) textureCircleDiameterH = rad;
+		}
+		if(length < 1) textureH = 1;
 		boolean dirTop = (baseDirection == MR_TOP || baseDirection == MR_BOTTOM);
 		boolean dirSide = (baseDirection == MR_RIGHT || baseDirection == MR_LEFT);
 		boolean dirFront = (baseDirection == MR_FRONT || baseDirection == MR_BACK);
@@ -1207,7 +1212,12 @@ public class ModelRendererTurbo {
 	 * @author Ferdinand Calo' (FEX___96)
 	**/
 	public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, Vec3f topoff, boolean[] bools){
-		if(radius < 1){ textureCircleDiameterW = 2; textureCircleDiameterH = 2; } if(length < 1){ textureH = 2; }
+		if(radius < 1){
+			int rad = radius < 0.5 ? 1 : 2;
+			if(textureCircleDiameterW < rad) textureCircleDiameterW = rad;
+			if(textureCircleDiameterH < rad) textureCircleDiameterH = rad;
+		}
+		if(length < 1) textureH = 1;
 		boolean dirTop = (baseDirection == MR_TOP || baseDirection == MR_BOTTOM);
 		boolean dirSide = (baseDirection == MR_RIGHT || baseDirection == MR_LEFT);
 		boolean dirFront = (baseDirection == MR_FRONT || baseDirection == MR_BACK);
@@ -1226,7 +1236,7 @@ public class ModelRendererTurbo {
 		float xCur = xStart, yCur = yStart, zCur = zStart, sCur = baseScale;
 		//Texture
 		float uScale = 1.0F / textureWidth, vScale = 1.0F / textureHeight;
-		float uOffset = uScale / 20.0F, vOffset = vScale / 20.0F;
+		float uOffset = uScale /*/ 20.0F*/, vOffset = vScale /*/ 20.0F*/;
 		float uCircle = textureCircleDiameterW * uScale;
 		float vCircle = textureCircleDiameterH * vScale;
 		float uCircle2 = ((int)Math.floor(radius2 * 2F)) * uScale;
@@ -1286,7 +1296,7 @@ public class ModelRendererTurbo {
 					ySize = (float)(Math.cos((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle - 2F * vOffset));
 					arr[3] = verts0.get(i + 1).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
 					polis.add(new TexturedPolygon(arr));
-					if(bool) polis.get(polis.size() - 1 ).flipFace();
+					if(bool) polis.get(polis.size() - 1).flipFace();
 				}
 			}
 			verts0.clear(); verts1.clear(); xCur = xEnd; yCur = yEnd; zCur = zEnd; sCur = topScale;
