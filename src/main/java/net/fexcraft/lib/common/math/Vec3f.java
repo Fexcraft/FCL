@@ -250,5 +250,9 @@ public class Vec3f {
 	public void copyFrom(Vec3f pos){
 		this.xCoord = pos.xCoord; this.yCoord = pos.yCoord; this.zCoord = pos.zCoord;
 	}
+
+	public boolean isNull(){
+		return xCoord == 0f && yCoord == 0f && zCoord == 0f;
+	}
     
 }
