@@ -200,6 +200,10 @@ public class BoxBuilder {
         verts[0] = tv0; verts[1] = tv1; verts[2] = tv2; verts[3] = tv3;
         verts[4] = tv4; verts[5] = tv5; verts[6] = tv6; verts[7] = tv7;
         float tx = root.texoffx, ty = root.texoffy;
+        float w = this.w, h = this.h, d = this.d;
+        if(w % 1 != 0) w = (int)w + (w % 1 > 0.5f ? 1 : 0);
+        if(h % 1 != 0) h = (int)h + (h % 1 > 0.5f ? 1 : 0);
+        if(d % 1 != 0) d = (int)d + (d % 1 > 0.5f ? 1 : 0);
         if(!anyoff){
             poly[0] = genPolygonWithUV(0, new TexturedVertex[] { tv5, tv1, tv2, tv6 }, tx, ty, d + w, d, d, h);
             poly[1] = genPolygonWithUV(1, new TexturedVertex[] { tv0, tv4, tv7, tv3 }, tx, ty, 0, d, d, h);

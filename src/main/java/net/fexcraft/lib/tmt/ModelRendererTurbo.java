@@ -261,6 +261,9 @@ public class ModelRendererTurbo {
         TexturedVertex tv7 = new TexturedVertex(v7[0], v7[1], v7[2], 8.0F, 0.0F);
         verts[0] = tv0; verts[1] = tv1; verts[2] = tv2; verts[3] = tv3;
         verts[4] = tv4; verts[5] = tv5; verts[6] = tv6; verts[7] = tv7;
+        if(w % 1 != 0) w = (int)w + (w % 1 > 0.5f ? 1 : 0);
+        if(h % 1 != 0) h = (int)h + (h % 1 > 0.5f ? 1 : 0);
+        if(d % 1 != 0) d = (int)d + (d % 1 > 0.5f ? 1 : 0);
         if(sides == null){
             poly[0] = addPolygonReturn(new TexturedVertex[] { tv5, tv1, tv2, tv6 }, texoffx + d + w, texoffy + d, texoffx + d + w + d, texoffy + d + h);
             poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv4, tv7, tv3 }, texoffx + 0, texoffy + d, texoffx + d, texoffy + d + h);
@@ -1104,6 +1107,9 @@ public class ModelRendererTurbo {
 			if(textureCircleDiameterH < rad) textureCircleDiameterH = rad;
 		}
 		if(length < 1) textureH = 1;
+		else if(length % 1 != 0){
+			textureH = (int)length + (length % 1 > 0.5f ? 1 : 0);
+		}
 		boolean dirTop = (baseDirection == MR_TOP || baseDirection == MR_BOTTOM);
 		boolean dirSide = (baseDirection == MR_RIGHT || baseDirection == MR_LEFT);
 		boolean dirFront = (baseDirection == MR_FRONT || baseDirection == MR_BACK);
@@ -1218,6 +1224,9 @@ public class ModelRendererTurbo {
 			if(textureCircleDiameterH < rad) textureCircleDiameterH = rad;
 		}
 		if(length < 1) textureH = 1;
+		else if(length % 1 != 0){
+			textureH = (int)length + (length % 1 > 0.5f ? 1 : 0);
+		}
 		boolean dirTop = (baseDirection == MR_TOP || baseDirection == MR_BOTTOM);
 		boolean dirSide = (baseDirection == MR_RIGHT || baseDirection == MR_LEFT);
 		boolean dirFront = (baseDirection == MR_FRONT || baseDirection == MR_BACK);

@@ -109,6 +109,9 @@ public class CylinderBuilder {
 			if(texDiameterH < rad) texDiameterH = rad;
 		}
 		if(length < 1) texHeight = 1;
+		else if(length % 1 != 0){
+			texHeight = (int)length + (length % 1 > 0.5f ? 1 : 0);
+		}
 		//
 		boolean dirTop = (direction == MR_TOP || direction == MR_BOTTOM);
 		boolean dirSide = (direction == MR_RIGHT || direction == MR_LEFT);
