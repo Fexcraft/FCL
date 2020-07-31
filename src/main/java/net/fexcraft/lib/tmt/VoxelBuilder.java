@@ -82,7 +82,7 @@ public class VoxelBuilder {
 		} return export;
 	}
 	
-	private ArrayList<int[]> rectangulate(){
+	public ArrayList<int[]> rectangulate(){
 		ArrayList<int[]> rects = new ArrayList<int[]>();
 		for(int x = 0; x < segx; x++){
 			for(int y = 0; y < segy; y++){
