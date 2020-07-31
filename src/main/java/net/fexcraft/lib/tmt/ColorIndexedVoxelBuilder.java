@@ -87,7 +87,7 @@ public class ColorIndexedVoxelBuilder {
 		} return export;
 	}
 	
-	private ArrayList<int[]> rectangulate(){
+	public ArrayList<int[]> rectangulate(){
 		//System.out.println("Starting rectangulation.");
 		ArrayList<int[]> rects = new ArrayList<int[]>();
 		for(int i : colours.keySet()){
