@@ -90,9 +90,10 @@ public class BluePrintTableContainer2 extends GenericContainer {
 				}
 			}
 			catch(Exception e){
-				e.printStackTrace(); Print.chat(player, e.getMessage());
+				e.printStackTrace();
+				Print.chat(player, e.getMessage());
 			}
-			player.closeScreen();
+			//player.closeScreen();
 		}
 		else return;
 	}
