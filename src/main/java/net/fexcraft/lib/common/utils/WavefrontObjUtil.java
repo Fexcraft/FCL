@@ -8,8 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import javax.annotation.Nullable;
-
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
@@ -121,7 +119,7 @@ public class WavefrontObjUtil {
 	}
 
 	/** (Strongly) Based on the old OBJ parsing method in TMT/MRT. */
-	public static Object[][] getVerticesAndPolygons(InputStream stream, @Nullable String group, boolean flipaxes, boolean objmode){
+	public static Object[][] getVerticesAndPolygons(InputStream stream, String group, boolean flipaxes, boolean objmode){
 		TexturedVertex[] vertices = null;
 		TexturedPolygon[] polygons = null;
 		Boolean passing = null;
