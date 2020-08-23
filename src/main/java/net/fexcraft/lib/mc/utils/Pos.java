@@ -16,15 +16,17 @@ public class Pos {
 
     public static final Pos NULL = new Pos(0, 0, 0);
 	public final float x, y, z;
+	public final float x16, y16, z16;
 
     public Pos(float x, float y, float z){
         this.x = x; this.y = y; this.z = z;
+        x16 = x * Static.sixteenth;
+        y16 = y * Static.sixteenth;
+        z16 = z * Static.sixteenth;
     }
 
     public Pos(float[] pos){
-    	x = pos.length >= 1 ? pos[0] : 0;
-    	y = pos.length >= 2 ? pos[0] : 0;
-    	z = pos.length >= 3 ? pos[0] : 0;
+    	this(pos.length >= 1 ? pos[0] : 0, pos.length >= 2 ? pos[1] : 0, pos.length >= 3 ? pos[2] : 0);
     }
 
     public Pos copy(){
@@ -41,15 +43,15 @@ public class Pos {
     }
 
     public float to16FloatX(){
-        return 0.0625f * x;
+        return x16;
     }
 
     public float to16FloatY(){
-        return 0.0625f * y;
+        return y16;
     }
 
     public float to16FloatZ(){
-        return 0.0625f * z;
+        return z16;
     }
 
 	public com.google.gson.JsonElement toJson(boolean asarray){
@@ -101,19 +103,19 @@ public class Pos {
     }
 
     public void translate(){
-        GL11.glTranslatef(x == 0 ? 0 : this.to16FloatX(), y == 0 ? 0 : this.to16FloatY(), z == 0 ? 0 : this.to16FloatZ());
+        GL11.glTranslatef(x16, y16, z16);
     }
 
     public void translateR(){
-        GL11.glTranslatef(x == 0 ? 0 : -this.to16FloatX(), y == 0 ? 0 : -this.to16FloatY(), z == 0 ? 0 : -this.to16FloatZ());
+        GL11.glTranslatef(-x16, -y16, -z16);
     }
 
     public Vec3d to16Double(){
-        return new Vec3d(this.to16FloatX(), this.to16FloatY(), this.to16FloatZ());
+        return new Vec3d(x16, y16, z16);
     }
 
 	public Vec3f to16Float(){
-		return new Vec3f(this.to16FloatX(), this.to16FloatY(), this.to16FloatZ());
+		return new Vec3f(x16, y16, z16);
 	}
 
 	public Pos add(Pos pos){
