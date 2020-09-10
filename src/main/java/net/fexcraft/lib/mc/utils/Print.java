@@ -102,7 +102,6 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static <T> T debugR(Object obj){
 		if(Static.dev()){ log(obj); }
 		return (T)obj;
