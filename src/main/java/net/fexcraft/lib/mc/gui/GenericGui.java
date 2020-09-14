@@ -33,8 +33,7 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
     protected boolean defbackground = true;
     protected EntityPlayer player;
     
-    @SuppressWarnings("unchecked")
-	public GenericGui(ResourceLocation texture, GenericContainer container, EntityPlayer player){
+    public GenericGui(ResourceLocation texture, GenericContainer container, EntityPlayer player){
     	super(container == null ? new GenericContainer.DefImpl(player) : container);
     	this.texloc = texture == null ? new ResourceLocation("minecraft:textures/blocks/stone.png") : texture;
     	this.container = (CONTAINER)this.inventorySlots;
