@@ -19,13 +19,15 @@ import net.fexcraft.lib.common.math.Vec3f;
  * Cylinder Builder Tool, to prevent the need of XYZ amount of chained methods.
  * @author Ferdinand Calo' (FEX___96)
  */
-public class CylinderBuilder {
+public class CylinderBuilder implements CustomUVBuilder {
 	
 	private ModelRendererTurbo root;
 	private float x, y, z, radius, radius2, length, base_scale, top_scale;
-	private int segments, seglimit, direction, texDiameterW, texDiameterH, texHeight;
+	private int segments, seglimit, direction;
 	private Vec3f topoff = new Vec3f();
-	private boolean[] togglesides;
+	private boolean[] invisible = new boolean[4];
+	private float[][] uv = new float[6][];
+	private boolean[] detached = new boolean[6];
 	private AxisRotator toprot;
 	//
 	private boolean radialtexture = false;
@@ -40,21 +42,23 @@ public class CylinderBuilder {
 	}
 	
 	public CylinderBuilder setRadius(float first, float second){
-		this.radius = first; this.radius2 = second; texDiameterW = (int)Math.floor(radius * 2F); texDiameterH = (int)Math.floor(radius * 2F); return this;
+		this.radius = first; this.radius2 = second;
+		return this;
 	}
 	
-	/** Use AFTER `setRadius`, else values will get overriden. */
+	@Deprecated
 	public CylinderBuilder setTextureDiameter(int width, int height){
-		texDiameterW = width; texDiameterH = height; return this;
+		return this;
 	}
 	
 	public CylinderBuilder setLength(float length){
-		this.length = length; texHeight = (int)Math.floor(length); return this;
+		this.length = length;
+		return this;
 	}
 	
-	/** Use AFTER `setLength`, else value will get overriden. */
+	@Deprecated
 	public CylinderBuilder setTextureHeight(int height){
-		texHeight = height; return this;
+		return this;
 	}
 	
 	public CylinderBuilder setTopOffset(float x, float y, float z){
@@ -65,12 +69,73 @@ public class CylinderBuilder {
 		topoff = vec; return this;
 	}
 	
+	@Deprecated
 	public CylinderBuilder setSidesVisible(boolean[] arr){
-		this.togglesides = arr; return this;
+		this.invisible = arr; return this;
+	}
+
+	@Deprecated
+	public CylinderBuilder setSidesVisible(boolean base, boolean top, boolean outer, boolean inner){
+		this.invisible = new boolean[]{ base, top, outer, inner }; return this;
 	}
 	
-	public CylinderBuilder setSidesVisible(boolean base, boolean top, boolean outer, boolean inner){
-		this.togglesides = new boolean[]{ base, top, outer, inner }; return this;
+	public CylinderBuilder removePolygon(int index){
+		if(index < 0 || index > 5) return this;
+		invisible[index] = true;
+		return this;
+	}
+	
+	public CylinderBuilder removePolygons(int... poly_indices){
+		for(int index : poly_indices){
+			if(index < 0 || index > 5) continue;
+			invisible[index] = true;
+		}
+		return this;
+	}
+
+	public CylinderBuilder removePolygons(boolean... sides){
+		for(int index = 0; index < 6; index++){
+			if(sides.length >= (index + 1) && sides[index]) invisible[index] = true;
+		}
+		return this;
+	}
+	
+	public CylinderBuilder setPolygonUV(int poly_index, float[] uv){
+		if(poly_index < 0 || poly_index > 5) return this;
+		this.uv[poly_index] = uv;
+		return this;
+	}
+	
+	public CylinderBuilder setPolygonUVs(int[] poly_indices, float[][] uvs){
+		for(int i = 0; i < poly_indices.length; i++){
+			if(poly_indices[i] < 0 || poly_indices[i] > 5) continue;
+			setPolygonUV(poly_indices[i], uvs[i]);
+		}
+		return this;
+	}
+	
+	public CylinderBuilder setPolygonUVs(float[][] uvs){
+		for(int index = 0; index < 6; index++){
+			if(index >= uvs.length) break;
+			setPolygonUV(index, uvs[index]);
+		}
+		return this;
+	}
+	
+	public CylinderBuilder setDetachedUV(int... indices){
+		for(int index : indices){
+			if(index < 0 || index > 5) continue;
+			detached[index] = true;
+		}
+		return this;
+	}
+	
+	public CylinderBuilder setDetachedUV(boolean... bools){
+		for(int index = 0; index < 6; index++){
+			if(index >= bools.length) break;
+			setDetachedUV(index);
+		}
+		return this;
 	}
 
 	/** Currently no support for hollow-less cylinders to be segmented. */
@@ -101,16 +166,17 @@ public class CylinderBuilder {
 	
 	public ModelRendererTurbo build(){
 		if(radius2 == 0f && toprot == null){
-			return root.addCylinder(x, y, z, radius, length, segments, base_scale, top_scale, direction, texDiameterW, texDiameterH, texHeight, topoff);
+			return root.addCylinder(x, y, z, radius, length, segments, base_scale, top_scale, direction, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), topoff);
 		}
+		float diameter = (int)Math.floor(radius * 2F);
+		float texheight = (int)Math.floor(length);
 		if(radius < 1){
 			int rad = radius < 0.5 ? 1 : 2;
-			if(texDiameterW < rad) texDiameterW = rad;
-			if(texDiameterH < rad) texDiameterH = rad;
+			if(diameter < rad) diameter = rad;
 		}
-		if(length < 1) texHeight = 1;
+		if(length < 1) texheight = 1;
 		else if(length % 1 != 0){
-			texHeight = (int)length + (length % 1 > 0.5f ? 1 : 0);
+			texheight = (int)length + (length % 1 > 0.5f ? 1 : 0);
 		}
 		//
 		boolean dirTop = (direction == MR_TOP || direction == MR_BOTTOM);
@@ -120,7 +186,7 @@ public class CylinderBuilder {
 		if(base_scale == 0) base_scale = 1f;
 		if(top_scale == 0){
 			//top_scale = 1f;
-			togglesides[1] = true;
+			invisible[1] = true;
 		}
 		if(segments < 3) segments = 3;
 		if(seglimit <= 0) seglimit = segments;
@@ -137,14 +203,35 @@ public class CylinderBuilder {
 		float zEnd = (!dirMirror ? z + zLength : z) + (topoff == null ? 0 : topoff.zCoord);
 		float xCur = xStart, yCur = yStart, zCur = zStart, sCur = base_scale;
 		//Texture
+		boolean anyoff = false;
+		for(boolean bool : invisible){
+			if(bool){
+				anyoff = true;
+				break;
+			}
+		}
+		float[][] uvcoords = new float[6][];
 		float uScale = 1.0F / root.textureWidth, vScale = 1.0F / root.textureHeight;
-		float uOffset = 0/*uScale / 20.0F*/, vOffset = 0;//vScale / 20.0F;
-		float uCircle = texDiameterW * uScale;
-		float vCircle = texDiameterH * vScale;
+		float uCircle = diameter * uScale;
+		float vCircle = diameter * vScale;
 		float uCircle2 = ((int)Math.floor(radius2 * 2F)) * uScale;
 		float vCircle2 = ((int)Math.floor(radius2 * 2F)) * vScale;
-		float uWidth = (uCircle * 2F - uOffset * 2F) / segments;
-		float vHeight = texHeight * vScale - uOffset * 2f;
+		if(!anyoff){
+			uvcoords[0] = new float[]{
+				root.texoffx * uScale, root.texoffy * vScale,
+				root.texoffx * uScale + uCircle, root.texoffy * vScale + vCircle
+			};
+			uvcoords[2] = new float[]{
+				root.texoffx * uScale + uCircle, root.texoffy * vScale,
+				root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle
+			};
+			//TODO
+		}
+		else{
+			//TODO
+		}
+		float uWidth = (uCircle * 2F) / segments;
+		float vHeight = texheight * vScale;
 		float uStart = root.texoffx * uScale, vStart = root.texoffy * vScale;
 		//Temporary Arrays
 		ArrayList<TexturedVertex> verts0 = new ArrayList<>();
@@ -186,7 +273,7 @@ public class CylinderBuilder {
 			float xSize, ySize;
 			float mul = radialtexture ? repeat == 0 ? 0 : seg_height : repeat == 0 ? 0.5f : 1.5f;
 			boolean bool = repeat == 0 ? dirFront ? false : true : dirFront ? true : false;
-			if((repeat == 0 && !togglesides[0]) || (repeat == 1 && !togglesides[1])){
+			if((repeat == 0 && !invisible[0]) || (repeat == 1 && !invisible[1])){
 				for(int i = 0; i < verts0.size(); i++){
 					if(i >= (verts0.size() - 1) || i >= seglimit){
 						if(repeat != 0 && toprot != null){
@@ -197,20 +284,20 @@ public class CylinderBuilder {
 					}
 					TexturedVertex[] arr = new TexturedVertex[4];
 					if(!radialtexture){
-						xSize = (float)(Math.sin((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle - 2F * uOffset));
-						ySize = (float)(Math.cos((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle - 2F * vOffset));
+						xSize = (float)(Math.sin((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle));
+						ySize = (float)(Math.cos((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle));
 						arr[0] = verts0.get(i).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
 						//
-						xSize = (float)(Math.sin((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2 - 2F * uOffset));
-						ySize = (float)(Math.cos((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2 - 2F * vOffset));
+						xSize = (float)(Math.sin((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2));
+						ySize = (float)(Math.cos((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2));
 						arr[1] = verts1.get(i).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
 						//
-						xSize = (float)(Math.sin((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2 - 2F * uOffset));
-						ySize = (float)(Math.cos((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2 - 2F * vOffset));
+						xSize = (float)(Math.sin((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2));
+						ySize = (float)(Math.cos((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2));
 						arr[2] = verts1.get(i + 1).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
 						//
-						xSize = (float)(Math.sin((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle - 2F * uOffset));
-						ySize = (float)(Math.cos((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle - 2F * vOffset));
+						xSize = (float)(Math.sin((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle));
+						ySize = (float)(Math.cos((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle));
 						arr[3] = verts0.get(i + 1).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
 					}
 					else{
@@ -236,38 +323,38 @@ public class CylinderBuilder {
 		if(radialtexture){ vCircle = (seg_height + seg_height) * vScale; }
 		for(int i = 0; i < halfv2; i++){
 			if(i >= seglimit && segl){
-				TexturedVertex[] arr = new TexturedVertex[4]; float xpos = uStart + uOffset + (uCircle * 2f);
-				arr[0] = verts2.get(0).setTexturePosition(xpos, vStart + vOffset + vCircle);
-				arr[1] = verts3.get(0).setTexturePosition(xpos, vStart + vOffset + vCircle + vHeight);
-				arr[2] = verts3.get(halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vOffset + vCircle + vHeight);
-				arr[3] = verts2.get(halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vOffset + vCircle);
+				TexturedVertex[] arr = new TexturedVertex[4]; float xpos = uStart + (uCircle * 2f);
+				arr[0] = verts2.get(0).setTexturePosition(xpos, vStart + vCircle);
+				arr[1] = verts3.get(0).setTexturePosition(xpos, vStart + vCircle + vHeight);
+				arr[2] = verts3.get(halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vCircle + vHeight);
+				arr[3] = verts2.get(halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vCircle);
 				polis.add(new TexturedPolygon(arr));
 				if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
 				arr = new TexturedVertex[4];
-				arr[0] = verts2.get(seglimit).setTexturePosition(xpos, vStart + vOffset + vCircle + vHeight);
-				arr[1] = verts3.get(seglimit).setTexturePosition(xpos, vStart + vOffset + vCircle + vHeight + vHeight);
-				arr[2] = verts3.get(seglimit + halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vOffset + vCircle + vHeight + vHeight);
-				arr[3] = verts2.get(seglimit + halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vOffset + vCircle + vHeight);
+				arr[0] = verts2.get(seglimit).setTexturePosition(xpos, vStart + vCircle + vHeight);
+				arr[1] = verts3.get(seglimit).setTexturePosition(xpos, vStart + vCircle + vHeight + vHeight);
+				arr[2] = verts3.get(seglimit + halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vCircle + vHeight + vHeight);
+				arr[3] = verts2.get(seglimit + halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vCircle + vHeight);
 				polis.add(new TexturedPolygon(arr));
 				if(dirFront) polis.get(polis.size() - 1 ).flipFace();
 				break;
 			}
 			if(i >= (halfv2 - 1)) break;
 			TexturedVertex[] arr = new TexturedVertex[4];
-			if(!togglesides[2]){
-				arr[0] = verts2.get(i + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle);
-				arr[1] = verts3.get(i + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle + vHeight);
-				arr[2] = verts3.get(i + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle + vHeight);
-				arr[3] = verts2.get(i + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle);
+			if(!invisible[2]){
+				arr[0] = verts2.get(i + 0).setTexturePosition(uStart + uWidth * (i + 0), vStart + vCircle);
+				arr[1] = verts3.get(i + 0).setTexturePosition(uStart + uWidth * (i + 0), vStart + vCircle + vHeight);
+				arr[2] = verts3.get(i + 1).setTexturePosition(uStart + uWidth * (i + 1), vStart + vCircle + vHeight);
+				arr[3] = verts2.get(i + 1).setTexturePosition(uStart + uWidth * (i + 1), vStart + vCircle);
 				polis.add(new TexturedPolygon(arr));
 				if(dirFront) polis.get(polis.size() - 1 ).flipFace();
 			}
-			if(!togglesides[3]){
+			if(!invisible[3]){
 				arr = new TexturedVertex[4];
-				arr[0] = verts2.get(i + halfv2 + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle + vHeight);
-				arr[1] = verts3.get(i + halfv2 + 0).setTexturePosition(uStart + uOffset + uWidth * (i + 0), vStart + vOffset + vCircle + vHeight + vHeight);
-				arr[2] = verts3.get(i + halfv2 + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle + vHeight + vHeight);
-				arr[3] = verts2.get(i + halfv2 + 1).setTexturePosition(uStart + uOffset + uWidth * (i + 1), vStart + vOffset + vCircle + vHeight);
+				arr[0] = verts2.get(i + halfv2 + 0).setTexturePosition(uStart + uWidth * (i + 0), vStart + vCircle + vHeight);
+				arr[1] = verts3.get(i + halfv2 + 0).setTexturePosition(uStart + uWidth * (i + 0), vStart + vCircle + vHeight + vHeight);
+				arr[2] = verts3.get(i + halfv2 + 1).setTexturePosition(uStart + uWidth * (i + 1), vStart + vCircle + vHeight + vHeight);
+				arr[3] = verts2.get(i + halfv2 + 1).setTexturePosition(uStart + uWidth * (i + 1), vStart + vCircle + vHeight);
 				polis.add(new TexturedPolygon(arr));
 				if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
 			}
