@@ -8,7 +8,7 @@ import net.fexcraft.lib.common.math.Vec3f;
  * Box Builder, initially intended to be part of FMR, but as things stand it will be part of TMT for now.
  * @author Ferdinand Calo' (FEX___96)
  */
-public class BoxBuilder {
+public class BoxBuilder implements CustomUVBuilder {
 	
 	private final ModelRendererTurbo root;
 	private float x, y, z, expansion, w, h, d;
