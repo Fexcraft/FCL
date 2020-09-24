@@ -216,22 +216,37 @@ public class CylinderBuilder implements CustomUVBuilder {
 		float vCircle = diameter * vScale;
 		float uCircle2 = ((int)Math.floor(radius2 * 2F)) * uScale;
 		float vCircle2 = ((int)Math.floor(radius2 * 2F)) * vScale;
+		float vHeight = texheight * vScale;
 		if(!anyoff){
 			uvcoords[0] = new float[]{
 				root.texoffx * uScale, root.texoffy * vScale,
 				root.texoffx * uScale + uCircle, root.texoffy * vScale + vCircle
 			};
-			uvcoords[2] = new float[]{
+			uvcoords[1] = new float[]{
 				root.texoffx * uScale + uCircle, root.texoffy * vScale,
 				root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle
 			};
-			//TODO
+			uvcoords[2] = new float[]{
+				root.texoffx * uScale, root.texoffy * vScale + vCircle,
+				root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle + vHeight
+			};
+			uvcoords[3] = new float[]{
+				root.texoffx * uScale, root.texoffy * vScale + vCircle + vHeight,
+				root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vHeight + vHeight
+			};
+			uvcoords[4] = new float[]{
+				root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle,
+				root.texoffx * uScale + uCircle + uCircle + ((radius - radius2) * uScale), root.texoffy * vScale + vHeight
+			};
+			uvcoords[5] = new float[]{
+				root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle + vHeight,
+				root.texoffx * uScale + uCircle + uCircle + ((radius - radius2) * uScale), root.texoffy * vScale + vHeight + vHeight
+			};
 		}
 		else{
 			//TODO
 		}
 		float uWidth = (uCircle * 2F) / segments;
-		float vHeight = texheight * vScale;
 		float uStart = root.texoffx * uScale, vStart = root.texoffy * vScale;
 		//Temporary Arrays
 		ArrayList<TexturedVertex> verts0 = new ArrayList<>();
