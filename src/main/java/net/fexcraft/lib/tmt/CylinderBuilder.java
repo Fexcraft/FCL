@@ -221,14 +221,25 @@ public class CylinderBuilder implements CustomUVBuilder {
 		uSeg *= uScale;
 		{
 			float x = root.texoffx * uScale, y = root.texoffy * vScale;
-			uvs[0] = new float[]{ x, y, };
-			uvs[1] = new float[]{ x + (detached(0) ? 0 : uCircle), y, };
-			float cirhi = detached(0) && detached(1) ? 0 : radialtexture ? seg_height * vScale : vCircle;
+			uvs[0] = new float[]{ x, y };
+			uvs[1] = new float[]{ x + (detached(0) || radialtexture ? 0 : uCircle), y + (radialtexture && !detached(0) ? seg_height : 0) };
+			float cirhi = detached(0) && detached(1) ? 0 : radialtexture ? (seg_height * (detached(0) || detached(1) ? 1 : 2)) * vScale : vCircle;
 			float cirwi = detached(2) && detached(3) ? 0 : uCircle + uCircle;
 			uvs[2] = new float[]{ x, y + cirhi };
 			uvs[3] = new float[]{ x, y + cirhi + (detached(2) ? 0 : vHeight) };
 			uvs[4] = new float[]{ x + cirwi, y + cirhi, };
 			uvs[5] = new float[]{ x + cirwi + (detached(2) || detached(3) ? uSeg : 0), y + cirhi + (detached(2) || detached(3) ? 0 : vHeight) };
+			for(int i = 0; i < uv.length; i++){
+				if(invisible[i]) continue;
+				if(detached[i]){
+					uvs[i][0] = uv[i][0] * uScale;
+					uvs[i][1] = uv[i][1] * vScale;
+				}
+				else{
+					uvs[i][0] += uv[i][0] * uScale;
+					uvs[i][1] += uv[i][1] * vScale;
+				}
+			}
 		}
 		float uWidth = (uCircle * 2F) / segments;
 		float segpi = Static.PI / segments;
