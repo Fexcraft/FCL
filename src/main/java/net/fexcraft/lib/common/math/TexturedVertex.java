@@ -29,4 +29,8 @@ public class TexturedVertex {
 		return new TexturedVertex(this, x, y);
 	}
 	
+	public TexturedVertex setTexturePosition(double x, double y){
+		return new TexturedVertex(this, (float)x, (float)y);
+	}
+	
 }
