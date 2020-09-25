@@ -25,7 +25,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 	private float x, y, z, radius, radius2, length, base_scale, top_scale;
 	private int segments, seglimit, direction;
 	private Vec3f topoff = new Vec3f();
-	private boolean[] invisible = new boolean[4];
+	private boolean[] invisible = new boolean[6];
 	private float[][] uv = new float[6][];
 	private boolean[] detached = new boolean[6];
 	private AxisRotator toprot;
@@ -138,6 +138,10 @@ public class CylinderBuilder implements CustomUVBuilder {
 		return this;
 	}
 
+	private boolean detached(int i){
+		return invisible[i] || detached[i];
+	}
+
 	/** Currently no support for hollow-less cylinders to be segmented. */
 	public CylinderBuilder setSegments(int amount, int limit){
 		this.segments = amount; this.seglimit = limit; return this;
@@ -203,13 +207,6 @@ public class CylinderBuilder implements CustomUVBuilder {
 		float zEnd = (!dirMirror ? z + zLength : z) + (topoff == null ? 0 : topoff.zCoord);
 		float xCur = xStart, yCur = yStart, zCur = zStart, sCur = base_scale;
 		//Texture
-		boolean anyoff = false;
-		for(boolean bool : invisible){
-			if(bool){
-				anyoff = true;
-				break;
-			}
-		}
 		float[][] uvs = new float[6][];
 		float uScale = 1.0F / root.textureWidth, vScale = 1.0F / root.textureHeight;
 		float uCircle = diameter * uScale;
@@ -217,16 +214,22 @@ public class CylinderBuilder implements CustomUVBuilder {
 		float uCircle2 = ((int)Math.floor(radius2 * 2F)) * uScale;
 		float vCircle2 = ((int)Math.floor(radius2 * 2F)) * vScale;
 		float vHeight = texheight * vScale;
-		if(!anyoff){
-			uvs[0] = new float[]{ root.texoffx * uScale, root.texoffy * vScale, };
-			uvs[1] = new float[]{ root.texoffx * uScale + uCircle, root.texoffy * vScale, };
-			uvs[2] = new float[]{ root.texoffx * uScale, root.texoffy * vScale + vCircle, };
-			uvs[3] = new float[]{ root.texoffx * uScale, root.texoffy * vScale + vCircle + vHeight, };
-			uvs[4] = new float[]{ root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle, };
-			uvs[5] = new float[]{ root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle + vHeight, };
+		float uSeg = radius - radius2;
+		if(uSeg < 1) uSeg = 1;
+		else if(uSeg % 1 != 0){
+			uSeg = (int)uSeg + (uSeg % 1 > 0.5f ? 1 : 0);
 		}
-		else{
-			//TODO
+		uSeg *= uScale;
+		{
+			float x = root.texoffx * uScale, y = root.texoffy * vScale;
+			uvs[0] = new float[]{ x, y, };
+			uvs[1] = new float[]{ x + (detached(0) ? 0 : uCircle), y, };
+			float cirhi = detached(0) && detached(1) ? 0 : radialtexture ? seg_height * vScale : vCircle;
+			float cirwi = detached(2) && detached(3) ? 0 : uCircle + uCircle;
+			uvs[2] = new float[]{ x, y + cirhi };
+			uvs[3] = new float[]{ x, y + cirhi + (detached(2) ? 0 : vHeight) };
+			uvs[4] = new float[]{ x + cirwi, y + cirhi, };
+			uvs[5] = new float[]{ x + cirwi + (detached(2) || detached(3) ? uSeg : 0), y + cirhi + (detached(2) || detached(3) ? 0 : vHeight) };
 		}
 		float uWidth = (uCircle * 2F) / segments;
 		float segpi = Static.PI / segments;
@@ -298,7 +301,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 						arr[3] = verts0.get(i + 1).setTexturePosition(uvs[repeat][0] + mul * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
 					}
 					else{
-						float diff = (radius - radius2) * uScale / 4;
+						float diff = uSeg / 4;
 						arr[0] = verts0.get(i).setTexturePosition(uvs[repeat][0] + (i * seg_width) * uScale, uvs[repeat][1] + (mul * vScale));
 						arr[1] = verts1.get(i).setTexturePosition(uvs[repeat][0] + (i * seg_width) * uScale + diff, uvs[repeat][1] + ((seg_height + mul) * vScale));
 						arr[2] = verts1.get(i + 1).setTexturePosition(uvs[repeat][0] + ((i + 1) * seg_width) * uScale - diff, uvs[repeat][1] + ((seg_height + mul) * vScale));
@@ -319,20 +322,24 @@ public class CylinderBuilder implements CustomUVBuilder {
 		int halfv2 = verts2.size() / 2;
 		for(int i = 0; i < halfv2; i++){
 			if(i >= seglimit && segl){
-				TexturedVertex[] arr = new TexturedVertex[4];
-				arr[0] = verts2.get(0).setTexturePosition(uvs[4][0], uvs[4][1]);
-				arr[1] = verts3.get(0).setTexturePosition(uvs[4][0], uvs[4][1] + vHeight);
-				arr[2] = verts3.get(halfv2).setTexturePosition(uvs[4][0] + ((radius - radius2) * uScale), uvs[4][1] + vHeight);
-				arr[3] = verts2.get(halfv2).setTexturePosition(uvs[4][0] + ((radius - radius2) * uScale), uvs[4][1]);
-				polis.add(new TexturedPolygon(arr));
-				if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
-				arr = new TexturedVertex[4];
-				arr[0] = verts2.get(seglimit).setTexturePosition(uvs[5][0], uvs[5][1]);
-				arr[1] = verts3.get(seglimit).setTexturePosition(uvs[5][0], uvs[5][1] + vHeight);
-				arr[2] = verts3.get(seglimit + halfv2).setTexturePosition(uvs[5][0] + ((radius - radius2) * uScale), uvs[5][1] + vHeight);
-				arr[3] = verts2.get(seglimit + halfv2).setTexturePosition(uvs[5][0] + ((radius - radius2) * uScale), uvs[5][1]);
-				polis.add(new TexturedPolygon(arr));
-				if(dirFront) polis.get(polis.size() - 1 ).flipFace();
+				if(!invisible[4]){
+					TexturedVertex[] arr = new TexturedVertex[4];
+					arr[0] = verts2.get(0).setTexturePosition(uvs[4][0], uvs[4][1]);
+					arr[1] = verts3.get(0).setTexturePosition(uvs[4][0], uvs[4][1] + vHeight);
+					arr[2] = verts3.get(halfv2).setTexturePosition(uvs[4][0] + uSeg, uvs[4][1] + vHeight);
+					arr[3] = verts2.get(halfv2).setTexturePosition(uvs[4][0] + uSeg, uvs[4][1]);
+					polis.add(new TexturedPolygon(arr));
+					if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
+				}
+				if(!invisible[5]){
+					TexturedVertex[] arr = new TexturedVertex[4];
+					arr[0] = verts2.get(seglimit).setTexturePosition(uvs[5][0], uvs[5][1]);
+					arr[1] = verts3.get(seglimit).setTexturePosition(uvs[5][0], uvs[5][1] + vHeight);
+					arr[2] = verts3.get(seglimit + halfv2).setTexturePosition(uvs[5][0] + uSeg, uvs[5][1] + vHeight);
+					arr[3] = verts2.get(seglimit + halfv2).setTexturePosition(uvs[5][0] + uSeg, uvs[5][1]);
+					polis.add(new TexturedPolygon(arr));
+					if(dirFront) polis.get(polis.size() - 1 ).flipFace();
+				}
 				break;
 			}
 			if(i >= (halfv2 - 1)) break;
