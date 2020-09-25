@@ -42,8 +42,7 @@ public class ModelRendererTurbo {
     public boolean showModel, forcedRecompile, mirror, flip;
     public boolean isShape3D, textured = true;//, triline;
     public RGB linesColor, polygonColor;
-    private TexturedVertex vertices[];
-    private TexturedPolygon faces[];
+    private ArrayList<TexturedPolygon> faces;
     private Integer displayList;
     public int texoffx, texoffy;
     public List<ModelRendererTurbo> childModels;
@@ -52,8 +51,7 @@ public class ModelRendererTurbo {
 	public ModelRendererTurbo(Object modelbase, String s){
 		//super(modelbase, s);
     	flip = false; mirror = false; showModel = true;
-        vertices = new TexturedVertex[0];
-        faces = new TexturedPolygon[0];
+        faces = new ArrayList<>();
         forcedRecompile = false; boxName = s;
 	}
 	
@@ -144,9 +142,10 @@ public class ModelRendererTurbo {
     /**
      * Creates a new polygon.
      * @param verts an array of vertices
+     * @return 
      */
-    public void addPolygon(TexturedVertex[] verts){
-    	copyTo(verts, new TexturedPolygon[] {new TexturedPolygon(verts)});
+    public ModelRendererTurbo addPolygon(TexturedVertex[] verts){
+    	return copyTo(new TexturedPolygon(verts));
     }
     
     /**
@@ -174,7 +173,7 @@ public class ModelRendererTurbo {
      * @param v2
      */
     public void addPolygon(TexturedVertex[] verts, int u1, int v1, int u2, int v2){
-    	copyTo(verts, new TexturedPolygon[]{ addPolygonReturn(verts, u1, v1, u2, v2) });
+    	copyTo(addPolygonReturn(verts, u1, v1, u2, v2));
     }
     
     private TexturedPolygon addPolygonReturn(TexturedVertex[] verts, float x0, float y0, float x1, float y1){
@@ -249,7 +248,6 @@ public class ModelRendererTurbo {
     }
     
     public ModelRendererTurbo addRectShape(float[] v0, float[] v1, float[] v2, float[] v3, float[] v4, float[] v5, float[] v6, float[] v7, float w, float h, float d, boolean[] sides){
-    	TexturedVertex[] verts = new TexturedVertex[8];
         TexturedPolygon[] poly = new TexturedPolygon[6];
         TexturedVertex tv0 = new TexturedVertex(v0[0], v0[1], v0[2], 0.0F, 0.0F);
         TexturedVertex tv1 = new TexturedVertex(v1[0], v1[1], v1[2], 0.0F, 8.0F);
@@ -259,8 +257,6 @@ public class ModelRendererTurbo {
         TexturedVertex tv5 = new TexturedVertex(v5[0], v5[1], v5[2], 0.0F, 8.0F);
         TexturedVertex tv6 = new TexturedVertex(v6[0], v6[1], v6[2], 8.0F, 8.0F);
         TexturedVertex tv7 = new TexturedVertex(v7[0], v7[1], v7[2], 8.0F, 0.0F);
-        verts[0] = tv0; verts[1] = tv1; verts[2] = tv2; verts[3] = tv3;
-        verts[4] = tv4; verts[5] = tv5; verts[6] = tv6; verts[7] = tv7;
         if(w % 1 != 0) w = w < 1 ? 1 : (int)w + (w % 1 > 0.5f ? 1 : 0);
         if(h % 1 != 0) h = h < 1 ? 1 : (int)h + (h % 1 > 0.5f ? 1 : 0);
         if(d % 1 != 0) d = d < 1 ? 1 : (int)d + (d % 1 > 0.5f ? 1 : 0);
@@ -302,36 +298,38 @@ public class ModelRendererTurbo {
         	}
         	poly = polygons;
         }
-        return copyTo(verts, poly);
+        return copyTo(poly);
     }
     
     /**
      * Alternative method for flat rectangular polygons.
      * @author Ferdinand Calo' (FEX___96)
      */
+    @Deprecated
     public ModelRendererTurbo addFlatRect(float[] v0, float[] v1, float[] v2, float[] v3, float w, float h){
-    	TexturedVertex[] verts = new TexturedVertex[4]; TexturedPolygon[] poly = new TexturedPolygon[2];
+    	TexturedPolygon[] poly = new TexturedPolygon[2];
         TexturedVertex tv0 = new TexturedVertex(v0[0], v0[1], v0[2], 0.0F, 0.0F);
         TexturedVertex tv1 = new TexturedVertex(v1[0], v1[1], v1[2], 0.0F, 8.0F);
         TexturedVertex tv2 = new TexturedVertex(v2[0], v2[1], v2[2], 8.0F, 8.0F);
         TexturedVertex tv3 = new TexturedVertex(v3[0], v3[1], v3[2], 8.0F, 0.0F);
-        verts[0] = tv0; verts[1] = tv1; verts[2] = tv2; verts[3] = tv3;
         poly[0] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, texoffx, texoffy, texoffx+ w, texoffy + h);
         poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv1, tv2, tv3 }, texoffx + w, texoffy, texoffx + w + w, texoffy + h);
         if(mirror ^ flip){ for(int l = 0; l < poly.length; l++){ poly[l].flipFace(); } }
-        return copyTo(verts, poly);
+        return copyTo(poly);
     }
     
     /** 
      * Mainly based on the "addRectShape" method, but adds support for custom texture positions for any face.
+     * NOTE: Deprecated. Try to use BoxWrapper instead!
      * @author Ferdinand Calo' (FEX___96)
      * */
+    @Deprecated
     public ModelRendererTurbo addTexRectShape(float[] v0, float[] v1, float[] v2, float[] v3, float[] v4, float[] v5, float[] v6, float[] v7, float w, float h, float d, float[][] texpos){
     	if(texpos == null || texpos.length < 6){ Static.stop();
     		return this.addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
     	}//fallback to normal method if data is lacking
     	try{
-        	TexturedVertex[] verts = new TexturedVertex[8]; TexturedPolygon[] poly = new TexturedPolygon[6];
+        	TexturedPolygon[] poly = new TexturedPolygon[6];
             TexturedVertex tv0 = new TexturedVertex(v0[0], v0[1], v0[2], 0.0F, 0.0F);
             TexturedVertex tv1 = new TexturedVertex(v1[0], v1[1], v1[2], 0.0F, 8.0F);
             TexturedVertex tv2 = new TexturedVertex(v2[0], v2[1], v2[2], 8.0F, 8.0F);
@@ -340,7 +338,6 @@ public class ModelRendererTurbo {
             TexturedVertex tv5 = new TexturedVertex(v5[0], v5[1], v5[2], 0.0F, 8.0F);
             TexturedVertex tv6 = new TexturedVertex(v6[0], v6[1], v6[2], 8.0F, 8.0F);
             TexturedVertex tv7 = new TexturedVertex(v7[0], v7[1], v7[2], 8.0F, 0.0F);
-            verts[0] = tv0; verts[1] = tv1; verts[2] = tv2; verts[3] = tv3; verts[4] = tv4; verts[5] = tv5; verts[6] = tv6; verts[7] = tv7;
             float x = texoffx, y = texoffy;
     		if(texpos[0].length > 4){
                 poly[0] = addPolygonReturn(new TexturedVertex[] { tv5, tv1, tv2, tv6 }, x + texpos[0][0], y + texpos[0][1], x + texpos[0][2], y + texpos[0][3], x + texpos[0][4], y + texpos[0][5], x + texpos[0][6], y + texpos[0][7]);
@@ -358,7 +355,8 @@ public class ModelRendererTurbo {
                 poly[4] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, x + texpos[4][0], y + texpos[4][1], x + texpos[4][2], y + texpos[4][3]);
                 poly[5] = addPolygonReturn(new TexturedVertex[] { tv4, tv5, tv6, tv7 }, x + texpos[5][0], y + texpos[5][1], x + texpos[5][2], y + texpos[5][3]);
     		}
-            if(mirror ^ flip){ for(int l = 0; l < poly.length; l++){ poly[l].flipFace(); } } return copyTo(verts, poly);
+            if(mirror ^ flip) for(int l = 0; l < poly.length; l++)poly[l].flipFace();
+            return copyTo(poly);
     	}
     	catch(Throwable thr){ //if(Static.dev()) thr.printStackTrace();
     		return this.addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
@@ -647,7 +645,8 @@ public class ModelRendererTurbo {
     public ModelRendererTurbo addShape3D(float x, float y, float z, Shape2D shape, float depth, int shapeTextureWidth, int shapeTextureHeight, int sideTextureWidth, int sideTextureHeight, float rotX, float rotY, float rotZ, float[] faceLengths){
     	Shape3D shape3D = shape.extrude(-x, y, -z, rotX, rotY, rotZ, depth, texoffx, texoffy, textureWidth, textureHeight, shapeTextureWidth, shapeTextureHeight, sideTextureWidth, sideTextureHeight, faceLengths);
     	if(flip){ for(int idx = 0; idx < shape3D.faces.length; idx++){ shape3D.faces[idx].flipFace(); } }
-    	isShape3D = true; return copyTo(shape3D.vertices, shape3D.faces);
+    	isShape3D = true;
+    	return copyTo(shape3D.faces);
     }
     
     /**
@@ -711,7 +710,7 @@ public class ModelRendererTurbo {
         poly[5] = addPolygonReturn(new TexturedVertex[]{
             TexturedVertex4, TexturedVertex5, TexturedVertex6, TexturedVertex7
         }, w, h, w + 1, h + 1);
-        return copyTo(verts, poly);
+        return copyTo(poly);
     }
     
     /**
@@ -937,7 +936,7 @@ public class ModelRendererTurbo {
 			currentFace++;
 		}
 		if(!(flip || mirror)) for(TexturedPolygon poli : poly) poli.flipFace();
-		return copyTo(tempVerts, poly);
+		return copyTo(poly);
     }
     
     /**
@@ -1190,7 +1189,7 @@ public class ModelRendererTurbo {
 				poly[poly.length - segments + index].flipFace();
 			}
 		}
-		return copyTo(tempVerts, poly);
+		return copyTo(poly);
 	}
 	
 	public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit, float baseScale, float topScale, int baseDirection){
@@ -1349,7 +1348,7 @@ public class ModelRendererTurbo {
 				if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
 			}
 		}
-		return copyTo(verts.toArray(new TexturedVertex[0]), polis.toArray(new TexturedPolygon[0]));
+		return copyTo(polis);
 	}
 
 	/**
@@ -1367,10 +1366,10 @@ public class ModelRendererTurbo {
     public ModelRendererTurbo addObj(InputStream stream, String group, boolean flipaxis, boolean objmode){
     	Object[][] source = WavefrontObjUtil.getVerticesAndPolygons(stream, group, flipaxis, objmode);
     	if(source == null || source.length < 2) return this;
-    	TexturedVertex[] verts = (TexturedVertex[])Arrays.copyOf(source[0], source[0].length);
+    	//TexturedVertex[] verts = (TexturedVertex[])Arrays.copyOf(source[0], source[0].length);
     	TexturedPolygon[] poly = (TexturedPolygon[])Arrays.copyOf(source[1], source[1].length);
-    	if(flip){ for(int l = 0; l < faces.length; l++){ faces[l].flipFace(); } }
-    	return copyTo(verts, poly);
+    	if(flip){ for(int l = 0; l < faces.size(); l++){ faces.get(l).flipFace(); } }
+    	return copyTo(poly);
     }
     
     /**
@@ -1434,9 +1433,8 @@ public class ModelRendererTurbo {
      * would need to clear the shape first.
      */
     public ModelRendererTurbo clear(){
-    	vertices = new TexturedVertex[0];
-    	faces = new TexturedPolygon[0];
     	if(childModels != null) childModels.clear();
+    	faces.clear();
     	return this;
     }
     
@@ -1448,15 +1446,14 @@ public class ModelRendererTurbo {
      * @param poly the array of polygons you want to copy
      * @return 
      */
-    public ModelRendererTurbo copyTo(TexturedVertex[] verts, TexturedPolygon[] poly){
-        vertices = Arrays.copyOf(vertices, vertices.length + verts.length);
-        faces = Arrays.copyOf(faces, faces.length + poly.length);
-        for(int idx = 0; idx < verts.length; idx++){
-        	vertices[vertices.length - verts.length + idx] = verts[idx];
-        }
-        for(int idx = 0; idx < poly.length; idx++){
-        	faces[faces.length - poly.length + idx] = poly[idx];
-        } return this;
+    public ModelRendererTurbo copyTo(TexturedPolygon... poly){
+    	faces.addAll(Arrays.asList(poly));
+        return this;
+    }
+    
+    public ModelRendererTurbo copyTo(java.util.Collection<TexturedPolygon> coll){
+    	faces.addAll(coll);
+        return this;
     }
     
     /**
@@ -1562,8 +1559,13 @@ public class ModelRendererTurbo {
     private void compileDisplayList(float scale){
         displayList = GL11.glGenLists(1);
         GL11.glNewList(displayList, 4864 /*GL_COMPILE*/);
-        for(int i = 0; i < faces.length; i++){
-            faces[i].draw(scale, linesColor, getColor(i));
+        if(textured){
+        	for(TexturedPolygon poly : faces) poly.draw(scale, linesColor, null);
+        }
+        else{
+            for(int i = 0; i < faces.size(); i++){
+                faces.get(i).draw(scale, linesColor, getColor(i));
+            }
         }
         GL11.glEndList();
     }
@@ -1581,25 +1583,22 @@ public class ModelRendererTurbo {
 	}
     
     public static RGB getColor(ModelRendererTurbo turbo, int face){
-    	if(!turbo.textured){
-    		if(turbo.polygonColor != null) return turbo.polygonColor;
-    		switch(face){
-    			case 0: return blu0;
-    			case 1: return blu1;
-    			case 2: return red1;
-    			case 3: return red0;
-    			case 4: return gre1;
-    			case 5: return gre0;
-    		}
-    		if(face > 32) face %= 32;
-    		if(face < 32){
-    			if(face % 3 == 0) return new RGB(138, 92, 192 - (face * 4));
-    			if(face % 3 == 1) return new RGB(192 - (face * 4), 138, 92);
-    			if(face % 3 == 2) return new RGB(92, 192 - (face * 4), 138);
-    		}
-    		return gray;
-    	}
-    	return null;
+		if(turbo.polygonColor != null) return turbo.polygonColor;
+		switch(face){
+			case 0: return blu0;
+			case 1: return blu1;
+			case 2: return red1;
+			case 3: return red0;
+			case 4: return gre1;
+			case 5: return gre0;
+		}
+		if(face > 32) face %= 32;
+		if(face < 32){
+			if(face % 3 == 0) return new RGB(138, 92, 192 - (face * 4));
+			if(face % 3 == 1) return new RGB(192 - (face * 4), 138, 92);
+			if(face % 3 == 2) return new RGB(92, 192 - (face * 4), 138);
+		}
+		return gray;
     }
     
     public RGB getColor(){
@@ -1654,12 +1653,8 @@ public class ModelRendererTurbo {
 		return boxName;
 	}
 	
-	public TexturedPolygon[] getFaces(){
+	public ArrayList<TexturedPolygon> getFaces(){
 		return faces;
-	}
-	
-	public TexturedVertex[] getVertices(){
-		return vertices;
 	}
 	
 	public Integer displaylist(){
@@ -1807,8 +1802,9 @@ public class ModelRendererTurbo {
 
 	public void integrateChildren(boolean removelist){
 		for(ModelRendererTurbo turbo : childModels){
-			this.copyTo(turbo.getVertices(), turbo.getFaces());
-		} if(removelist) childModels = null; else childModels.clear();
+			this.copyTo(turbo.getFaces());
+		}
+		if(removelist) childModels = null; else childModels.clear();
 	}	public ModelRendererTurbo addVoxelShape(int segmentation, boolean[][][] content){
 		return new VoxelBuilder(this, segmentation).setVoxels(content).build();
 	}

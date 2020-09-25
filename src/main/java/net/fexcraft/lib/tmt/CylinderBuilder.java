@@ -195,7 +195,6 @@ public class CylinderBuilder implements CustomUVBuilder {
 		if(segments < 3) segments = 3;
 		if(seglimit <= 0) seglimit = segments;
 		boolean segl = seglimit < segments;
-		ArrayList<TexturedVertex> verts = new ArrayList<>();
 		ArrayList<TexturedPolygon> polis = new ArrayList<>();
 		//Vertex
 		float xLength = (dirSide ? length : 0), yLength = (dirTop ? length : 0), zLength = (dirFront ? length : 0);
@@ -260,8 +259,6 @@ public class CylinderBuilder implements CustomUVBuilder {
 					TexturedVertex copy = new TexturedVertex(verts1.get(0)); verts1.add(copy);
 				}
 			}
-			verts.addAll(verts0);
-			verts.addAll(verts1);
 			if(repeat == 0){
 				verts2.addAll(verts0);
 				verts2.addAll(verts1);
@@ -362,7 +359,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 				if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
 			}
 		}
-		return root.copyTo(verts.toArray(new TexturedVertex[0]), polis.toArray(new TexturedPolygon[0]));
+		return root.copyTo(polis);
 	}
 	
 }

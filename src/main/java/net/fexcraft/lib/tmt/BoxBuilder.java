@@ -187,7 +187,6 @@ public class BoxBuilder implements CustomUVBuilder {
 			v6 = new float[]{ x1, y1, z1 };
 			v7 = new float[]{  x, y1, z1 };
 		}
-    	TexturedVertex[] verts = new TexturedVertex[8];
         TexturedPolygon[] poly = new TexturedPolygon[6];
         TexturedVertex tv0 = new TexturedVertex(v0[0], v0[1], v0[2], 0.0F, 0.0F);
         TexturedVertex tv1 = new TexturedVertex(v1[0], v1[1], v1[2], 0.0F, 8.0F);
@@ -197,8 +196,6 @@ public class BoxBuilder implements CustomUVBuilder {
         TexturedVertex tv5 = new TexturedVertex(v5[0], v5[1], v5[2], 0.0F, 8.0F);
         TexturedVertex tv6 = new TexturedVertex(v6[0], v6[1], v6[2], 8.0F, 8.0F);
         TexturedVertex tv7 = new TexturedVertex(v7[0], v7[1], v7[2], 8.0F, 0.0F);
-        verts[0] = tv0; verts[1] = tv1; verts[2] = tv2; verts[3] = tv3;
-        verts[4] = tv4; verts[5] = tv5; verts[6] = tv6; verts[7] = tv7;
         float tx = root.texoffx, ty = root.texoffy;
         float w = this.w, h = this.h, d = this.d;
         if(w % 1 != 0) w = w < 1 ? 1 : (int)w + (w % 1 > 0.5f ? 1 : 0);
@@ -242,7 +239,7 @@ public class BoxBuilder implements CustomUVBuilder {
         	}
         	poly = polygons;
         }
-        return root.copyTo(verts, poly);
+        return root.copyTo(poly);
 	}
 
 	private boolean detached(int i){
