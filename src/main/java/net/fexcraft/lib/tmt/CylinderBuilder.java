@@ -248,6 +248,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 		}
 		float uWidth = (uCircle * 2F) / segments;
 		float uStart = root.texoffx * uScale, vStart = root.texoffy * vScale;
+		float segpi = Static.PI / segments;
 		//Temporary Arrays
 		ArrayList<TexturedVertex> verts0 = new ArrayList<>();
 		ArrayList<TexturedVertex> verts1 = new ArrayList<>();
@@ -255,8 +256,8 @@ public class CylinderBuilder implements CustomUVBuilder {
 		ArrayList<TexturedVertex> verts3 = new ArrayList<>();
 		for(int repeat = 0; repeat < 2; repeat++){//top/base faces
 			for(int index = 0; index < segments; index++){
-				float xSize = (float)((root.mirror ^ dirMirror ? -1 : 1) * Math.sin((Static.PI / segments) * index * 2F + Static.PI) * radius * sCur);
-				float zSize = (float)(-Math.cos((Static.PI / segments) * index * 2F + Static.PI) * radius * sCur);
+				float xSize = (float)((root.mirror ^ dirMirror ? -1 : 1) * Math.sin((segpi) * index * 2F + Static.PI) * radius * sCur);
+				float zSize = (float)(-Math.cos((segpi) * index * 2F + Static.PI) * radius * sCur);
 				float xPlace = xCur + (!dirSide ? xSize : 0);
 				float yPlace = yCur + (!dirTop ? zSize : 0);
 				float zPlace = zCur + (dirSide ? xSize : (dirTop ? zSize : 0));
@@ -265,8 +266,8 @@ public class CylinderBuilder implements CustomUVBuilder {
 					TexturedVertex copy = new TexturedVertex(verts0.get(0)); verts0.add(copy);
 				}
 				//
-				float xSize2 = (float)((root.mirror ^ dirMirror ? -1 : 1) * Math.sin((Static.PI / segments) * index * 2F + Static.PI) * radius2 * sCur);
-				float zSize2 = (float)(-Math.cos((Static.PI / segments) * index * 2F + Static.PI) * radius2 * sCur);
+				float xSize2 = (float)((root.mirror ^ dirMirror ? -1 : 1) * Math.sin((segpi) * index * 2F + Static.PI) * radius2 * sCur);
+				float zSize2 = (float)(-Math.cos((segpi) * index * 2F + Static.PI) * radius2 * sCur);
 				xPlace = xCur + (!dirSide ? xSize2 : 0);
 				yPlace = yCur + (!dirTop ? zSize2 : 0);
 				zPlace = zCur + (dirSide ? xSize2 : (dirTop ? zSize2 : 0));
@@ -285,7 +286,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 				verts3.addAll(verts0);
 				verts3.addAll(verts1);
 			}
-			float xSize, ySize;
+			double xSize, ySize;
 			float mul = radialtexture ? repeat == 0 ? 0 : seg_height : repeat == 0 ? 0.5f : 1.5f;
 			boolean bool = repeat == 0 ? dirFront ? false : true : dirFront ? true : false;
 			if((repeat == 0 && !invisible[0]) || (repeat == 1 && !invisible[1])){
@@ -299,21 +300,22 @@ public class CylinderBuilder implements CustomUVBuilder {
 					}
 					TexturedVertex[] arr = new TexturedVertex[4];
 					if(!radialtexture){
-						xSize = (float)(Math.sin((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle));
-						ySize = (float)(Math.cos((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle));
+						xSize = Math.sin((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle);
+						ySize = Math.cos((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle);
 						arr[0] = verts0.get(i).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
 						//
-						xSize = (float)(Math.sin((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2));
-						ySize = (float)(Math.cos((Static.PI / segments) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2));
+						xSize = Math.sin((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2);
+						ySize = Math.cos((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2);
 						arr[1] = verts1.get(i).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
 						//
-						xSize = (float)(Math.sin((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2));
-						ySize = (float)(Math.cos((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2));
+						xSize = Math.sin((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2);
+						ySize = Math.cos((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2);
 						arr[2] = verts1.get(i + 1).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
 						//
-						xSize = (float)(Math.sin((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle));
-						ySize = (float)(Math.cos((Static.PI / segments) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle));
+						xSize = Math.sin((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle);
+						ySize = Math.cos((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle);
 						arr[3] = verts0.get(i + 1).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
+						//todo apply tex pos first, then scale it, instead of applying scaled
 					}
 					else{
 						float diff = (radius - radius2) * uScale / 4;
