@@ -210,7 +210,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 				break;
 			}
 		}
-		float[][] uvcoords = new float[6][];
+		float[][] uvs = new float[6][];
 		float uScale = 1.0F / root.textureWidth, vScale = 1.0F / root.textureHeight;
 		float uCircle = diameter * uScale;
 		float vCircle = diameter * vScale;
@@ -218,36 +218,17 @@ public class CylinderBuilder implements CustomUVBuilder {
 		float vCircle2 = ((int)Math.floor(radius2 * 2F)) * vScale;
 		float vHeight = texheight * vScale;
 		if(!anyoff){
-			uvcoords[0] = new float[]{
-				root.texoffx * uScale, root.texoffy * vScale,
-				root.texoffx * uScale + uCircle, root.texoffy * vScale + vCircle
-			};
-			uvcoords[1] = new float[]{
-				root.texoffx * uScale + uCircle, root.texoffy * vScale,
-				root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle
-			};
-			uvcoords[2] = new float[]{
-				root.texoffx * uScale, root.texoffy * vScale + vCircle,
-				root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle + vHeight
-			};
-			uvcoords[3] = new float[]{
-				root.texoffx * uScale, root.texoffy * vScale + vCircle + vHeight,
-				root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vHeight + vHeight
-			};
-			uvcoords[4] = new float[]{
-				root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle,
-				root.texoffx * uScale + uCircle + uCircle + ((radius - radius2) * uScale), root.texoffy * vScale + vHeight
-			};
-			uvcoords[5] = new float[]{
-				root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle + vHeight,
-				root.texoffx * uScale + uCircle + uCircle + ((radius - radius2) * uScale), root.texoffy * vScale + vHeight + vHeight
-			};
+			uvs[0] = new float[]{ root.texoffx * uScale, root.texoffy * vScale, };
+			uvs[1] = new float[]{ root.texoffx * uScale + uCircle, root.texoffy * vScale, };
+			uvs[2] = new float[]{ root.texoffx * uScale, root.texoffy * vScale + vCircle, };
+			uvs[3] = new float[]{ root.texoffx * uScale, root.texoffy * vScale + vCircle + vHeight, };
+			uvs[4] = new float[]{ root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle, };
+			uvs[5] = new float[]{ root.texoffx * uScale + uCircle + uCircle, root.texoffy * vScale + vCircle + vHeight, };
 		}
 		else{
 			//TODO
 		}
 		float uWidth = (uCircle * 2F) / segments;
-		float uStart = root.texoffx * uScale, vStart = root.texoffy * vScale;
 		float segpi = Static.PI / segments;
 		//Temporary Arrays
 		ArrayList<TexturedVertex> verts0 = new ArrayList<>();
@@ -287,7 +268,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 				verts3.addAll(verts1);
 			}
 			double xSize, ySize;
-			float mul = radialtexture ? repeat == 0 ? 0 : seg_height : repeat == 0 ? 0.5f : 1.5f;
+			float mul = radialtexture ? repeat == 0 ? 0 : seg_height : 0.5f;//repeat == 0 ? 0.5f : 1.5f;
 			boolean bool = repeat == 0 ? dirFront ? false : true : dirFront ? true : false;
 			if((repeat == 0 && !invisible[0]) || (repeat == 1 && !invisible[1])){
 				for(int i = 0; i < verts0.size(); i++){
@@ -302,27 +283,26 @@ public class CylinderBuilder implements CustomUVBuilder {
 					if(!radialtexture){
 						xSize = Math.sin((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle);
 						ySize = Math.cos((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle);
-						arr[0] = verts0.get(i).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
+						arr[0] = verts0.get(i).setTexturePosition(uvs[repeat][0] + mul * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
 						//
 						xSize = Math.sin((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2);
 						ySize = Math.cos((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2);
-						arr[1] = verts1.get(i).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
+						arr[1] = verts1.get(i).setTexturePosition(uvs[repeat][0] + mul * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
 						//
 						xSize = Math.sin((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2);
 						ySize = Math.cos((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2);
-						arr[2] = verts1.get(i + 1).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
+						arr[2] = verts1.get(i + 1).setTexturePosition(uvs[repeat][0] + mul * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
 						//
 						xSize = Math.sin((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle);
 						ySize = Math.cos((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle);
-						arr[3] = verts0.get(i + 1).setTexturePosition(uStart + mul * uCircle + xSize, vStart + 0.5F * vCircle + ySize);
-						//todo apply tex pos first, then scale it, instead of applying scaled
+						arr[3] = verts0.get(i + 1).setTexturePosition(uvs[repeat][0] + mul * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
 					}
 					else{
 						float diff = (radius - radius2) * uScale / 4;
-						arr[0] = verts0.get(i).setTexturePosition(uStart + (i * seg_width) * uScale, vStart + (mul * vScale));
-						arr[1] = verts1.get(i).setTexturePosition(uStart + (i * seg_width) * uScale + diff, vStart + ((seg_height + mul) * vScale));
-						arr[2] = verts1.get(i + 1).setTexturePosition(uStart + ((i + 1) * seg_width) * uScale - diff, vStart + ((seg_height + mul) * vScale));
-						arr[3] = verts0.get(i + 1).setTexturePosition(uStart + ((i + 1) * seg_width) * uScale, vStart + (mul * vScale));
+						arr[0] = verts0.get(i).setTexturePosition(uvs[repeat][0] + (i * seg_width) * uScale, uvs[repeat][1] + (mul * vScale));
+						arr[1] = verts1.get(i).setTexturePosition(uvs[repeat][0] + (i * seg_width) * uScale + diff, uvs[repeat][1] + ((seg_height + mul) * vScale));
+						arr[2] = verts1.get(i + 1).setTexturePosition(uvs[repeat][0] + ((i + 1) * seg_width) * uScale - diff, uvs[repeat][1] + ((seg_height + mul) * vScale));
+						arr[3] = verts0.get(i + 1).setTexturePosition(uvs[repeat][0] + ((i + 1) * seg_width) * uScale, uvs[repeat][1] + (mul * vScale));
 					}
 					if(repeat != 0 && toprot != null){
 						arr[0].vector = verts0.get(i).vector = toprot.getRelativeVector(arr[0].vector);
@@ -337,21 +317,20 @@ public class CylinderBuilder implements CustomUVBuilder {
 			verts0.clear(); verts1.clear(); xCur = xEnd; yCur = yEnd; zCur = zEnd; sCur = top_scale;
 		}
 		int halfv2 = verts2.size() / 2;
-		if(radialtexture){ vCircle = (seg_height + seg_height) * vScale; }
 		for(int i = 0; i < halfv2; i++){
 			if(i >= seglimit && segl){
-				TexturedVertex[] arr = new TexturedVertex[4]; float xpos = uStart + (uCircle * 2f);
-				arr[0] = verts2.get(0).setTexturePosition(xpos, vStart + vCircle);
-				arr[1] = verts3.get(0).setTexturePosition(xpos, vStart + vCircle + vHeight);
-				arr[2] = verts3.get(halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vCircle + vHeight);
-				arr[3] = verts2.get(halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vCircle);
+				TexturedVertex[] arr = new TexturedVertex[4];
+				arr[0] = verts2.get(0).setTexturePosition(uvs[4][0], uvs[4][1]);
+				arr[1] = verts3.get(0).setTexturePosition(uvs[4][0], uvs[4][1] + vHeight);
+				arr[2] = verts3.get(halfv2).setTexturePosition(uvs[4][0] + ((radius - radius2) * uScale), uvs[4][1] + vHeight);
+				arr[3] = verts2.get(halfv2).setTexturePosition(uvs[4][0] + ((radius - radius2) * uScale), uvs[4][1]);
 				polis.add(new TexturedPolygon(arr));
 				if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
 				arr = new TexturedVertex[4];
-				arr[0] = verts2.get(seglimit).setTexturePosition(xpos, vStart + vCircle + vHeight);
-				arr[1] = verts3.get(seglimit).setTexturePosition(xpos, vStart + vCircle + vHeight + vHeight);
-				arr[2] = verts3.get(seglimit + halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vCircle + vHeight + vHeight);
-				arr[3] = verts2.get(seglimit + halfv2).setTexturePosition(xpos + ((radius - radius2) * uScale), vStart + vCircle + vHeight);
+				arr[0] = verts2.get(seglimit).setTexturePosition(uvs[5][0], uvs[5][1]);
+				arr[1] = verts3.get(seglimit).setTexturePosition(uvs[5][0], uvs[5][1] + vHeight);
+				arr[2] = verts3.get(seglimit + halfv2).setTexturePosition(uvs[5][0] + ((radius - radius2) * uScale), uvs[5][1] + vHeight);
+				arr[3] = verts2.get(seglimit + halfv2).setTexturePosition(uvs[5][0] + ((radius - radius2) * uScale), uvs[5][1]);
 				polis.add(new TexturedPolygon(arr));
 				if(dirFront) polis.get(polis.size() - 1 ).flipFace();
 				break;
@@ -359,19 +338,19 @@ public class CylinderBuilder implements CustomUVBuilder {
 			if(i >= (halfv2 - 1)) break;
 			TexturedVertex[] arr = new TexturedVertex[4];
 			if(!invisible[2]){
-				arr[0] = verts2.get(i + 0).setTexturePosition(uStart + uWidth * (i + 0), vStart + vCircle);
-				arr[1] = verts3.get(i + 0).setTexturePosition(uStart + uWidth * (i + 0), vStart + vCircle + vHeight);
-				arr[2] = verts3.get(i + 1).setTexturePosition(uStart + uWidth * (i + 1), vStart + vCircle + vHeight);
-				arr[3] = verts2.get(i + 1).setTexturePosition(uStart + uWidth * (i + 1), vStart + vCircle);
+				arr[0] = verts2.get(i + 0).setTexturePosition(uvs[2][0] + uWidth * (i + 0), uvs[2][1]);
+				arr[1] = verts3.get(i + 0).setTexturePosition(uvs[2][0] + uWidth * (i + 0), uvs[2][1] + vHeight);
+				arr[2] = verts3.get(i + 1).setTexturePosition(uvs[2][0] + uWidth * (i + 1), uvs[2][1] + vHeight);
+				arr[3] = verts2.get(i + 1).setTexturePosition(uvs[2][0] + uWidth * (i + 1), uvs[2][1]);
 				polis.add(new TexturedPolygon(arr));
 				if(dirFront) polis.get(polis.size() - 1 ).flipFace();
 			}
 			if(!invisible[3]){
 				arr = new TexturedVertex[4];
-				arr[0] = verts2.get(i + halfv2 + 0).setTexturePosition(uStart + uWidth * (i + 0), vStart + vCircle + vHeight);
-				arr[1] = verts3.get(i + halfv2 + 0).setTexturePosition(uStart + uWidth * (i + 0), vStart + vCircle + vHeight + vHeight);
-				arr[2] = verts3.get(i + halfv2 + 1).setTexturePosition(uStart + uWidth * (i + 1), vStart + vCircle + vHeight + vHeight);
-				arr[3] = verts2.get(i + halfv2 + 1).setTexturePosition(uStart + uWidth * (i + 1), vStart + vCircle + vHeight);
+				arr[0] = verts2.get(i + halfv2 + 0).setTexturePosition(uvs[3][0] + uWidth * (i + 0), uvs[3][1]);
+				arr[1] = verts3.get(i + halfv2 + 0).setTexturePosition(uvs[3][0] + uWidth * (i + 0), uvs[3][1] + vHeight);
+				arr[2] = verts3.get(i + halfv2 + 1).setTexturePosition(uvs[3][0] + uWidth * (i + 1), uvs[3][1] + vHeight);
+				arr[3] = verts2.get(i + halfv2 + 1).setTexturePosition(uvs[3][0] + uWidth * (i + 1), uvs[3][1]);
 				polis.add(new TexturedPolygon(arr));
 				if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
 			}
