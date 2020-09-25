@@ -1627,6 +1627,7 @@ public class ModelRendererTurbo {
 		return addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d, sides);
 	}
 	
+	@Deprecated /** Use BoxBuilder instead. Will be removed in the future. */
 	public ModelRendererTurbo addTexRect(float x, float y, float z, float w, float h, float d, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7, float[][] texpos){
     	float xw = x + w, yh = y + h, zd = z + d; x -= scale; y -= scale; z -= scale; xw += scale; yh += scale; zd += scale;
 		if(mirror){ float fl = xw; xw = x; x = fl; }
@@ -1636,6 +1637,7 @@ public class ModelRendererTurbo {
 		return addTexRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d, texpos);
 	}
 	
+	@Deprecated
 	public ModelRendererTurbo addShapeQuad(float x, float y, float z, float w, float h, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3){
     	float xw = x + w, yh = y + h; x -= scale; y -= scale; xw += scale; yh += scale; if(mirror){ float fl = xw; xw = x; x = fl; }
 		float[] v0 = { x - x0, y - y0, z - z0 }, v1 = { xw + x1, y - y1, z - z1 }, v2 = { xw + x3, yh + y3, z - z3 }, v3 = { x - x2, yh + y2, z - z2 };
