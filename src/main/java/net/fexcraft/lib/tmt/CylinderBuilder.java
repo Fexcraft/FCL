@@ -231,13 +231,12 @@ public class CylinderBuilder implements CustomUVBuilder {
 			uvs[5] = new float[]{ x + cirwi + (detached(2) || detached(3) ? uSeg : 0), y + cirhi + (detached(2) || detached(3) ? 0 : vHeight) };
 			for(int i = 0; i < uv.length; i++){
 				if(invisible[i]) continue;
-				if(detached[i]){
-					uvs[i][0] = uv[i][0] * uScale;
-					uvs[i][1] = uv[i][1] * vScale;
-				}
-				else{
-					uvs[i][0] += uv[i][0] * uScale;
-					uvs[i][1] += uv[i][1] * vScale;
+				if(uv[i] == null || uv[i].length != 2) continue;
+				uvs[i][0] = uv[i][0] * uScale;
+				uvs[i][1] = uv[i][1] * vScale;
+				if(!detached[i]){
+					uvs[i][0] += x;
+					uvs[i][1] += y;
 				}
 			}
 		}
@@ -281,7 +280,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 			double xSize, ySize;
 			float mul = radialtexture ? repeat == 0 ? 0 : seg_height : 0.5f;//repeat == 0 ? 0.5f : 1.5f;
 			boolean bool = repeat == 0 ? dirFront ? false : true : dirFront ? true : false;
-			if((repeat == 0 && !invisible[0]) || (repeat == 1 && !invisible[1])){
+			if(!invisible[repeat]){
 				for(int i = 0; i < verts0.size(); i++){
 					if(i >= (verts0.size() - 1) || i >= seglimit){
 						if(repeat != 0 && toprot != null){
