@@ -173,8 +173,9 @@ public class BoxBuilder implements CustomUVBuilder {
 			v7 = new float[]{ x  - c7.xCoord, yh + c7.yCoord, zd + c7.zCoord };
 		}
 		else{
-	    	if(w == 0) w = 0.01F; if(h == 0) h = 0.01F; if(d == 0) d = 0.01F;
-	        float x1 = x + w, y1 = y + h, z1 = z + d;
+	        float x1 = x + w + (w == 0 ? 0.01f : 0);
+	        float y1 = y + h + (h == 0 ? 0.01f : 0);
+	        float z1 = z + d + (d == 0 ? 0.01f : 0);
 	        x1 += expansion;  y1 += expansion; z1 += expansion;
 	        if(root.mirror){ float xTemp = x1; x1 = x; x = xTemp; }
 	        //
