@@ -335,7 +335,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 					arr[2] = verts3.get(halfv2).setTexturePosition(uvs[4][0] + uSeg, uvs[4][1] + vHeight);
 					arr[3] = verts2.get(halfv2).setTexturePosition(uvs[4][0] + uSeg, uvs[4][1]);
 					polis.add(new TexturedPolygon(arr));
-					if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
+					if(!dirFront) polis.get(polis.size() - 1).flipFace();
 				}
 				if(!invisible[5]){
 					TexturedVertex[] arr = new TexturedVertex[4];
@@ -344,7 +344,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 					arr[2] = verts3.get(seglimit + halfv2).setTexturePosition(uvs[5][0] + uSeg, uvs[5][1] + vHeight);
 					arr[3] = verts2.get(seglimit + halfv2).setTexturePosition(uvs[5][0] + uSeg, uvs[5][1]);
 					polis.add(new TexturedPolygon(arr));
-					if(dirFront) polis.get(polis.size() - 1 ).flipFace();
+					if(dirFront) polis.get(polis.size() - 1).flipFace();
 				}
 				break;
 			}
@@ -356,7 +356,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 				arr[2] = verts3.get(i + 1).setTexturePosition(uvs[2][0] + uWidth * (i + 1), uvs[2][1] + vHeight);
 				arr[3] = verts2.get(i + 1).setTexturePosition(uvs[2][0] + uWidth * (i + 1), uvs[2][1]);
 				polis.add(new TexturedPolygon(arr));
-				if(dirFront) polis.get(polis.size() - 1 ).flipFace();
+				if(dirFront) polis.get(polis.size() - 1).flipFace();
 			}
 			if(!invisible[3]){
 				arr = new TexturedVertex[4];
@@ -365,7 +365,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 				arr[2] = verts3.get(i + halfv2 + 1).setTexturePosition(uvs[3][0] + uWidth * (i + 1), uvs[3][1] + vHeight);
 				arr[3] = verts2.get(i + halfv2 + 1).setTexturePosition(uvs[3][0] + uWidth * (i + 1), uvs[3][1]);
 				polis.add(new TexturedPolygon(arr));
-				if(!dirFront) polis.get(polis.size() - 1 ).flipFace();
+				if(!dirFront) polis.get(polis.size() - 1).flipFace();
 			}
 		}
 		return root.copyTo(polis);
