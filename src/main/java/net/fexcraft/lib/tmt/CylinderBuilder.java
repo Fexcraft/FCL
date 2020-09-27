@@ -238,9 +238,6 @@ public class CylinderBuilder implements CustomUVBuilder {
 					uvs[i][0] += x;
 					uvs[i][1] += y;
 				}
-				if(i == 1){
-					System.out.println(uvs[i][0] * root.textureWidth + " " + uvs[i][1] * root.textureHeight);
-				}
 			}
 		}
 		float uWidth = (uCircle * 2F) / segments;
