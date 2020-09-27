@@ -71,12 +71,12 @@ public class CylinderBuilder implements CustomUVBuilder {
 	
 	@Deprecated
 	public CylinderBuilder setSidesVisible(boolean[] arr){
-		this.invisible = arr; return this;
+		return removePolygons(arr);
 	}
 
 	@Deprecated
 	public CylinderBuilder setSidesVisible(boolean base, boolean top, boolean outer, boolean inner){
-		this.invisible = new boolean[]{ base, top, outer, inner }; return this;
+		return removePolygons(base, top, outer, inner);
 	}
 	
 	public CylinderBuilder removePolygon(int index){
