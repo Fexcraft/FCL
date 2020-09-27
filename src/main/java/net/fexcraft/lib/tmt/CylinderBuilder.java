@@ -281,7 +281,6 @@ public class CylinderBuilder implements CustomUVBuilder {
 				verts3.addAll(verts1);
 			}
 			double xSize, ySize;
-			float mul = radialtexture ? repeat == 0 || detached(0) ? 0 : seg_height : 0.5f;//repeat == 0 ? 0.5f : 1.5f;
 			boolean bool = repeat == 0 ? dirFront ? false : true : dirFront ? true : false;
 			if(!invisible[repeat]){
 				for(int i = 0; i < verts0.size(); i++){
@@ -296,26 +295,26 @@ public class CylinderBuilder implements CustomUVBuilder {
 					if(!radialtexture){
 						xSize = Math.sin((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle);
 						ySize = Math.cos((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle);
-						arr[0] = verts0.get(i).setTexturePosition(uvs[repeat][0] + mul * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
+						arr[0] = verts0.get(i).setTexturePosition(uvs[repeat][0] + .5f * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
 						//
 						xSize = Math.sin((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2);
 						ySize = Math.cos((segpi) * i * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2);
-						arr[1] = verts1.get(i).setTexturePosition(uvs[repeat][0] + mul * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
+						arr[1] = verts1.get(i).setTexturePosition(uvs[repeat][0] + .5f * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
 						//
 						xSize = Math.sin((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle2);
 						ySize = Math.cos((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle2);
-						arr[2] = verts1.get(i + 1).setTexturePosition(uvs[repeat][0] + mul * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
+						arr[2] = verts1.get(i + 1).setTexturePosition(uvs[repeat][0] + .5f * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
 						//
 						xSize = Math.sin((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * uCircle);
 						ySize = Math.cos((segpi) * (i + 1) * 2F + (!dirTop ? 0 : Static.PI)) * (0.5F * vCircle);
-						arr[3] = verts0.get(i + 1).setTexturePosition(uvs[repeat][0] + mul * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
+						arr[3] = verts0.get(i + 1).setTexturePosition(uvs[repeat][0] + .5f * uCircle + xSize, uvs[repeat][1] + 0.5F * vCircle + ySize);
 					}
 					else{
 						float diff = uSeg / 4;
-						arr[0] = verts0.get(i).setTexturePosition(uvs[repeat][0] + (i * seg_width) * uScale, uvs[repeat][1] + (mul * vScale));
-						arr[1] = verts1.get(i).setTexturePosition(uvs[repeat][0] + (i * seg_width) * uScale + diff, uvs[repeat][1] + ((seg_height + mul) * vScale));
-						arr[2] = verts1.get(i + 1).setTexturePosition(uvs[repeat][0] + ((i + 1) * seg_width) * uScale - diff, uvs[repeat][1] + ((seg_height + mul) * vScale));
-						arr[3] = verts0.get(i + 1).setTexturePosition(uvs[repeat][0] + ((i + 1) * seg_width) * uScale, uvs[repeat][1] + (mul * vScale));
+						arr[0] = verts0.get(i).setTexturePosition(uvs[repeat][0] + (i * seg_width) * uScale, uvs[repeat][1]);
+						arr[1] = verts1.get(i).setTexturePosition(uvs[repeat][0] + (i * seg_width) * uScale + diff, uvs[repeat][1] + (seg_height * vScale));
+						arr[2] = verts1.get(i + 1).setTexturePosition(uvs[repeat][0] + ((i + 1) * seg_width) * uScale - diff, uvs[repeat][1] + (seg_height * vScale));
+						arr[3] = verts0.get(i + 1).setTexturePosition(uvs[repeat][0] + ((i + 1) * seg_width) * uScale, uvs[repeat][1]);
 					}
 					if(repeat != 0 && toprot != null){
 						arr[0].vector = verts0.get(i).vector = toprot.getRelativeVector(arr[0].vector);
