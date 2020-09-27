@@ -238,6 +238,9 @@ public class CylinderBuilder implements CustomUVBuilder {
 					uvs[i][0] += x;
 					uvs[i][1] += y;
 				}
+				if(i == 1){
+					System.out.println(uvs[i][0] * root.textureWidth + " " + uvs[i][1] * root.textureHeight);
+				}
 			}
 		}
 		float uWidth = (uCircle * 2F) / segments;
@@ -278,7 +281,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 				verts3.addAll(verts1);
 			}
 			double xSize, ySize;
-			float mul = radialtexture ? repeat == 0 ? 0 : seg_height : 0.5f;//repeat == 0 ? 0.5f : 1.5f;
+			float mul = radialtexture ? repeat == 0 || detached(0) ? 0 : seg_height : 0.5f;//repeat == 0 ? 0.5f : 1.5f;
 			boolean bool = repeat == 0 ? dirFront ? false : true : dirFront ? true : false;
 			if(!invisible[repeat]){
 				for(int i = 0; i < verts0.size(); i++){
