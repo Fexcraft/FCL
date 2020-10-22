@@ -98,6 +98,14 @@ public class Vec3f {
     public Vec3f scale(float scale){
         return new Vec3f(this.xCoord * scale, this.yCoord * scale, this.zCoord * scale);
     }
+
+    public Vec3f multiply(float scale){
+        return new Vec3f(this.xCoord * scale, this.yCoord * scale, this.zCoord * scale);
+    }
+
+	public Vec3f divide(float div){
+		return div == 0f ? this : new Vec3f(xCoord / div, yCoord / div, zCoord / div);
+	}
     
     public float lengthVector(){
         return (float)Math.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
