@@ -1,7 +1,5 @@
 package net.fexcraft.lib.common.math;
 
-import javax.annotation.Nullable;
-
 /**
  * @author Ferdinand
  * Based off the (Minecraft) Vanilla Vec3d;
@@ -107,52 +105,6 @@ public class Vec3f {
 
     public float lengthSquared(){
         return this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord;
-    }
-    
-    @Nullable
-    public Vec3f getIntermediateWithXValue(Vec3f vec, float x){
-        float d0 = vec.xCoord - this.xCoord;
-        float d1 = vec.yCoord - this.yCoord;
-        float d2 = vec.zCoord - this.zCoord;
-        if(d0 * d0 < 1.0000000116860974E-7D){
-            return null;
-        }
-        else{
-            float d3 = (x - this.xCoord) / d0;
-            return d3 >= 0.0F && d3 <= 1.0F ? new Vec3f(this.xCoord + d0 * d3, this.yCoord + d1 * d3, this.zCoord + d2 * d3) : null;
-        }
-    }
-    
-    @Nullable
-    public Vec3f getIntermediateWithYValue(Vec3f vec, float y){
-        float d0 = vec.xCoord - this.xCoord;
-        float d1 = vec.yCoord - this.yCoord;
-        float d2 = vec.zCoord - this.zCoord;
-        if(d1 * d1 < 1.0000000116860974E-7D){
-            return null;
-        }
-        else{
-            float d3 = (y - this.yCoord) / d1;
-            return d3 >= 0.0F && d3 <= 1.0F ? new Vec3f(this.xCoord + d0 * d3, this.yCoord + d1 * d3, this.zCoord + d2 * d3) : null;
-        }
-    }
-
-    /**
-     * Returns a new vector with z value equal to the second parameter, along the line between this vector and the
-     * passed in vector, or null if not possible.
-     */
-    @Nullable
-    public Vec3f getIntermediateWithZValue(Vec3f vec, float z){
-        float d0 = vec.xCoord - this.xCoord;
-        float d1 = vec.yCoord - this.yCoord;
-        float d2 = vec.zCoord - this.zCoord;
-        if(d2 * d2 < 1.0000000116860974E-7D){
-            return null;
-        }
-        else{
-            float d3 = (z - this.zCoord) / d2;
-            return d3 >= 0.0F && d3 <= 1.0F ? new Vec3f(this.xCoord + d0 * d3, this.yCoord + d1 * d3, this.zCoord + d2 * d3) : null;
-        }
     }
 
     public boolean equals(Object obj){
