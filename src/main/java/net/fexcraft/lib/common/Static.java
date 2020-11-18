@@ -16,6 +16,7 @@ public class Static {
 
 	public static final float MODELSCALE = 0.0625F;
 	public static final float PI = 3.14159265358979323846f;
+	public static final float PI2 = PI + PI;
 
 	public static final float sixteenth = 0.0625F;
 	public static final float eighth = 0.125F;
