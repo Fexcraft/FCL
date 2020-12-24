@@ -32,7 +32,13 @@ public class NBTTagCompoundPacketHandler {
 					}
 					IPacketListener<PacketNBTTagCompound> listener = sls.get(packet.nbt.getString("target_listener"));
 					if(listener != null){
-						listener.process(packet, new Object[]{ctx.getServerHandler().player});
+						try{
+							listener.process(packet, new Object[]{ ctx.getServerHandler().player });
+						}
+						catch(Throwable thr){
+							Print.log("ERROR on processing NBT Packet: " + packet.nbt.toString());
+							thr.printStackTrace();
+						}
 					}
 				}
 			});
@@ -54,7 +60,13 @@ public class NBTTagCompoundPacketHandler {
 					}
 					IPacketListener<PacketNBTTagCompound> listener = cls.get(packet.nbt.getString("target_listener"));
 					if(listener != null){
-						listener.process(packet, new Object[]{Minecraft.getMinecraft().player});
+						try{
+							listener.process(packet, new Object[]{ Minecraft.getMinecraft().player });
+						}
+						catch(Throwable thr){
+							Print.log("ERROR on processing NBT Packet: " + packet.nbt.toString());
+							thr.printStackTrace();
+						}
 					}
 				}
 			});
