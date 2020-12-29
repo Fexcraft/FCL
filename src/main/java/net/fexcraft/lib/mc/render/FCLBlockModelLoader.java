@@ -241,26 +241,31 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			}
 			else axis1.setAngles(180, 180, 0);
 			Collection<ModelRendererTurbo> mrts = model.getPolygons(state, side, root.customdata, rand);
-			for(ModelRendererTurbo mrt : mrts){
-				TextureAtlasSprite sprite = mrt.texName == null ? deftex : getTex(mrt.texName);
-				axis.setAngles(-mrt.rotationAngleY, -mrt.rotationAngleZ, -mrt.rotationAngleX);
-				for(TexturedPolygon polygon : mrt.getFaces()){
-					if(polygon.getVertices().length != 4) continue;
-					Vec3f vec0 = new Vec3f(polygon.getVertices()[1].vector.subtract(polygon.getVertices()[0].vector));
-					Vec3f vec1 = new Vec3f(polygon.getVertices()[1].vector.subtract(polygon.getVertices()[2].vector));
-					Vec3f vec2 = vec1.crossProduct(vec0).normalize();
-					vec2 = axis1.getRelativeVector(axis.getRelativeVector(vec2));
-					if(axis2 != null) vec2 = axis2.getRelativeVector(vec2);
-					UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
-					builder.setContractUVs(true);
-					builder.setQuadOrientation(EnumFacing.getFacingFromVector(vec2.xCoord, vec2.yCoord, vec2.zCoord));
-					builder.setTexture(sprite);
-					putVertexData(builder, mrt, polygon.getVertices()[0], vec2, TextureCoordinate.getDefaultUVs()[0], sprite);
-					putVertexData(builder, mrt, polygon.getVertices()[1], vec2, TextureCoordinate.getDefaultUVs()[1], sprite);
-					putVertexData(builder, mrt, polygon.getVertices()[2], vec2, TextureCoordinate.getDefaultUVs()[2], sprite);
-					putVertexData(builder, mrt, polygon.getVertices()[3], vec2, TextureCoordinate.getDefaultUVs()[3], sprite);
-					newquads.add(builder.build());
+			try{
+				for(ModelRendererTurbo mrt : mrts){
+					TextureAtlasSprite sprite = mrt.texName == null ? deftex : getTex(mrt.texName);
+					axis.setAngles(-mrt.rotationAngleY, -mrt.rotationAngleZ, -mrt.rotationAngleX);
+					for(TexturedPolygon polygon : mrt.getFaces()){
+						if(polygon.getVertices().length != 4) continue;
+						Vec3f vec0 = new Vec3f(polygon.getVertices()[1].vector.subtract(polygon.getVertices()[0].vector));
+						Vec3f vec1 = new Vec3f(polygon.getVertices()[1].vector.subtract(polygon.getVertices()[2].vector));
+						Vec3f vec2 = vec1.crossProduct(vec0).normalize();
+						vec2 = axis1.getRelativeVector(axis.getRelativeVector(vec2));
+						if(axis2 != null) vec2 = axis2.getRelativeVector(vec2);
+						UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
+						builder.setContractUVs(true);
+						builder.setQuadOrientation(EnumFacing.getFacingFromVector(vec2.xCoord, vec2.yCoord, vec2.zCoord));
+						builder.setTexture(sprite);
+						putVertexData(builder, mrt, polygon.getVertices()[0], vec2, TextureCoordinate.getDefaultUVs()[0], sprite);
+						putVertexData(builder, mrt, polygon.getVertices()[1], vec2, TextureCoordinate.getDefaultUVs()[1], sprite);
+						putVertexData(builder, mrt, polygon.getVertices()[2], vec2, TextureCoordinate.getDefaultUVs()[2], sprite);
+						putVertexData(builder, mrt, polygon.getVertices()[3], vec2, TextureCoordinate.getDefaultUVs()[3], sprite);
+						newquads.add(builder.build());
+					}
 				}
+			}
+			catch(Throwable thr){
+				thr.printStackTrace();
 			}
 			quads.put(statekey, newquads);
 			model.reset(state, side, root.customdata, rand);
