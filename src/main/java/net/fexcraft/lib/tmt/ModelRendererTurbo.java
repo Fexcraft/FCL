@@ -1631,6 +1631,10 @@ public class ModelRendererTurbo {
 		return glId;
 	}
 	
+	public Integer glId(Integer newId){
+		return glId = newId;
+	}
+	
 	public <T> T glObject(){
 		return (T)glObj;
 	}
