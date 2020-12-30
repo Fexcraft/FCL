@@ -1639,6 +1639,10 @@ public class ModelRendererTurbo {
 		return (T)glObj;
 	}
 	
+	public <T> T glObject(T obj){
+		return (T)(glObj = obj);
+	}
+	
 	//---///----///---//
 	/** Code bellow added in means of compatibility, mainly used by the FMT Editor's MTB importer, from where it is, ask the one who made the importer. **/
 	
