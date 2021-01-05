@@ -77,6 +77,7 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
             }
     	});
     	fields.forEach((key, elm) -> elm.drawTextBox());
+    	drawlast(pticks, mouseX, mouseY);
     }
     
 	/** Client Side Method. */
@@ -105,6 +106,8 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 	protected abstract void predraw(float pticks, int mouseX, int mouseY);
     
     protected abstract void drawbackground(float pticks, int mouseX, int mouseY);
+    
+    protected void drawlast(float pticks, int mouseX, int mouseY){}
 
 	protected abstract boolean buttonClicked(int mouseX, int mouseY, int mouseButton, String key, BasicButton button);
 
@@ -112,16 +115,14 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
     
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        if(mouseButton == 0){
-        	for(java.util.Map.Entry<String, BasicButton> entry : buttons.entrySet()){
-        		if(entry.getValue().mousePressed(this.mc, mouseX, mouseY)){
-        			//can't add the forge event as it needs a _GuiButton_, this isn't one.
-        			Print.debug("[GG] Button Pressed: " + entry.getKey());
-        			buttonClicked(mouseX, mouseY, mouseButton, entry.getKey(), entry.getValue());
-        			return;
-        		}
-        	}
-        }
+    	for(java.util.Map.Entry<String, BasicButton> entry : buttons.entrySet()){
+    		if(entry.getValue().mousePressed(this.mc, mouseX, mouseY)){
+    			//can't add the forge event as it needs a _GuiButton_, this isn't one.
+    			Print.debug("[GG] Button Pressed: " + entry.getKey() + " / " + mouseButton);
+    			buttonClicked(mouseX, mouseY, mouseButton, entry.getKey(), entry.getValue());
+    			return;
+    		}
+    	}
         if(!fields.isEmpty()){
         	for(TextField field : fields.values()){
         		if(field.mouseClicked(mouseX, mouseY, mouseButton)) return;
