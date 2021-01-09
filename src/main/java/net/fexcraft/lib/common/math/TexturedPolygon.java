@@ -10,16 +10,21 @@ import org.lwjgl.opengl.GL11;
  */
 public class TexturedPolygon {
 
-    private boolean invert;//, oppositetriangles;
+    private boolean invert = false;//, oppositetriangles;
     private float[] normals;
     private RGB color = null;
     private ArrayList<Vec3f> list;
     private TexturedVertex[] vertices;
 	
 	public TexturedPolygon(TexturedVertex[] verts){
-		this.vertices = verts; invert = false;
-		normals = new float[0]; list = new ArrayList<Vec3f>();
+		this.vertices = verts;
+		normals = new float[0];
+		list = new ArrayList<Vec3f>();
     }
+
+	public TexturedPolygon(ArrayList<TexturedVertex> verts){
+		this(verts.toArray(new TexturedVertex[0]));
+	}
 
 	public void setInvert(boolean bool){ invert = bool; }
 	
@@ -59,10 +64,11 @@ public class TexturedPolygon {
 		        Vec3f vec0 = new Vec3f(vertices[1].vector.subtract(vertices[0].vector));
 		        Vec3f vec1 = new Vec3f(vertices[1].vector.subtract(vertices[2].vector));
 		        Vec3f vec2 = vec1.crossProduct(vec0).normalize();
+		        normals = new float[]{ vec2.xCoord, vec2.yCoord, vec2.zCoord };
 		        if(invert){ GL11.glNormal3f(-vec2.xCoord, -vec2.yCoord, -vec2.zCoord); }
 		        else{ GL11.glNormal3f(vec2.xCoord, vec2.yCoord, vec2.zCoord); }
 	        }
-	        else{ return; }
+	        else return;
         }
         for(int i = 0; i < vertices.length; i++){
         	TexturedVertex texvex = vertices[i];
@@ -83,10 +89,11 @@ public class TexturedPolygon {
     }
 
     public void flipFace(){
-        TexturedVertex[] tva = new TexturedVertex[vertices.length];
+        TexturedVertex[] verts = new TexturedVertex[vertices.length];
         for(int i = 0; i < vertices.length; ++i){
-            tva[i] = vertices[vertices.length - i - 1];
-        } vertices = tva;
+            verts[i] = vertices[vertices.length - i - 1];
+        }
+        vertices = verts;
     }
 
 	public TexturedVertex[] getVertices(){
