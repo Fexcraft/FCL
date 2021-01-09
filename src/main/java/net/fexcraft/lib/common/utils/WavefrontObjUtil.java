@@ -19,6 +19,7 @@ import net.fexcraft.lib.common.math.Vec3f;
  *         Utils to make OBJ import more fine-tuned.
  *
  */
+@Deprecated
 public class WavefrontObjUtil {
 
 	public static String[] getGroups(File objfile){
