@@ -6,7 +6,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.common.json.JsonUtil;
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.common.utils.Print;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
@@ -107,7 +106,7 @@ public class JsonToTMT {
 				}
 				else{
 					String str = obj.get("location").getAsString();
-					model.addObj(Static.getResource(str), obj.has("group") ? obj.get("group").getAsString() : null);
+					model.addObj(Static.getResource(str));
 				}
 			}
 		}
