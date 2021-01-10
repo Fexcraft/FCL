@@ -254,7 +254,7 @@ public class WavefrontObjUtil {
 					}
 					TexturedPolygon poly = new TexturedPolygon(vToArr);
 					poly.setNormals(normal[0], normal[1], normal[2]);
-					poly.setNormals(iNormal);
+					poly.getNormalVerts().addAll(iNormal);
 					faces.add(poly);
 					verts1.addAll(vc);
 					continue;
