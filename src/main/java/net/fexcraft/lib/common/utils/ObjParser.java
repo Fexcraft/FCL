@@ -26,7 +26,7 @@ import net.fexcraft.lib.common.math.Vec3f;
 public class ObjParser {
 	
 	private boolean comments, uv = true, normals = true;
-	private boolean objmode, flip, invert, model = true;
+	private boolean flip, invert, model = true;
 	private InputStream stream;
 	
 	public ObjParser(InputStream stream){
@@ -58,16 +58,6 @@ public class ObjParser {
 		return this;
 	}
 	
-	public ObjParser objectMode(boolean bool){
-		objmode = bool;
-		return this;
-	}
-	
-	public ObjParser groupMode(boolean bool){
-		objmode = !bool;
-		return this;
-	}
-	
 	public ObjParser invertNormals(boolean bool){
 		invert = !bool;
 		return this;
@@ -82,8 +72,7 @@ public class ObjParser {
 		String s = null, group = null;
 		String[] ss, fs;
 		float[] uva = null;
-		boolean norm = false, uvb = false;
-		String gprefix = objmode ? "o " : "g ";
+		boolean norm = false, uvb = false, com = false;
 		int line = 0;
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
@@ -92,12 +81,16 @@ public class ObjParser {
 				s = s.trim();
 				if(s.length() == 0) continue;
 				if(s.startsWith("#")){
-					if(comments) model.comments.add(s);
+					if(comments) model.comments.add(s.substring(s.indexOf("#") + 1).trim());
+					else if(com) break;
 					continue;
 				}
-				else if(s.startsWith(gprefix)){
+				else if(s.startsWith("o ") || s.startsWith("g ")){
 					if(!this.model) break;
-					comments = false;
+					if(comments){
+						comments = false;
+						com = !this.model;
+					}
 					group = s.substring(s.indexOf(" ") + 1).trim();
 					model.polygons.put(group, new ArrayList<>());
 					faces.put(group, new ArrayList<>());
