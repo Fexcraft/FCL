@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class TexturedPolygon {
 
-    private boolean invert = false;//, oppositetriangles;
+	private boolean invert = false;//, oppositetriangles;
     private float[] normals;
     private RGB color = null;
     private ArrayList<Vec3f> list;
@@ -29,8 +29,6 @@ public class TexturedPolygon {
 	public void setInvert(boolean bool){ invert = bool; }
 	
 	public void setNormals(float x, float y, float z){ normals = new float[] {x, y, z}; }
-	
-	public void setNormals(ArrayList<Vec3f> normallist){ list = normallist; }
 	
 	public void draw(float scale, RGB lincol, RGB rgb){
 		if(lincol != null){
@@ -55,7 +53,8 @@ public class TexturedPolygon {
 		        default: GL11.glBegin(GL11.GL_POLYGON); break;
 	        };
 		}
-        if(list.isEmpty()){
+		boolean gnorm = list.isEmpty() || list.size() != vertices.length;
+        if(gnorm){
 	        if(normals.length == 3){
 	        	if(invert){ GL11.glNormal3f(-normals[0], -normals[1], -normals[2]); }
 	        	else{ GL11.glNormal3f(normals[0], normals[1], normals[2]); }
@@ -72,10 +71,11 @@ public class TexturedPolygon {
         }
         for(int i = 0; i < vertices.length; i++){
         	TexturedVertex texvex = vertices[i];
-            if(i < list.size()){
-            	if(invert){ GL11.glNormal3f(-list.get(i).xCoord, -list.get(i).yCoord, -list.get(i).zCoord); }
-            	else{ GL11.glNormal3f(list.get(i).xCoord, list.get(i).yCoord, list.get(i).zCoord); }
-            }
+        	if(!gnorm){
+            	Vec3f norm = list.get(i);
+            	if(invert) GL11.glNormal3f(-norm.xCoord, -norm.yCoord, -norm.zCoord);
+            	else GL11.glNormal3f(norm.xCoord, norm.yCoord, norm.zCoord);
+        	}
             if(rgb == null && color == null){
             	GL11.glTexCoord2f(texvex.textureX, texvex.textureY);
             	GL11.glVertex3f(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
@@ -112,7 +112,7 @@ public class TexturedPolygon {
 		return normals;
 	}
 
-	public List<Vec3f> getVectors(){
+	public List<Vec3f> getNormalVerts(){
 		return list;
 	}
 
