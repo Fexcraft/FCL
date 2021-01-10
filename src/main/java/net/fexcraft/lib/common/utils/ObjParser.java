@@ -166,11 +166,9 @@ public class ObjParser {
 					}
 					TexturedPolygon poly = new TexturedPolygon(verts);
 					if(norm){
-						ArrayList<Vec3f> normals = new ArrayList<>();
 						for(float[] fl : norms){
-							normals.add(new Vec3f(fl[0], fl[1], fl[2]));
+							poly.getNormalVerts().add(new Vec3f(fl[0], fl[1], fl[2]));
 						}
-						poly.setNormals(normals);
 					}
 					if(invert) poly.setInvert(invert);
 					model.polygons.get(entry.getKey()).add(poly);
