@@ -1358,14 +1358,17 @@ public class ModelRendererTurbo {
      * Adds a Waveform .obj file as a model. Model files use the entire texture file.
      * @param location the ResourceLocation of the .obj file.
      */
+	@Deprecated
     public ModelRendererTurbo addObj(InputStream stream, String group){
     	return this.addObj(stream, group, false);
     }
     
+    @Deprecated
     public ModelRendererTurbo addObj(InputStream stream, String group, boolean flipaxis){
     	return this.addObj(stream, group, flipaxis, false);
     }
     
+    @Deprecated
     public ModelRendererTurbo addObj(InputStream stream, String group, boolean flipaxis, boolean objmode){
     	Object[][] source = WavefrontObjUtil.getVerticesAndPolygons(stream, group, flipaxis, objmode);
     	if(source == null || source.length < 2) return this;
