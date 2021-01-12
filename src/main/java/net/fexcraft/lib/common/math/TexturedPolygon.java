@@ -58,27 +58,19 @@ public class TexturedPolygon {
 		boolean gnorm = list.isEmpty() || list.size() != vertices.length;
         if(gnorm) checkGenerated();
         if(vertices.length == 4){
-        	if(gnorm){
-        		if(invert){ GL11.glNormal3f(-normals[0], -normals[1], -normals[2]); }
-            	else{ GL11.glNormal3f(normals[0], normals[1], normals[2]); }
-        	}
             if(rgb == null && color == null){
-            	triangleT(scale, 0, 1, 2);
+            	triangleT(scale, 0, 1, 2, gnorm);
             }
             else{
             	(color == null ? rgb : color).glColorApply();
-            	triangleT(scale, 0, 1, 2);
+            	triangleC(scale, 0, 1, 2, gnorm);
             }
-        	if(gnorm){
-        		if(invert){ GL11.glNormal3f(-normals[3], -normals[4], -normals[5]); }
-            	else{ GL11.glNormal3f(normals[3], normals[4], normals[5]); }
-        	}
             if(rgb == null && color == null){
-            	triangleT(scale, 0, 2, 3);
+            	triangleT(scale, 0, 2, 3, gnorm);
             }
             else{
             	(color == null ? rgb : color).glColorApply();
-            	triangleC(scale, 0, 2, 3);
+            	triangleC(scale, 0, 2, 3, gnorm);
             }
         }
         else{
@@ -106,19 +98,39 @@ public class TexturedPolygon {
         GL11.glEnd();
     }
 
-    private void triangleT(float scale, int x, int y, int z){
+    private void triangleT(float scale, int x, int y, int z, boolean gnorm){
+    	if(gnorm){
+    		if(invert){ GL11.glNormal3f(-normals[0], -normals[1], -normals[2]); }
+        	else{ GL11.glNormal3f(normals[0], normals[1], normals[2]); }
+    	}
+    	if(!gnorm) norm(x);
     	GL11.glTexCoord2f(vertices[x].textureX, vertices[x].textureY);
     	GL11.glVertex3f(vertices[x].vector.xCoord * scale, vertices[x].vector.yCoord * scale, vertices[x].vector.zCoord * scale);
+    	if(!gnorm) norm(y);
     	GL11.glTexCoord2f(vertices[y].textureX, vertices[y].textureY);
     	GL11.glVertex3f(vertices[y].vector.xCoord * scale, vertices[y].vector.yCoord * scale, vertices[y].vector.zCoord * scale);
+    	if(!gnorm) norm(z);
     	GL11.glTexCoord2f(vertices[z].textureX, vertices[z].textureY);
     	GL11.glVertex3f(vertices[z].vector.xCoord * scale, vertices[z].vector.yCoord * scale, vertices[z].vector.zCoord * scale);
 	}
-    
-    private void triangleC(float scale, int x, int y, int z){
+
+	private void triangleC(float scale, int x, int y, int z, boolean gnorm){
+    	if(gnorm){
+    		if(invert){ GL11.glNormal3f(-normals[3], -normals[4], -normals[5]); }
+        	else{ GL11.glNormal3f(normals[3], normals[4], normals[5]); }
+    	}
+    	if(!gnorm) norm(x);
     	GL11.glVertex3f(vertices[x].vector.xCoord * scale, vertices[x].vector.yCoord * scale, vertices[x].vector.zCoord * scale);
+    	if(!gnorm) norm(y);
     	GL11.glVertex3f(vertices[y].vector.xCoord * scale, vertices[y].vector.yCoord * scale, vertices[y].vector.zCoord * scale);
+    	if(!gnorm) norm(z);
     	GL11.glVertex3f(vertices[z].vector.xCoord * scale, vertices[z].vector.yCoord * scale, vertices[z].vector.zCoord * scale);
+	}
+    
+    private void norm(int i){
+    	Vec3f norm = list.get(i);
+    	if(invert) GL11.glNormal3f(-norm.xCoord, -norm.yCoord, -norm.zCoord);
+    	else GL11.glNormal3f(norm.xCoord, norm.yCoord, norm.zCoord);
 	}
 
 	private void checkGenerated(){
