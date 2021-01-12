@@ -7,6 +7,8 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * Based on TMT, also compatible/required by the TMT branch shipped with FCL.
+ * Further updates and patches by FEX___96 (Ferdinand Calo')
+ * 
  */
 public class TexturedPolygon {
 
