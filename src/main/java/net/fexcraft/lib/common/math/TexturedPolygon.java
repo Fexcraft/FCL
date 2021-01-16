@@ -52,7 +52,7 @@ public class TexturedPolygon {
 		else{
 	        switch(vertices.length){
 		        case 3: GL11.glBegin(GL11.GL_TRIANGLES); break;
-		        case 4: GL11.glBegin(GL11.GL_TRIANGLES/*GL11.GL_QUADS*/); break;
+		        case 4: GL11.glBegin(TRIANGULATED_QUADS ? GL11.GL_TRIANGLES : GL11.GL_QUADS); break;
 		        default: GL11.glBegin(GL11.GL_POLYGON); break;
 	        };
 		}
@@ -136,7 +136,7 @@ public class TexturedPolygon {
 
 	private void checkGenerated(){
     	if(normals.length >= 3) return;
-        if(vertices.length == 4){
+        if(TRIANGULATED_QUADS && vertices.length == 4){
 	        Vec3f vec0 = new Vec3f(vertices[1].vector.subtract(vertices[0].vector));
 	        Vec3f vec1 = new Vec3f(vertices[1].vector.subtract(vertices[2].vector));
 	        Vec3f vec2 = vec1.crossProduct(vec0).normalize();
