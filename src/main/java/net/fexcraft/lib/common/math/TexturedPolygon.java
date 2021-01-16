@@ -60,18 +60,18 @@ public class TexturedPolygon {
         if(gnorm) checkGenerated();
         if(TRIANGULATED_QUADS && vertices.length == 4){
             if(rgb == null && color == null){
-            	triangleT(scale, 0, 1, 2, gnorm);
+            	triangleT(scale, 0, 1, 2, gnorm, 0);
             }
             else{
             	(color == null ? rgb : color).glColorApply();
-            	triangleC(scale, 0, 1, 2, gnorm);
+            	triangleC(scale, 0, 1, 2, gnorm, 0);
             }
             if(rgb == null && color == null){
-            	triangleT(scale, 0, 2, 3, gnorm);
+            	triangleT(scale, 0, 2, 3, gnorm, 3);
             }
             else{
             	(color == null ? rgb : color).glColorApply();
-            	triangleC(scale, 0, 2, 3, gnorm);
+            	triangleC(scale, 0, 2, 3, gnorm, 3);
             }
         }
         else{
@@ -99,10 +99,10 @@ public class TexturedPolygon {
         GL11.glEnd();
     }
 
-    private void triangleT(float scale, int x, int y, int z, boolean gnorm){
+    private void triangleT(float scale, int x, int y, int z, boolean gnorm, int off){
     	if(gnorm){
-    		if(invert){ GL11.glNormal3f(-normals[0], -normals[1], -normals[2]); }
-        	else{ GL11.glNormal3f(normals[0], normals[1], normals[2]); }
+    		if(invert){ GL11.glNormal3f(-normals[0 + off], -normals[1 + off], -normals[2 + off]); }
+        	else{ GL11.glNormal3f(normals[0 + off], normals[1 + off], normals[2 + off]); }
     	}
     	if(!gnorm) norm(x);
     	GL11.glTexCoord2f(vertices[x].textureX, vertices[x].textureY);
@@ -115,10 +115,10 @@ public class TexturedPolygon {
     	GL11.glVertex3f(vertices[z].vector.xCoord * scale, vertices[z].vector.yCoord * scale, vertices[z].vector.zCoord * scale);
 	}
 
-	private void triangleC(float scale, int x, int y, int z, boolean gnorm){
+	private void triangleC(float scale, int x, int y, int z, boolean gnorm, int off){
     	if(gnorm){
-    		if(invert){ GL11.glNormal3f(-normals[3], -normals[4], -normals[5]); }
-        	else{ GL11.glNormal3f(normals[3], normals[4], normals[5]); }
+    		if(invert){ GL11.glNormal3f(-normals[0 + off], -normals[1 + off], -normals[2 + off]); }
+        	else{ GL11.glNormal3f(normals[0 + off], normals[1 + off], normals[2 + off]); }
     	}
     	if(!gnorm) norm(x);
     	GL11.glVertex3f(vertices[x].vector.xCoord * scale, vertices[x].vector.yCoord * scale, vertices[x].vector.zCoord * scale);
