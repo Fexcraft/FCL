@@ -87,17 +87,18 @@ public class Static extends net.fexcraft.lib.common.Static {
 		}
 	}
 
-	public static final String toString(BlockPos pos){
-		return pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
-	}
-
 	public static String getPlayerNameByUUID(String string){
 		try{
 			return getPlayerNameByUUID(UUID.fromString(string));
 		}
 		catch(Exception e){
-			return "<null/parse_err>";
+			e.printStackTrace();
+			return "<ER> " + string;
 		}
+	}
+
+	public static final String toString(BlockPos pos){
+		return pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
 	}
 
 	public static float divide(float x, float y){
