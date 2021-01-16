@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class TexturedPolygon {
 
+	public static boolean TRIANGULATED_QUADS = true;
 	private boolean invert = false;//, oppositetriangles;
     private float[] normals;
     private RGB color = null;
@@ -57,7 +58,7 @@ public class TexturedPolygon {
 		}
 		boolean gnorm = list.isEmpty() || list.size() != vertices.length;
         if(gnorm) checkGenerated();
-        if(vertices.length == 4){
+        if(TRIANGULATED_QUADS && vertices.length == 4){
             if(rgb == null && color == null){
             	triangleT(scale, 0, 1, 2, gnorm);
             }
