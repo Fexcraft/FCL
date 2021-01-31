@@ -172,5 +172,10 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 	public static void format(ICommandSender sender, String string, Object... objs){
 		Print.chat(sender, String.format(string, objs));
 	}
+
+	public static void chatbar(ICommandSender sender, String string){
+		if(!(sender instanceof EntityPlayer)) chat(sender, string);
+		else bar((EntityPlayer)sender, string);
+	}
 	
 }
