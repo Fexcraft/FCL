@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import javax.annotation.Nullable;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.network.PacketHandler;
@@ -68,13 +69,11 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
     	buttons.forEach((key, button) -> {
-    		button.hovered(mouseX, mouseY); button.draw(this, pticks, mouseX, mouseY);
+    		button.hovered(mouseX, mouseY);
+    		button.draw(this, pticks, mouseX, mouseY);
     	});
     	texts.forEach((key, text) -> {
-            if(text.visible){
-            	text.hovered(mouseX, mouseY);
-            	mc.fontRenderer.drawString(text.string, text.x, text.y, text.hovered ? text.hovercolor : text.color);
-            }
+    		text.draw(this, pticks, mouseX, mouseY);
     	});
     	fields.forEach((key, elm) -> elm.drawTextBox());
     	drawlast(pticks, mouseX, mouseY);
@@ -172,12 +171,13 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 		public int x, y, width, color, hovercolor = new RGB(244, 215,  66, 0.5f).packed;
 		public String string;
 		public boolean visible = true, hovered, hoverable;
+		public float scale;
 		
 		public BasicText(int x, int y, int width, @Nullable Integer color, String string){
 			this.x = x; this.y = y; this.width = width;
 			this.string = string; this.color = color == null ? defcolor.packed : color;
 		}
-		
+
 		public BasicText(int x, int y, int width, @Nullable Integer color, String string, boolean hover, @Nullable Integer hovercolor){
 			this(x, y, width, color, string);
 			this.hoverable = hover;
@@ -196,6 +196,33 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 
 		public void translate(Object... objects){
 			this.string = I18n.format(string, objects);
+		}
+
+		public BasicText scale(float scale){
+			this.scale = scale;
+			return this;
+		}
+
+		public BasicText autoscale(){
+			this.scale = -1;
+			return this;
+		}
+		
+		public void draw(GenericGui<?> gui, float pticks, int mouseX, int mouseY){
+			if(!visible) return;
+			hovered(mouseX, mouseY);
+			if(scale == 0 || (scale < 0 && gui.mc.fontRenderer.getStringWidth(string) < width)){
+            	gui.mc.fontRenderer.drawString(string, x, y, hovered ? hovercolor : color);
+				return;
+			}
+			else{
+				float scale = this.scale < 0 ? (float)width / gui.mc.fontRenderer.getStringWidth(string) : this.scale;
+        		GL11.glPushMatrix();
+        		GL11.glTranslatef(x, y, 0);
+        		GL11.glScalef(scale, scale, scale);
+            	gui.mc.fontRenderer.drawString(string, 0, 0, hovered ? hovercolor : color);
+            	GL11.glPopMatrix();
+			}
 		}
 		
 	}
