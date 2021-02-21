@@ -251,6 +251,11 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 	    public TextField setMaxLength(int length){
 	        super.setMaxStringLength(length); return this;
 	    }
+	    
+	    public TextField setEnableBackground(boolean enable){
+	        super.setEnableBackgroundDrawing(enable);
+	        return this;
+	    }
 		
 	}
 	
