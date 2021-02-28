@@ -167,7 +167,7 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 	
 	public static class BasicText {
 		
-		private static final RGB defcolor = new RGB(128, 128, 128);
+		private static final RGB defcolor = new RGB(99, 99, 99);//128, 128, 128);
 		public int x, y, width, color, hovercolor = new RGB(244, 215,  66, 0.5f).packed;
 		public String string;
 		public boolean visible = true, hovered, hoverable;
@@ -256,6 +256,11 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 	        super.setEnableBackgroundDrawing(enable);
 	        return this;
 	    }
+
+		public TextField setColor(int color){
+			super.setTextColor(color);
+			return this;
+		}
 		
 	}
 	
