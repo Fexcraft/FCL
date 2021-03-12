@@ -36,7 +36,7 @@ public class BluePrintTableGui1 extends GenericGui<GenericContainer.DefImpl> {
 			this.buttons.put("i_" + i, new BasicButton("i_" + i, guiLeft + 224, guiTop + 5 + j, 224, 5 + j, 15, 12, true));
 			buttons.get("i_" + i).rgb_hover = new RGB(180, 120, 20);
 			//
-			this.texts.put("rec_" + i, new BasicText(guiLeft + 21, guiTop + 7 + j, 199, MapColor.GRAY.colorValue, ""));
+			this.texts.put("rec_" + i, new BasicText(guiLeft + 21, guiTop + 7 + j, 199, MapColor.SNOW.colorValue, ""));
 		}
 	}
 
@@ -91,7 +91,11 @@ public class BluePrintTableGui1 extends GenericGui<GenericContainer.DefImpl> {
 	}
 	
 	@Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException{
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		if(this.mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)){
+			player.closeScreen();
+			return;
+		}
         if(keyCode == 1){
         	category = -1;
         	openGui(0, new int[]{ 0, 0, 0 }, null);

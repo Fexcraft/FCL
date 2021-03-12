@@ -36,8 +36,8 @@ public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 			this.buttons.put("cat_" + i, new BasicButton("cat_" + i, guiLeft + 224, guiTop + 6 + j, 224, 6 + j, 15, 24, true));
 			buttons.get("cat_" + i).rgb_hover = new RGB(180, 120, 20);
 			//
-			this.texts.put("cat0_" + i, new BasicText(guiLeft + 29, guiTop + 7 + j, 191, MapColor.GRAY.colorValue, ""));
-			this.texts.put("cat1_" + i, new BasicText(guiLeft + 29, guiTop + 21 + j, 191, MapColor.GRAY.colorValue, ""));
+			this.texts.put("cat0_" + i, new BasicText(guiLeft + 29, guiTop + 7 + j, 191, MapColor.SNOW.colorValue, ""));
+			this.texts.put("cat1_" + i, new BasicText(guiLeft + 29, guiTop + 21 + j, 191, MapColor.SNOW.colorValue, ""));
 		}
 	}
 

@@ -25,8 +25,8 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 
 	@Override
 	protected void init(){
-		this.texts.put("title", new BasicText(guiLeft + 46, guiTop + 7, 156, MapColor.GRAY.colorValue, container.recipe.output.getDisplayName()));
-		this.texts.put("status", new BasicText(guiLeft + 46, guiTop + 21, 156, MapColor.GRAY.colorValue, I18n.format("gui.fcl.blueprinttable2.recstatus", recipe + 1, recipes), true, null){
+		this.texts.put("title", new BasicText(guiLeft + 46, guiTop + 7, 156, MapColor.SNOW.colorValue, container.recipe.output.getDisplayName()));
+		this.texts.put("status", new BasicText(guiLeft + 46, guiTop + 21, 156, MapColor.SNOW.colorValue, I18n.format("gui.fcl.blueprinttable2.recstatus", recipe + 1, recipes), true, null){
 			@Override
 			public boolean scrollwheel(int am, int x, int y){
 				if(am > 0 && buttons.get("next").enabled){
@@ -42,8 +42,8 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 		});
 		this.buttons.put("ingr_up", new BasicButton("ingr_up", guiLeft + 172, guiTop + 124, 172, 124, 23, 9, true));
 		this.buttons.put("ingr_down", new BasicButton("ingr_down", guiLeft + 198, guiTop + 124, 198, 124, 23, 9, true));
-		this.texts.put("amount", new BasicText(guiLeft + 174, guiTop + 172, 45, MapColor.GRAY.colorValue, ""));
-		this.texts.put("amount_dest", new BasicText(guiLeft + 174, guiTop + 159, 45, MapColor.GRAY.colorValue, "Amount:"));
+		this.texts.put("amount", new BasicText(guiLeft + 174, guiTop + 172, 45, MapColor.SNOW.colorValue, ""));
+		this.texts.put("amount_dest", new BasicText(guiLeft + 174, guiTop + 159, 45, MapColor.SNOW.colorValue, "Amount:"));
 		this.buttons.put("craft", new BasicButton("craft", guiLeft + 198, guiTop + 184, 198, 184, 23, 18, container.craftable(player)));
 		this.buttons.put("less", new BasicButton("less", guiLeft + 172, guiTop + 184, 172, 184, 11, 18, true));
 		this.buttons.put("more", new BasicButton("more", guiLeft + 185, guiTop + 184, 185, 184, 11, 18, true));
@@ -97,7 +97,11 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 	}
 	
 	@Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException{
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		if(this.mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)){
+			player.closeScreen();
+			return;
+		}
         if(keyCode == 1){
         	item = -1;
         	recipe = -1;
