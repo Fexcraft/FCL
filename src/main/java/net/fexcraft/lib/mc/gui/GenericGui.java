@@ -290,16 +290,17 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 	//---///----////----///---//
 	
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException{
-        if(!fields.isEmpty()){
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    	boolean invbutton = this.mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode);
+        if(!invbutton && !fields.isEmpty()){
         	boolean bool = false;
         	for(Entry<String, TextField> entry : fields.entrySet()){
         		if(bool) break;
         		if(entry.getValue().textboxKeyTyped(typedChar, keyCode)) bool = true;
         	}
-            if(bool && !this.mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)) super.keyTyped(typedChar, keyCode);
+            if(bool) super.keyTyped(typedChar, keyCode);
         }
-        if(keyCode == 1) player.closeScreen();
+        if(keyCode == 1 || invbutton) mc.player.closeScreen();
     }
     
     @Override

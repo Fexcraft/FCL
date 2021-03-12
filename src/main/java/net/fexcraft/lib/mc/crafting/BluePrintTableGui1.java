@@ -93,7 +93,7 @@ public class BluePrintTableGui1 extends GenericGui<GenericContainer.DefImpl> {
 	@Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if(this.mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)){
-			player.closeScreen();
+			mc.player.closeScreen();
 			return;
 		}
         if(keyCode == 1){

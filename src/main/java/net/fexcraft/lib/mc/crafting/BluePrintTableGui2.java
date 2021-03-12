@@ -74,7 +74,9 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 				int l = container.recipe.components.length / 60; scroll = (scroll += 1) >= l ? l : scroll;
 				container.refresh(scroll); break;
 			}
-			case "less":{ amount--; break; } case "more":{ amount++; break; } case "craft":{ craft(); break; }
+			case "less":{ amount--; break; }
+			case "more":{ amount++; break; }
+			case "craft":{ craft(); break; }
 			case "exit":{ player.closeScreen(); break; }
 			case "prev":{ openGui(2, new int[]{ BluePrintTableGui1.category, item, recipe - 1 }, null); break; }
 			case "next":{ openGui(2, new int[]{ BluePrintTableGui1.category, item, recipe + 1 }, null); break; }
@@ -99,7 +101,7 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 	@Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if(this.mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)){
-			player.closeScreen();
+			mc.player.closeScreen();
 			return;
 		}
         if(keyCode == 1){
