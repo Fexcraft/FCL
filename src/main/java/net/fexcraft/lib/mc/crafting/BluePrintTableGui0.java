@@ -21,7 +21,7 @@ public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 		super(texture, new GenericContainer.DefImpl(player), player);
 		this.xSize = 256; this.ySize = 204;
 		if(BluePrintTableGui1.category >= 0){
-			openGui(0, new int[]{ BluePrintTableGui1.category, 0, 0 }, null);
+			openGui(1, new int[]{ BluePrintTableGui1.category, 0, 0 }, null);
 		}
 	}
 
