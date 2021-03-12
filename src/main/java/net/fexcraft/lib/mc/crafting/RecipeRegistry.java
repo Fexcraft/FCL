@@ -60,12 +60,11 @@ public class RecipeRegistry {
 	
 	//
 	
-	@SuppressWarnings("unchecked")
 	public static List<BluePrintRecipe> getRecipes(int x, int y){
 		TreeMap<String, List<BluePrintRecipe>> cat = getRecipes(x);
 		//ItemStackComparable stack = cat == null ? null : (ItemStackComparable)cat.keySet().toArray()[y];
 		//return stack == null ? null : cat.get(stack);
-		return cat == null ? null : (List<BluePrintRecipe>)cat.values().toArray()[y];
+		return cat == null || y >= cat.values().size() ? null : (List<BluePrintRecipe>)cat.values().toArray()[y];
 	}
 	
 	public static TreeMap<String, List<BluePrintRecipe>> getRecipes(String category){
