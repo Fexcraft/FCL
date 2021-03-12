@@ -47,7 +47,6 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 		this.buttons.put("craft", new BasicButton("craft", guiLeft + 198, guiTop + 184, 198, 184, 23, 18, container.craftable(player)));
 		this.buttons.put("less", new BasicButton("less", guiLeft + 172, guiTop + 184, 172, 184, 11, 18, true));
 		this.buttons.put("more", new BasicButton("more", guiLeft + 185, guiTop + 184, 185, 184, 11, 18, true));
-		this.buttons.put("exit", new BasicButton("exit", guiLeft + 172, guiTop + 140, 172, 140, 49, 12, true));
 		this.buttons.put("prev", new BasicButton("prev", guiLeft + 27, guiTop + 19, 27, 19, 15, 12, false));
 		this.buttons.put("next", new BasicButton("next", guiLeft + 206, guiTop + 19, 206, 19, 15, 12, false));
 	}
@@ -77,7 +76,6 @@ public class BluePrintTableGui2 extends GenericGui<BluePrintTableContainer2> {
 			case "less":{ amount--; break; }
 			case "more":{ amount++; break; }
 			case "craft":{ craft(); break; }
-			case "exit":{ player.closeScreen(); break; }
 			case "prev":{ openGui(2, new int[]{ BluePrintTableGui1.category, item, recipe - 1 }, null); break; }
 			case "next":{ openGui(2, new int[]{ BluePrintTableGui1.category, item, recipe + 1 }, null); break; }
 		}
