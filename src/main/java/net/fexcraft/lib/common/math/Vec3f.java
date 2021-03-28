@@ -20,6 +20,10 @@ public class Vec3f {
         this.yCoord = y;
         this.zCoord = z;
     }
+    
+    public Vec3f(float v){
+        this(v, v, v);
+    }
 
     public Vec3f(Vec3f vector){
         this(vector.xCoord, vector.yCoord, vector.zCoord);
