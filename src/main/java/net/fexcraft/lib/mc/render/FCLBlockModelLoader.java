@@ -1,6 +1,14 @@
 package net.fexcraft.lib.mc.render;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -234,9 +242,9 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 				if(rectify){
 					axis1.setAngles(180, 180, 0);
 				}
-				translate.xCoord = root.customdata.containsKey("t-x") ? Float.parseFloat(root.customdata.get("t-x")) : 0;
-				translate.yCoord = root.customdata.containsKey("t-y") ? Float.parseFloat(root.customdata.get("t-y")) : 0;
-				translate.zCoord = root.customdata.containsKey("t-z") ? Float.parseFloat(root.customdata.get("t-z")) : 0;
+				translate.x = root.customdata.containsKey("t-x") ? Float.parseFloat(root.customdata.get("t-x")) : 0;
+				translate.y = root.customdata.containsKey("t-y") ? Float.parseFloat(root.customdata.get("t-y")) : 0;
+				translate.z = root.customdata.containsKey("t-z") ? Float.parseFloat(root.customdata.get("t-z")) : 0;
 				scale = root.customdata.containsKey("scale") ? Float.parseFloat(root.customdata.get("scale")) : Static.sixteenth;
 			}
 			else axis1.setAngles(180, 180, 0);
@@ -247,14 +255,14 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 					axis.setAngles(-mrt.rotationAngleY, -mrt.rotationAngleZ, -mrt.rotationAngleX);
 					for(TexturedPolygon polygon : mrt.getFaces()){
 						if(polygon.getVertices().length != 4) continue;
-						Vec3f vec0 = new Vec3f(polygon.getVertices()[1].vector.subtract(polygon.getVertices()[0].vector));
-						Vec3f vec1 = new Vec3f(polygon.getVertices()[1].vector.subtract(polygon.getVertices()[2].vector));
-						Vec3f vec2 = vec1.crossProduct(vec0).normalize();
+						Vec3f vec0 = new Vec3f(polygon.getVertices()[1].vector.sub(polygon.getVertices()[0].vector));
+						Vec3f vec1 = new Vec3f(polygon.getVertices()[1].vector.sub(polygon.getVertices()[2].vector));
+						Vec3f vec2 = vec1.cross(vec0).normalize();
 						vec2 = axis1.getRelativeVector(axis.getRelativeVector(vec2));
 						if(axis2 != null) vec2 = axis2.getRelativeVector(vec2);
 						UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
 						builder.setContractUVs(true);
-						builder.setQuadOrientation(EnumFacing.getFacingFromVector(vec2.xCoord, vec2.yCoord, vec2.zCoord));
+						builder.setQuadOrientation(EnumFacing.getFacingFromVector(vec2.x, vec2.y, vec2.z));
 						builder.setTexture(sprite);
 						putVertexData(builder, mrt, polygon.getVertices()[0], vec2, TextureCoordinate.getDefaultUVs()[0], sprite);
 						putVertexData(builder, mrt, polygon.getVertices()[1], vec2, TextureCoordinate.getDefaultUVs()[1], sprite);
@@ -301,14 +309,14 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			return textures.get(tempres.get(texName));
 		}
 
-		private final void putVertexData(Builder builder, ModelRendererTurbo mrt, TexturedVertex vert, Vec3f normal, TextureCoordinate textureCoordinate, TextureAtlasSprite texture){
+		private final void putVertexData(Builder builder, ModelRendererTurbo mrt, TexturedVertex vert, Vec3f normal, TextureCoordinate textureinate, TextureAtlasSprite texture){
 			for(int e = 0; e < format.getElementCount(); e++){
 				switch(format.getElement(e).getUsage()){
 					case POSITION:
 						Vec3f vec = axis.getRelativeVector(vert.vector);
-						vec = axis1.getRelativeVector(vec.addVector(mrt.rotationPointX, mrt.rotationPointY, mrt.rotationPointZ));
+						vec = axis1.getRelativeVector(vec.add(mrt.rotationPointX, mrt.rotationPointY, mrt.rotationPointZ));
 						if(axis2 != null) vec = axis2.getRelativeVector(vec);
-						builder.put(e, vec.xCoord * scale + translate.xCoord, vec.yCoord * scale + translate.yCoord, vec.zCoord * scale + translate.zCoord, 1);
+						builder.put(e, vec.x * scale + translate.x, vec.y * scale + translate.y, vec.z * scale + translate.z, 1);
 						break;
 					case COLOR:
 						if(mrt.getColor() != null){
@@ -324,7 +332,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 						else builder.put(e, texture.getInterpolatedU(vert.textureX * 16), texture.getInterpolatedV(vert.textureY * 16), 0, 1);
 						break;
 					case NORMAL:
-						builder.put(e, normal.xCoord, normal.yCoord, normal.zCoord, 0);
+						builder.put(e, normal.x, normal.y, normal.z, 0);
 						break;
 					default: builder.put(e);
 				}

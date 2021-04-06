@@ -165,7 +165,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 	}
 
 	public CylinderBuilder setTopRotation(Vec3f vec){
-		return setTopRotation(vec.xCoord, vec.yCoord, vec.zCoord);
+		return setTopRotation(vec.x, vec.y, vec.z);
 	}
 	
 	public ModelRendererTurbo build(){
@@ -201,9 +201,9 @@ public class CylinderBuilder implements CustomUVBuilder {
 		float xStart = (dirMirror ? x + xLength : x);
 		float yStart = (dirMirror ? y + yLength : y);
 		float zStart = (dirMirror ? z + zLength : z);
-		float xEnd = (!dirMirror ? x + xLength : x) + (topoff == null ? 0 : topoff.xCoord);
-		float yEnd = (!dirMirror ? y + yLength : y) + (topoff == null ? 0 : topoff.yCoord);
-		float zEnd = (!dirMirror ? z + zLength : z) + (topoff == null ? 0 : topoff.zCoord);
+		float xEnd = (!dirMirror ? x + xLength : x) + (topoff == null ? 0 : topoff.x);
+		float yEnd = (!dirMirror ? y + yLength : y) + (topoff == null ? 0 : topoff.y);
+		float zEnd = (!dirMirror ? z + zLength : z) + (topoff == null ? 0 : topoff.z);
 		float xCur = xStart, yCur = yStart, zCur = zStart, sCur = base_scale;
 		//Texture
 		float[][] uvs = new float[6][];

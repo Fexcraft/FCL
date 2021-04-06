@@ -163,14 +163,14 @@ public class BoxBuilder implements CustomUVBuilder {
 			Vec3f c7 = corners[7] == null ? NULLVEC : corners[7];
 			float xw = x + w, yh = y + h, zd = z + d;
 			if(root.mirror){ float fl = xw; xw = x; x = fl; }
-			v0 = new float[]{ x  - c0.xCoord, y  - c0.yCoord, z  - c0.zCoord };
-			v1 = new float[]{ xw + c1.xCoord, y  - c1.yCoord, z  - c1.zCoord };
-			v2 = new float[]{ xw + c5.xCoord, yh + c5.yCoord, z  - c5.zCoord };
-			v3 = new float[]{ x  - c4.xCoord, yh + c4.yCoord, z  - c4.zCoord };
-			v4 = new float[]{ x  - c3.xCoord, y  - c3.yCoord, zd + c3.zCoord };
-			v5 = new float[]{ xw + c2.xCoord, y  - c2.yCoord, zd + c2.zCoord };
-			v6 = new float[]{ xw + c6.xCoord, yh + c6.yCoord, zd + c6.zCoord };
-			v7 = new float[]{ x  - c7.xCoord, yh + c7.yCoord, zd + c7.zCoord };
+			v0 = new float[]{ x  - c0.x, y  - c0.y, z  - c0.z };
+			v1 = new float[]{ xw + c1.x, y  - c1.y, z  - c1.z };
+			v2 = new float[]{ xw + c5.x, yh + c5.y, z  - c5.z };
+			v3 = new float[]{ x  - c4.x, yh + c4.y, z  - c4.z };
+			v4 = new float[]{ x  - c3.x, y  - c3.y, zd + c3.z };
+			v5 = new float[]{ xw + c2.x, y  - c2.y, zd + c2.z };
+			v6 = new float[]{ xw + c6.x, yh + c6.y, zd + c6.z };
+			v7 = new float[]{ x  - c7.x, yh + c7.y, zd + c7.z };
 		}
 		else{
 	        float x1 = x + w + (w == 0 ? 0.01f : 0);

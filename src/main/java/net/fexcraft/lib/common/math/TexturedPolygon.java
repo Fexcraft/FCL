@@ -40,12 +40,12 @@ public class TexturedPolygon {
 			/*if(triline && vertices.length == 4){
 				TexturedVertex texvex = null;
 				//tess.startDrawing(GL11.GL_LINE_STRIP); tess.setColor(lincol);
-            	texvex = vertices[0]; tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
-            	texvex = vertices[1]; tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
-            	texvex = vertices[2]; tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
-            	texvex = vertices[0]; tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
-            	texvex = vertices[2]; tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
-            	texvex = vertices[3]; tess.addVertex(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
+            	texvex = vertices[0]; tess.addVertex(texvex.vector.x * scale, texvex.vector.y * scale, texvex.vector.z * scale);
+            	texvex = vertices[1]; tess.addVertex(texvex.vector.x * scale, texvex.vector.y * scale, texvex.vector.z * scale);
+            	texvex = vertices[2]; tess.addVertex(texvex.vector.x * scale, texvex.vector.y * scale, texvex.vector.z * scale);
+            	texvex = vertices[0]; tess.addVertex(texvex.vector.x * scale, texvex.vector.y * scale, texvex.vector.z * scale);
+            	texvex = vertices[2]; tess.addVertex(texvex.vector.x * scale, texvex.vector.y * scale, texvex.vector.z * scale);
+            	texvex = vertices[3]; tess.addVertex(texvex.vector.x * scale, texvex.vector.y * scale, texvex.vector.z * scale);
 		        tess.draw(); return;
 			}*/
 		}
@@ -79,8 +79,8 @@ public class TexturedPolygon {
             	TexturedVertex texvex = vertices[i];
             	if(!gnorm){
                 	Vec3f norm = list.get(i);
-                	if(invert) GL11.glNormal3f(-norm.xCoord, -norm.yCoord, -norm.zCoord);
-                	else GL11.glNormal3f(norm.xCoord, norm.yCoord, norm.zCoord);
+                	if(invert) GL11.glNormal3f(-norm.x, -norm.y, -norm.z);
+                	else GL11.glNormal3f(norm.x, norm.y, norm.z);
             	}
             	else{
                 	if(invert){ GL11.glNormal3f(-normals[0], -normals[1], -normals[2]); }
@@ -88,11 +88,11 @@ public class TexturedPolygon {
             	}
                 if(rgb == null && color == null){
                 	GL11.glTexCoord2f(texvex.textureX, texvex.textureY);
-                	GL11.glVertex3f(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
+                	GL11.glVertex3f(texvex.vector.x * scale, texvex.vector.y * scale, texvex.vector.z * scale);
                 }
                 else{
                 	(color == null ? rgb : color).glColorApply();
-                	GL11.glVertex3f(texvex.vector.xCoord * scale, texvex.vector.yCoord * scale, texvex.vector.zCoord * scale);
+                	GL11.glVertex3f(texvex.vector.x * scale, texvex.vector.y * scale, texvex.vector.z * scale);
                 }
             }
         }
@@ -106,13 +106,13 @@ public class TexturedPolygon {
     	}
     	if(!gnorm) norm(x);
     	GL11.glTexCoord2f(vertices[x].textureX, vertices[x].textureY);
-    	GL11.glVertex3f(vertices[x].vector.xCoord * scale, vertices[x].vector.yCoord * scale, vertices[x].vector.zCoord * scale);
+    	GL11.glVertex3f(vertices[x].vector.x * scale, vertices[x].vector.y * scale, vertices[x].vector.z * scale);
     	if(!gnorm) norm(y);
     	GL11.glTexCoord2f(vertices[y].textureX, vertices[y].textureY);
-    	GL11.glVertex3f(vertices[y].vector.xCoord * scale, vertices[y].vector.yCoord * scale, vertices[y].vector.zCoord * scale);
+    	GL11.glVertex3f(vertices[y].vector.x * scale, vertices[y].vector.y * scale, vertices[y].vector.z * scale);
     	if(!gnorm) norm(z);
     	GL11.glTexCoord2f(vertices[z].textureX, vertices[z].textureY);
-    	GL11.glVertex3f(vertices[z].vector.xCoord * scale, vertices[z].vector.yCoord * scale, vertices[z].vector.zCoord * scale);
+    	GL11.glVertex3f(vertices[z].vector.x * scale, vertices[z].vector.y * scale, vertices[z].vector.z * scale);
 	}
 
 	private void triangleC(float scale, int x, int y, int z, boolean gnorm, int off){
@@ -121,35 +121,35 @@ public class TexturedPolygon {
         	else{ GL11.glNormal3f(normals[0 + off], normals[1 + off], normals[2 + off]); }
     	}
     	if(!gnorm) norm(x);
-    	GL11.glVertex3f(vertices[x].vector.xCoord * scale, vertices[x].vector.yCoord * scale, vertices[x].vector.zCoord * scale);
+    	GL11.glVertex3f(vertices[x].vector.x * scale, vertices[x].vector.y * scale, vertices[x].vector.z * scale);
     	if(!gnorm) norm(y);
-    	GL11.glVertex3f(vertices[y].vector.xCoord * scale, vertices[y].vector.yCoord * scale, vertices[y].vector.zCoord * scale);
+    	GL11.glVertex3f(vertices[y].vector.x * scale, vertices[y].vector.y * scale, vertices[y].vector.z * scale);
     	if(!gnorm) norm(z);
-    	GL11.glVertex3f(vertices[z].vector.xCoord * scale, vertices[z].vector.yCoord * scale, vertices[z].vector.zCoord * scale);
+    	GL11.glVertex3f(vertices[z].vector.x * scale, vertices[z].vector.y * scale, vertices[z].vector.z * scale);
 	}
     
     private void norm(int i){
     	Vec3f norm = list.get(i);
-    	if(invert) GL11.glNormal3f(-norm.xCoord, -norm.yCoord, -norm.zCoord);
-    	else GL11.glNormal3f(norm.xCoord, norm.yCoord, norm.zCoord);
+    	if(invert) GL11.glNormal3f(-norm.x, -norm.y, -norm.z);
+    	else GL11.glNormal3f(norm.x, norm.y, norm.z);
 	}
 
 	private void checkGenerated(){
     	if(normals.length >= 3) return;
         if(TRIANGULATED_QUADS && vertices.length == 4){
-	        Vec3f vec0 = new Vec3f(vertices[1].vector.subtract(vertices[0].vector));
-	        Vec3f vec1 = new Vec3f(vertices[1].vector.subtract(vertices[2].vector));
-	        Vec3f vec2 = vec1.crossProduct(vec0).normalize();
-	        vec0 = new Vec3f(vertices[2].vector.subtract(vertices[0].vector));
-	        vec1 = new Vec3f(vertices[2].vector.subtract(vertices[3].vector));
-	        Vec3f vec3 = vec1.crossProduct(vec0).normalize();
-	        normals = new float[]{ vec2.xCoord, vec2.yCoord, vec2.zCoord, vec3.xCoord, vec3.yCoord, vec3.zCoord };
+	        Vec3f vec0 = new Vec3f(vertices[1].vector.sub(vertices[0].vector));
+	        Vec3f vec1 = new Vec3f(vertices[1].vector.sub(vertices[2].vector));
+	        Vec3f vec2 = vec1.cross(vec0).normalize();
+	        vec0 = new Vec3f(vertices[2].vector.sub(vertices[0].vector));
+	        vec1 = new Vec3f(vertices[2].vector.sub(vertices[3].vector));
+	        Vec3f vec3 = vec1.cross(vec0).normalize();
+	        normals = new float[]{ vec2.x, vec2.y, vec2.z, vec3.x, vec3.y, vec3.z };
         }
 		else if(vertices.length >= 3){
-	        Vec3f vec0 = new Vec3f(vertices[1].vector.subtract(vertices[0].vector));
-	        Vec3f vec1 = new Vec3f(vertices[1].vector.subtract(vertices[2].vector));
-	        Vec3f vec2 = vec1.crossProduct(vec0).normalize();
-	        normals = new float[]{ vec2.xCoord, vec2.yCoord, vec2.zCoord };
+	        Vec3f vec0 = new Vec3f(vertices[1].vector.sub(vertices[0].vector));
+	        Vec3f vec1 = new Vec3f(vertices[1].vector.sub(vertices[2].vector));
+	        Vec3f vec2 = vec1.cross(vec0).normalize();
+	        normals = new float[]{ vec2.x, vec2.y, vec2.z };
         }
 	}
 

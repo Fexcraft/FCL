@@ -15,7 +15,7 @@ public class Axis3DL implements AxisRotator {
     
     public Vec3f getRelativeVector(Vec3f vec){
         Matrix4f mat = new Matrix4f();
-        mat.m00 = vec.xCoord; mat.m10 = (float)vec.yCoord; mat.m20 = (float)vec.zCoord;
+        mat.m00 = vec.x; mat.m10 = (float)vec.y; mat.m20 = (float)vec.z;
         Matrix4f.rotate(roll  * 3.14159265F / 180, new Vector3f(1F, 0F, 0F), mat, mat);
         Matrix4f.rotate(pitch * 3.14159265F / 180, new Vector3f(0F, 0F, 1F), mat, mat);
         Matrix4f.rotate(yaw   * 3.14159265F / 180, new Vector3f(0F, 1F, 0F), mat, mat);

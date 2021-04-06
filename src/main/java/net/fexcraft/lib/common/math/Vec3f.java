@@ -2,167 +2,121 @@ package net.fexcraft.lib.common.math;
 
 /**
  * @author Ferdinand
- * Based off the (Minecraft) Vanilla Vec3d;
+ * Based off various Vector classes.
  */
 public class Vec3f {
 	
-    public float xCoord;
-    public float yCoord;
-    public float zCoord;
+    public float x;
+    public float y;
+    public float z;
     
-    public Vec3f(){ xCoord = yCoord = zCoord = 0; }
+    public Vec3f(){
+    	x = y = z = 0;
+    }
 
     public Vec3f(float x, float y, float z){
-        if(x == -0.0F){ x = 0.0F; }
-        if(y == -0.0F){ y = 0.0F; }
-        if(z == -0.0F){ z = 0.0F; }
-        this.xCoord = x;
-        this.yCoord = y;
-        this.zCoord = z;
+        this.x = x == -0.0f ? 0.0f : x;
+        this.y = y == -0.0f ? 0.0f : y;
+        this.z = z == -0.0f ? 0.0f : z;
     }
     
     public Vec3f(float v){
         this(v, v, v);
     }
+    
+    public Vec3f(double v){
+        this((float)v);
+    }
 
     public Vec3f(Vec3f vector){
-        this(vector.xCoord, vector.yCoord, vector.zCoord);
+        this(vector.x, vector.y, vector.z);
     }
-
-    /*public Vec3f(Vec3i vector){
-        this(vector.getX(), vector.getY(), vector.getZ());
-    }
-    
-    public Vec3f(Vec3d vector){
-    	this(vector.x, vector.y, vector.z);
-    }
-
-	public Vec3f(Vec3i pos, boolean center){
-		this(pos); if(center){ xCoord += 0.5f; yCoord += 0.5f; zCoord += 0.5f; }
-	}*/
     
     public Vec3f(double xVec, double yVec, double zVec) {
 		this((float)xVec, (float)yVec, (float)zVec);
 	}
 
-	public Vec3f subtractReverse(Vec3f vec){
-        return new Vec3f(vec.xCoord - this.xCoord, vec.yCoord - this.yCoord, vec.zCoord - this.zCoord);
-    }
-    
-    public Vec3f normalize(){
-        double d0 = Math.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
-        return d0 < 1.0E-4D ? new Vec3f() : new Vec3f(this.xCoord / d0, this.yCoord / d0, this.zCoord / d0);
+    public Vec3f sub(Vec3f vec){
+        return this.sub(vec.x, vec.y, vec.z);
     }
 
-    public float dotProduct(Vec3f vec){
-        return this.xCoord * vec.xCoord + this.yCoord * vec.yCoord + this.zCoord * vec.zCoord;
-    }
-    
-    public Vec3f crossProduct(Vec3f vec){
-        return new Vec3f(this.yCoord * vec.zCoord - this.zCoord * vec.yCoord, this.zCoord * vec.xCoord - this.xCoord * vec.zCoord, this.xCoord * vec.yCoord - this.yCoord * vec.xCoord);
-    }
-
-    public Vec3f subtract(Vec3f vec){
-        return this.subtract(vec.xCoord, vec.yCoord, vec.zCoord);
-    }
-
-    public Vec3f subtract(float x, float y, float z){
-        return this.addVector(-x, -y, -z);
+    public Vec3f sub(float x, float y, float z){
+        return this.add(-x, -y, -z);
     }
 
     public Vec3f add(Vec3f vec){
-        return this.addVector(vec.xCoord, vec.yCoord, vec.zCoord);
+        return this.add(vec.x, vec.y, vec.z);
     }
     
-    public Vec3f addVector(float x, float y, float z){
-        return new Vec3f(this.xCoord + x, this.yCoord + y, this.zCoord + z);
-    }
-    
-    public float distanceTo(Vec3f vec){
-        float d0 = vec.xCoord - this.xCoord;
-        float d1 = vec.yCoord - this.yCoord;
-        float d2 = vec.zCoord - this.zCoord;
-        return (float)Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-    }
-    
-    public float squareDistanceTo(Vec3f vec){
-        float d0 = vec.xCoord - this.xCoord;
-        float d1 = vec.yCoord - this.yCoord;
-        float d2 = vec.zCoord - this.zCoord;
-        return d0 * d0 + d1 * d1 + d2 * d2;
-    }
-
-    public float squareDistanceTo(float xIn, float yIn, float zIn){
-        float d0 = xIn - this.xCoord;
-        float d1 = yIn - this.yCoord;
-        float d2 = zIn - this.zCoord;
-        return d0 * d0 + d1 * d1 + d2 * d2;
+    public Vec3f add(float x, float y, float z){
+        return new Vec3f(this.x + x, this.y + y, this.z + z);
     }
 
     public Vec3f scale(float scale){
-        return new Vec3f(this.xCoord * scale, this.yCoord * scale, this.zCoord * scale);
+        return new Vec3f(x * scale, y * scale, z * scale);
     }
 
     public Vec3f multiply(float scale){
-        return new Vec3f(this.xCoord * scale, this.yCoord * scale, this.zCoord * scale);
+        return new Vec3f(x * scale, y * scale, z * scale);
     }
 
 	public Vec3f divide(float div){
-		return div == 0f ? this : new Vec3f(xCoord / div, yCoord / div, zCoord / div);
+		return div == 0f ? this : new Vec3f(x / div, y / div, z / div);
 	}
     
-    public float lengthVector(){
-        return (float)Math.sqrt(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
+    public float dis(Vec3f vec){
+        float x = vec.x - this.x, y = vec.y - this.y, z = vec.z - this.z;
+        return (float)Math.sqrt(x * x + y * y + z * z);
+    }
+    
+    public float sqdis(Vec3f vec){
+        float x = vec.x - this.x, y = vec.y - this.y, z = vec.z - this.z;
+        return x * x + y * y + z * z;
     }
 
-    public float lengthSquared(){
-        return this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord;
+    public float sqdis(float x, float y, float z){
+        float xx = x - this.x, yy = y - this.y, zz = z - this.z;
+        return xx * xx + yy * yy + zz * zz;
     }
 
     public boolean equals(Object obj){
-        if(this == obj){
-            return true;
+        if(this == obj) return true;
+        else if(obj instanceof Vec3f){
+            Vec3f vec = (Vec3f)obj;
+            return Float.compare(vec.x, x) == 0 && Float.compare(vec.y, y) == 0 && Float.compare(vec.z, z) == 0;
         }
-        else if(!(obj instanceof Vec3f)){
-            return false;
-        }
-        else{
-            Vec3f vec3d = (Vec3f)obj;
-            return Float.compare(vec3d.xCoord, this.xCoord) != 0 ? false : (Float.compare(vec3d.yCoord, this.yCoord) != 0 ? false : Float.compare(vec3d.zCoord, this.zCoord) == 0);
-        }
+        else return false;
     }
 
     public int hashCode(){
-        long j = Float.floatToIntBits(this.xCoord);
-        int i = (int)(j ^ j >>> 32);
-        j = Float.floatToIntBits(this.yCoord);
-        i = 31 * i + (int)(j ^ j >>> 32);
-        j = Float.floatToIntBits(this.zCoord);
-        i = 31 * i + (int)(j ^ j >>> 32);
+        long l = Float.floatToIntBits(this.x);
+        int i = (int)(l ^ l >>> 32);
+        l = Float.floatToIntBits(this.y);
+        i = 31 * i + (int)(l ^ l >>> 32);
+        l = Float.floatToIntBits(this.z);
+        i = 31 * i + (int)(l ^ l >>> 32);
         return i;
     }
-
-    //public String toString(){ return "[" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + "]"; }
 	
 	@Override
 	public String toString(){
-		return String.format("Vec3f[ %s, %s, %s ]", xCoord, yCoord, zCoord);
+		return String.format("Vec3f[ %s, %s, %s ]", x, y, z);
 	}
 
 	public Vec3f middle(Vec3f target){
-		return new Vec3f((xCoord + target.xCoord) * 0.5, (yCoord + target.yCoord) * 0.5, (zCoord + target.zCoord) * 0.5);
+		return new Vec3f((x + target.x) * 0.5, (y + target.y) * 0.5, (z + target.z) * 0.5);
 	}
 	
 	//based on fvtm rail entity stuff
 
 	public Vec3f distance(Vec3f dest, float am){
-		Vec3f vec = new Vec3f((xCoord + dest.xCoord) * 0.5, (yCoord + dest.yCoord) * 0.5, (zCoord + dest.zCoord) * 0.5);
-    	vec = direction(vec.xCoord - xCoord, vec.yCoord - yCoord, vec.zCoord - zCoord);
-		return new Vec3f(xCoord + (vec.xCoord * am), yCoord + (vec.yCoord * am), zCoord + (vec.zCoord * am));
+		Vec3f vec = new Vec3f((x + dest.x) * 0.5, (y + dest.y) * 0.5, (z + dest.z) * 0.5);
+    	vec = direction(vec.x - x, vec.y - y, vec.z - z);
+		return new Vec3f(x + (vec.x * am), y + (vec.y * am), z + (vec.z * am));
 	}
 	
     public double length(){
-        return Math.sqrt(xCoord * xCoord + yCoord * yCoord + zCoord * zCoord);
+        return Math.sqrt(x * x + y * y + z * z);
     }
     
     public static double length(float... arr){
@@ -170,53 +124,55 @@ public class Vec3f {
     }
     
     public static double length(Vec3f vec){
-        return Math.sqrt(vec.xCoord * vec.xCoord + vec.yCoord * vec.yCoord + vec.zCoord * vec.zCoord);
+        return Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
     }
     
-    /*public double distanceTo(Vec3f other){
-        return length(other.xCoord - xCoord, other.yCoord - yCoord, other.zCoord - zCoord);
-    }*/
-    
     public static Vec3f direction(float... arr){
-    	double l = length(arr[0], arr[1], arr[2]); return new Vec3f(arr[0] / l, arr[1] / l, arr[2] / l);
+    	double l = length(arr[0], arr[1], arr[2]);
+    	return new Vec3f(arr[0] / l, arr[1] / l, arr[2] / l);
     }
     
     public static Vec3f direction(Vec3f vec){
-    	double l = length(vec.xCoord, vec.yCoord, vec.zCoord); return new Vec3f(vec.xCoord / l, vec.yCoord / l, vec.zCoord / l);
+    	double l = length(vec.x, vec.y, vec.z);
+    	return new Vec3f(vec.x / l, vec.y / l, vec.z / l);
     }
 
 	public Vec3f cross(Vec3f other){
-		return new Vec3f(yCoord * other.zCoord - this.zCoord * other.yCoord,
-			other.xCoord * this.zCoord - other.zCoord * this.xCoord,
-			this.xCoord * other.yCoord - this.yCoord * other.xCoord);
+		return new Vec3f(y * other.z - z * other.y, other.x * z - other.z * x, x * other.y - y * other.x);
 	}
 
 	public float dot(Vec3f other){
-		return this.xCoord * other.xCoord + this.yCoord * other.yCoord + this.zCoord * other.zCoord;
+		return x * other.x + y * other.y + z * other.z;
 	}
 
 	public Vec3f normalize(Vec3f dest){
-		float len = (float)length(); return dest == null ? new Vec3f(xCoord / len, yCoord / len, zCoord / len) : dest.set(xCoord / len, yCoord / len, zCoord / len);
+		float len = (float)length();
+		return dest == null ? new Vec3f(x / len, y / len, z / len) : dest.set(x / len, y / len, z / len);
 	}
 
-	private Vec3f set(float f, float g, float h){
-		this.xCoord = f; this.yCoord = g; this.zCoord = h; return this;
+	public Vec3f normalize(){
+		return normalize(null);
+	}
+
+	private Vec3f set(float x, float y, float z){
+		this.x = x; this.y = y; this.z = z;
+		return this;
 	}
 
 	public float[] toFloatArray(){
-		return new float[]{ xCoord, yCoord, zCoord };
+		return new float[]{ x, y, z };
 	}
 
 	public double[] toDoubleArray(){
-		return new double[]{ xCoord, yCoord, zCoord };
+		return new double[]{ x, y, z };
 	}
 
-	public void copyFrom(Vec3f pos){
-		this.xCoord = pos.xCoord; this.yCoord = pos.yCoord; this.zCoord = pos.zCoord;
+	public void copy(Vec3f pos){
+		this.x = pos.x; this.y = pos.y; this.z = pos.z;
 	}
 
 	public boolean isNull(){
-		return xCoord == 0f && yCoord == 0f && zCoord == 0f;
+		return x == 0f && y == 0f && z == 0f;
 	}
     
 }

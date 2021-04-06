@@ -1128,9 +1128,9 @@ public class ModelRendererTurbo {
 		float xStart = (dirMirror ? x + xLength : x);
 		float yStart = (dirMirror ? y + yLength : y);
 		float zStart = (dirMirror ? z + zLength : z);
-		float xEnd = (!dirMirror ? x + xLength : x) + (topoff == null ? 0 : topoff.xCoord);
-		float yEnd = (!dirMirror ? y + yLength : y) + (topoff == null ? 0 : topoff.yCoord);
-		float zEnd = (!dirMirror ? z + zLength : z) + (topoff == null ? 0 : topoff.zCoord);
+		float xEnd = (!dirMirror ? x + xLength : x) + (topoff == null ? 0 : topoff.x);
+		float yEnd = (!dirMirror ? y + yLength : y) + (topoff == null ? 0 : topoff.y);
+		float zEnd = (!dirMirror ? z + zLength : z) + (topoff == null ? 0 : topoff.z);
 		tempVerts[0] = new TexturedVertex(xStart, yStart, zStart, 0, 0);
 		tempVerts[tempVerts.length - 1] = new TexturedVertex(xEnd, yEnd, zEnd, 0, 0);
 		float xCur = xStart;
@@ -1242,9 +1242,9 @@ public class ModelRendererTurbo {
 		float xStart = (dirMirror ? x + xLength : x);
 		float yStart = (dirMirror ? y + yLength : y);
 		float zStart = (dirMirror ? z + zLength : z);
-		float xEnd = (!dirMirror ? x + xLength : x) + (topoff == null ? 0 : topoff.xCoord);
-		float yEnd = (!dirMirror ? y + yLength : y) + (topoff == null ? 0 : topoff.yCoord);
-		float zEnd = (!dirMirror ? z + zLength : z) + (topoff == null ? 0 : topoff.zCoord);
+		float xEnd = (!dirMirror ? x + xLength : x) + (topoff == null ? 0 : topoff.x);
+		float yEnd = (!dirMirror ? y + yLength : y) + (topoff == null ? 0 : topoff.y);
+		float zEnd = (!dirMirror ? z + zLength : z) + (topoff == null ? 0 : topoff.z);
 		float xCur = xStart, yCur = yStart, zCur = zStart, sCur = baseScale;
 		//Texture
 		float uScale = 1.0F / textureWidth, vScale = 1.0F / textureHeight;
@@ -1395,8 +1395,9 @@ public class ModelRendererTurbo {
     	for(TexturedPolygon face : faces){
     		TexturedVertex[] verts = face.getVertices();
     		for(TexturedVertex vert : verts){
-    			vert.vector.addVector(vert.vector.xCoord * (x ? -1 : 1), vert.vector.yCoord * (y ? -1 : 1), vert.vector.zCoord * (z ? -1 : 1));
-    		} if(x ^ y ^ z){ face.flipFace(); }
+    			vert.vector.add(vert.vector.x * (x ? -1 : 1), vert.vector.y * (y ? -1 : 1), vert.vector.z * (z ? -1 : 1));
+    		}
+    		if(x ^ y ^ z) face.flipFace();
     	}
     	return this;
     }
