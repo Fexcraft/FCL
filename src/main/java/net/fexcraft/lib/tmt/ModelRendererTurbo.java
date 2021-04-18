@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.TexturedPolygon;
@@ -38,19 +36,20 @@ public class ModelRendererTurbo {
     /** Changed from radians to degrees, please re-check your model rotations! **/
     public float rotationAngleX = 0, rotationAngleY = 0, rotationAngleZ = 0;
     public float rotationPointX = 0, rotationPointY = 0, rotationPointZ = 0;
+    public RotationOrder rotationOrder = RotationOrder.YZX;
 	//
     public static final int MR_FRONT = 0, MR_BACK = 1, MR_LEFT = 2, MR_RIGHT = 3, MR_TOP = 4, MR_BOTTOM = 5;
     public boolean showModel, forcedRecompile, mirror, flip;
     public boolean isShape3D, textured = true;//, triline;
     public RGB linesColor, polygonColor;
     private ArrayList<TexturedPolygon> faces;
-    private Integer glId;
-    private Object glObj;
+    protected Integer glId;
+    protected Object glObj;
     public int texoffx, texoffy;
     public List<ModelRendererTurbo> childModels;
     public String boxName, texName;
     //
-    public static Renderer RENDERER = new DefRenderer();
+    public static Renderer RENDERER = new DefaultRenderer();
 	
 	public ModelRendererTurbo(Object modelbase, String s){
 		//super(modelbase, s);
@@ -107,6 +106,10 @@ public class ModelRendererTurbo {
 	 */
 	public ModelRendererTurbo setRotationAngle(float x, float y, float z){
 		this.rotationAngleX = x; this.rotationAngleY = y; this.rotationAngleZ = z; return this;
+	}
+	
+	public ModelRendererTurbo setRotationOrder(RotationOrder rotor){
+		this.rotationOrder = rotor; return this;
 	}
 	
 	public ModelRendererTurbo setTextured(boolean bool){
@@ -1468,63 +1471,6 @@ public class ModelRendererTurbo {
     	
     	public abstract void render(ModelRendererTurbo mrt, float scale);
         
-    }
-    
-    public static class DefRenderer extends Renderer {
-
-		@Override
-		public void render(ModelRendererTurbo mrt, float scale){
-	        if(mrt.glId == null || mrt.forcedRecompile){
-	            compile(mrt, scale);
-	        }
-	        if(mrt.rotationAngleX != 0.0F || mrt.rotationAngleY != 0.0F || mrt.rotationAngleZ != 0.0F){
-	            GL11.glPushMatrix();
-	            GL11.glTranslatef(mrt.rotationPointX * scale, mrt.rotationPointY * scale, mrt.rotationPointZ * scale);
-	            if(mrt.rotationAngleY != 0.0F){
-	                GL11.glRotatef(mrt.rotationAngleY /** 57.29578F*/, 0.0F, 1.0F, 0.0F);
-	            }
-	            if(mrt.rotationAngleZ != 0.0F){
-	                GL11.glRotatef(mrt.rotationAngleZ /** 57.29578F*/, 0.0F, 0.0F, 1.0F);
-	            }
-	            if(mrt.rotationAngleX != 0.0F){
-	                GL11.glRotatef(mrt.rotationAngleX /** 57.29578F*/, 1.0F, 0.0F, 0.0F);
-	            }
-	    		GL11.glCallList((Integer)mrt.glId);
-	            if(mrt.childModels != null){
-	                for(ModelRendererTurbo child : mrt.childModels) child.render(scale);
-	            }
-	            GL11.glPopMatrix();
-	        }
-	        else if(mrt.rotationPointX != 0.0F || mrt.rotationPointY != 0.0F || mrt.rotationPointZ != 0.0F){
-	            GL11.glTranslatef(mrt.rotationPointX * scale, mrt.rotationPointY * scale, mrt.rotationPointZ * scale);
-	    		GL11.glCallList((Integer)mrt.glId);
-	            if(mrt.childModels != null){
-	                for(ModelRendererTurbo child : mrt.childModels) child.render(scale);
-	            }
-	            GL11.glTranslatef(-mrt.rotationPointX * scale, -mrt.rotationPointY * scale, -mrt.rotationPointZ * scale);
-	        }
-	        else{
-	    		GL11.glCallList((Integer)mrt.glId);
-	        	if(mrt.childModels != null){
-	                for(ModelRendererTurbo child : mrt.childModels) child.render(scale);
-	            }
-	        }
-		}
-		
-        private void compile(ModelRendererTurbo mrt, float scale){
-            mrt.glId = GL11.glGenLists(1);
-            GL11.glNewList((Integer)mrt.glId, 4864 /*GL_COMPILE*/);
-            if(mrt.textured){
-            	for(TexturedPolygon poly : mrt.faces) poly.draw(scale, mrt.linesColor, null);
-            }
-            else{
-                for(int i = 0; i < mrt.faces.size(); i++){
-                    mrt.faces.get(i).draw(scale, mrt.linesColor, mrt.getColor(i));
-                }
-            }
-            GL11.glEndList();
-        }
-		
     }
 
 	private static RGB red1 = new RGB(138,  65,  92);//new RGB(255, 127, 175);
