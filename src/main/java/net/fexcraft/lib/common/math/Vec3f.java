@@ -36,7 +36,13 @@ public class Vec3f {
 		this((float)xVec, (float)yVec, (float)zVec);
 	}
 
-    public Vec3f sub(Vec3f vec){
+    public Vec3f(String[] array, int index){
+		x = array.length >= index ? Float.parseFloat(array[index++]) : 0;
+		y = array.length >= index ? Float.parseFloat(array[index++]) : 0;
+		z = array.length >= index ? Float.parseFloat(array[index]) : 0;
+	}
+
+	public Vec3f sub(Vec3f vec){
         return this.sub(vec.x, vec.y, vec.z);
     }
 
