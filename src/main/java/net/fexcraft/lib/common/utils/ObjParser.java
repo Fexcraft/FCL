@@ -26,7 +26,7 @@ import net.fexcraft.lib.common.math.Vec3f;
 public class ObjParser {
 	
 	private boolean comments, uv = true, normals = true;
-	private boolean flip, invert, model = true;
+	private boolean flip_vert, flip_u, flip_v, invert, model = true;
 	private InputStream stream;
 	
 	public ObjParser(InputStream stream){
@@ -54,7 +54,13 @@ public class ObjParser {
 	}
 	
 	public ObjParser flipAxes(boolean bool){
-		flip = bool;
+		flip_vert = bool;
+		return this;
+	}
+	
+	public ObjParser flipUV(boolean f_u, boolean f_v){
+		flip_u = f_u;
+		flip_v = f_v;
 		return this;
 	}
 	
@@ -101,13 +107,15 @@ public class ObjParser {
 					ss = s.substring(s.indexOf(" ") + 1).trim().split(" ");
 					if(s.startsWith("v ")){
 						if(ss.length < 3) continue;
-						if(!flip) raw_verts.add(new TexturedVertex(p(ss[0]), p(ss[1]), p(ss[2]), 0, 0));
+						if(!flip_vert) raw_verts.add(new TexturedVertex(p(ss[0]), p(ss[1]), p(ss[2]), 0, 0));
 						else raw_verts.add(new TexturedVertex(p(ss[0]), -p(ss[2]), p(ss[1]), 0, 0));
 						continue;
 					}
 					else if(s.startsWith("vt ")){
 						if(!uv || ss.length < 2) continue;
 						float u = p(ss[0]), v = p(ss[1]);
+						if(flip_u) u = -u + 1;
+						if(flip_v) v = -v + 1;
 						raw_uvs.add(new float[]{ u < 0 ? -u : u, v < 0 ? -v : v });
 					}
 					else if(s.startsWith("vn ")){
