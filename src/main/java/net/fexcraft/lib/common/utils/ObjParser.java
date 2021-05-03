@@ -26,7 +26,7 @@ import net.fexcraft.lib.common.math.Vec3f;
 public class ObjParser {
 	
 	private boolean comments, uv = true, normals = true;
-	private boolean flip_vert, flip_u, flip_v, invert, model = true;
+	private boolean flip_vert, flip_face, flip_u, flip_v, invert, model = true;
 	private InputStream stream;
 	
 	public ObjParser(InputStream stream){
@@ -55,6 +55,11 @@ public class ObjParser {
 	
 	public ObjParser flipAxes(boolean bool){
 		flip_vert = bool;
+		return this;
+	}
+	
+	public ObjParser flipFaces(boolean bool){
+		flip_face = bool;
 		return this;
 	}
 	
@@ -108,7 +113,7 @@ public class ObjParser {
 					if(s.startsWith("v ")){
 						if(ss.length < 3) continue;
 						if(!flip_vert) raw_verts.add(new TexturedVertex(p(ss[0]), p(ss[1]), p(ss[2]), 0, 0));
-						else raw_verts.add(new TexturedVertex(p(ss[0]), -p(ss[2]), p(ss[1]), 0, 0));
+						else raw_verts.add(new TexturedVertex(p(ss[2]), -p(ss[1]), -p(ss[0]), 0, 0));
 						continue;
 					}
 					else if(s.startsWith("vt ")){
@@ -179,6 +184,7 @@ public class ObjParser {
 						}
 					}
 					if(invert) poly.setInvert(invert);
+					if(flip_face) poly.flipFace();
 					model.polygons.get(entry.getKey()).add(poly);
 				}
 			}
