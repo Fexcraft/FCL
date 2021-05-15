@@ -579,24 +579,17 @@ public class JsonUtil{
 	 * @return
 	 */
 	public static JsonObject getObjectFromInputStream(InputStream stream){
-		try{
-			BufferedReader in = new BufferedReader(new InputStreamReader(stream));
-			String input; StringBuffer response = new StringBuffer();
-			while((input = in.readLine()) != null){ response.append(input); }
-			in.close(); return JsonUtil.getFromString(response.toString()).getAsJsonObject();	
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
+		JsonElement elm = getElementFromInputStream(stream);
+		return elm == null || !elm.isJsonObject() ? null : elm.getAsJsonObject();
 	}
 	
 	public static JsonElement getElementFromInputStream(InputStream stream){
 		try{
 			BufferedReader in = new BufferedReader(new InputStreamReader(stream));
 			String input; StringBuffer response = new StringBuffer();
-			while((input = in.readLine()) != null){ response.append(input); }
-			in.close(); return JsonUtil.getFromString(response.toString());	
+			while((input = in.readLine()) != null) response.append(input);
+			in.close();
+			return JsonUtil.getFromString(response.toString());	
 		}
 		catch(Exception e){
 			e.printStackTrace();
