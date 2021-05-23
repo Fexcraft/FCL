@@ -66,7 +66,7 @@ public class RGB {
 	}
 	
 	public RGB(String hex){
-		this(Integer.parseInt(hex.replace("#", ""), 16));
+		this(Integer.parseInt(hex.replace("#", "").replace("0x", ""), 16));
 	}
 	
 	public RGB(String hex, float alpha){
