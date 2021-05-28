@@ -132,7 +132,11 @@ public class SimpleUpdateHandler{
 				public void run(){
 					for(String modid : mods_to_update){
 						String string = update_message_queue.get(modid);
-						if(string != null && string.length() > 4){
+						if(string == null || string.length() < 4) continue;
+						if(Static.dev()){
+							Print.log(Formatter.format(update_message_queue.get(modid)));
+						}
+						else{
 							Print.chat(event.player, Formatter.format(update_message_queue.get(modid)));
 						}
 					}
