@@ -2,7 +2,7 @@ package net.fexcraft.lib.common.math;
 
 /**
  * @author Ferdinand
- * Based off various Vector classes.
+ * @info Based off various Vector classes.
  */
 public class Vec3f {
 	
