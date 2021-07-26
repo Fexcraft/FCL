@@ -103,8 +103,8 @@ public class ObjParser {
 						com = !this.model;
 					}
 					group = s.substring(s.indexOf(" ") + 1).trim();
-					model.polygons.put(group, new ArrayList<>());
-					faces.put(group, new ArrayList<>());
+					if(!model.polygons.containsKey(group)) model.polygons.put(group, new ArrayList<>());
+					if(!faces.containsKey(group)) faces.put(group, new ArrayList<>());
 					continue;
 				}
 				else if(!this.model) continue;
