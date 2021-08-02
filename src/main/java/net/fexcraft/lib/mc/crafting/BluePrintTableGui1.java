@@ -6,7 +6,6 @@ import java.util.List;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.gui.GenericContainer;
 import net.fexcraft.lib.mc.gui.GenericGui;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -36,7 +35,7 @@ public class BluePrintTableGui1 extends GenericGui<GenericContainer.DefImpl> {
 			this.buttons.put("i_" + i, new BasicButton("i_" + i, guiLeft + 224, guiTop + 5 + j, 224, 5 + j, 15, 12, true));
 			buttons.get("i_" + i).rgb_hover = new RGB(180, 120, 20);
 			//
-			this.texts.put("rec_" + i, new BasicText(guiLeft + 21, guiTop + 7 + j, 199, MapColor.SNOW.colorValue, ""));
+			this.texts.put("rec_" + i, new BasicText(guiLeft + 21, guiTop + 7 + j, 199, 0xdfdfdf, ""));
 		}
 	}
 
