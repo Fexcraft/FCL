@@ -116,11 +116,16 @@ public class ZipUtil {
 	//
 
 	public static final JsonArray getJsonElementsAt(File file, String path, String extension){
+		return getJsonElementsAt(file, path, extension, 0);
+	}
+
+	public static final JsonArray getJsonElementsAt(File file, String path, String extension, int limit){
 		JsonArray array = new JsonArray();
 		try{
 			ZipFile zip = new ZipFile(file);
 			ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
 			while(true){
+				if(limit > 0 && array.size() >= limit) break;
 				ZipEntry entry = stream.getNextEntry();
 				if(entry == null){
 					break;
