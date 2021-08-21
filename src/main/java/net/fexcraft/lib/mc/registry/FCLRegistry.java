@@ -1,11 +1,16 @@
 package net.fexcraft.lib.mc.registry;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import javax.annotation.Nullable;
 
@@ -362,10 +367,44 @@ public class FCLRegistry {
 		Set<ASMData> data = table.getAll(model);
 		for(ASMData entry : data){
 			try{
-				Class<?> clazz = Class.forName(entry.getClassName()); fModel model = clazz.getAnnotation(fModel.class);
+				Class<?> clazz = Class.forName(entry.getClassName());
+				fModel model = clazz.getAnnotation(fModel.class);
 				models.put(new ResourceLocation(model.registryname()), clazz.newInstance());
 				////Print.debug("Registered Model: " + model.registryname());
 			} catch(Throwable e){ error(e, entry.getClassName()); }
+		}
+	}
+	
+	public static void scanForModels(File file, ClassLoader loader){
+		ArrayList<String> list = new ArrayList<>();
+		try{
+			ZipFile zip = new ZipFile(file);
+			ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
+			while(true){
+				ZipEntry entry = stream.getNextEntry();
+				if(entry == null){
+					break;
+				}
+				if(entry.getName().endsWith(".class")){
+					list.add(entry.getName().replace(".class", ""));
+				}
+			}
+			zip.close();
+			stream.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		for(String str : list){
+			try{
+				Class<?> clazz = loader.loadClass(str);
+				fModel model = clazz.getAnnotation(fModel.class);
+				if(model == null) continue;
+				models.put(new ResourceLocation(model.registryname()), clazz.newInstance());
+			}
+			catch(Throwable e){
+				error(e, str);
+			}
 		}
 	}
 	
