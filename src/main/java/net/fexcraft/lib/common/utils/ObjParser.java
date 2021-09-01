@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.Vec3f;
@@ -192,7 +191,7 @@ public class ObjParser {
 		catch(Exception e){
 			e.printStackTrace();
 			Print.console("Exception on line " + line + "; " + s + " ; " + group);
-			Static.stop();
+			//Static.stop();
 		}
 		return model;
 	}

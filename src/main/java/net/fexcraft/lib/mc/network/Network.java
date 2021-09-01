@@ -20,6 +20,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
@@ -28,11 +29,10 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 public class Network {
 	
 	private static boolean fcl_version_checked = false;
+	private static boolean check_notifications = false;
 
-	/** Legacy method till all mods stop using this. */
-	@Deprecated
-	public static boolean isConnected(){
-		return true;
+	public static void checkConfig(Configuration config){
+		check_notifications = config.getBoolean("notifications", "general", false, "Should FCL check for notifications from fexcraft.net? This is UUID based, you may need to configure your fexcraft.net account for this to work.");
 	}
 	
 	public static JsonObject getModData(String modid){
@@ -111,6 +111,7 @@ public class Network {
 	}
 
 	public static void checkStatus(){
+		if(!check_notifications) return;
 		try{
 			String id = "unknown";
 			if(Static.side().isClient()){
@@ -144,7 +145,7 @@ public class Network {
 	private static JsonObject status_data;
 
 	public static boolean anyNewNotifications(){
-		return notifications != null && notifications.length > 0;
+		return check_notifications && notifications != null && notifications.length > 0;
 	}
 
 	public static void notify(EntityPlayer player){

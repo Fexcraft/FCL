@@ -1,6 +1,5 @@
 package net.fexcraft.lib.mc;
 
-import java.io.File;
 import java.util.UUID;
 
 import net.fexcraft.lib.mc.capabilities.paint.Paintable;
@@ -8,6 +7,7 @@ import net.fexcraft.lib.mc.capabilities.paint.PaintableSerializer;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapabilitySerializer;
 import net.fexcraft.lib.mc.gui.GuiHandler;
+import net.fexcraft.lib.mc.network.Network;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
 import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
@@ -19,6 +19,7 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -40,20 +41,24 @@ import net.minecraftforge.fml.relauncher.Side;
 public class FCL {
 	
 	public static final String prefix = TextFormatting.BLACK + "[" + TextFormatting.DARK_AQUA + "FCL" + TextFormatting.BLACK + "]" + TextFormatting.GRAY + " ";
-	public static final String version = "1.12.66";
+	public static final String version = "1.12.67";
 	public static final String mcv = "1.12.2";
 	public static final UUID[] authors = new UUID[]{ UUID.fromString("01e4af9b-2a30-471e-addf-f6338ffce04b") };
 	@Mod.Instance("fcl")
 	private static FCL instance;
 	private static Side side;
-	private static File configdir;
+	//private static File configdir;
 	
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) throws Exception{
 		Static.setAsMcLib(true);
 		Static.setDevmode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
 		Static.setIsServer((side = event.getSide()).isServer());
-		configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
+		//configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
+		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		config.load();
+		Network.checkConfig(config);
+		config.save();
 		FCLRegistry.prepare(event.getSide(), event.getAsmData());
 		if(event.getSide().isClient()){
 			net.fexcraft.lib.mc.render.LoaderReg.ister();
@@ -100,9 +105,9 @@ public class FCL {
 		return side;
 	}
 	
-	public File getConfigDirectory(){
+	/*public File getConfigDirectory(){
 		return configdir;
-	}
+	}*/
 
 	public static final String getVersion(){
 		return version;
