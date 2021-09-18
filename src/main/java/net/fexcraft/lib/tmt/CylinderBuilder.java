@@ -370,5 +370,9 @@ public class CylinderBuilder implements CustomUVBuilder {
 		}
 		return root.copyTo(polis);
 	}
+
+	public ModelRendererTurbo getRoot(){
+		return root;
+	}
 	
 }
