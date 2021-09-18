@@ -292,5 +292,9 @@ public class BoxBuilder implements CustomUVBuilder {
 		else return genPolygonWithUV(-1, vertices, tx, ty, x, y, ex, ey);
 		return new TexturedPolygon(vertices);
 	}
+
+	public ModelRendererTurbo getRoot(){
+		return root;
+	}
 	
 }
