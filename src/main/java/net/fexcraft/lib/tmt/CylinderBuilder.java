@@ -46,18 +46,8 @@ public class CylinderBuilder implements CustomUVBuilder {
 		return this;
 	}
 	
-	@Deprecated
-	public CylinderBuilder setTextureDiameter(int width, int height){
-		return this;
-	}
-	
 	public CylinderBuilder setLength(float length){
 		this.length = length;
-		return this;
-	}
-	
-	@Deprecated
-	public CylinderBuilder setTextureHeight(int height){
 		return this;
 	}
 	
@@ -67,16 +57,6 @@ public class CylinderBuilder implements CustomUVBuilder {
 	
 	public CylinderBuilder setTopOffset(Vec3f vec){
 		topoff = vec; return this;
-	}
-	
-	@Deprecated
-	public CylinderBuilder setSidesVisible(boolean[] arr){
-		return removePolygons(arr);
-	}
-
-	@Deprecated
-	public CylinderBuilder setSidesVisible(boolean base, boolean top, boolean outer, boolean inner){
-		return removePolygons(base, top, outer, inner);
 	}
 	
 	public CylinderBuilder removePolygon(int index){
@@ -144,16 +124,24 @@ public class CylinderBuilder implements CustomUVBuilder {
 
 	/** Currently no support for hollow-less cylinders to be segmented. */
 	public CylinderBuilder setSegments(int amount, int limit){
-		this.segments = amount; this.seglimit = limit; return this;
+		this.segments = amount;
+		this.seglimit = limit;
+		return this;
 	}
 	
 	public CylinderBuilder setScale(float base, float top){
-		this.base_scale = base; this.top_scale = top; return this;
+		this.base_scale = base;
+		this.top_scale = top;
+		return this;
 	}
 
 	/** Currently no support for hollow-less cylinders to be radial-textured. */
 	public CylinderBuilder setRadialTexture(float seg_width, float seg_height){
-		radialtexture = true; this.seg_width = seg_width; this.seg_height = seg_height; return this;
+		if(seg_width <= 0 || seg_height <= 0) return this;
+		radialtexture = true;
+		this.seg_width = seg_width;
+		this.seg_height = seg_height;
+		return this;
 	}
 	
 	public CylinderBuilder setDirection(int dir){
