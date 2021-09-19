@@ -22,7 +22,8 @@ import net.fexcraft.lib.common.math.Vec3f;
 public class CylinderBuilder implements CustomUVBuilder {
 	
 	private ModelRendererTurbo root;
-	private float x, y, z, radius, radius2, length, base_scale, top_scale;
+	private float x, y, z, radius, radius2, length;
+	private float base_scale = 1, top_scale = 1;
 	private int segments, seglimit, direction;
 	private Vec3f topoff = new Vec3f();
 	private boolean[] invisible = new boolean[6];
