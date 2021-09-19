@@ -8,23 +8,21 @@ package net.fexcraft.lib.tmt;
  */
 public class Coord2D {
 
-	public float xCoord;
-	public float yCoord;
-	public int uCoord;
-	public int vCoord;
+	public float x, y, u, v;
 	
 	public Coord2D(float x, float y){
-		xCoord = x;
-		yCoord = y;
-		uCoord = (int)Math.floor(x);
-		vCoord = (int)Math.floor(y);
+		this.x = x;
+		this.y = y;
+		u = (float) Math.floor(x);
+		v = (float) Math.floor(y);
 	}
 	
 
 	public Coord2D(float x, float y, int u, int v){
-		this(x, y);
-		uCoord = u;
-		vCoord = v;
+		this.x = x;
+		this.y = y;
+		this.u = u;
+		this.v = v;
 	}
 	
 }
