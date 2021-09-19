@@ -43,25 +43,25 @@ public class Shape2D {
 		}
 		float totalLength = 0;
 		for(int idx = 0; idx < coords.size(); idx++){
-			Coord2D curCoord = coords.get(idx);
-			Coord2D nextCoord = coords.get((idx + 1) % coords.size());
-			float texU1 = ((float)(curCoord.uCoord + u) / (float)textureWidth);
-			float texU2 = ((float)(shapeTextureWidth * 2 - curCoord.uCoord + u) / (float)textureWidth);
-			float texV = ((float)(curCoord.vCoord + v) / (float)textureHeight);
-			Vec3f vecCoord = new Vec3f(curCoord.xCoord, curCoord.yCoord, 0);
-			setVectorRotations(vecCoord, rotX, rotY, rotZ);
+			Coord2D cur = coords.get(idx);
+			Coord2D next = coords.get((idx + 1) % coords.size());
+			float texU1 = ((float)(cur.u + u) / (float)textureWidth);
+			float texU2 = ((float)(shapeTextureWidth * 2 - cur.u + u) / (float)textureWidth);
+			float texV = ((float)(cur.v + v) / (float)textureHeight);
+			Vec3f vec = new Vec3f(cur.x, cur.y, 0);
+			setVectorRotations(vec, rotX, rotY, rotZ);
 			verts[idx] = new TexturedVertex(
-				x + vecCoord.x, y + vecCoord.y, z + vecCoord.z, texU1, texV);
+				x + vec.x, y + vec.y, z + vec.z, texU1, texV);
 			verts[idx + coords.size()] = new TexturedVertex(
-				x + vecCoord.x - extrudeVector.x, y + vecCoord.y - extrudeVector.y,
-				z + vecCoord.z - extrudeVector.z, texU2, texV);
+				x + vec.x - extrudeVector.x, y + vec.y - extrudeVector.y,
+				z + vec.z - extrudeVector.z, texU2, texV);
 			vertsTop[idx] = new TexturedVertex(verts[idx]);
 			vertsBottom[coords.size() - idx - 1] = new TexturedVertex(verts[idx + coords.size()]);
 			if(faceLengths != null){
 				totalLength+= faceLengths[idx];
 			}
 			else{
-				totalLength+= Math.sqrt(Math.pow(curCoord.xCoord - nextCoord.xCoord, 2) + Math.pow(curCoord.yCoord - nextCoord.yCoord, 2));
+				totalLength+= Math.sqrt(Math.pow(cur.x - next.x, 2) + Math.pow(cur.y - next.y, 2));
 			}
 		}
 		poly[coords.size()] = new TexturedPolygon(vertsTop);
@@ -69,9 +69,9 @@ public class Shape2D {
 		float currentLengthPosition = totalLength;
 		
 		for(int idx = 0; idx < coords.size(); idx++){
-			Coord2D curCoord = coords.get(idx);
-			Coord2D nextCoord = coords.get((idx + 1) % coords.size());
-			float currentLength = (float)Math.sqrt(Math.pow(curCoord.xCoord - nextCoord.xCoord, 2) + Math.pow(curCoord.yCoord - nextCoord.yCoord, 2));
+			Coord2D cur = coords.get(idx);
+			Coord2D next = coords.get((idx + 1) % coords.size());
+			float currentLength = (float)Math.sqrt(Math.pow(cur.x - next.x, 2) + Math.pow(cur.y - next.y, 2));
 			if(faceLengths != null){
 				currentLength = faceLengths[faceLengths.length - idx - 1];
 			}
