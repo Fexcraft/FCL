@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "normal": { "model": "fcl:workbench" },
-        "facing=north": { "model": "fcl:workbench" },
-        "facing=south": { "model": "fcl:workbench", "y": 180 },
-        "facing=west":  { "model": "fcl:workbench", "y": 270 },
-        "facing=east":  { "model": "fcl:workbench", "y": 90 }
-    }
-}

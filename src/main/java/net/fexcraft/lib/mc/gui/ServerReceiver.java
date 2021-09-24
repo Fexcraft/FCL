@@ -1,12 +1,12 @@
 package net.fexcraft.lib.mc.gui;
 
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.api.packet.IPacketListener;
+import net.fexcraft.lib.mc.network.PacketListener;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class ServerReceiver implements IPacketListener<PacketNBTTagCompound> {
+public class ServerReceiver implements PacketListener<PacketNBTTagCompound> {
 	
 	public static ServerReceiver INSTANCE;
 	

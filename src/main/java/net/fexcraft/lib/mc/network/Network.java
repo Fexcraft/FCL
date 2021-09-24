@@ -10,18 +10,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.utils.HttpUtil;
-import net.fexcraft.lib.common.utils.HttpsUtil;
 import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Static;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -31,8 +27,8 @@ public class Network {
 	private static boolean fcl_version_checked = false;
 	private static boolean check_notifications = false;
 
-	public static void checkConfig(Configuration config){
-		check_notifications = config.getBoolean("notifications", "general", false, "Should FCL check for notifications from fexcraft.net? This is UUID based, you may need to configure your fexcraft.net account for this to work.");
+	public static void checkConfig(){
+		check_notifications = FCL.CONFIG.getValue("notifications", false, "Should FCL check for notifications from fexcraft.net? This is UUID based, you may need to configure your fexcraft.net account for this to work.");
 	}
 	
 	public static JsonObject getModData(String modid){
@@ -51,7 +47,7 @@ public class Network {
 			}
 			ArrayList<String> array = new ArrayList<String>();
 			for(String s : arr){
-				ResourceLocation rs = new ResourceLocation(s);
+				Identifier rs = new Identifier(s);
 				if(rs.getNamespace().equals(FCL.mcv)){
 					array.add(rs.getPath());
 				}
@@ -72,7 +68,7 @@ public class Network {
 			}
 			ArrayList<String> array = new ArrayList<String>();
 			for(String s : arr){
-				ResourceLocation rs = new ResourceLocation(s);
+				Identifier rs = new Identifier(s);
 				if(rs.getNamespace().equals(FCL.mcv)){
 					array.add(s);
 				}
@@ -98,12 +94,11 @@ public class Network {
 			return false;
 		}
 	}
-	public static MinecraftServer getMinecraftServer(){
-		return FMLCommonHandler.instance().getMinecraftServerInstance();
-	}
 	
-	public static void browse(ICommandSender sender, String url){
-    	try{ Desktop.getDesktop().browse(new URI(url)); }
+	public static void browse(PlayerEntity sender, String url){
+    	try{
+    		Desktop.getDesktop().browse(new URI(url));
+    	}
     	catch(IOException | URISyntaxException e){
 			Print.chat(sender, FCL.prefix + "Error, couldn't open link.");
 			e.printStackTrace();
@@ -111,16 +106,10 @@ public class Network {
 	}
 
 	public static void checkStatus(){
-		if(!check_notifications) return;
+		if(!check_notifications || !FCL.CLIENT) return;
 		try{
-			String id = "unknown";
-			if(Static.side().isClient()){
-				id = net.minecraft.client.Minecraft.getMinecraft().getSession().getPlayerID();
-			}
-			else{
-				id = "server";
-			}
-			JsonObject obj = HttpsUtil.request("https://fexcraft.net/minecraft/fcl/request", "mode=status&id=" + id, 1000);
+			String id = MinecraftClient.getInstance().getSession().getUuid();
+			JsonObject obj = HttpUtil.request("https://fexcraft.net/minecraft/fcl/request", "mode=status&id=" + id, 1000);
 			if(obj == null || obj.entrySet().isEmpty()) return;
 			if(obj.has("notify")){
 				JsonArray notes = obj.get("notify").getAsJsonArray();
@@ -148,7 +137,7 @@ public class Network {
 		return check_notifications && notifications != null && notifications.length > 0;
 	}
 
-	public static void notify(EntityPlayer player){
+	public static void notify(PlayerEntity player){
 		for(String str : notifications){
 			Print.chat(player, Formatter.format(str));
 		}

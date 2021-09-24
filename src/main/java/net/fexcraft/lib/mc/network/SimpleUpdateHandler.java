@@ -6,12 +6,9 @@ import java.util.HashSet;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Static;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 public class SimpleUpdateHandler{
 	
@@ -41,7 +38,7 @@ public class SimpleUpdateHandler{
 	 * @param userid Fexcraft.net User ID the mod was registered under
 	 * @param current_version Current version of the mod.
 	 */
-	public static void register(String modid, int userid, String current_version){
+	public static void register(String modid, String userid, String current_version){
 		if(Network.isModRegistered(modid)){
 			obj.add(modid, Network.getModData(modid));
 			modids.add(modid);
@@ -54,7 +51,7 @@ public class SimpleUpdateHandler{
 		}
 	}
 
-	public static void postInit(){
+	public static void init(){
 		new Thread("FCL-SUH"){
 			@Override
 			public void run(){
@@ -123,7 +120,7 @@ public class SimpleUpdateHandler{
 		return "null";
 	}
 
-	public static class EventHandler {
+	/*public static class EventHandler {
 		
 		@SubscribeEvent
 		public void onJoin(PlayerEvent.PlayerLoggedInEvent event){
@@ -147,6 +144,6 @@ public class SimpleUpdateHandler{
 			}.start();
 		}
 		
-	}
+	}*/
 		
 }

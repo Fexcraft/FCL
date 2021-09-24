@@ -12,7 +12,6 @@ public class Static {
 
 	public static boolean mclib = false;
 	public static boolean devmode = false;
-	public static boolean server = false;
 
 	public static final float MODELSCALE = 0.0625F;
 	public static final float PI = 3.14159265358979323846f;
@@ -58,17 +57,13 @@ public class Static {
 		return devmode = bool;
 	}
 
-	public static final boolean setIsServer(boolean bool){
-		return server = bool;
-	}
-
 	public static final void halt(){
 		halt(1);
 	}
 
 	public static void halt(int errid){
 		if(mclib){
-			net.fexcraft.lib.mc.utils.Static.halt(errid);
+			//net.fexcraft.lib.mc.utils.Static.halt(errid);
 		}
 		System.exit(errid);
 	}
@@ -82,23 +77,9 @@ public class Static {
 		return devmode;
 	}
 
-	public static boolean isServer(){
-		if(mclib){
-			net.fexcraft.lib.mc.utils.Static.isServer();
-		}
-		return server;
-	}
-
-	public static boolean isClient(){
-		if(mclib){
-			net.fexcraft.lib.mc.utils.Static.isClient();
-		}
-		return !server;
-	}
-
 	public static InputStream getResource(String str){
 		if(mclib){
-			net.fexcraft.lib.mc.utils.Static.getResource(str);
+			//net.fexcraft.lib.mc.utils.Static.getResource(str);
 		}
 		return Static.class.getClassLoader().getResourceAsStream(str);
 	}

@@ -18,7 +18,7 @@ public interface AxisRotator {
 	
 	public static class DefHolder {
 		
-		private static Class<? extends AxisRotator> DEF_IMPL = Axis3DL.class;
+		private static Class<? extends AxisRotator> DEF_IMPL = null;//Axis3DL.class;
 		
 	}
 	

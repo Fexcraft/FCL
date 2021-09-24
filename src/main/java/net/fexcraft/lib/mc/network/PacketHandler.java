@@ -1,22 +1,9 @@
 package net.fexcraft.lib.mc.network;
 
-import net.fexcraft.lib.mc.api.packet.IPacketListener;
-import net.fexcraft.lib.mc.network.handlers.EntityUpdatePacketHandler;
-import net.fexcraft.lib.mc.network.handlers.ExamplePacketHandler;
-import net.fexcraft.lib.mc.network.handlers.JsonObjectPacketHandler;
-import net.fexcraft.lib.mc.network.handlers.KeyInputPacketHandler;
-import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
-import net.fexcraft.lib.mc.network.handlers.TileEntityUpdatePacketHandler;
-import net.fexcraft.lib.mc.network.packet.Packet;
-import net.fexcraft.lib.mc.network.packet.PacketEntityUpdate;
-import net.fexcraft.lib.mc.network.packet.PacketJsonObject;
-import net.fexcraft.lib.mc.network.packet.PacketKeyInput;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
-import net.fexcraft.lib.mc.network.packet.PacketTileEntityUpdate;
+import org.spongepowered.asm.mixin.MixinEnvironment.Side;
+
 import net.fexcraft.lib.mc.utils.Print;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.network.Packet;
 
 public class PacketHandler {
 	
@@ -49,41 +36,41 @@ public class PacketHandler {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static void registerListener(PacketHandlerType type, Side side, IPacketListener<?> listener){
+	public static void registerListener(PacketHandlerType type, Side side, PacketListener<?> listener){
 		switch(type){
 			/*case ITEMSTACK:{
 				ISUPacketHandler.addListener(side, (IPacketListener<PacketItemStackUpdate>)listener);
 				break;
 			}*/
 			case JSON:{
-				JsonObjectPacketHandler.addListener(side, (IPacketListener<PacketJsonObject>)listener);
+				JsonObjectPacketHandler.addListener(side, (PacketListener<PacketJsonObject>)listener);
 				break;
 			}
 			case NBT:{
-				NBTTagCompoundPacketHandler.addListener(side, (IPacketListener<PacketNBTTagCompound>) listener);
+				NBTTagCompoundPacketHandler.addListener(side, (PacketListener<PacketNBTTagCompound>) listener);
 				break;
 			}
 			case KEYINPUT:{
 				if(side.isServer()){
-					KeyInputPacketHandler.addListener((IPacketListener<PacketKeyInput>) listener);
+					KeyInputPacketHandler.addListener((PacketListener<PacketKeyInput>) listener);
 				}
 				break;
 			}
 			case TILEENTITY:{
 				if(side.isClient()){
-					TileEntityUpdatePacketHandler.Client.addListener((IPacketListener<PacketTileEntityUpdate>) listener);
+					TileEntityUpdatePacketHandler.Client.addListener((PacketListener<PacketTileEntityUpdate>) listener);
 				}
 				if(side.isServer()){
-					TileEntityUpdatePacketHandler.Server.addListener((IPacketListener<PacketTileEntityUpdate>) listener);
+					TileEntityUpdatePacketHandler.Server.addListener((PacketListener<PacketTileEntityUpdate>) listener);
 				}
 				break;
 			}
 			case ENTITY:{
 				if(side.isClient()){
-					EntityUpdatePacketHandler.Client.addListener((IPacketListener<PacketEntityUpdate>) listener);
+					EntityUpdatePacketHandler.Client.addListener((PacketListener<PacketEntityUpdate>) listener);
 				}
 				if(side.isServer()){
-					EntityUpdatePacketHandler.Server.addListener((IPacketListener<PacketEntityUpdate>) listener);
+					EntityUpdatePacketHandler.Server.addListener((PacketListener<PacketEntityUpdate>) listener);
 				}
 				break;
 			}

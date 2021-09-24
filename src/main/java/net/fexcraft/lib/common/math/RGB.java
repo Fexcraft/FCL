@@ -6,10 +6,9 @@ import java.text.DecimalFormat;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fexcraft.lib.common.Static;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RGB {
 	
@@ -98,39 +97,14 @@ public class RGB {
 		}
 	}
 	
-	@SideOnly(Side.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void glColorApply(){
 		org.lwjgl.opengl.GL11.glColor4f((packed >> 16 & 255) / 255.0F, (packed >> 8 & 255) / 255.0F, (packed & 255) / 255.0F, alpha);
 	}
 	
-	@SideOnly(Side.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public final static void glColorReset(){
 		org.lwjgl.opengl.GL11.glColor4b(Byte.MAX_VALUE, Byte.MAX_VALUE, Byte.MAX_VALUE, Byte.MAX_VALUE);
-	}
-	
-	public static final RGB fromDyeColor(EnumDyeColor e){
-		return new RGB(get(e));
-	}
-	
-	private static final int get(EnumDyeColor e){
-		switch(e){
-			case WHITE: return 16383998;
-			case ORANGE: return 16351261;
-			case MAGENTA: return 13061821;
-			case LIGHT_BLUE: return 3847130;
-			case YELLOW: return 16701501;
-			case LIME: return 8439583;
-			case PINK: return 15961002;
-			case GRAY: return 4673362;
-			case SILVER: return 10329495;
-			case CYAN: return 1481884;
-			case PURPLE: return 8991416;
-			case BLUE: return 3949738;
-			case BROWN: return 8606770;
-			case GREEN: return 6192150;
-			case RED: return 11546150;
-			case BLACK: default: return 1908001;
-		}
 	}
 	
 	@Override

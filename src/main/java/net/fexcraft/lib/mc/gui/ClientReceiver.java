@@ -1,7 +1,7 @@
 package net.fexcraft.lib.mc.gui;
 
-import net.fexcraft.lib.mc.api.packet.IPacketListener;
 import net.fexcraft.lib.mc.capabilities.FCLCapabilities;
+import net.fexcraft.lib.mc.network.PacketListener;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class ClientReceiver implements IPacketListener<PacketNBTTagCompound> {
+public class ClientReceiver implements PacketListener<PacketNBTTagCompound> {
 
 	@Override
 	public String getId(){

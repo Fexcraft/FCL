@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,7 +21,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 import net.fexcraft.lib.common.utils.Print;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
 
 /**
  * @author Ferdinand (FEX___96)
@@ -463,12 +463,12 @@ public class JsonUtil{
 	
 
 
-	public static ArrayList<ResourceLocation> jsonArrayToResourceLocationArray(JsonArray array) {
-		ArrayList<ResourceLocation> list = new ArrayList<ResourceLocation>();
+	public static ArrayList<Identifier> jsonArrayToResourceLocationArray(JsonArray array) {
+		ArrayList<Identifier> list = new ArrayList<Identifier>();
 		ArrayList<String> json = jsonArrayToStringArray(array);
 		for(String string : json){
 			try{
-				list.add(new ResourceLocation(string));
+				list.add(new Identifier(string));
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -532,9 +532,9 @@ public class JsonUtil{
 		return ja;
 	}
 
-	public static JsonElement getArrayFromResourceLocationList(ArrayList<ResourceLocation> array){
+	public static JsonElement getArrayFromResourceLocationList(ArrayList<Identifier> array){
 		JsonArray ja = new JsonArray();
-		for(ResourceLocation s : array){
+		for(Identifier s : array){
 			add(ja, s.toString());
 		}
 		return ja;

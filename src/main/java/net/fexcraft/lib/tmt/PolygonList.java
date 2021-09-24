@@ -2,7 +2,7 @@ package net.fexcraft.lib.tmt;
 
 import java.util.ArrayList;
 
-import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.lib.common.Static;
 
 /**
  * Based on the FVTM "TurboList" as well as the FMT "TurboList" class.
