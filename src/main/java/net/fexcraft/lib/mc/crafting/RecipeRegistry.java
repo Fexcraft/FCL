@@ -1,18 +1,11 @@
 package net.fexcraft.lib.mc.crafting;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
-import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 
 public class RecipeRegistry {
 	
@@ -34,28 +27,6 @@ public class RecipeRegistry {
 		}
 		//Print.debug("[BPT] Registering Recipe for Stack: " + stack.toString());
 		RECIPES.get(category).get(reg).add(new BluePrintRecipe(category, stack, recipeComponents));
-	}
-	
-	public static void addShapelessRecipe(String rs, String string, ItemStack output, Ingredient... ingredients){
-		if(rs == null){ return; } addShapelessRecipe(new ResourceLocation(rs), string, output, ingredients);
-	}
-	
-	public static void addShapelessRecipe(ResourceLocation rs, String string, ItemStack output, Ingredient... ingredients){
-		if(ingredients.length < 1 || rs == null){ return; }
-		NonNullList<Ingredient> list = NonNullList.<Ingredient>create(); list.addAll(Arrays.asList(ingredients));
-		FCLRegistry.getAutoRegisterer(rs.getNamespace()).addRecipe(rs, new ShapelessRecipes(string == null ? "" : string, output, list));
-	}
-
-	public static void addShapedRecipe(String rs, String string, ItemStack output, int width, int height, Ingredient... ingredients){
-		if(rs == null){ return; } addShapedRecipe(new ResourceLocation(rs), string, output, width, height, ingredients);
-	}
-	
-	public static void addShapedRecipe(ResourceLocation rs, String string, ItemStack output, int width, int height, Ingredient... ingredients){
-		if(ingredients.length < 1 || rs == null){ return; }
-		NonNullList<Ingredient> list = NonNullList.<Ingredient>create();
-		list.addAll(Arrays.asList(ingredients));
-		//vrecipes.put(rs, new ShapedRecipes(string == null ? "" : string, width, height, list, output));
-		FCLRegistry.getAutoRegisterer(rs.getNamespace()).addRecipe(rs, new ShapedRecipes(string == null ? "" : string, width, height, list, output));
 	}
 	
 	//
