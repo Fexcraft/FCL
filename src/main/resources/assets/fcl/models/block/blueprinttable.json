@@ -2,11 +2,11 @@
 	"__comment": "Designed by Ferdinand (FEX___96) with Cubik Studio",
 	"parent": "block/cube_all",
 	"textures": {
-		"particle": "blocks/anvil_base",
-		"texture": "blocks/iron_block",
-		"texture1": "fcl:blocks/blueprint",
-		"texture2": "blocks/log_oak",
-		"texture3": "blocks/clay"
+		"particle": "block/anvil",
+		"texture": "block/iron_block",
+		"texture1": "fcl:block/blueprint",
+		"texture2": "block/oak_log",
+		"texture3": "block/clay"
 	},
 	"elements": [
 		{

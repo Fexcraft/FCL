@@ -6,11 +6,19 @@ import java.util.UUID;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fexcraft.lib.common.Static;
+import net.fexcraft.lib.mc.crafting.BluePrintTable;
 import net.fexcraft.lib.mc.network.Network;
+import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
 import net.fexcraft.lib.mc.utils.JsonConfig;
+import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 /**
  * 
@@ -27,6 +35,7 @@ public class FCL implements ModInitializer, ClientModInitializer, DedicatedServe
 	public static final String version = "1.12.68";
 	public static final String mcv = "1.17.1";
 	public static final UUID[] authors = new UUID[]{ UUID.fromString("01e4af9b-2a30-471e-addf-f6338ffce04b") };
+	public static final Block BLUEPRINTTABLE = new BluePrintTable();
 	public static boolean CLIENT = false;
 	public static JsonConfig CONFIG;
 	private static FCL instance;
@@ -48,7 +57,10 @@ public class FCL implements ModInitializer, ClientModInitializer, DedicatedServe
 			SimpleUpdateHandler.init();//TODO find a later call hook
 		}
 		//
-		//TODO init packets
+		Registry.register(Registry.BLOCK, new Identifier("fcl:blueprinttable"), BLUEPRINTTABLE);
+		Registry.register(Registry.ITEM, new Identifier("fcl:blueprinttable"), new BlockItem(BLUEPRINTTABLE, new FabricItemSettings().group(ItemGroup.TOOLS)));
+		//
+		PacketHandler.regCommonPackets();
 		//TODO register fcl gui packet handler
 		System.out.println("[FCL] Loading complete.");
 	}

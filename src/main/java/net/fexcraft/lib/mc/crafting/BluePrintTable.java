@@ -1,78 +1,31 @@
 package net.fexcraft.lib.mc.crafting;
 
-import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.api.registry.fBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Material;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-@fBlock(modid = "fcl", name = "blueprinttable")
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Material;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.math.Direction;
+
 public class BluePrintTable extends Block {
 	
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	
     public BluePrintTable(){
-    	super(Material.GLASS);
-    	this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-    	this.setHarvestLevel("axe", 1); this.setHardness(1.0F); this.setResistance(32.0F);
-    	this.setCreativeTab(CreativeTabs.TOOLS);
-    	//FCLRegistry.getAutoRegisterer("fcl").addBlock("blueprinttable", this, null, 0, null);
+    	super(FabricBlockSettings.of(Material.METAL).strength(4.0f).nonOpaque());
+    	setDefaultState(getStateManager().getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH));
 	}
-	
-	@Override
-	public boolean isFullBlock(IBlockState state){
-        return false;
+    
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager){
+        stateManager.add(Properties.HORIZONTAL_FACING);
     }
-	
-	@Override
-	public boolean isFullCube(IBlockState state){
-        return false;
-    }
-	
-	@Override
-	public boolean isOpaqueCube(IBlockState state){
-        return false;
-    }
-	
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(!world.isRemote){
-			if(!player.isSneaking()){
-				player.openGui(FCL.getInstance(), 0, world, pos.getX(), pos.getY(), pos.getZ());
-				player.addStat(StatList.CRAFTING_TABLE_INTERACTION);
-				return true;
-			}
-		}
-		return false;
+    
+	@Nullable
+	public BlockState getPlacementState(ItemPlacementContext ctx){
+		return getDefaultState().with(Properties.HORIZONTAL_FACING, ctx.getPlayerFacing().getOpposite());
 	}
-	
-	@Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand){
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-    }
-
-	@Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack){
-        worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
-    }
-	
-	@Override
-    public IBlockState getStateFromMeta(int meta){
-        EnumFacing enumfacing = EnumFacing.byIndex(meta);
-        if(enumfacing.getAxis() == EnumFacing.Axis.Y){ enumfacing = EnumFacing.NORTH; }
-        return this.getDefaultState().withProperty(FACING, enumfacing);
-    }
-	
-	@Override
-    public int getMetaFromState(IBlockState state){
-        return ((EnumFacing)state.getValue(FACING)).getIndex();
-    }
-	
-	@Override
-    protected BlockStateContainer createBlockState(){
-        return new BlockStateContainer(this, new IProperty[] {FACING});
-    }
 	
 }
