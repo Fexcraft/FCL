@@ -308,7 +308,7 @@ public class JsonHandler {
 		return dewrap(parse(obj, true).asMap());
 	}
 
-	public static Object dewrap(JsonMap map){
+	public static HashMap<String, Object> dewrap(JsonMap map){
 		HashMap<String, Object> hashmap = new HashMap<>();
 		for(Entry<String, JsonObject<?>> entry : map.entries()){
 			if(entry.getValue().isMap()){
@@ -324,7 +324,7 @@ public class JsonHandler {
 		return hashmap;
 	}
 
-	private static Object dewrap(JsonArray array){
+	private static ArrayList<Object> dewrap(JsonArray array){
 		ArrayList<Object> list = new ArrayList<>();
 		for(JsonObject<?> obj : array.value){
 			if(obj.isMap()){
