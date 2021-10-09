@@ -53,6 +53,16 @@ public class JsonMap extends JsonObject<Map<String, JsonObject<?>>> {
 		return value.containsKey(key);
 	}
 	
+	public boolean has(boolean any, String... keys){
+		for(String key : keys){
+			if(value.containsKey(key)){
+				if(any) return true;
+			}
+			else if(!any) return false;
+		}
+		return !any;
+	}
+	
 	public boolean contains(JsonObject<?> val){
 		return value.containsValue(val);
 	}
