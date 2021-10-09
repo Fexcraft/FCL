@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import net.fexcraft.lib.common.math.Time;
+
 /**
  * 
  * @author Ferdinand Calo' (FEX___96)
@@ -144,6 +146,10 @@ public class JsonMap extends JsonObject<Map<String, JsonObject<?>>> {
 
 	public long getLong(String key, long def){
 		return value.containsKey(key) ? value.get(key).long_value() : def;
+	}
+
+	public long getLongTime(String key){
+		return value.containsKey(key) ? value.get(key).long_value() : Time.getDate();
 	}
 
 	public String getString(String key, String def){
