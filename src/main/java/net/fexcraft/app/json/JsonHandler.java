@@ -171,17 +171,17 @@ public class JsonHandler {
 	}
 
 	public static String toString(JsonObject<?> obj){
-		return toString(obj, 0, false, false, false);
+		return toString(obj, 0, false, PrintOption.DEFAULT);
 	}
 
-	public static String toString(JsonObject<?> obj, boolean flat, boolean spaced){
-		return toString(obj, 0, false, flat, spaced);
+	public static String toString(JsonObject<?> obj, PrintOption opt){
+		return toString(obj, 0, false, opt);
 	}
 
-	public static String toString(JsonObject<?> obj, int depth, boolean append, boolean flat, boolean spaced){
-		String ret = "", tab = "", tabo = "    ", space = spaced ? " " : "", colspace = !flat || spaced ? " " : "";
-		String app = append ? "," + space : "", n = flat ? "" : "\n";
-		if(!flat){
+	public static String toString(JsonObject<?> obj, int depth, boolean append, PrintOption opt){
+		String ret = "", tab = "", tabo = "    ", space = opt.spaced ? " " : "", colspace = !opt.flat || opt.spaced ? " " : "";
+		String app = append ? "," + space : "", n = opt.flat ? "" : "\n";
+		if(!opt.flat){
 			for(int j = 0; j < depth; j++){
 				tab += tabo;
 			}
@@ -199,7 +199,7 @@ public class JsonHandler {
 				Iterator<Entry<String, JsonObject<?>>> it = obj.asMap().value.entrySet().iterator();
 				while(it.hasNext()){
 					Map.Entry<String, JsonObject<?>> entry = it.next();
-					ret += tab + tabo + '"' + entry.getKey() + '"' + ":" + colspace + toString(entry.getValue(), depth + 1, it.hasNext(), flat, spaced);
+					ret += tab + tabo + '"' + entry.getKey() + '"' + ":" + colspace + toString(entry.getValue(), depth + 1, it.hasNext(), opt);
 				}
 				ret += tab + space + "}" + app + n;
 			}
@@ -212,7 +212,7 @@ public class JsonHandler {
 				ret += "[" + space + n;
 				Iterator<JsonObject<?>> it = obj.asArray().value.iterator();
 				while(it.hasNext()){
-					ret += tab + tabo + toString(it.next(), depth + 1, it.hasNext(), flat, spaced);
+					ret += tab + tabo + toString(it.next(), depth + 1, it.hasNext(), opt);
 				}
 				ret += tab + space + "]" + app + n;
 			}
@@ -221,6 +221,28 @@ public class JsonHandler {
 			ret += (obj.value instanceof String ? '"' + obj.value.toString() + '"' : obj.value) + app + n;
 		}
 		return ret;
+	}
+	
+	public static class PrintOption {
+		
+		public static final PrintOption FLAT = new PrintOption().flat(true).spaced(false);
+		public static final PrintOption SPACED = new PrintOption().flat(false).spaced(true);
+		public static final PrintOption DEFAULT = SPACED;
+		
+		boolean flat, spaced;
+		
+		public PrintOption(){}
+		
+		public PrintOption flat(boolean bool){
+			flat = bool;
+			return this;
+		}
+		
+		public PrintOption spaced(boolean bool){
+			spaced = bool;
+			return this;
+		}
+		
 	}
 	
 	private static class Ret {
@@ -235,9 +257,9 @@ public class JsonHandler {
 		
 	}
 
-	public static void print(File file, JsonObject<?> obj, boolean flat, boolean spaced){
+	public static void print(File file, JsonObject<?> obj, PrintOption opt){
 		try{
-			Files.write(file.toPath(), toString(obj, flat, spaced).getBytes(StandardCharsets.UTF_8));
+			Files.write(file.toPath(), toString(obj, opt).getBytes(StandardCharsets.UTF_8));
 		}
 		catch(IOException e){
 			e.printStackTrace();
