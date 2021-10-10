@@ -346,7 +346,7 @@ public class JsonHandler {
 		return hashmap;
 	}
 
-	private static ArrayList<Object> dewrap(JsonArray array){
+	public static ArrayList<Object> dewrap(JsonArray array){
 		ArrayList<Object> list = new ArrayList<>();
 		for(JsonObject<?> obj : array.value){
 			if(obj.isMap()){
@@ -360,6 +360,22 @@ public class JsonHandler {
 			}
 		}
 		return list;
+	}
+
+	public static <T> ArrayList<T> dewrapc(JsonArray array){
+		ArrayList<Object> list = new ArrayList<>();
+		for(JsonObject<?> obj : array.value){
+			if(obj.isMap()){
+				list.add(dewrap(obj.asMap()));
+			}
+			else if(obj.isArray()){
+				list.add(dewrap(obj.asArray()));
+			}
+			else{
+				list.add(obj.value);
+			}
+		}
+		return (ArrayList<T>)list;
 	}
 
 }
