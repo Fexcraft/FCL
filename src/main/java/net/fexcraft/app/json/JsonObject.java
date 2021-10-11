@@ -35,23 +35,17 @@ public class JsonObject<V> implements FJson {
 
 	public float float_value(){
 		if(value instanceof Number == false) return 0;
-		if(value instanceof Integer) return (int)value + 0f;
-		if(value instanceof Long) return (long)value + 0f;
-		return (float)value;
+		return ((Number)value).floatValue();
 	}
 
 	public int integer_value(){
 		if(value instanceof Number == false) return 0;
-		if(value instanceof Float) return (int)(float)value;
-		if(value instanceof Long) return (int)(long)value;
-		return (int)value;
+		return ((Number)value).intValue();
 	}
 
 	public long long_value(){
 		if(value instanceof Number == false) return 0;
-		if(value instanceof Float) return (long)(float)value;
-		if(value instanceof Integer) return (long)(int)value;
-		return (long)value;
+		return ((Number)value).longValue();
 	}
 
 	public String string_value(){
@@ -63,7 +57,7 @@ public class JsonObject<V> implements FJson {
 	}
 
 	public boolean bool(){
-		return (boolean)value;
+		return (Boolean)value;
 	}
 
 }
