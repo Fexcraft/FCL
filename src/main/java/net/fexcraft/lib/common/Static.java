@@ -104,11 +104,11 @@ public class Static {
 	}
 
 	public static float toDegrees(float rad){
-		return (float)Math.toDegrees(rad);
+		return rad * 180f / PI;
 	}
 
 	public static float toRadians(float deg){
-		return (float)Math.toRadians(deg);
+		return deg / 180f * PI;
 	}
 
 }
