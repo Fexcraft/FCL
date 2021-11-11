@@ -155,7 +155,9 @@ public class FCLRegistry {
 					//registerItemModelLocation(mItem, item.variants(), item.custom_variants());
 					////Print.debug("Registered Item: " + mItem.getRegistryName().toString());
 				}
-				catch(Exception e){ error(e, clazz.getName()); }
+				catch(Exception e){
+					error(e, clazz.getName());
+				}
 			}
 		}
 		
@@ -188,7 +190,10 @@ public class FCLRegistry {
 					Class<?> clazz = Class.forName(entry.getClassName());
 					fRecipeHolder rph = (fRecipeHolder)clazz.getAnnotation(fRecipeHolder.class);
 					if(rph.value().equals(modid)){ clazz.newInstance(); }
-				} catch(Exception e){ e.printStackTrace(); }
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
 			}
 			//
 			IForgeRegistry<IRecipe> reg = event.getRegistry();
@@ -212,7 +217,7 @@ public class FCLRegistry {
 		}
 		
 		private final void registerModelLoc(Item item){
-			if(FCL.getSide().isServer()){ return; }
+			if(FCL.getSide().isServer()) return;
 			if(this.meta.get(item.getRegistryName()) != null){
 				int meta = this.meta.get(item.getRegistryName());
 				if(this.arr.get(item.getRegistryName()) == null){
@@ -243,19 +248,23 @@ public class FCLRegistry {
 				itemblocks.add(iblock);
 			}
 			else{
-				try{ itemblocks.add(item.getConstructor(Block.class).newInstance(block)); }
-				catch(Exception e){ e.printStackTrace(); }
+				try{
+					itemblocks.add(item.getConstructor(Block.class).newInstance(block));
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
 			}
-			if(meta > 1){ this.meta.put(block.getRegistryName(), meta); }
-			if(custom != null){ this.arr.put(block.getRegistryName(), custom); }
+			if(meta > 1) this.meta.put(block.getRegistryName(), meta);
+			if(custom != null) this.arr.put(block.getRegistryName(), custom);
 		}
 		
 		public void addItem(String name, Item item, int meta, String[] custom){
 			item.setRegistryName(modid, name);
 			item.setTranslationKey(item.getRegistryName().toString());
 			items.put(new ResourceLocation(modid, name), item);
-			if(meta > 1){ this.meta.put(item.getRegistryName(), meta); }
-			if(custom != null){ this.arr.put(item.getRegistryName(), custom); }
+			if(meta > 1) this.meta.put(item.getRegistryName(), meta);
+			if(custom != null) this.arr.put(item.getRegistryName(), custom);
 		}
 		
 		public void addRecipe(ResourceLocation rs, IRecipe recipe){
@@ -268,26 +277,34 @@ public class FCLRegistry {
 		Set<ASMData> data = table.getAll(block);
 		TreeMap<String, Class<? extends Block>> map = new TreeMap<String, Class<? extends Block>>();
 		for(ASMData entry : data){
-			try{ @SuppressWarnings("unchecked")
+			try{
 				Class<? extends Block> clazz = (Class<? extends Block>)Class.forName(entry.getClassName());
 				fBlock blk = (fBlock)clazz.getAnnotation(fBlock.class);
-				if(blk.modid().equals(modid)){ map.put(blk.name(), clazz); }
-			} catch(Exception e){ e.printStackTrace(); }
-		} return map;
+				if(blk.modid().equals(modid)) map.put(blk.name(), clazz);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return map;
 	}
 	
 	public static final TreeMap<String, Class<? extends Item>> getItemMap(String modid){
 		Set<ASMData> data = table.getAll(item);
 		TreeMap<String, Class<? extends Item>> map = new TreeMap<String, Class<? extends Item>>();
 		for(ASMData entry : data){
-			try{ @SuppressWarnings("unchecked")
+			try{
 				Class<? extends Item> clazz = (Class<? extends Item>)Class.forName(entry.getClassName());
 				fItem item = (fItem)clazz.getAnnotation(fItem.class);
 				if(item.modid().equals(modid)){
 					map.put(item.name(), clazz);
 				}
-			} catch(Exception e){ e.printStackTrace(); }
-		} return map;
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return map;
 	}
 	
 	//@EventBusSubscriber
@@ -295,10 +312,13 @@ public class FCLRegistry {
 	public static void registerCommands(FMLServerStartingEvent event){
 		Set<ASMData> data = table.getAll(fCommand.class.getCanonicalName());
 		for(ASMData entry : data){
-			try{ @SuppressWarnings("unchecked")
+			try{
 				Class<? extends CommandBase> cmd = (Class<? extends CommandBase>)Class.forName(entry.getClassName());
 				event.registerServerCommand(cmd.newInstance());
-			} catch(Exception e){ error(e, entry.getClassName()); }
+			}
+			catch(Exception e){
+				error(e, entry.getClassName());
+			}
 		}
 	}
 	
@@ -314,8 +334,10 @@ public class FCLRegistry {
 				for(ItemBlock iblock : reg.itemblocks){
 					if(iblock.getRegistryName().equals(rs)) item = iblock; break;
 				}
-			} return item;
-		} return null;
+			}
+			return item;
+		}
+		return null;
 	}
 	
 	public static Block getBlock(String string){
@@ -330,10 +352,15 @@ public class FCLRegistry {
 		Set<ASMData> data = table.getAll(entity);
 		TreeMap<String, Class<? extends Entity>> map = new TreeMap<String, Class<? extends Entity>>();
 		for(ASMData entry : data){
-			try{ @SuppressWarnings("unchecked")
+			try{
 				Class<? extends Entity> clazz = (Class<? extends Entity>)Class.forName(entry.getClassName());
-				if(clazz.getAnnotation(fEntity.class).modid().equals(modid)){ map.put(clazz.getAnnotation(fEntity.class).name(), clazz); }
-			} catch(Exception e){ e.printStackTrace(); }
+				if(clazz.getAnnotation(fEntity.class).modid().equals(modid)){
+					map.put(clazz.getAnnotation(fEntity.class).name(), clazz);
+				}
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		for(Class<? extends Entity> clazz : map.values()){
 			try{
@@ -341,19 +368,25 @@ public class FCLRegistry {
 				ResourceLocation rs = new ResourceLocation(entity.modid(), entity.name());
 				EntityRegistry.registerModEntity(rs, clazz, rs.toString(), eid++, entity.modid(), entity.tracking_range(), entity.update_frequency(), entity.send_velocity_updates());
 				////Print.debug("Registered Entity: " + rs.toString());
-			} catch(Exception e){ error(e, clazz.getName()); }
+			}
+			catch(Exception e){
+				error(e, clazz.getName());
+			}
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes" })
 	public static void registerTESRs(){
-		if(FCL.getSide().isServer()){ return; }
+		if(FCL.getSide().isServer()) return;
 		Set<ASMData> data = table.getAll(tesr);
 		for(ASMData entry : data){
 			try{
 				net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer cTESR = (net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer)Class.forName(entry.getClassName()).newInstance();
 				net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer((Class<? extends TileEntity>)((ParameterizedType)cTESR.getClass().getGenericSuperclass()).getActualTypeArguments()[0], cTESR);
-			} catch(Exception e){ continue; }
+			}
+			catch(Exception e){
+				continue;
+			}
 		}
 	}
 	
@@ -369,9 +402,12 @@ public class FCLRegistry {
 			try{
 				Class<?> clazz = Class.forName(entry.getClassName());
 				fModel model = clazz.getAnnotation(fModel.class);
-				models.put(new ResourceLocation(model.registryname()), clazz.newInstance());
-				////Print.debug("Registered Model: " + model.registryname());
-			} catch(Throwable e){ error(e, entry.getClassName()); }
+				models.put(new ResourceLocation(model.registryname()), clazz);//.newInstance());
+				//Print.debug("Registered Model: " + model.registryname());
+			}
+			catch(Throwable e){
+				error(e, entry.getClassName());
+			}
 		}
 	}
 	
@@ -400,7 +436,7 @@ public class FCLRegistry {
 				Class<?> clazz = loader.loadClass(str);
 				fModel model = clazz.getAnnotation(fModel.class);
 				if(model == null) continue;
-				models.put(new ResourceLocation(model.registryname()), clazz.newInstance());
+				models.put(new ResourceLocation(model.registryname()), clazz);//.newInstance());
 			}
 			catch(Throwable e){
 				error(e, str);
@@ -408,7 +444,7 @@ public class FCLRegistry {
 		}
 	}
 	
-	@SuppressWarnings("unchecked") @Nullable
+	@Nullable
 	public static <T> T getModel(ResourceLocation loc){
 		return (T)models.get(loc);
 	}
@@ -423,8 +459,11 @@ public class FCLRegistry {
 	
 	public static boolean addModelManually(ResourceLocation loc, Object model, boolean override){
 		if(models.containsKey(loc) && !override){
-			Print.format("Tried to register Model with RS[%s] and Class[%s] but key already exists, try setting override to true?", loc, model); return false;
-		} else models.put(loc, model); return true;
+			Print.format("Tried to register Model with RS[%s] and Class[%s] but key already exists, try setting override to true?", loc, model);
+			return false;
+		}
+		else models.put(loc, model);
+		return true;
 	}
 	
 	public static Material getMaterial(String material){
