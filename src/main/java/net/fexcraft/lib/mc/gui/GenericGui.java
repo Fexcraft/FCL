@@ -162,6 +162,11 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 		}
 
 		public boolean scrollwheel(int am, int x, int y){ return false; }
+		
+		public BasicButton alpha(boolean bool){
+			rgb_disabled.alpha = rgb_none.alpha = rgb_hover.alpha = bool ? 0.5f : 1f;
+			return this;
+		}
     	
     }
 	
