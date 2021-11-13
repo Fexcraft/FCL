@@ -214,6 +214,11 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
 			this.scale = -1;
 			return this;
 		}
+
+		public BasicText hoverable(boolean bool){
+			hoverable = bool;
+			return this;
+		}
 		
 		public void draw(GenericGui<?> gui, float pticks, int mouseX, int mouseY){
 			if(!visible) return;
