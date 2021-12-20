@@ -23,7 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-public abstract class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer {
+public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer {
 
 	protected ResourceLocation texloc = null;
     protected TreeMap<String, BasicButton> buttons = new TreeMap<>();
@@ -100,17 +100,17 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
         PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(compound));
     }
     
-    protected abstract void init();
+    protected void init(){}
 
-	protected abstract void predraw(float pticks, int mouseX, int mouseY);
+	protected void predraw(float pticks, int mouseX, int mouseY){}
     
-    protected abstract void drawbackground(float pticks, int mouseX, int mouseY);
+    protected void drawbackground(float pticks, int mouseX, int mouseY){}
     
     protected void drawlast(float pticks, int mouseX, int mouseY){}
 
-	protected abstract boolean buttonClicked(int mouseX, int mouseY, int mouseButton, String key, BasicButton button);
+	protected boolean buttonClicked(int mouseX, int mouseY, int mouseButton, String key, BasicButton button){ return false; }
 
-	protected abstract void scrollwheel(int am, int x, int y);
+	protected void scrollwheel(int am, int x, int y){}
     
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
