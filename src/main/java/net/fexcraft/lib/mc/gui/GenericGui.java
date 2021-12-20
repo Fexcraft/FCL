@@ -57,7 +57,7 @@ public abstract class GenericGui<CONTAINER extends GenericContainer> extends Gui
     }
 
 	@Override
-    protected void drawGuiContainerBackgroundLayer(float pticks, int mouseX, int mouseY){
+    public void drawGuiContainerBackgroundLayer(float pticks, int mouseX, int mouseY){
 		if(defbackground) super.drawDefaultBackground();
     	predraw(pticks, mouseX, mouseY);
     	this.mc.getTextureManager().bindTexture(texloc);
