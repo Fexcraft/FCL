@@ -69,9 +69,9 @@ public class Renderer {
 					glVertex3f(gon.vertices[i].vector.x, gon.vertices[i].vector.y, gon.vertices[i].vector.z);
 				}
 			}
+			glEnd();
 		}
 		glEndList();
-		
 	}
 
 	private static void quadAsTriangleCol(Polygon poly, int x, int y, int z, int o){
