@@ -16,7 +16,7 @@ public class Polyhedron<GLO> {
 	public float rotX, rotY, rotZ;
 	public float posX, posY, posZ;
 	public boolean recompile;
-	public RotationOrder rotOrder;
+	public RotationOrder rotOrder = RotationOrder.YZX;
 	public String name;
 	public GLO glObj;
 	public Integer glId;
@@ -35,6 +35,10 @@ public class Polyhedron<GLO> {
 	public Polyhedron<GLO> color(RGB color){
 		for(Polygon gon : polygons) gon.color(color);
 		return this;
+	}
+
+	public void render(){
+		Renderer.render(this);
 	}
 
 }
