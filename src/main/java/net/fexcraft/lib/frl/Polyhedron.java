@@ -29,6 +29,9 @@ public class Polyhedron<GLO> {
 	
 	public Polyhedron<GLO> rescale(float scale){
 		for(Polygon gon : polygons) gon.rescale(scale);
+		posX *= scale;
+		posY *= scale;
+		posZ *= scale;
 		return this;
 	}
 	
