@@ -9,7 +9,7 @@ import net.fexcraft.lib.common.math.Vec3f;
  */
 public class ColoredVertex extends Vertex {
 	
-	protected Vec3f color;
+	protected Vec3f color = new Vec3f(1, 1, 1);
 	
 	public ColoredVertex(Vec3f vec){
 		super(vec);
