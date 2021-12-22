@@ -36,6 +36,10 @@ public class Vertex {
 	public Vertex color(Vec3f vec){
 		return this;
 	}
+
+	public Vertex color(float r, float g, float b){
+		return this;
+	}
 	
 	public Vertex norm(Vec3f vec){
 		this.norm = vec;
