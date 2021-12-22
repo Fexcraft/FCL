@@ -35,4 +35,9 @@ public class ColoredVertex extends Vertex {
 		return this;
 	}
 
+	@Override
+	public Vertex color(float r, float g, float b){
+		return color(new Vec3f(r, g, b));
+	}
+
 }
