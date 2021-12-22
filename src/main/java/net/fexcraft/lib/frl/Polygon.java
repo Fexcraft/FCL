@@ -51,6 +51,17 @@ public class Polygon {
 		textured = bool;
 		return this;
 	}
+	
+	public Polygon colored(boolean bool){
+		if(colored = bool){
+			for(int i = 0; i < vertices.length; i++){
+				if(vertices[i] instanceof ColoredVertex == false){
+					vertices[i] = new ColoredVertex(vertices[i]);
+				}
+			}
+		}
+		return this;
+	}
 
 	public void rescale(float scale){
 		for(Vertex vert : vertices) vert.vector = vert.vector.scale(scale);
