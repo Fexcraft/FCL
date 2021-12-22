@@ -2,6 +2,8 @@ package net.fexcraft.lib.frl;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import net.fexcraft.lib.common.math.RGB;
+
 /**
  * 
  * Default (LWJGL2 / Static Pipeline) Renderer
@@ -85,6 +87,7 @@ public class DefaultRenderer extends Renderer {
 		glNormal3f(poly.vertices[z].norm.x, poly.vertices[z].norm.y, poly.vertices[z].norm.z);
 		glTexCoord2f(poly.vertices[z].u, poly.vertices[z].v);
 		glVertex3f(poly.vertices[z].vector.x, poly.vertices[z].vector.y, poly.vertices[z].vector.z);
+		RGB.glColorReset();
 	}
 
 	private static void quadAsTriangleTex(Polygon poly, int x, int y, int z, int o){
