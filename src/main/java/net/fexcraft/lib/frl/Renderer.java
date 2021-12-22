@@ -77,12 +77,15 @@ public class Renderer {
 	private static void quadAsTriangleCol(Polygon poly, int x, int y, int z, int o){
 		glColor4f(poly.vertices[x].color().x, poly.vertices[x].color().y, poly.vertices[x].color().z, 1);
 		glNormal3f(poly.vertices[x].norm.x, poly.vertices[x].norm.y, poly.vertices[x].norm.z);
+		glTexCoord2f(poly.vertices[x].u, poly.vertices[x].v);
 		glVertex3f(poly.vertices[x].vector.x, poly.vertices[x].vector.y, poly.vertices[x].vector.z);
 		glColor4f(poly.vertices[y].color().x, poly.vertices[y].color().y, poly.vertices[y].color().z, 1);
 		glNormal3f(poly.vertices[y].norm.x, poly.vertices[y].norm.y, poly.vertices[y].norm.z);
+		glTexCoord2f(poly.vertices[y].u, poly.vertices[y].v);
 		glVertex3f(poly.vertices[y].vector.x, poly.vertices[y].vector.y, poly.vertices[y].vector.z);
 		glColor4f(poly.vertices[z].color().x, poly.vertices[z].color().y, poly.vertices[z].color().z, 1);
 		glNormal3f(poly.vertices[z].norm.x, poly.vertices[z].norm.y, poly.vertices[z].norm.z);
+		glTexCoord2f(poly.vertices[z].u, poly.vertices[z].v);
 		glVertex3f(poly.vertices[z].vector.x, poly.vertices[z].vector.y, poly.vertices[z].vector.z);
 	}
 
@@ -94,7 +97,7 @@ public class Renderer {
 		glTexCoord2f(poly.vertices[y].u, poly.vertices[y].v);
 		glVertex3f(poly.vertices[y].vector.x, poly.vertices[y].vector.y, poly.vertices[y].vector.z);
 		glNormal3f(poly.vertices[z].norm.x, poly.vertices[z].norm.y, poly.vertices[z].norm.z);
-		glTexCoord2f(poly.vertices[z].u, poly.vertices[z].v);;
+		glTexCoord2f(poly.vertices[z].u, poly.vertices[z].v);
 		glVertex3f(poly.vertices[z].vector.x, poly.vertices[z].vector.y, poly.vertices[z].vector.z);
 	}
 
