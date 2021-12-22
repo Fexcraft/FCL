@@ -25,7 +25,7 @@ public class Renderer {
 			if(poly.sub != null) for(Polyhedron<?> p : poly.sub) render(p);
 			glPopMatrix();
 		}
-		else if(poly.posX != 0 || poly.rotY != 0f || poly.rotZ != 0){
+		else if(poly.posX != 0 || poly.posY != 0f || poly.posZ != 0){
 			glTranslatef(poly.posX, poly.posY, poly.posZ);
 			glCallList(poly.glId);
 			if(poly.sub != null) for(Polyhedron<?> p : poly.sub) render(p);
