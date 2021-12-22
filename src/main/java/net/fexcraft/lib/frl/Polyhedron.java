@@ -1,5 +1,7 @@
 package net.fexcraft.lib.frl;
 
+import static net.fexcraft.lib.frl.Renderer.RENDERER;
+
 import java.util.ArrayList;
 
 import net.fexcraft.lib.common.math.RGB;
@@ -41,7 +43,7 @@ public class Polyhedron<GLO> {
 	}
 
 	public void render(){
-		Renderer.render(this);
+		RENDERER.render(this);
 	}
 
 }
