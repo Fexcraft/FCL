@@ -8,23 +8,10 @@ import net.fexcraft.lib.frl.Polyhedron;
  *
  * @param <GLO>
  */
-public class Cuboid<GLO> implements Generator<GLO>{
-	
-	private Polyhedron<GLO> poly;
+public class Cuboid<GLO> extends Generator<GLO>{
 
 	public Cuboid(Polyhedron<GLO> poly){
-		this.poly = poly;
-	}
-
-	@Override
-	public Polyhedron<GLO> get(){
-		return poly;
-	}
-
-	@Override
-	public Cuboid<GLO> removePolygon(int index){
-		//TODO
-		return this;
+		super(poly);
 	}
 
 	@Override
