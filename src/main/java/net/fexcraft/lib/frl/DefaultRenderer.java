@@ -72,6 +72,7 @@ public class DefaultRenderer extends Renderer {
 			glEnd();
 		}
 		glEndList();
+		poly.recompile = false;
 	}
 
 	private static void quadAsTriangleCol(Polygon poly, int x, int y, int z, int o){
