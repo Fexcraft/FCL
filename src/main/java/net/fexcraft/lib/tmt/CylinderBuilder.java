@@ -60,6 +60,16 @@ public class CylinderBuilder implements CustomUVBuilder {
 		topoff = vec; return this;
 	}
 	
+	@Deprecated
+	public CylinderBuilder setSidesVisible(boolean[] arr){
+		return removePolygons(arr);
+	}
+
+	@Deprecated
+	public CylinderBuilder setSidesVisible(boolean base, boolean top, boolean outer, boolean inner){
+		return removePolygons(base, top, outer, inner);
+	}
+	
 	public CylinderBuilder removePolygon(int index){
 		if(index < 0 || index > 5) return this;
 		invisible[index] = true;
