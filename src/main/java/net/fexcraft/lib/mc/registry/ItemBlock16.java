@@ -16,6 +16,7 @@ public class ItemBlock16 extends net.minecraft.item.ItemBlock {
 		return meta;
 	}
 	
+	@Override
 	public int getItemBurnTime(ItemStack stack){
         return burn_time;
     }
