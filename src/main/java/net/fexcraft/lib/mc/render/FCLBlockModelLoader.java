@@ -1,14 +1,6 @@
 package net.fexcraft.lib.mc.render;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -90,9 +82,15 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 	public boolean accepts(ResourceLocation modellocation){
 		if(!MAP.containsKey(modellocation)){
 			Object model = FCLRegistry.getModel(modellocation);
-			if(model != null && model instanceof FCLBlockModel){
-				MAP.put(modellocation, (FCLBlockModel)model);
-				return true;
+			if(model != null){
+				try{
+					MAP.put(modellocation, ((Class<? extends FCLBlockModel>)model).newInstance());
+					return true;
+				}
+				catch(InstantiationException | IllegalAccessException e){
+					e.printStackTrace();
+					return false;
+				}
 			}
 			return false;
 		}
@@ -125,7 +123,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 		private Model(ResourceLocation rs){
 			this.modellocation = rs;
 			MODELS.put(rs, this);
-			blockmodel = FCLRegistry.getModel(rs);
+			blockmodel = MAP.get(rs);
 			textures = getTexturesFromModel();
 		}
 
