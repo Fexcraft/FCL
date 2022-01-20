@@ -163,7 +163,9 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 		private Collection<ResourceLocation> getTexturesFromModel(){
 			Collection<ResourceLocation> coll = blockmodel.getTextures(customdata);
 			if(coll == null || coll.isEmpty()){
-				coll = Collections.singleton(new ResourceLocation(modellocation.toString().replace("models/block", "blocks")));
+				String str = modellocation.toString().replace("models/block", "blocks");
+				if(str.contains(".")) str = str.substring(0, str.indexOf("."));
+				coll = Collections.singleton(new ResourceLocation(str));
 			}
 			return coll;
 		}
@@ -214,7 +216,9 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			this.model = blockmodel;
 			this.textures = textures;
 			if(blockmodel.getTextures(null) == null || blockmodel.getTextures(null).isEmpty()){
-				deftex = textures.get(new ResourceLocation(modellocation.toString().replace("models/block", "blocks")));
+				String str = modellocation.toString().replace("models/block", "blocks");
+				if(str.contains(".")) str = str.substring(0, str.indexOf("."));
+				deftex = textures.get(new ResourceLocation(str));
 			}
 		}
 
