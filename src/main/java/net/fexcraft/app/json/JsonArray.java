@@ -14,6 +14,10 @@ public class JsonArray extends JsonObject<List<JsonObject<?>>> {
 		value = new ArrayList<>();
 	}
 	
+	public JsonArray(int size){
+		value = new ArrayList<>(size);
+	}
+	
 	public boolean add(JsonObject<?> elm){
 		return value.add(elm);
 	}
