@@ -23,6 +23,10 @@ public class Vertex {
 		this.vector = vec;
 	}
 	
+	public Vertex(float[] vec){
+		this.vector = new Vec3f(vec[0], vec[1], vec[2]);
+	}
+	
 	public Vertex(Vec3f vec, float u, float v){
 		this(vec);
 		this.u = u;
