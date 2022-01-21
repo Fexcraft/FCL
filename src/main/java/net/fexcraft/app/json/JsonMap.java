@@ -26,6 +26,13 @@ public class JsonMap extends JsonObject<Map<String, JsonObject<?>>> {
 	public JsonArray getArray(String key){
 		return value.get(key).asArray();
 	}
+	
+	public JsonArray getArray(String key, int size){
+		if(!value.containsKey(key)){
+			value.put(key, new JsonArray(size));
+		}
+		return value.get(key).asArray();
+	}
 
 	public List<JsonObject<?>> getArrayElements(String key){
 		return getArray(key).elements();
