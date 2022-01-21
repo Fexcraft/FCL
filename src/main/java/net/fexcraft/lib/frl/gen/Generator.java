@@ -1,5 +1,7 @@
 package net.fexcraft.lib.frl.gen;
 
+import java.util.ArrayList;
+
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.Polyhedron;
 
@@ -61,6 +63,14 @@ public abstract class Generator<GLO> {
 		
 		CUBOID
 		
+	}
+
+	protected static boolean[] intToBoolArray(ArrayList<Boolean> array){
+		boolean[] bool = new boolean[6];
+		for(int i = 0; i < 6; i++){
+			if(array.get(i) == true) bool[i] = true;
+		}
+		return bool;
 	}
 
 }
