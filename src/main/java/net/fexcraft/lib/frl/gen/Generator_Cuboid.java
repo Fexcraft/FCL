@@ -1,6 +1,7 @@
 package net.fexcraft.lib.frl.gen;
 
 import static net.fexcraft.lib.frl.gen.Generator.NULL_VEC;
+import static net.fexcraft.lib.frl.gen.Generator.intToBoolArray;
 
 import java.util.ArrayList;
 
@@ -24,8 +25,8 @@ public class Generator_Cuboid {
 		float w = map.getValue("w"), h = map.getValue("h"), d = map.getValue("d");
 		float exp = map.getValue("exp");
 		boolean centered = map.getValue("centered", false);
-		boolean[] rems = intToBool(map.getArray("rem_poly", 6));
-		boolean[] deuv = intToBool(map.getArray("detached_uv", 6));
+		boolean[] rems = intToBoolArray(map.getArray("rem_poly", 6));
+		boolean[] deuv = intToBoolArray(map.getArray("detached_uv", 6));
 		ArrayList<float[]> uv = map.getArray("uv", 6);
 		float texw = map.getValue("texture_width");
 		float texh = map.getValue("texture_height");
@@ -119,14 +120,6 @@ public class Generator_Cuboid {
         	polys = polygons;
         }
         for(Polygon gon : polys) poly.polygons.add(gon);
-	}
-
-	private static boolean[] intToBool(ArrayList<Boolean> array){
-		boolean[] bool = new boolean[6];
-		for(int i = 0; i < 6; i++){
-			if(array.get(i) == true) bool[i] = true;
-		}
-		return bool;
 	}
 
 	private static boolean detached(boolean[] rems, boolean[] deuv, int i){
