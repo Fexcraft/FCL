@@ -1,6 +1,6 @@
 package net.fexcraft.lib.frl.gen;
 
-import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.Polyhedron;
 
 /**
@@ -10,22 +10,40 @@ import net.fexcraft.lib.frl.Polyhedron;
  * @param <GLO>
  */
 public abstract class Generator<GLO> {
+
+	protected static final Vec3f NULL_VEC = new Vec3f(0, 0, 0);
 	
 	protected Polyhedron<GLO> poly;
-	protected JsonMap map;
+	protected ValueMap map = new ValueMap();
 	
-	public Generator(Polyhedron<GLO> poly){
+	public Generator(Polyhedron<GLO> poly, float texW, float texH){
 		this.poly = poly;
+		map.put("texture_width", texW);
+		map.put("texture_height", texH);
 	}
 
 	public Polyhedron<GLO> get(){
 		return poly;
 	}
 	
-	public abstract Polyhedron<GLO> make();
+	public Polyhedron<GLO> make(){
+		Type type = map.getValue("type", Type.CUBOID);
+		switch(type){
+			case CUBOID:
+			default:{
+				Generator_Cuboid.make(poly, map);
+				break;
+			}
+		}
+		return poly;
+	}
+	
+	public void setValue(String key, Object value){
+		map.put(key, value);
+	}
 	
 	public Generator<GLO> removePolygon(int index){
-		if(!map.has("rem_poly")) map.addArray("rem_poly");
+		if(!map.has("rem_poly")) map.addArray("rem_poly", int.class);
 		map.getArray("rem_poly").add(index);
 		return this;
 	}
@@ -35,13 +53,14 @@ public abstract class Generator<GLO> {
 		return this;
 	}
 
-	public Generator<GLO> setMap(JsonMap map){
-		this.map = map;
-		return this;
-	}
-
-	public JsonMap getMap(){
+	public ValueMap getMap(){
 		return map;
+	}
+	
+	public static enum Type {
+		
+		CUBOID
+		
 	}
 
 }
