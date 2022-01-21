@@ -20,6 +20,7 @@ public class Polyhedron<GLO> {
 	public ArrayList<Polyhedron<?>> sub;
 	public float rotX, rotY, rotZ;
 	public float posX, posY, posZ;
+	public float texU, texV;
 	public boolean recompile;
 	public RotationOrder rotOrder = RotationOrder.YZX;
 	public String name;
@@ -69,6 +70,8 @@ public class Polyhedron<GLO> {
 		rotX = turbo.rotationAngleX;
 		rotY = turbo.rotationAngleY;
 		rotZ = turbo.rotationAngleZ;
+		texU = turbo.texoffx;
+		texV = turbo.texoffy;
 		if(scale != 0f && scale != 1f) rescale(scale);
 		return this;
 	}
