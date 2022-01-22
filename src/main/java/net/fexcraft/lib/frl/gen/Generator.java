@@ -31,6 +31,10 @@ public abstract class Generator<GLO> {
 	public Polyhedron<GLO> make(){
 		Type type = map.getValue("type", Type.CUBOID);
 		switch(type){
+			case CYLINDER:{
+				Generator_Cylinder.make(poly, map);
+				break;
+			}
 			case CUBOID:
 			default:{
 				Generator_Cuboid.make(poly, map);
@@ -40,8 +44,9 @@ public abstract class Generator<GLO> {
 		return poly;
 	}
 	
-	public void setValue(String key, Object value){
+	public Generator<GLO> setValue(String key, Object value){
 		map.put(key, value);
+		return this;
 	}
 	
 	public Generator<GLO> removePolygon(int index){
@@ -61,14 +66,15 @@ public abstract class Generator<GLO> {
 	
 	public static enum Type {
 		
-		CUBOID
+		CUBOID, CYLINDER
 		
 	}
 
-	protected static boolean[] intToBoolArray(ArrayList<Boolean> array){
+	protected static boolean[] intToBoolArray(ArrayList<Integer> array){
 		boolean[] bool = new boolean[6];
 		for(int i = 0; i < 6; i++){
-			if(array.get(i) == true) bool[i] = true;
+			int j = array.get(i);
+			if(j >= 0 && j < 6) bool[i] = true;
 		}
 		return bool;
 	}
