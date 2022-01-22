@@ -11,6 +11,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableMap;
 
+import net.fexcraft.app.json.JsonArray;
+import net.fexcraft.app.json.JsonHandler;
+import net.fexcraft.app.json.JsonObject;
 import net.fexcraft.lib.common.math.Axis3DL;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
@@ -110,6 +113,8 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 	private static class Model implements IModel {
 
 		private final ResourceLocation modellocation;
+		private HashMap<ResourceLocation, TextureAtlasSprite> textures = new HashMap<>();
+		private Collection<ResourceLocation> textur;
 		private FCLBlockModel blockmodel;
 		private static final IModelState defstate = new IModelState(){
 			@Override
@@ -118,13 +123,12 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			};
 		};
 		private Map<String, String> customdata;
-		private Collection<ResourceLocation> textures;
 
 		private Model(ResourceLocation rs){
 			this.modellocation = rs;
 			MODELS.put(rs, this);
 			blockmodel = MAP.get(rs);
-			textures = getTexturesFromModel();
+			getTexturesFromModel();
 		}
 
 		public Model(Model model, ImmutableMap<String, String> data){
@@ -138,7 +142,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 					}
 				}
 			}
-			textures = getTexturesFromModel();
+			getTexturesFromModel();
 		}
 
 		@Override
@@ -153,26 +157,28 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 
 		@Override
 		public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> func){
-			HashMap<ResourceLocation, TextureAtlasSprite> textures = new HashMap<>();
-			for(ResourceLocation resloc : this.textures){
-				textures.put(resloc, func.apply(resloc));
-			}
-			return new BakedModel(modellocation, this, format, blockmodel, textures);
+			for(ResourceLocation loc : textur) textures.put(loc, func.apply(loc));
+			return new BakedModel(modellocation, this, format, blockmodel);
 		}
 
-		private Collection<ResourceLocation> getTexturesFromModel(){
+		private void getTexturesFromModel(){
 			Collection<ResourceLocation> coll = blockmodel.getTextures(customdata);
-			if(coll == null || coll.isEmpty()){
+			if(coll == null) coll = new ArrayList<>();
+			if(customdata != null && customdata.containsKey("textures")){
+				JsonArray array = JsonHandler.parse(customdata.get("textures"), false).asArray();
+				for(JsonObject<?> elm : array.elements()) coll.add(new ResourceLocation(elm.string_value()));
+			}
+			if(coll.size() == 0){
 				String str = modellocation.toString().replace("models/block", "blocks");
 				if(str.contains(".")) str = str.substring(0, str.indexOf("."));
-				coll = Collections.singleton(new ResourceLocation(str));
+				coll.add(new ResourceLocation(str));
 			}
-			return coll;
+			textur = coll;
 		}
 
 		@Override
 		public Collection<ResourceLocation> getTextures(){
-			return textures;
+			return textur;
 		}
 		
 		@Override
@@ -197,7 +203,6 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 	public static class BakedModel implements IBakedModel {
 
 		private final ResourceLocation modellocation;
-		private HashMap<ResourceLocation, TextureAtlasSprite> textures;
 		public static TreeMap<String, ResourceLocation> tempres = new TreeMap<>();
 		private static HashMap<String, List<BakedQuad>> quads = new HashMap<>();
 		private TextureAtlasSprite deftex;
@@ -209,17 +214,12 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 		private float scale = Static.sixteenth;
 		private Axis3DL axis, axis1, axis2;
 
-		public BakedModel(ResourceLocation modellocation, Model state, VertexFormat format, FCLBlockModel blockmodel, HashMap<ResourceLocation, TextureAtlasSprite> textures){
+		public BakedModel(ResourceLocation modellocation, Model state, VertexFormat format, FCLBlockModel blockmodel){
 			this.modellocation = modellocation;
 			this.format = format;
 			this.root = state;
 			this.model = blockmodel;
-			this.textures = textures;
-			if(blockmodel.getTextures(null) == null || blockmodel.getTextures(null).isEmpty()){
-				String str = modellocation.toString().replace("models/block", "blocks");
-				if(str.contains(".")) str = str.substring(0, str.indexOf("."));
-				deftex = textures.get(new ResourceLocation(str));
-			}
+			deftex = root.textures.values().toArray(new TextureAtlasSprite[0])[0];
 		}
 
 		@Override
@@ -251,9 +251,10 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			}
 			else axis1.setAngles(180, 180, 0);
 			Collection<ModelRendererTurbo> mrts = model.getPolygons(state, side, root.customdata, rand);
+			//
 			try{
 				for(ModelRendererTurbo mrt : mrts){
-					TextureAtlasSprite sprite = mrt.texName == null ? deftex : getTex(mrt.texName);
+					TextureAtlasSprite sprite = mrt.texName == null ? deftex : getTex(root, mrt.texName);
 					axis.setAngles(-mrt.rotationAngleY, -mrt.rotationAngleZ, -mrt.rotationAngleX);
 					for(TexturedPolygon polygon : mrt.getFaces()){
 						if(polygon.getVertices().length != 4) continue;
@@ -304,11 +305,11 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			return key;
 		}
 
-		private TextureAtlasSprite getTex(String texName){
+		private TextureAtlasSprite getTex(Model root, String texName){
 			if(!tempres.containsKey(texName)){
 				tempres.put(texName, new ResourceLocation(texName));
 			}
-			return textures.get(tempres.get(texName));
+			return root.textures.get(tempres.get(texName));
 		}
 
 		private final void putVertexData(Builder builder, ModelRendererTurbo mrt, TexturedVertex vert, Vec3f normal, TextureCoordinate textureinate, TextureAtlasSprite texture){
