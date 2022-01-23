@@ -1,6 +1,7 @@
 package net.fexcraft.lib.frl.gen;
 
 import static net.fexcraft.lib.frl.gen.Generator.NULL_VEC;
+import static net.fexcraft.lib.frl.gen.Generator.detached;
 import static net.fexcraft.lib.frl.gen.Generator.intToBoolArray;
 
 import java.util.ArrayList;
@@ -120,10 +121,6 @@ public class Generator_Cuboid {
         	polys = polygons;
         }
         for(Polygon gon : polys) poly.polygons.add(gon);
-	}
-
-	private static boolean detached(boolean[] rems, boolean[] deuv, int i){
-		return rems[i] || deuv[i];
 	}
 
 	private static Polygon genPolygonWithUV(int index, float[] uv, boolean detached, float w, float h, Vertex[] vertices, float tu, float tv, float x, float y, float ex, float ey){
