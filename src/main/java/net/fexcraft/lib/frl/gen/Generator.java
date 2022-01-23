@@ -79,4 +79,8 @@ public abstract class Generator<GLO> {
 		return bool;
 	}
 
+	protected static boolean detached(boolean[] rems, boolean[] deuv, int i){
+		return rems[i] || deuv[i];
+	}
+
 }
