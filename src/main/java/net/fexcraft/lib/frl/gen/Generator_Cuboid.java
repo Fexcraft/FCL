@@ -21,8 +21,8 @@ public class Generator_Cuboid {
 		boolean shaped = map.has("corners");
 		boolean anyrem = map.has("rem_poly");
 		float[] v0, v1, v2, v3, v4, v5, v6, v7;
-		float x = map.getValue("x"), y = map.getValue("y"), z = map.getValue("z");
-		float w = map.getValue("w"), h = map.getValue("h"), d = map.getValue("d");
+		float x = map.getValue("pos_x"), y = map.getValue("pos_y"), z = map.getValue("pos_z");
+		float w = map.getValue("width"), h = map.getValue("height"), d = map.getValue("depth");
 		float exp = map.getValue("exp");
 		boolean centered = map.getValue("centered", false);
 		boolean[] rems = intToBoolArray(map.getArray("rem_poly", 6));
