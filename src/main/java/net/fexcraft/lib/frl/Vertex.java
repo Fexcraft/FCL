@@ -27,12 +27,20 @@ public class Vertex {
 		this.vector = new Vec3f(vec[0], vec[1], vec[2]);
 	}
 	
+	public Vertex(float x, float y, float z){
+		this.vector = new Vec3f(x, y, z);
+	}
+	
 	public Vertex(Vec3f vec, float u, float v){
 		this(vec);
 		this.u = u;
 		this.v = v;
 	}
-	
+
+	public Vertex(Vertex vertex){
+		this(vertex.vector.x, vertex.vector.y, vertex.vector.z);
+	}
+
 	public Vec3f color(){
 		return COLOR_WHITE;
 	}
