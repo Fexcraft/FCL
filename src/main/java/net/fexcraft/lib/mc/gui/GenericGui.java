@@ -118,7 +118,7 @@ public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer
     		if(entry.getValue().mousePressed(this.mc, mouseX, mouseY)){
     			//can't add the forge event as it needs a _GuiButton_, this isn't one.
     			Print.debug("[GG] Button Pressed: " + entry.getKey() + " / " + mouseButton);
-    			buttonClicked(mouseX, mouseY, mouseButton, entry.getKey(), entry.getValue());
+    			if(!entry.getValue().onclick(mouseX, mouseY, mouseButton)) buttonClicked(mouseX, mouseY, mouseButton, entry.getKey(), entry.getValue());
     			return;
     		}
     	}
@@ -134,7 +134,7 @@ public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer
     	
 		public int x, y, tx, ty, sizex, sizey;
 		public boolean enabled, visible = true, hovered;
-    	public String name; private RGB rgb;
+    	public String name; protected RGB rgb;
     	public RGB rgb_disabled = new RGB(119, 119, 119, 0.5f);
     	public RGB rgb_none = new RGB(255, 255, 255, 0.5f);
     	public RGB rgb_hover = new RGB(244, 215,  66, 0.5f);
@@ -161,11 +161,17 @@ public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer
             RGB.glColorReset();
 		}
 
-		public boolean scrollwheel(int am, int x, int y){ return false; }
+		public boolean scrollwheel(int am, int x, int y){
+			return false;
+		}
 		
 		public BasicButton alpha(boolean bool){
 			rgb_disabled.alpha = rgb_none.alpha = rgb_hover.alpha = bool ? 0.5f : 1f;
 			return this;
+		}
+
+		public boolean onclick(int mouseX, int mouseY, int mouseButton){
+			return false;
 		}
     	
     }
@@ -193,7 +199,9 @@ public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer
 			return hoverable ? hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + 8 : false;
 		}
 
-		public boolean scrollwheel(int am, int x, int y){ return false; }
+		public boolean scrollwheel(int am, int x, int y){
+			return false;
+		}
 		
 		public BasicText translate(){
 			this.string = I18n.format(string);
