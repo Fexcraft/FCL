@@ -339,9 +339,9 @@ public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer
 			if(exit) break;
 			if(button.hovered(x, y)) exit = button.scrollwheel(am, x, y);
 		}
-		for(BasicText button : texts.values()){
+		for(BasicText text : texts.values()){
 			if(exit) break;
-			if(button.hovered(x, y)) exit = button.scrollwheel(am, x, y);
+			if(text.hovered(x, y)) exit = text.scrollwheel(am, x, y);
 		}
 		if(!exit) this.scrollwheel(am, x, y);
     }
