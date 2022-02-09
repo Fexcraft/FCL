@@ -317,7 +317,7 @@ public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer
         	boolean bool = false;
         	for(Entry<String, TextField> entry : fields.entrySet()){
         		if(bool) break;
-        		if(entry.getValue().textboxKeyTyped(typedChar, keyCode)) bool = true;
+        		if(entry.getValue().getVisible() && entry.getValue().textboxKeyTyped(typedChar, keyCode)) bool = true;
         	}
             if(!bool){
             	super.keyTyped(typedChar, keyCode);
