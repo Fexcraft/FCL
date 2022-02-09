@@ -124,7 +124,7 @@ public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer
     	}
         if(!fields.isEmpty()){
         	for(TextField field : fields.values()){
-        		if(field.mouseClicked(mouseX, mouseY, mouseButton)) return;
+        		if(field.getVisible() && field.mouseClicked(mouseX, mouseY, mouseButton)) return;
         	}
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
