@@ -27,5 +27,20 @@
 	  "screenshots": [],
 	  "dependencies": [],
 	  "parent": "fcl"
+	},
+	{
+	  "modid": "frl",
+	  "name": "Fex's Rendering Library",
+	  "description": "A new rendering library.",
+	  "version": "${version}",
+	  "mcversion": "${mcversion}",
+	  "url": "http://fexcraft.net",
+	  "updateUrl": "http://fexcraft.net",
+	  "authorList": [ "FEX___96" ],
+	  "credits": "",
+	  "logoFile": "",
+	  "screenshots": [],
+	  "dependencies": [],
+	  "parent": "fcl"
 	}
 ]
