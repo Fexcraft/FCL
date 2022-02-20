@@ -57,7 +57,7 @@ public class BoxBuilder implements CustomUVBuilder {
 
 	public BoxBuilder removePolygons(boolean... sides){
 		for(int index = 0; index < 6; index++){
-			if(sides.length >= (index + 1) && sides[index]) invisible[index] = true;
+			if(index < sides.length && sides[index]) invisible[index] = true;
 		}
 		return this;
 	}
