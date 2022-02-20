@@ -307,83 +307,6 @@ public class ModelRendererTurbo {
         }
         return copyTo(poly);
     }
-    
-    /**
-     * Alternative method for flat rectangular polygons.
-     * @author Ferdinand Calo' (FEX___96)
-     */
-    @Deprecated
-    public ModelRendererTurbo addFlatRect(float[] v0, float[] v1, float[] v2, float[] v3, float w, float h){
-    	TexturedPolygon[] poly = new TexturedPolygon[2];
-        TexturedVertex tv0 = new TexturedVertex(v0[0], v0[1], v0[2], 0.0F, 0.0F);
-        TexturedVertex tv1 = new TexturedVertex(v1[0], v1[1], v1[2], 0.0F, 8.0F);
-        TexturedVertex tv2 = new TexturedVertex(v2[0], v2[1], v2[2], 8.0F, 8.0F);
-        TexturedVertex tv3 = new TexturedVertex(v3[0], v3[1], v3[2], 8.0F, 0.0F);
-        poly[0] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, texoffx, texoffy, texoffx+ w, texoffy + h);
-        poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv1, tv2, tv3 }, texoffx + w, texoffy, texoffx + w + w, texoffy + h);
-        if(mirror ^ flip){ for(int l = 0; l < poly.length; l++){ poly[l].flipFace(); } }
-        return copyTo(poly);
-    }
-    
-    /** 
-     * Mainly based on the "addRectShape" method, but adds support for custom texture positions for any face.
-     * NOTE: Deprecated. Try to use BoxWrapper instead!
-     * @author Ferdinand Calo' (FEX___96)
-     * */
-    @Deprecated
-    public ModelRendererTurbo addTexRectShape(float[] v0, float[] v1, float[] v2, float[] v3, float[] v4, float[] v5, float[] v6, float[] v7, float w, float h, float d, float[][] texpos){
-    	if(texpos == null || texpos.length < 6){ Static.stop();
-    		return this.addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
-    	}//fallback to normal method if data is lacking
-    	try{
-        	TexturedPolygon[] poly = new TexturedPolygon[6];
-            TexturedVertex tv0 = new TexturedVertex(v0[0], v0[1], v0[2], 0.0F, 0.0F);
-            TexturedVertex tv1 = new TexturedVertex(v1[0], v1[1], v1[2], 0.0F, 8.0F);
-            TexturedVertex tv2 = new TexturedVertex(v2[0], v2[1], v2[2], 8.0F, 8.0F);
-            TexturedVertex tv3 = new TexturedVertex(v3[0], v3[1], v3[2], 8.0F, 0.0F);
-            TexturedVertex tv4 = new TexturedVertex(v4[0], v4[1], v4[2], 0.0F, 0.0F);
-            TexturedVertex tv5 = new TexturedVertex(v5[0], v5[1], v5[2], 0.0F, 8.0F);
-            TexturedVertex tv6 = new TexturedVertex(v6[0], v6[1], v6[2], 8.0F, 8.0F);
-            TexturedVertex tv7 = new TexturedVertex(v7[0], v7[1], v7[2], 8.0F, 0.0F);
-            float x = texoffx, y = texoffy;
-    		if(texpos[0].length > 4){
-                poly[0] = addPolygonReturn(new TexturedVertex[] { tv5, tv1, tv2, tv6 }, x + texpos[0][0], y + texpos[0][1], x + texpos[0][2], y + texpos[0][3], x + texpos[0][4], y + texpos[0][5], x + texpos[0][6], y + texpos[0][7]);
-                poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv4, tv7, tv3 }, x + texpos[1][0], y + texpos[1][1], x + texpos[1][2], y + texpos[1][3], x + texpos[1][4], y + texpos[1][5], x + texpos[1][6], y + texpos[1][7]);
-                poly[2] = addPolygonReturn(new TexturedVertex[] { tv5, tv4, tv0, tv1 }, x + texpos[2][0], y + texpos[2][1], x + texpos[2][2], y + texpos[2][3], x + texpos[2][4], y + texpos[2][5], x + texpos[2][6], y + texpos[2][7]);
-                poly[3] = addPolygonReturn(new TexturedVertex[] { tv2, tv3, tv7, tv6 }, x + texpos[3][0], y + texpos[3][1], x + texpos[3][2], y + texpos[3][3], x + texpos[3][4], y + texpos[3][5], x + texpos[3][6], y + texpos[3][7]);
-                poly[4] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, x + texpos[4][0], y + texpos[4][1], x + texpos[4][2], y + texpos[4][3], x + texpos[4][4], y + texpos[4][5], x + texpos[4][6], y + texpos[4][7]);
-                poly[5] = addPolygonReturn(new TexturedVertex[] { tv4, tv5, tv6, tv7 }, x + texpos[5][0], y + texpos[5][1], x + texpos[5][2], y + texpos[5][3], x + texpos[5][4], y + texpos[5][5], x + texpos[5][6], y + texpos[5][7]);
-    		}
-    		else{
-                poly[0] = addPolygonReturn(new TexturedVertex[] { tv5, tv1, tv2, tv6 }, x + texpos[0][0], y + texpos[0][1], x + texpos[0][2], y + texpos[0][3]);
-                poly[1] = addPolygonReturn(new TexturedVertex[] { tv0, tv4, tv7, tv3 }, x + texpos[1][0], y + texpos[1][1], x + texpos[1][2], y + texpos[1][3]);
-                poly[2] = addPolygonReturn(new TexturedVertex[] { tv5, tv4, tv0, tv1 }, x + texpos[2][0], y + texpos[2][1], x + texpos[2][2], y + texpos[2][3]);
-                poly[3] = addPolygonReturn(new TexturedVertex[] { tv2, tv3, tv7, tv6 }, x + texpos[3][0], y + texpos[3][1], x + texpos[3][2], y + texpos[3][3]);
-                poly[4] = addPolygonReturn(new TexturedVertex[] { tv1, tv0, tv3, tv2 }, x + texpos[4][0], y + texpos[4][1], x + texpos[4][2], y + texpos[4][3]);
-                poly[5] = addPolygonReturn(new TexturedVertex[] { tv4, tv5, tv6, tv7 }, x + texpos[5][0], y + texpos[5][1], x + texpos[5][2], y + texpos[5][3]);
-    		}
-            if(mirror ^ flip) for(int l = 0; l < poly.length; l++)poly[l].flipFace();
-            return copyTo(poly);
-    	}
-    	catch(Throwable thr){ //if(Static.dev()) thr.printStackTrace();
-    		return this.addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d);
-    		//also return in case something else breaks, due to e.g. other data missing
-    	}
-    }
-
-    /**
-     * Adds a new face/quad to the model.
-     * @param x the starting x-position
-     * @param y the starting y-position
-     * @param w the width (over the x-direction)
-     * @param h the height (over the y-direction)
-     * @author Ferdinand
-     */
-    public ModelRendererTurbo addQuad(float x, float y, float z, float w, float h){
-    	if(w == 0) w = 0.01F; if(h == 0) h = 0.01F; if(mirror){ float xTemp = w; w = x; x = xTemp; }
-        float[] v0 = { x, y, z }, v1 = { w, y, z }, v2 = { w, h, z }, v3 = { x, h, z };
-        return addFlatRect(v0, v1, v2, v3, w, h);
-    }
 
     /**
      * Adds a new box to the model.
@@ -428,7 +351,9 @@ public class ModelRendererTurbo {
     }
     
     public ModelRendererTurbo addBox(float x, float y, float z, float w, float h, float d, float expansion, float scale, boolean[] sides){
-    	boolean noz = d == 0; if(w == 0) w = 0.01F; if(h == 0) h = 0.01F; if(d == 0) d = 0.01F;
+    	if(w == 0) w = 0.01F;
+    	if(h == 0) h = 0.01F;
+    	if(d == 0) d = 0.01F;
         float scaleX = w * scale, scaleY = h * scale, scaleZ = d * scale;
         float x1 = x + scaleX, y1 = y + scaleY, z1 = z + scaleZ;
         float expX = expansion + scaleX - w;
@@ -441,7 +366,7 @@ public class ModelRendererTurbo {
         //
         float[] v0 = {x, y, z}, v1 = {x1, y, z}, v2 = {x1, y1, z}, v3 = {x, y1, z};
         float[] v4 = {x, y, z1}, v5 = {x1, y, z1}, v6 = {x1, y1, z1}, v7 = {x, y1, z1};
-        return noz ? addFlatRect(v0, v1, v2, v3, w, h) : addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d, sides);
+        return addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d, sides);
     }
     
     /**
@@ -1527,23 +1452,6 @@ public class ModelRendererTurbo {
 		float[] v3 = {x  - x4, yh + y4, z  - z4}, v4 = {x  - x3, y  - y3, zd + z3}, v5 = {xw + x2, y  - y2, zd + z2};
 		float[] v6 = {xw + x6, yh + y6, zd + z6}, v7 = {x  - x7, yh + y7, zd + z7};
 		return addRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d, sides);
-	}
-	
-	@Deprecated /** Use BoxBuilder instead. Will be removed in the future. */
-	public ModelRendererTurbo addTexRect(float x, float y, float z, float w, float h, float d, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7, float[][] texpos){
-    	float xw = x + w, yh = y + h, zd = z + d; x -= scale; y -= scale; z -= scale; xw += scale; yh += scale; zd += scale;
-		if(mirror){ float fl = xw; xw = x; x = fl; }
-		float[] v0 = {x  - x0, y  - y0, z  - z0}, v1 = {xw + x1, y  - y1, z  - z1}, v2 = {xw + x5, yh + y5, z  - z5};
-		float[] v3 = {x  - x4, yh + y4, z  - z4}, v4 = {x  - x3, y  - y3, zd + z3}, v5 = {xw + x2, y  - y2, zd + z2};
-		float[] v6 = {xw + x6, yh + y6, zd + z6}, v7 = {x  - x7, yh + y7, zd + z7};
-		return addTexRectShape(v0, v1, v2, v3, v4, v5, v6, v7, w, h, d, texpos);
-	}
-	
-	@Deprecated
-	public ModelRendererTurbo addShapeQuad(float x, float y, float z, float w, float h, float scale, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3){
-    	float xw = x + w, yh = y + h; x -= scale; y -= scale; xw += scale; yh += scale; if(mirror){ float fl = xw; xw = x; x = fl; }
-		float[] v0 = { x - x0, y - y0, z - z0 }, v1 = { xw + x1, y - y1, z - z1 }, v2 = { xw + x3, yh + y3, z - z3 }, v3 = { x - x2, yh + y2, z - z2 };
-		return addFlatRect(v0, v1, v2, v3, w, h);
 	}
 	
 	public String toString(String alt){
