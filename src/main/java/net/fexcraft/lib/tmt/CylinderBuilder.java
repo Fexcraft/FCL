@@ -168,7 +168,10 @@ public class CylinderBuilder implements CustomUVBuilder {
 	}
 	
 	public ModelRendererTurbo build(){
-		if(radius2 == 0f && toprot == null){
+		if(segments < 3) segments = 3;
+		if(seglimit <= 0) seglimit = segments;
+		boolean segl = seglimit < segments;
+		if(radius2 == 0f && toprot == null && !segl){
 			return root.addCylinder(x, y, z, radius, length, segments, base_scale, top_scale, direction, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), topoff);
 		}
 		float diameter = (int)Math.floor(radius * 2F);
@@ -191,9 +194,6 @@ public class CylinderBuilder implements CustomUVBuilder {
 			//top_scale = 1f;
 			invisible[1] = true;
 		}
-		if(segments < 3) segments = 3;
-		if(seglimit <= 0) seglimit = segments;
-		boolean segl = seglimit < segments;
 		ArrayList<TexturedPolygon> polis = new ArrayList<>();
 		//Vertex
 		float xLength = (dirSide ? length : 0), yLength = (dirTop ? length : 0), zLength = (dirFront ? length : 0);
