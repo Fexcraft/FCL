@@ -13,4 +13,6 @@ public abstract class Renderer {
 	
 	public abstract void render(Polyhedron<?> poly);
 
+	public abstract void delete(Polyhedron<?> poly);
+
 }
