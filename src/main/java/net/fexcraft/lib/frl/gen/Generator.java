@@ -49,6 +49,11 @@ public abstract class Generator<GLO> {
 		return this;
 	}
 	
+	public Generator<GLO> set(String key, Object value){
+		map.put(key, value);
+		return this;
+	}
+	
 	public Generator<GLO> removePolygon(int index){
 		if(!map.has("rem_poly")) map.addArray("rem_poly", int.class);
 		map.getArray("rem_poly").add(index);
