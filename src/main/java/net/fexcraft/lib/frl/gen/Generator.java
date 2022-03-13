@@ -11,7 +11,7 @@ import net.fexcraft.lib.frl.Polyhedron;
  *
  * @param <GLO>
  */
-public abstract class Generator<GLO> {
+public class Generator<GLO> {
 
 	protected static final Vec3f NULL_VEC = new Vec3f(0, 0, 0);
 	
