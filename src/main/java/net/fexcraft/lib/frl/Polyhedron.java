@@ -80,5 +80,22 @@ public class Polyhedron<GLO> {
 		polygons.clear();
 		Renderer.RENDERER.delete(this);
 	}
+	
+	public Polyhedron<GLO> setGlObj(GLO newobj){
+		this.glObj = newobj;
+		return this;
+	}
+
+	public void pos(float x, float y, float z){
+		posX = x;
+		posY = y;
+		posZ = z;
+	}
+
+	public void rot(float x, float y, float z){
+		rotX = x;
+		rotY = y;
+		rotZ = z;
+	}
 
 }
