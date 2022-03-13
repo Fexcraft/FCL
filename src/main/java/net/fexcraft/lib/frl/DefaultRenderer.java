@@ -2,6 +2,8 @@ package net.fexcraft.lib.frl;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import org.lwjgl.opengl.GL11;
+
 import net.fexcraft.lib.common.math.RGB;
 
 /**
@@ -101,6 +103,12 @@ public class DefaultRenderer extends Renderer {
 		glNormal3f(poly.vertices[z].norm.x, poly.vertices[z].norm.y, poly.vertices[z].norm.z);
 		glTexCoord2f(poly.vertices[z].u, poly.vertices[z].v);
 		glVertex3f(poly.vertices[z].vector.x, poly.vertices[z].vector.y, poly.vertices[z].vector.z);
+	}
+
+	@Override
+	public void delete(Polyhedron<?> poly){
+		if(poly.glId == null) return;
+		GL11.glDeleteLists(poly.glId, 1);
 	}
 
 }
