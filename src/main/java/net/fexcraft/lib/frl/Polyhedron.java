@@ -75,5 +75,10 @@ public class Polyhedron<GLO> {
 		if(scale != 0f && scale != 1f) rescale(scale);
 		return this;
 	}
+	
+	public void clear(){
+		polygons.clear();
+		Renderer.RENDERER.delete(this);
+	}
 
 }
