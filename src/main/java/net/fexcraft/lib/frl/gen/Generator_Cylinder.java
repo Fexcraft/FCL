@@ -22,7 +22,7 @@ public class Generator_Cylinder {
     public static final int FRONT = 0, BACK = 1, LEFT = 2, RIGHT = 3, TOP = 4, BOTTOM = 5;
 
 	public static <GLO> void make(Polyhedron<GLO> poly, ValueMap map){
-		float radius = map.getValue("radius2", 1f);
+		float radius = map.getValue("radius", 1f);
 		float radius2 = map.getValue("radius2", 0f);
 		float length = map.getValue("length", 1f);
 		int direction = map.getValue("direction", 0);
@@ -34,7 +34,7 @@ public class Generator_Cylinder {
 		float seg_width = map.getValue("seg_width", 1f);
 		float seg_height = map.getValue("seg_height", 1f);
 		Vec3f topoff = map.getValue("top_offset", null);
-		Axis3DL toprot = map.getValue("top_toprot", null);
+		Axis3DL toprot = map.getValue("top_rot", null);
 		float x = map.getValue("x"), y = map.getValue("y"), z = map.getValue("z");
 		boolean[] rems = intToBoolArray(map.getArray("rem_poly", 4));
 		boolean[] deuv = intToBoolArray(map.getArray("detached_uv", 4));
