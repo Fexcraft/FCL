@@ -76,10 +76,10 @@ public class Generator<GLO> {
 	}
 
 	protected static boolean[] intToBoolArray(ArrayList<Integer> array){
-		boolean[] bool = new boolean[6];
-		for(int i = 0; i < 6; i++){
+		boolean[] bool = new boolean[array.size()];
+		for(int i = 0; i < array.size(); i++){
 			int j = array.get(i);
-			if(j >= 0 && j < 6) bool[i] = true;
+			if(j >= 0 && j < bool.length) bool[j] = true;
 		}
 		return bool;
 	}
