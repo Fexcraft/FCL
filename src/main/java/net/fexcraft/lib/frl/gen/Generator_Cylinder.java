@@ -38,7 +38,7 @@ public class Generator_Cylinder {
 		float x = map.getValue("x"), y = map.getValue("y"), z = map.getValue("z");
 		boolean[] rems = intToBoolArray(map.getArray("rem_poly", 6, -1));
 		boolean[] deuv = intToBoolArray(map.getArray("detached_uv", 6, -1));
-		ArrayList<float[]> uv = map.getArray("uv", 4, null);
+		ArrayList<float[]> uv = map.getArray("uv", 6, null);
 		float texw = map.getValue("texture_width");
 		float texh = map.getValue("texture_height");
 		//boolean noinner = radius2 == 0f;
