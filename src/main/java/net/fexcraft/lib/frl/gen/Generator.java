@@ -18,10 +18,24 @@ public class Generator<GLO> {
 	protected Polyhedron<GLO> poly;
 	protected ValueMap map = new ValueMap();
 	
-	public Generator(Polyhedron<GLO> poly, float texW, float texH){
-		this.poly = poly;
+	public Generator(Polyhedron<GLO> poli){
+		if(poli != null) poly = poli;
+		else poly = new Polyhedron<>();
+	}
+	
+	public Generator(Polyhedron<GLO> poli, float texW, float texH){
+		this(poli);
 		map.put("texture_width", texW);
 		map.put("texture_height", texH);
+	}
+	
+	public Generator(Polyhedron<GLO> poli, float texW, float texH, Type type){
+		this(poli, texW, texH);
+		map.put("type", type);
+	}
+	
+	public Generator(Polyhedron<GLO> poli, Type type){
+		this(poli, 0, 0, type);
 	}
 
 	public Polyhedron<GLO> get(){
