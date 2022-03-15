@@ -24,11 +24,11 @@ public class Generator_Cuboid {
 		float[] v0, v1, v2, v3, v4, v5, v6, v7;
 		float x = map.getValue("x"), y = map.getValue("y"), z = map.getValue("z");
 		float w = map.getValue("width"), h = map.getValue("height"), d = map.getValue("depth");
-		float exp = map.getValue("exp");
+		float exp = map.getValue("exp", 0);
 		boolean centered = map.getValue("centered", false);
-		boolean[] rems = intToBoolArray(map.getArray("rem_poly", 6));
-		boolean[] deuv = intToBoolArray(map.getArray("detached_uv", 6));
-		ArrayList<float[]> uv = map.getArray("uv", 6);
+		boolean[] rems = intToBoolArray(map.getArray("rem_poly", 6, -1));
+		boolean[] deuv = intToBoolArray(map.getArray("detached_uv", 6, -1));
+		ArrayList<float[]> uv = map.getArray("uv", 6, null);
 		float texw = map.getValue("texture_width");
 		float texh = map.getValue("texture_height");
 		if(centered){
@@ -37,7 +37,7 @@ public class Generator_Cuboid {
 			z -= d * 0.5f;
 		}
 		if(shaped){
-			ArrayList<Vec3f> array = map.getArray("corners", 8);
+			ArrayList<Vec3f> array = map.getArray("corners", 8, null);
 			Vec3f c0 = array.get(0) == null ? NULL_VEC : array.get(0);
 			Vec3f c1 = array.get(1) == null ? NULL_VEC : array.get(1);
 			Vec3f c2 = array.get(2) == null ? NULL_VEC : array.get(2);
