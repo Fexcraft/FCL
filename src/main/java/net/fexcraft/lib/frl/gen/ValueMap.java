@@ -18,9 +18,11 @@ public class ValueMap extends HashMap<String, Object> {
 		put(key, new ArrayList<T>());
 	}
 
-	public <T> ArrayList<T> getArray(String key, int size){
+	public <T> ArrayList<T> getArray(String key, int size, T def){
 		if(!containsKey(key)){
-			put(key, new ArrayList<T>(size));
+			ArrayList<T> list = new ArrayList<>();
+			for(int i = 0; i < size; i++) list.add(def);
+			put(key, list);
 		}
 		return (ArrayList<T>)get(key);
 	}
