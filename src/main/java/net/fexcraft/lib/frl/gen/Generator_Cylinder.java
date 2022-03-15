@@ -36,9 +36,9 @@ public class Generator_Cylinder {
 		Vec3f topoff = map.getValue("top_offset", null);
 		Axis3DL toprot = map.getValue("top_rot", null);
 		float x = map.getValue("x"), y = map.getValue("y"), z = map.getValue("z");
-		boolean[] rems = intToBoolArray(map.getArray("rem_poly", 4));
-		boolean[] deuv = intToBoolArray(map.getArray("detached_uv", 4));
-		ArrayList<float[]> uv = map.getArray("uv", 4);
+		boolean[] rems = intToBoolArray(map.getArray("rem_poly", 4, -1));
+		boolean[] deuv = intToBoolArray(map.getArray("detached_uv", 4, -1));
+		ArrayList<float[]> uv = map.getArray("uv", 4, null);
 		float texw = map.getValue("texture_width");
 		float texh = map.getValue("texture_height");
 		//boolean noinner = radius2 == 0f;
