@@ -21,7 +21,7 @@ public class Polyhedron<GLO> {
 	public float rotX, rotY, rotZ;
 	public float posX, posY, posZ;
 	public float texU, texV;
-	public boolean recompile;
+	public boolean recompile, visible = true;
 	public RotationOrder rotOrder = RotationOrder.YZX;
 	public String name;
 	public GLO glObj;
@@ -50,12 +50,15 @@ public class Polyhedron<GLO> {
 		RENDERER.render(this);
 	}
 	
-	public Polyhedron<GLO> importMRT(ModelRendererTurbo turbo, float scale){
+	public Polyhedron<GLO> importMRT(ModelRendererTurbo turbo, boolean insoff, float scale){
 		this.name = turbo.boxName;
 		for(TexturedPolygon tp : turbo.getFaces()){
 			Vertex[] verts = new Vertex[tp.getVertices().length];
 			for(int i = 0; i < verts.length; i++){
-				verts[i] = new ColoredVertex(new Vec3f(tp.getVertices()[i].vector), tp.getVertices()[i].textureX, tp.getVertices()[i].textureY);
+				verts[i] = new ColoredVertex(new Vec3f(tp.getVertices()[i].vector.scale(scale)), tp.getVertices()[i].textureX, tp.getVertices()[i].textureY);
+				if(insoff){
+					verts[i].vector = verts[i].vector.add(turbo.rotationPointX * scale, turbo.rotationPointY * scale, turbo.rotationPointZ * scale);
+				}
 		        Vec3f vec0 = new Vec3f(tp.getVertices()[1].vector.sub(tp.getVertices()[0].vector));
 		        Vec3f vec1 = new Vec3f(tp.getVertices()[1].vector.sub(tp.getVertices()[2].vector));
 		        Vec3f vec2 = vec1.cross(vec0).normalize();
@@ -64,21 +67,22 @@ public class Polyhedron<GLO> {
 			}
 			polygons.add(new Polygon(verts));//.colored(true));
 		}
-		posX = turbo.rotationPointX;
-		posY = turbo.rotationPointY;
-		posZ = turbo.rotationPointZ;
+		if(!insoff){
+			posX = turbo.rotationPointX * scale;
+			posY = turbo.rotationPointY * scale;
+			posZ = turbo.rotationPointZ * scale;
+		}
 		rotX = turbo.rotationAngleX;
 		rotY = turbo.rotationAngleY;
 		rotZ = turbo.rotationAngleZ;
 		texU = turbo.texoffx;
 		texV = turbo.texoffy;
-		if(scale != 0f && scale != 1f) rescale(scale);
 		return this;
 	}
 	
 	public void clear(){
 		polygons.clear();
-		Renderer.RENDERER.delete(this);
+		RENDERER.delete(this);
 	}
 	
 	public Polyhedron<GLO> setGlObj(GLO newobj){
