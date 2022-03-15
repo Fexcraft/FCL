@@ -120,6 +120,8 @@ public class Generator_Cuboid {
         	}
         	polys = polygons;
         }
+		float scale = map.getValue("scale", 1f);
+		if(scale != 1f) for(Polygon gon : polys) for(Vertex vert : gon.vertices) vert.vector = vert.vector.scale(scale);
         for(Polygon gon : polys) poly.polygons.add(gon);
 	}
 
