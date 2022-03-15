@@ -17,7 +17,7 @@ import net.fexcraft.lib.tmt.ModelRendererTurbo;
 public class Polyhedron<GLO> {
 	
 	public ArrayList<Polygon> polygons = new ArrayList<>();
-	public ArrayList<Polyhedron<?>> sub;
+	public ArrayList<Polyhedron<GLO>> sub;
 	public float rotX, rotY, rotZ;
 	public float posX, posY, posZ;
 	public float texU, texV;
