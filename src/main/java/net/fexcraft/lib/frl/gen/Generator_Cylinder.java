@@ -6,7 +6,7 @@ import static net.fexcraft.lib.frl.gen.Generator.intToBoolArray;
 import java.util.ArrayList;
 
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.common.math.Axis3DL;
+import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
@@ -34,10 +34,10 @@ public class Generator_Cylinder {
 		float seg_width = map.getValue("seg_width", 1f);
 		float seg_height = map.getValue("seg_height", 1f);
 		Vec3f topoff = map.getValue("top_offset", null);
-		Axis3DL toprot = map.getValue("top_rot", null);
+		AxisRotator toprot = map.getValue("top_rot", null);
 		float x = map.getValue("x"), y = map.getValue("y"), z = map.getValue("z");
-		boolean[] rems = intToBoolArray(map.getArray("rem_poly", 4, -1));
-		boolean[] deuv = intToBoolArray(map.getArray("detached_uv", 4, -1));
+		boolean[] rems = intToBoolArray(map.getArray("rem_poly", 6, -1));
+		boolean[] deuv = intToBoolArray(map.getArray("detached_uv", 6, -1));
 		ArrayList<float[]> uv = map.getArray("uv", 4, null);
 		float texw = map.getValue("texture_width");
 		float texh = map.getValue("texture_height");
@@ -232,6 +232,8 @@ public class Generator_Cylinder {
 				if(!dir_front) polis.get(polis.size() - 1).flip();
 			}
 		}
+		float scale = map.getValue("scale", 1f);
+		if(scale != 1f) for(Polygon gon : polis) for(Vertex vert : gon.vertices) vert.vector = vert.vector.scale(scale);
         for(Polygon gon : polis) poly.polygons.add(gon);
 	}
 	
