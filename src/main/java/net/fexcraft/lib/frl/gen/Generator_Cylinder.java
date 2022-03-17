@@ -37,6 +37,7 @@ public class Generator_Cylinder {
 		AxisRotator toprot = map.getValue("top_rot", null);
 		float x = map.getValue("x"), y = map.getValue("y"), z = map.getValue("z");
 		boolean[] rems = intToBoolArray(map.getArray("rem_poly"), 6);
+		if(radius2 == 0f) rems[3] = true;
 		boolean[] deuv = intToBoolArray(map.getArray("detached_uv"), 6);
 		ArrayList<float[]> uv = map.getArray("uv", 6, null);
 		float texw = map.getValue("texture_width");
@@ -120,7 +121,7 @@ public class Generator_Cylinder {
 				float z1 = c_z + (dir_side ? size_x : (dir_top ? size_z : 0));
 				verts0.add(new Vertex(x0, y1, z1));
 				if(index == segments - 1){
-					Vertex copy = new Vertex(verts0.get(0)); verts0.add(copy);
+					verts0.add(new Vertex(verts0.get(0)));
 				}
 				//
 				float xSize2 = (float)(Math.sin((segpi) * index * 2F + Static.PI) * radius2 * c_s);
@@ -130,7 +131,7 @@ public class Generator_Cylinder {
 				z1 = c_z + (dir_side ? xSize2 : (dir_top ? zSize2 : 0));
 				verts1.add(new Vertex(x0, y1, z1));
 				if(index == segments - 1){
-					Vertex copy = new Vertex(verts1.get(0)); verts1.add(copy);
+					verts1.add(new Vertex(verts1.get(0)));
 				}
 			}
 			if(repeat == 0){
@@ -156,26 +157,26 @@ public class Generator_Cylinder {
 					if(!radial){
 						size_x = (float)(Math.sin((segpi) * i * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle_u));
 						size_y = (float)(Math.cos((segpi) * i * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle_v));
-						arr[0] = verts0.get(i).uv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
+						arr[0] = verts0.get(i).nauv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
 						//
 						size_x = (float)(Math.sin((segpi) * i * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle2_u));
 						size_y = (float)(Math.cos((segpi) * i * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle2_v));
-						arr[1] = verts1.get(i).uv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
+						arr[1] = verts1.get(i).nauv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
 						//
 						size_x = (float)(Math.sin((segpi) * (i + 1) * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle2_u));
 						size_y = (float)(Math.cos((segpi) * (i + 1) * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle2_v));
-						arr[2] = verts1.get(i + 1).uv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
+						arr[2] = verts1.get(i + 1).nauv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
 						//
 						size_x = (float)(Math.sin((segpi) * (i + 1) * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle_u));
 						size_y = (float)(Math.cos((segpi) * (i + 1) * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle_v));
-						arr[3] = verts0.get(i + 1).uv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
+						arr[3] = verts0.get(i + 1).nauv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
 					}
 					else{
 						float diff = seg_u / 4;
-						arr[0] = verts0.get(i).uv(uvs[repeat][0] + (i * seg_width) * scale_u, uvs[repeat][1]);
-						arr[1] = verts1.get(i).uv(uvs[repeat][0] + (i * seg_width) * scale_u + diff, uvs[repeat][1] + (seg_height * scale_v));
-						arr[2] = verts1.get(i + 1).uv(uvs[repeat][0] + ((i + 1) * seg_width) * scale_u - diff, uvs[repeat][1] + (seg_height * scale_v));
-						arr[3] = verts0.get(i + 1).uv(uvs[repeat][0] + ((i + 1) * seg_width) * scale_u, uvs[repeat][1]);
+						arr[0] = verts0.get(i).nauv(uvs[repeat][0] + (i * seg_width) * scale_u, uvs[repeat][1]);
+						arr[1] = verts1.get(i).nauv(uvs[repeat][0] + (i * seg_width) * scale_u + diff, uvs[repeat][1] + (seg_height * scale_v));
+						arr[2] = verts1.get(i + 1).nauv(uvs[repeat][0] + ((i + 1) * seg_width) * scale_u - diff, uvs[repeat][1] + (seg_height * scale_v));
+						arr[3] = verts0.get(i + 1).nauv(uvs[repeat][0] + ((i + 1) * seg_width) * scale_u, uvs[repeat][1]);
 					}
 					if(repeat != 0 && toprot != null){
 						arr[0].vector = verts0.get(i).vector = toprot.getRelativeVector(arr[0].vector);
@@ -194,19 +195,19 @@ public class Generator_Cylinder {
 			if(i >= seglimit && segl){
 				if(!rems[4]){
 					Vertex[] arr = new Vertex[4];
-					arr[0] = verts2.get(0).uv(uvs[4][0], uvs[4][1]);
-					arr[1] = verts3.get(0).uv(uvs[4][0], uvs[4][1] + height_v);
-					arr[2] = verts3.get(halfv2).uv(uvs[4][0] + seg_u, uvs[4][1] + height_v);
-					arr[3] = verts2.get(halfv2).uv(uvs[4][0] + seg_u, uvs[4][1]);
+					arr[0] = verts2.get(0).nauv(uvs[4][0], uvs[4][1]);
+					arr[1] = verts3.get(0).nauv(uvs[4][0], uvs[4][1] + height_v);
+					arr[2] = verts3.get(halfv2).nauv(uvs[4][0] + seg_u, uvs[4][1] + height_v);
+					arr[3] = verts2.get(halfv2).nauv(uvs[4][0] + seg_u, uvs[4][1]);
 					polis.add(new Polygon(arr));
 					if(!dir_front) polis.get(polis.size() - 1).flip();
 				}
 				if(!rems[5]){
 					Vertex[] arr = new Vertex[4];
-					arr[0] = verts2.get(seglimit).uv(uvs[5][0], uvs[5][1]);
-					arr[1] = verts3.get(seglimit).uv(uvs[5][0], uvs[5][1] + height_v);
-					arr[2] = verts3.get(seglimit + halfv2).uv(uvs[5][0] + seg_u, uvs[5][1] + height_v);
-					arr[3] = verts2.get(seglimit + halfv2).uv(uvs[5][0] + seg_u, uvs[5][1]);
+					arr[0] = verts2.get(seglimit).nauv(uvs[5][0], uvs[5][1]);
+					arr[1] = verts3.get(seglimit).nauv(uvs[5][0], uvs[5][1] + height_v);
+					arr[2] = verts3.get(seglimit + halfv2).nauv(uvs[5][0] + seg_u, uvs[5][1] + height_v);
+					arr[3] = verts2.get(seglimit + halfv2).nauv(uvs[5][0] + seg_u, uvs[5][1]);
 					polis.add(new Polygon(arr));
 					if(dir_front) polis.get(polis.size() - 1).flip();
 				}
@@ -215,19 +216,19 @@ public class Generator_Cylinder {
 			if(i >= (halfv2 - 1)) break;
 			Vertex[] arr = new Vertex[4];
 			if(!rems[2]){
-				arr[0] = verts2.get(i + 0).uv(uvs[2][0] + width_u * (i + 0), uvs[2][1]);
-				arr[1] = verts3.get(i + 0).uv(uvs[2][0] + width_u * (i + 0), uvs[2][1] + height_v);
-				arr[2] = verts3.get(i + 1).uv(uvs[2][0] + width_u * (i + 1), uvs[2][1] + height_v);
-				arr[3] = verts2.get(i + 1).uv(uvs[2][0] + width_u * (i + 1), uvs[2][1]);
+				arr[0] = verts2.get(i + 0).nauv(uvs[2][0] + width_u * (i + 0), uvs[2][1]);
+				arr[1] = verts3.get(i + 0).nauv(uvs[2][0] + width_u * (i + 0), uvs[2][1] + height_v);
+				arr[2] = verts3.get(i + 1).nauv(uvs[2][0] + width_u * (i + 1), uvs[2][1] + height_v);
+				arr[3] = verts2.get(i + 1).nauv(uvs[2][0] + width_u * (i + 1), uvs[2][1]);
 				polis.add(new Polygon(arr));
 				if(dir_front) polis.get(polis.size() - 1).flip();
 			}
 			if(!rems[3]){
 				arr = new Vertex[4];
-				arr[0] = verts2.get(i + halfv2 + 0).uv(uvs[3][0] + width_u * (i + 0), uvs[3][1]);
-				arr[1] = verts3.get(i + halfv2 + 0).uv(uvs[3][0] + width_u * (i + 0), uvs[3][1] + height_v);
-				arr[2] = verts3.get(i + halfv2 + 1).uv(uvs[3][0] + width_u * (i + 1), uvs[3][1] + height_v);
-				arr[3] = verts2.get(i + halfv2 + 1).uv(uvs[3][0] + width_u * (i + 1), uvs[3][1]);
+				arr[0] = verts2.get(i + halfv2 + 0).nauv(uvs[3][0] + width_u * (i + 0), uvs[3][1]);
+				arr[1] = verts3.get(i + halfv2 + 0).nauv(uvs[3][0] + width_u * (i + 0), uvs[3][1] + height_v);
+				arr[2] = verts3.get(i + halfv2 + 1).nauv(uvs[3][0] + width_u * (i + 1), uvs[3][1] + height_v);
+				arr[3] = verts2.get(i + halfv2 + 1).nauv(uvs[3][0] + width_u * (i + 1), uvs[3][1]);
 				polis.add(new Polygon(arr));
 				if(!dir_front) polis.get(polis.size() - 1).flip();
 			}
