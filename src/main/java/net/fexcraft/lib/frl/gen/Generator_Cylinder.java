@@ -143,7 +143,7 @@ public class Generator_Cylinder {
 				verts3.addAll(verts1);
 			}
 			float size_x, size_y;
-			boolean bool = repeat == 0 ? dir_front ? false : true : dir_front ? true : false;
+			boolean bool = repeat == 0 ? !dir_mirror : dir_mirror;
 			if(!rems[repeat]){
 				for(int i = 0; i < verts0.size(); i++){
 					if(i >= (verts0.size() - 1) || i >= seglimit){
