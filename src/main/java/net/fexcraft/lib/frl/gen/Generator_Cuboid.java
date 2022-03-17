@@ -136,36 +136,36 @@ public class Generator_Cuboid {
 			float xe = tu + x + ex;
 			float ys = tv + y;
 			float ye = tv + y + ey;
-			vertices[0].uv(xe / w, ys / h);
-	    	vertices[1].uv(xs / w, ys / h);
-	    	vertices[2].uv(xs / w, ye / h);
-	    	vertices[3].uv(xe / w, ye / h);
+			vertices[0] = vertices[0].nauv(xe / w, ys / h);
+	    	vertices[1] = vertices[1].nauv(xs / w, ys / h);
+	    	vertices[2] = vertices[2].nauv(xs / w, ye / h);
+	    	vertices[3] = vertices[3].nauv(xe / w, ye / h);
 		}
 		else if(cuv.length == 2){
 			float xs = tu + cuv[0];
 			float xe = tu + cuv[0] + ex;
 			float ys = tv + cuv[1];
 			float ye = tv + cuv[1] + ey;
-			vertices[0].uv(xe / w, ys / h);
-	    	vertices[1].uv(xs / w, ys / h);
-	    	vertices[2].uv(xs / w, ye / h);
-	    	vertices[3].uv(xe / w, ye / h);
+			vertices[0] = vertices[0].nauv(xe / w, ys / h);
+	    	vertices[1] = vertices[1].nauv(xs / w, ys / h);
+	    	vertices[2] = vertices[2].nauv(xs / w, ye / h);
+	    	vertices[3] = vertices[3].nauv(xe / w, ye / h);
 		}
 		else if(cuv.length == 4){
 			float xs = tu + cuv[0];
 			float xe = tu + cuv[2];
 			float ys = tv + cuv[1];
 			float ye = tv + cuv[3];
-			vertices[0].uv(xe / w, ys / h);
-	    	vertices[1].uv(xs / w, ys / h);
-	    	vertices[2].uv(xs / w, ye / h);
-	    	vertices[3].uv(xe / w, ye / h);
+			vertices[0] = vertices[0].nauv(xe / w, ys / h);
+	    	vertices[1] = vertices[1].nauv(xs / w, ys / h);
+	    	vertices[2] = vertices[2].nauv(xs / w, ye / h);
+	    	vertices[3] = vertices[3].nauv(xe / w, ye / h);
 		}
 		else if(cuv.length == 8){
-			vertices[0].uv((tu + cuv[0]) / w, (tv + cuv[1]) / h);
-	    	vertices[1].uv((tu + cuv[2]) / w, (tv + cuv[3]) / h);
-	    	vertices[2].uv((tu + cuv[4]) / w, (tv + cuv[5]) / h);
-	    	vertices[3].uv((tu + cuv[6]) / w, (tv + cuv[7]) / h);
+			vertices[0] = vertices[0].nauv((tu + cuv[0]) / w, (tv + cuv[1]) / h);
+	    	vertices[1] = vertices[1].nauv((tu + cuv[2]) / w, (tv + cuv[3]) / h);
+	    	vertices[2] = vertices[2].nauv((tu + cuv[4]) / w, (tv + cuv[5]) / h);
+	    	vertices[3] = vertices[3].nauv((tu + cuv[6]) / w, (tv + cuv[7]) / h);
 		}
 		else {}
 		return new Polygon(vertices);
