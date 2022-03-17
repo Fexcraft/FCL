@@ -26,8 +26,8 @@ public class Generator_Cuboid {
 		float w = map.getValue("width"), h = map.getValue("height"), d = map.getValue("depth");
 		float exp = map.getValue("exp", 0);
 		boolean centered = map.getValue("centered", false);
-		boolean[] rems = intToBoolArray(map.getArray("rem_poly", 6, -1));
-		boolean[] deuv = intToBoolArray(map.getArray("detached_uv", 6, -1));
+		boolean[] rems = intToBoolArray(map.getArray("rem_poly"), 6);
+		boolean[] deuv = intToBoolArray(map.getArray("detached_uv"), 6);
 		ArrayList<float[]> uv = map.getArray("uv", 6, null);
 		float texw = map.getValue("texture_width");
 		float texh = map.getValue("texture_height");
