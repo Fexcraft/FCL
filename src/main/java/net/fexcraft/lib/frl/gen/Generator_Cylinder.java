@@ -86,7 +86,7 @@ public class Generator_Cylinder {
 		}
 		seg_u *= scale_u;
 		{
-			float x0 = texw * scale_u, y0 = texh * scale_v;
+			float x0 = poly.texU * scale_u, y0 = poly.texV * scale_v;
 			uvs[0] = new float[]{ x0, y0 };
 			uvs[1] = new float[]{ x0 + (detached(rems, deuv, 0) || radial ? 0 : circle_u), y0 + (radial && !detached(rems, deuv, 0) ? seg_height : 0) };
 			float cirhi = detached(rems, deuv, 0) && detached(rems, deuv, 1) ? 0 : radial ? (seg_height * (detached(rems, deuv, 0) || detached(rems, deuv, 1) ? 1 : 2)) * scale_v : circle_v;
