@@ -89,8 +89,9 @@ public class Generator<GLO> {
 		
 	}
 
-	protected static boolean[] intToBoolArray(ArrayList<Integer> array){
-		boolean[] bool = new boolean[array.size()];
+	protected static boolean[] intToBoolArray(ArrayList<Integer> array, int size){
+		boolean[] bool = new boolean[size];
+		if(array == null || array.size() == 0) return bool;
 		for(int i = 0; i < array.size(); i++){
 			int j = array.get(i);
 			if(j >= 0 && j < bool.length) bool[j] = true;
