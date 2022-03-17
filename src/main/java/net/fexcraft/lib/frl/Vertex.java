@@ -64,4 +64,8 @@ public class Vertex {
 		return this;
 	}
 
+	public Vertex nauv(float u, float v){
+		return new Vertex(this).uv(u, v);
+	}
+
 }
