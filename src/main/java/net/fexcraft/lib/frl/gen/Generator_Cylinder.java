@@ -25,7 +25,7 @@ public class Generator_Cylinder {
 		float radius = map.getValue("radius", 1f);
 		float radius2 = map.getValue("radius2", 0f);
 		float length = map.getValue("length", 1f);
-		int direction = map.getValue("direction", 0);
+		AxisDir dir = map.getValue("axis_dir", AxisDir.X_POSITIVE);
 		int segments = map.getValue("segments", 4);
 		int seglimit = map.getValue("seg_limit", 0);
 		float top_scale = map.getValue("top_scale", 1f);
@@ -53,23 +53,22 @@ public class Generator_Cylinder {
 		else if(length % 1 != 0){
 			texheight = (int)length + (length % 1 > 0.5f ? 1 : 0);
 		}
-		boolean dir_top = (direction == TOP || direction == BOTTOM);
-		boolean dir_side = (direction == RIGHT || direction == LEFT);
-		boolean dir_front = (direction == FRONT || direction == BACK);
-		boolean dir_mirror = (direction == LEFT || direction == BOTTOM || direction == BACK);
+		boolean dir_y = dir.isY();
+		boolean dir_z = dir.isZ();
+		boolean dir_x = dir.isX();
 		if(base_scale == 0) base_scale = 1f;
 		if(top_scale == 0) rems[1] = true;
 		if(segments < 3) segments = 3;
 		if(seglimit <= 0) seglimit = segments;
 		boolean segl = seglimit < segments;
 		ArrayList<Polygon> polis = new ArrayList<>();
-		float length_x = (dir_side ? length : 0), length_y = (dir_top ? length : 0), length_z = (dir_front ? length : 0);
-		float s_x = (dir_mirror ? x + length_x : x);
-		float s_y = (dir_mirror ? y + length_y : y);
-		float s_z = (dir_mirror ? z + length_z : z);
-		float e_x = (!dir_mirror ? x + length_x : x) + (topoff == null ? 0 : topoff.x);
-		float e_y = (!dir_mirror ? y + length_y : y) + (topoff == null ? 0 : topoff.y);
-		float e_z = (!dir_mirror ? z + length_z : z) + (topoff == null ? 0 : topoff.z);
+		float length_x = (dir_x ? length : 0), length_y = (dir_y ? length : 0), length_z = (dir_z ? length : 0);
+		float s_x = (dir.positive ? x + length_x : x);
+		float s_y = (dir.positive ? y + length_y : y);
+		float s_z = (dir.positive ? z + length_z : z);
+		float e_x = (!dir.positive ? x + length_x : x) + (topoff == null ? 0 : topoff.x);
+		float e_y = (!dir.positive ? y + length_y : y) + (topoff == null ? 0 : topoff.y);
+		float e_z = (!dir.positive ? z + length_z : z) + (topoff == null ? 0 : topoff.z);
 		float c_x = s_x, c_y = s_y, c_z = s_z, c_s = base_scale;
 		//Texture
 		float[][] uvs = new float[6][];
@@ -116,9 +115,9 @@ public class Generator_Cylinder {
 			for(int index = 0; index < segments; index++){
 				float size_x = (float)(Math.sin((segpi) * index * 2F + Static.PI) * radius * c_s);
 				float size_z = (float)(-Math.cos((segpi) * index * 2F + Static.PI) * radius * c_s);
-				float x0 = c_x + (!dir_side ? size_x : 0);
-				float y1 = c_y + (!dir_top ? size_z : 0);
-				float z1 = c_z + (dir_side ? size_x : (dir_top ? size_z : 0));
+				float x0 = c_x + (!dir_x ? size_x : 0);
+				float y1 = c_y + (!dir_y ? size_z : 0);
+				float z1 = c_z + (dir_x ? size_x : dir_y ? size_z : 0);
 				verts0.add(new Vertex(x0, y1, z1));
 				if(index == segments - 1){
 					verts0.add(new Vertex(verts0.get(0)));
@@ -126,9 +125,9 @@ public class Generator_Cylinder {
 				//
 				float xSize2 = (float)(Math.sin((segpi) * index * 2F + Static.PI) * radius2 * c_s);
 				float zSize2 = (float)(-Math.cos((segpi) * index * 2F + Static.PI) * radius2 * c_s);
-				x0 = c_x + (!dir_side ? xSize2 : 0);
-				y1 = c_y + (!dir_top ? zSize2 : 0);
-				z1 = c_z + (dir_side ? xSize2 : (dir_top ? zSize2 : 0));
+				x0 = c_x + (!dir_x ? xSize2 : 0);
+				y1 = c_y + (!dir_y ? zSize2 : 0);
+				z1 = c_z + (dir_x ? xSize2 : (dir_y ? zSize2 : 0));
 				verts1.add(new Vertex(x0, y1, z1));
 				if(index == segments - 1){
 					verts1.add(new Vertex(verts1.get(0)));
@@ -143,7 +142,7 @@ public class Generator_Cylinder {
 				verts3.addAll(verts1);
 			}
 			float size_x, size_y;
-			boolean bool = repeat == 0 ? !dir_mirror : dir_mirror;
+			boolean bool = repeat == 0 ? !dir_z ? !dir.positive : dir.positive : dir_z ? !dir.positive : dir.positive;
 			if(!rems[repeat]){
 				for(int i = 0; i < verts0.size(); i++){
 					if(i >= (verts0.size() - 1) || i >= seglimit){
@@ -155,20 +154,20 @@ public class Generator_Cylinder {
 					}
 					Vertex[] arr = new Vertex[4];
 					if(!radial){
-						size_x = (float)(Math.sin((segpi) * i * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle_u));
-						size_y = (float)(Math.cos((segpi) * i * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle_v));
+						size_x = (float)(Math.sin((segpi) * i * 2F + (!dir_y ? 0 : Static.PI)) * (0.5F * circle_u));
+						size_y = (float)(Math.cos((segpi) * i * 2F + (!dir_y ? 0 : Static.PI)) * (0.5F * circle_v));
 						arr[0] = verts0.get(i).nauv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
 						//
-						size_x = (float)(Math.sin((segpi) * i * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle2_u));
-						size_y = (float)(Math.cos((segpi) * i * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle2_v));
+						size_x = (float)(Math.sin((segpi) * i * 2F + (!dir_y ? 0 : Static.PI)) * (0.5F * circle2_u));
+						size_y = (float)(Math.cos((segpi) * i * 2F + (!dir_y ? 0 : Static.PI)) * (0.5F * circle2_v));
 						arr[1] = verts1.get(i).nauv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
 						//
-						size_x = (float)(Math.sin((segpi) * (i + 1) * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle2_u));
-						size_y = (float)(Math.cos((segpi) * (i + 1) * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle2_v));
+						size_x = (float)(Math.sin((segpi) * (i + 1) * 2F + (!dir_y ? 0 : Static.PI)) * (0.5F * circle2_u));
+						size_y = (float)(Math.cos((segpi) * (i + 1) * 2F + (!dir_y ? 0 : Static.PI)) * (0.5F * circle2_v));
 						arr[2] = verts1.get(i + 1).nauv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
 						//
-						size_x = (float)(Math.sin((segpi) * (i + 1) * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle_u));
-						size_y = (float)(Math.cos((segpi) * (i + 1) * 2F + (!dir_top ? 0 : Static.PI)) * (0.5F * circle_v));
+						size_x = (float)(Math.sin((segpi) * (i + 1) * 2F + (!dir_y ? 0 : Static.PI)) * (0.5F * circle_u));
+						size_y = (float)(Math.cos((segpi) * (i + 1) * 2F + (!dir_y ? 0 : Static.PI)) * (0.5F * circle_v));
 						arr[3] = verts0.get(i + 1).nauv(uvs[repeat][0] + .5f * circle_u + size_x, uvs[repeat][1] + 0.5F * circle_v + size_y);
 					}
 					else{
@@ -190,6 +189,7 @@ public class Generator_Cylinder {
 			}
 			verts0.clear(); verts1.clear(); c_x = e_x; c_y = e_y; c_z = e_z; c_s = top_scale;
 		}
+		boolean bool = dir_z ? !dir.positive : dir.positive;
 		int halfv2 = verts2.size() / 2;
 		for(int i = 0; i < halfv2; i++){
 			if(i >= seglimit && segl){
@@ -200,7 +200,7 @@ public class Generator_Cylinder {
 					arr[2] = verts3.get(halfv2).nauv(uvs[4][0] + seg_u, uvs[4][1] + height_v);
 					arr[3] = verts2.get(halfv2).nauv(uvs[4][0] + seg_u, uvs[4][1]);
 					polis.add(new Polygon(arr));
-					if(!dir_front) polis.get(polis.size() - 1).flip();
+					if(!bool) polis.get(polis.size() - 1).flip();
 				}
 				if(!rems[5]){
 					Vertex[] arr = new Vertex[4];
@@ -209,7 +209,7 @@ public class Generator_Cylinder {
 					arr[2] = verts3.get(seglimit + halfv2).nauv(uvs[5][0] + seg_u, uvs[5][1] + height_v);
 					arr[3] = verts2.get(seglimit + halfv2).nauv(uvs[5][0] + seg_u, uvs[5][1]);
 					polis.add(new Polygon(arr));
-					if(dir_front) polis.get(polis.size() - 1).flip();
+					if(bool) polis.get(polis.size() - 1).flip();
 				}
 				break;
 			}
@@ -221,7 +221,7 @@ public class Generator_Cylinder {
 				arr[2] = verts3.get(i + 1).nauv(uvs[2][0] + width_u * (i + 1), uvs[2][1] + height_v);
 				arr[3] = verts2.get(i + 1).nauv(uvs[2][0] + width_u * (i + 1), uvs[2][1]);
 				polis.add(new Polygon(arr));
-				if(dir_front) polis.get(polis.size() - 1).flip();
+				if(bool) polis.get(polis.size() - 1).flip();
 			}
 			if(!rems[3]){
 				arr = new Vertex[4];
@@ -230,7 +230,7 @@ public class Generator_Cylinder {
 				arr[2] = verts3.get(i + halfv2 + 1).nauv(uvs[3][0] + width_u * (i + 1), uvs[3][1] + height_v);
 				arr[3] = verts2.get(i + halfv2 + 1).nauv(uvs[3][0] + width_u * (i + 1), uvs[3][1]);
 				polis.add(new Polygon(arr));
-				if(!dir_front) polis.get(polis.size() - 1).flip();
+				if(!bool) polis.get(polis.size() - 1).flip();
 			}
 		}
 		float scale = map.getValue("scale", 1f);
