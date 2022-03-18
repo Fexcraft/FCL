@@ -68,9 +68,9 @@ public class Polyhedron<GLO> {
 			polygons.add(new Polygon(verts));//.colored(true));
 		}
 		if(!insoff){
-			posX = turbo.rotationPointX * scale;
-			posY = turbo.rotationPointY * scale;
-			posZ = turbo.rotationPointZ * scale;
+			posX = turbo.rotationPointX;// * scale;
+			posY = turbo.rotationPointY;// * scale;
+			posZ = turbo.rotationPointZ;// * scale;
 		}
 		rotX = turbo.rotationAngleX;
 		rotY = turbo.rotationAngleY;
