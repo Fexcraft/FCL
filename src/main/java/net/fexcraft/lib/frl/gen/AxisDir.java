@@ -1,13 +1,13 @@
 package net.fexcraft.lib.frl.gen;
 
 public enum AxisDir {
-	
-	Z_POSITIVE(true),
+
 	Z_NEGATIVE(false),
-	X_POSITIVE(true),
+	Z_POSITIVE(true),
 	X_NEGATIVE(false),
-	Y_POSITIVE(true),
-	Y_NEGATIVE(false);
+	X_POSITIVE(true),
+	Y_NEGATIVE(false),
+	Y_POSITIVE(true);
 	
 	public final boolean positive;
 	
