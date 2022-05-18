@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.Vec3f;
-import net.fexcraft.lib.tmt.ModelRendererTurbo;
 
 /**
  * 
@@ -50,7 +49,7 @@ public class Polyhedron<GLO> {
 		RENDERER.render(this);
 	}
 	
-	public Polyhedron<GLO> importMRT(ModelRendererTurbo turbo, boolean insoff, float scale){
+	public Polyhedron<GLO> importMRT(net.fexcraft.lib.tmt.ModelRendererTurbo turbo, boolean insoff, float scale){
 		this.name = turbo.boxName;
 		for(TexturedPolygon tp : turbo.getFaces()){
 			Vertex[] verts = new Vertex[tp.getVertices().length];
