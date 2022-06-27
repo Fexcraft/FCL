@@ -181,7 +181,7 @@ public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer
 		private static final RGB defcolor = new RGB(99, 99, 99);//128, 128, 128);
 		public int x, y, width, color, hovercolor = new RGB(244, 215,  66, 0.5f).packed;
 		public String string;
-		public boolean visible = true, hovered, hoverable;
+		public boolean visible = true, hovered, hoverable, shadow;
 		public float scale;
 		
 		public BasicText(int x, int y, int width, @Nullable Integer color, String string){
@@ -227,12 +227,17 @@ public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer
 			hoverable = bool;
 			return this;
 		}
+
+		public BasicText withshadow(boolean bool){
+			shadow = bool;
+			return this;
+		}
 		
 		public void draw(GenericGui<?> gui, float pticks, int mouseX, int mouseY){
 			if(!visible) return;
 			hovered(mouseX, mouseY);
 			if(scale == 0 || (scale < 0 && gui.mc.fontRenderer.getStringWidth(string) < width)){
-            	gui.mc.fontRenderer.drawString(string, x, y, hovered ? hovercolor : color);
+            	gui.mc.fontRenderer.drawString(string, x, y, hovered ? hovercolor : color, shadow);
 				return;
 			}
 			else{
@@ -240,7 +245,7 @@ public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer
         		GL11.glPushMatrix();
         		GL11.glTranslatef(x, y, 0);
         		GL11.glScalef(scale, scale, scale);
-            	gui.mc.fontRenderer.drawString(string, 0, 0, hovered ? hovercolor : color);
+            	gui.mc.fontRenderer.drawString(string, 0, 0, hovered ? hovercolor : color, shadow);
             	GL11.glPopMatrix();
 			}
 		}
