@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 
 import net.fexcraft.lib.common.math.Time;
 
@@ -175,6 +176,10 @@ public class JsonMap extends JsonObject<Map<String, JsonObject<?>>> {
 
 	public boolean getBoolean(String key, boolean def){
 		return value.containsKey(key) ? value.get(key).value() : def;
+	}
+
+	public UUID getUUID(String key, UUID def){
+		return value.containsKey(key) ? UUID.fromString(value.get(key).string_value()) : def;
 	}
 
 }
