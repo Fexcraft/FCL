@@ -120,7 +120,7 @@ public class ObjParser {
 						float u = p(ss[0]), v = p(ss[1]);
 						if(flip_u) u = -u + 1;
 						if(flip_v) v = -v + 1;
-						raw_uvs.add(new float[]{ u < 0 ? -u : u, v < 0 ? -v : v });
+						raw_uvs.add(new float[]{ u, v });
 					}
 					else if(s.startsWith("vn ")){
 						if(!normals || ss.length < 3) continue;
