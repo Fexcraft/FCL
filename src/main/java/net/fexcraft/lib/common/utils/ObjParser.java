@@ -191,6 +191,7 @@ public class ObjParser {
 		catch(Exception e){
 			e.printStackTrace();
 			Print.console("Exception on line " + line + "; " + s + " ; " + group);
+			model.errors = true;
 			//Static.stop();
 		}
 		return model;
@@ -257,6 +258,7 @@ public class ObjParser {
 		
 		public final ArrayList<String> comments = new ArrayList<>();
 		public final Map<String, ArrayList<TexturedPolygon>> polygons = new LinkedHashMap<>();
+		public boolean errors;
 		
 	}
 	
