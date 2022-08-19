@@ -3,7 +3,9 @@ tile.fcl:workbench.name=Workbench
 tile.fcl:blueprinttable.name=Blueprint Table
 
 # GUIs
+gui.fcl.blueprinttable0.title=FCL Recipes  [%s]
 gui.fcl.blueprinttable0.catdesc=Items: %s || Recipes: %s
+gui.fcl.blueprinttable1.recipes=Recipes: %s
 gui.fcl.blueprinttable2.recstatus=Recipe (%s) out of [%s]
 gui.fcl.blueprinttable2.craftsuccess=&7Crafted &3 %spcs&7 of &9%s&7.
 gui.fcl.blueprinttable2.craftmissing=&7Missing components to craft the Selected Item.

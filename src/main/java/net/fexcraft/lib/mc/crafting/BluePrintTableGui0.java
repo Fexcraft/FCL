@@ -1,8 +1,8 @@
 package net.fexcraft.lib.mc.crafting;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.gui.GenericContainer;
 import net.fexcraft.lib.mc.gui.GenericGui;
@@ -14,11 +14,13 @@ import net.minecraft.world.World;
 public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 	
 	private static final ResourceLocation texture = new ResourceLocation("fcl:textures/gui/bpt_0.png");
+	private ArrayList<String> tooltip = new ArrayList<>();
 	private static int scroll;
 
 	public BluePrintTableGui0(EntityPlayer player, World world, int x, int y, int z){
 		super(texture, new GenericContainer.DefImpl(player), player);
-		this.xSize = 256; this.ySize = 204;
+		xSize = 166;
+		ySize = 172;
 		if(BluePrintTableGui1.category >= 0){
 			openGui(1, new int[]{ BluePrintTableGui1.category, 0, 0 }, null);
 		}
@@ -26,34 +28,47 @@ public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 
 	@Override
 	protected void init(){
-		this.buttons.put("arrow_up", new BasicButton("arrow_up", guiLeft + 241, guiTop + 5, 241, 5, 10, 14, true));
-		this.buttons.put("arrow_down", new BasicButton("arrow_down", guiLeft + 241, guiTop + 185, 241, 185, 10, 14, true));
-		//
-		for(int i = 0; i < 7; i++){
-			int j = i * 28;
-			this.buttons.put("category_" + i, new BasicButton("category_" + i, guiLeft + 4, guiTop + 4 + j, 4, 4 + j, 219, 28, true));
-			this.buttons.put("cat_" + i, new BasicButton("cat_" + i, guiLeft + 224, guiTop + 6 + j, 224, 6 + j, 15, 24, true));
-			buttons.get("cat_" + i).rgb_hover = new RGB(180, 120, 20);
-			//
-			this.texts.put("cat0_" + i, new BasicText(guiLeft + 29, guiTop + 7 + j, 191, 0xdfdfdf, ""));
-			this.texts.put("cat1_" + i, new BasicText(guiLeft + 29, guiTop + 21 + j, 191, 0xdfdfdf, ""));
+		this.texts.put("title", new BasicText(guiLeft + 9, guiTop + 9, 148, 0x858585, "").autoscale());
+		this.buttons.put("arrow_up", new BasicButton("arrow_up", guiLeft + 163, guiTop + 14, 163, 14, 10, 10, true){
+			@Override
+			public boolean onclick(int mx, int my, int mb){
+				scroll = (scroll -= 1) < 0 ? 0 : scroll;
+				return true;
+			}
+		});
+		this.buttons.put("arrow_down", new BasicButton("arrow_down", guiLeft + 163, guiTop + 26, 163, 26, 10, 10, true){
+			@Override
+			public boolean onclick(int mx, int my, int mb){
+				scroll = (scroll += 1) >= RecipeRegistry.getCategories().size() ? RecipeRegistry.getCategories().size() : scroll;
+				return true;
+			}
+		});
+		for(int i = 0; i < 12; i++){
+			int j = i * 12, k = i;
+			this.buttons.put("cat_" + i, new BasicButton("cat_" + i, guiLeft + 7, guiTop + 19 + j, 7, 19 + j, 152, 10, true){
+				@Override
+				public boolean onclick(int mx, int my, int mb){
+					player.openGui(FCL.getInstance(), 1, player.world, k + scroll, 0, 0);
+					openGui(1, new int[]{ k + scroll, 0, 0 }, null);
+					return true;
+				}
+			});
+			this.texts.put("cat_" + i, new BasicText(guiLeft + 9, guiTop + 21 + j, 148, 0x858585, "").autoscale());
 		}
 	}
 
 	@Override
 	protected void predraw(float pticks, int mouseX, int mouseY){
-		for(int i = 0; i < 7; i++){
+		texts.get("title").string = I18n.format("gui.fcl.blueprinttable0.title", scroll);
+		for(int i = 0; i < 12; i++){
 			int j = i + scroll;
 			if(j < 0 || j >= RecipeRegistry.getCategories().size()){
-				texts.get("cat0_" + i).string = ""; texts.get("cat1_" + i).string = "";
-				buttons.get("category_" + i).enabled = false; buttons.get("cat_" + i).enabled = false;
+				texts.get("cat_" + i).string = "";
+				buttons.get("cat_" + i).enabled = false;
 			}
 			else{
-				texts.get("cat0_" + i).string = I18n.format(RecipeRegistry.getCategory(j));
-				int k = RecipeRegistry.getRecipes(j).size(), l = 0;
-				for(List<BluePrintRecipe> obj : RecipeRegistry.getRecipes(j).values()) l += obj.size();
-				texts.get("cat1_" + i).string = I18n.format("gui.fcl.blueprinttable0.catdesc", k, l);
-				buttons.get("category_" + i).enabled = true; buttons.get("cat_" + i).enabled = true;
+				texts.get("cat_" + i).string = I18n.format(RecipeRegistry.getCategory(j));
+				buttons.get("cat_" + i).enabled = true;
 			}
 		}
 		buttons.get("arrow_up").enabled = scroll > 0;
@@ -62,24 +77,7 @@ public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 
 	@Override
 	protected void drawbackground(float pticks, int mouseX, int mouseY){
-		//
-	}
-
-	@Override
-	protected boolean buttonClicked(int mouseX, int mouseY, int mouseButton, String key, BasicButton button){
-		switch(key){
-			case "arrow_up":{ scroll = (scroll -= 1) < 0 ? 0 : scroll; break; }
-			case "arrow_down":{
-				scroll = (scroll += 1) >= RecipeRegistry.getCategories().size() ? RecipeRegistry.getCategories().size() : scroll;
-				break;
-			}
-		}
-		if(key.startsWith("category_") || key.startsWith("cat_")){
-			int i = Integer.parseInt(key.replace("category_", "").replace("cat_", ""));
-			player.openGui(FCL.getInstance(), 1, player.world, i + scroll, 0, 0);
-			openGui(1, new int[]{ i + scroll, 0, 0 }, null);
-		}
-		return false;
+		drawTexturedModalRect(guiLeft + 166, guiTop + 7, 166, 7, 15, 36);
 	}
 
 	@Override
@@ -90,6 +88,22 @@ public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 		else{
 			scroll = (scroll += 1) >= RecipeRegistry.getCategories().size() ? RecipeRegistry.getCategories().size() : scroll;
 		}
+	}
+
+	@Override
+	protected void drawlast(float ticks, int mx, int my){
+		tooltip.clear();
+		for(int i = 0; i < 12; i++){
+			int j = i + scroll;
+			if(j < 0 || j >= RecipeRegistry.getCategories().size()) continue;
+			if(buttons.get("cat_" + i).hovered){
+				int k = RecipeRegistry.getRecipes(j).size(), l = 0;
+				for(List<BluePrintRecipe> obj : RecipeRegistry.getRecipes(j).values()) l += obj.size();
+				tooltip.add(I18n.format(RecipeRegistry.getCategory(j)));
+				tooltip.add(I18n.format("gui.fcl.blueprinttable0.catdesc", k, l));
+			}
+		}
+		drawHoveringText(tooltip, mx, my);
 	}
 	
 }
