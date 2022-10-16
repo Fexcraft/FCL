@@ -190,46 +190,100 @@ public class Generator_Cylinder {
 			verts0.clear(); verts1.clear(); c_x = e_x; c_y = e_y; c_z = e_z; c_s = top_scale;
 		}
 		int halfv2 = verts2.size() / 2;
-		for(int i = 0; i < halfv2; i++){
-			if(i >= seglimit && segl){
-				if(!rems[4]){
-					Vertex[] arr = new Vertex[4];
-					arr[0] = verts2.get(0).nauv(uvs[4][0], uvs[4][1]);
-					arr[1] = verts3.get(0).nauv(uvs[4][0], uvs[4][1] + height_v);
-					arr[2] = verts3.get(halfv2).nauv(uvs[4][0] + seg_u, uvs[4][1] + height_v);
-					arr[3] = verts2.get(halfv2).nauv(uvs[4][0] + seg_u, uvs[4][1]);
-					polis.add(new Polygon(arr));
-					if(!dir_z) polis.get(polis.size() - 1).flip();
-				}
-				if(!rems[5]){
-					Vertex[] arr = new Vertex[4];
-					arr[0] = verts2.get(seglimit).nauv(uvs[5][0], uvs[5][1]);
-					arr[1] = verts3.get(seglimit).nauv(uvs[5][0], uvs[5][1] + height_v);
-					arr[2] = verts3.get(seglimit + halfv2).nauv(uvs[5][0] + seg_u, uvs[5][1] + height_v);
-					arr[3] = verts2.get(seglimit + halfv2).nauv(uvs[5][0] + seg_u, uvs[5][1]);
+		if(map.getValue("ordered", false)){
+			for(int i = 0; i < halfv2; i++){
+				if(i >= (halfv2 - 1)) break;
+				if(i >= seglimit && segl) break;
+				Vertex[] arr = new Vertex[4];
+				if(!rems[2]){
+					arr[0] = verts2.get(i + 0).nauv(uvs[2][0] + width_u * (i + 0), uvs[2][1]);
+					arr[1] = verts3.get(i + 0).nauv(uvs[2][0] + width_u * (i + 0), uvs[2][1] + height_v);
+					arr[2] = verts3.get(i + 1).nauv(uvs[2][0] + width_u * (i + 1), uvs[2][1] + height_v);
+					arr[3] = verts2.get(i + 1).nauv(uvs[2][0] + width_u * (i + 1), uvs[2][1]);
 					polis.add(new Polygon(arr));
 					if(dir_z) polis.get(polis.size() - 1).flip();
 				}
-				break;
 			}
-			if(i >= (halfv2 - 1)) break;
-			Vertex[] arr = new Vertex[4];
-			if(!rems[2]){
-				arr[0] = verts2.get(i + 0).nauv(uvs[2][0] + width_u * (i + 0), uvs[2][1]);
-				arr[1] = verts3.get(i + 0).nauv(uvs[2][0] + width_u * (i + 0), uvs[2][1] + height_v);
-				arr[2] = verts3.get(i + 1).nauv(uvs[2][0] + width_u * (i + 1), uvs[2][1] + height_v);
-				arr[3] = verts2.get(i + 1).nauv(uvs[2][0] + width_u * (i + 1), uvs[2][1]);
-				polis.add(new Polygon(arr));
-				if(dir_z) polis.get(polis.size() - 1).flip();
+			for(int i = 0; i < halfv2; i++){
+				if(i >= (halfv2 - 1)) break;
+				if(i >= seglimit && segl) break;
+				Vertex[] arr = new Vertex[4];
+				if(!rems[3]){
+					arr = new Vertex[4];
+					arr[0] = verts2.get(i + halfv2 + 0).nauv(uvs[3][0] + width_u * (i + 0), uvs[3][1]);
+					arr[1] = verts3.get(i + halfv2 + 0).nauv(uvs[3][0] + width_u * (i + 0), uvs[3][1] + height_v);
+					arr[2] = verts3.get(i + halfv2 + 1).nauv(uvs[3][0] + width_u * (i + 1), uvs[3][1] + height_v);
+					arr[3] = verts2.get(i + halfv2 + 1).nauv(uvs[3][0] + width_u * (i + 1), uvs[3][1]);
+					polis.add(new Polygon(arr));
+					if(!dir_z) polis.get(polis.size() - 1).flip();
+				}
 			}
-			if(!rems[3]){
-				arr = new Vertex[4];
-				arr[0] = verts2.get(i + halfv2 + 0).nauv(uvs[3][0] + width_u * (i + 0), uvs[3][1]);
-				arr[1] = verts3.get(i + halfv2 + 0).nauv(uvs[3][0] + width_u * (i + 0), uvs[3][1] + height_v);
-				arr[2] = verts3.get(i + halfv2 + 1).nauv(uvs[3][0] + width_u * (i + 1), uvs[3][1] + height_v);
-				arr[3] = verts2.get(i + halfv2 + 1).nauv(uvs[3][0] + width_u * (i + 1), uvs[3][1]);
-				polis.add(new Polygon(arr));
-				if(!dir_z) polis.get(polis.size() - 1).flip();
+			for(int i = 0; i < halfv2; i++){
+				if(i >= seglimit && segl){
+					if(!rems[4]){
+						Vertex[] arr = new Vertex[4];
+						arr[0] = verts2.get(0).nauv(uvs[4][0], uvs[4][1]);
+						arr[1] = verts3.get(0).nauv(uvs[4][0], uvs[4][1] + height_v);
+						arr[2] = verts3.get(halfv2).nauv(uvs[4][0] + seg_u, uvs[4][1] + height_v);
+						arr[3] = verts2.get(halfv2).nauv(uvs[4][0] + seg_u, uvs[4][1]);
+						polis.add(new Polygon(arr));
+						if(!dir_z) polis.get(polis.size() - 1).flip();
+					}
+					if(!rems[5]){
+						Vertex[] arr = new Vertex[4];
+						arr[0] = verts2.get(seglimit).nauv(uvs[5][0], uvs[5][1]);
+						arr[1] = verts3.get(seglimit).nauv(uvs[5][0], uvs[5][1] + height_v);
+						arr[2] = verts3.get(seglimit + halfv2).nauv(uvs[5][0] + seg_u, uvs[5][1] + height_v);
+						arr[3] = verts2.get(seglimit + halfv2).nauv(uvs[5][0] + seg_u, uvs[5][1]);
+						polis.add(new Polygon(arr));
+						if(dir_z) polis.get(polis.size() - 1).flip();
+					}
+					break;
+				}
+			}
+		}
+		else{
+			for(int i = 0; i < halfv2; i++){
+				if(i >= seglimit && segl){
+					if(!rems[4]){
+						Vertex[] arr = new Vertex[4];
+						arr[0] = verts2.get(0).nauv(uvs[4][0], uvs[4][1]);
+						arr[1] = verts3.get(0).nauv(uvs[4][0], uvs[4][1] + height_v);
+						arr[2] = verts3.get(halfv2).nauv(uvs[4][0] + seg_u, uvs[4][1] + height_v);
+						arr[3] = verts2.get(halfv2).nauv(uvs[4][0] + seg_u, uvs[4][1]);
+						polis.add(new Polygon(arr));
+						if(!dir_z) polis.get(polis.size() - 1).flip();
+					}
+					if(!rems[5]){
+						Vertex[] arr = new Vertex[4];
+						arr[0] = verts2.get(seglimit).nauv(uvs[5][0], uvs[5][1]);
+						arr[1] = verts3.get(seglimit).nauv(uvs[5][0], uvs[5][1] + height_v);
+						arr[2] = verts3.get(seglimit + halfv2).nauv(uvs[5][0] + seg_u, uvs[5][1] + height_v);
+						arr[3] = verts2.get(seglimit + halfv2).nauv(uvs[5][0] + seg_u, uvs[5][1]);
+						polis.add(new Polygon(arr));
+						if(dir_z) polis.get(polis.size() - 1).flip();
+					}
+					break;
+				}
+				if(i >= (halfv2 - 1)) break;
+				Vertex[] arr = new Vertex[4];
+				if(!rems[2]){
+					arr[0] = verts2.get(i + 0).nauv(uvs[2][0] + width_u * (i + 0), uvs[2][1]);
+					arr[1] = verts3.get(i + 0).nauv(uvs[2][0] + width_u * (i + 0), uvs[2][1] + height_v);
+					arr[2] = verts3.get(i + 1).nauv(uvs[2][0] + width_u * (i + 1), uvs[2][1] + height_v);
+					arr[3] = verts2.get(i + 1).nauv(uvs[2][0] + width_u * (i + 1), uvs[2][1]);
+					polis.add(new Polygon(arr));
+					if(dir_z) polis.get(polis.size() - 1).flip();
+				}
+				if(!rems[3]){
+					arr = new Vertex[4];
+					arr[0] = verts2.get(i + halfv2 + 0).nauv(uvs[3][0] + width_u * (i + 0), uvs[3][1]);
+					arr[1] = verts3.get(i + halfv2 + 0).nauv(uvs[3][0] + width_u * (i + 0), uvs[3][1] + height_v);
+					arr[2] = verts3.get(i + halfv2 + 1).nauv(uvs[3][0] + width_u * (i + 1), uvs[3][1] + height_v);
+					arr[3] = verts2.get(i + halfv2 + 1).nauv(uvs[3][0] + width_u * (i + 1), uvs[3][1]);
+					polis.add(new Polygon(arr));
+					if(!dir_z) polis.get(polis.size() - 1).flip();
+				}
 			}
 		}
 		float scale = map.getValue("scale", 1f);
