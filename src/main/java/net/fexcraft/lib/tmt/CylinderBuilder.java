@@ -23,7 +23,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 	
 	private ModelRendererTurbo root;
 	private float x, y, z, radius, radius2, length;
-	private float base_scale = 1, top_scale = 1;
+	private float base_scale = 1, top_scale = 1, segoff;
 	private int segments, seglimit, direction;
 	private Vec3f topoff = new Vec3f();
 	private boolean[] invisible = new boolean[6];
@@ -140,6 +140,18 @@ public class CylinderBuilder implements CustomUVBuilder {
 		return this;
 	}
 	
+	public CylinderBuilder setSegments(int amount, int limit, float off){
+		this.segments = amount;
+		this.seglimit = limit;
+		this.segoff = off;
+		return this;
+	}
+	
+	public CylinderBuilder setSegmentOffset(float off){
+		this.segoff = off;
+		return this;
+	}
+	
 	public CylinderBuilder setScale(float base, float top){
 		this.base_scale = base;
 		this.top_scale = top;
@@ -248,8 +260,8 @@ public class CylinderBuilder implements CustomUVBuilder {
 		ArrayList<TexturedVertex> verts3 = new ArrayList<>();
 		for(int repeat = 0; repeat < 2; repeat++){//top/base faces
 			for(int index = 0; index < segments; index++){
-				float xSize = (float)((root.mirror ^ dirMirror ? -1 : 1) * Math.sin((segpi) * index * 2F + Static.PI) * radius * sCur);
-				float zSize = (float)(-Math.cos((segpi) * index * 2F + Static.PI) * radius * sCur);
+				float xSize = (float)((root.mirror ^ dirMirror ? -1 : 1) * Math.sin((segpi) * index * 2F + Static.PI + segoff) * radius * sCur);
+				float zSize = (float)(-Math.cos((segpi) * index * 2F + Static.PI + segoff) * radius * sCur);
 				float xPlace = xCur + (!dirSide ? xSize : 0);
 				float yPlace = yCur + (!dirTop ? zSize : 0);
 				float zPlace = zCur + (dirSide ? xSize : (dirTop ? zSize : 0));
@@ -258,8 +270,8 @@ public class CylinderBuilder implements CustomUVBuilder {
 					TexturedVertex copy = new TexturedVertex(verts0.get(0)); verts0.add(copy);
 				}
 				//
-				float xSize2 = (float)((root.mirror ^ dirMirror ? -1 : 1) * Math.sin((segpi) * index * 2F + Static.PI) * radius2 * sCur);
-				float zSize2 = (float)(-Math.cos((segpi) * index * 2F + Static.PI) * radius2 * sCur);
+				float xSize2 = (float)((root.mirror ^ dirMirror ? -1 : 1) * Math.sin((segpi) * index * 2F + Static.PI + segoff) * radius2 * sCur);
+				float zSize2 = (float)(-Math.cos((segpi) * index * 2F + Static.PI + segoff) * radius2 * sCur);
 				xPlace = xCur + (!dirSide ? xSize2 : 0);
 				yPlace = yCur + (!dirTop ? zSize2 : 0);
 				zPlace = zCur + (dirSide ? xSize2 : (dirTop ? zSize2 : 0));
