@@ -28,6 +28,7 @@ public class Generator_Cylinder {
 		AxisDir dir = map.getValue("axis_dir", AxisDir.X_POSITIVE);
 		int segments = map.getValue("segments", 4);
 		int seglimit = map.getValue("seg_limit", 0);
+		float seg_off = Static.toRadians(map.getValue("seg_off", 0f));
 		float top_scale = map.getValue("top_scale", 1f);
 		float base_scale = map.getValue("base_scale", 1f);
 		boolean radial = map.getValue("radial", false);
@@ -113,8 +114,8 @@ public class Generator_Cylinder {
 		ArrayList<Vertex> verts3 = new ArrayList<>();
 		for(int repeat = 0; repeat < 2; repeat++){//top/base faces
 			for(int index = 0; index < segments; index++){
-				float size_x = (float)((dir.positive ? -1 : 1) * Math.sin((segpi) * index * 2F + Static.PI) * radius * c_s);
-				float size_z = (float)(-Math.cos((segpi) * index * 2F + Static.PI) * radius * c_s);
+				float size_x = (float)((dir.positive ? -1 : 1) * Math.sin((segpi) * index * 2F + Static.PI + seg_off) * radius * c_s);
+				float size_z = (float)(-Math.cos((segpi) * index * 2F + Static.PI + seg_off) * radius * c_s);
 				float x0 = c_x + (!dir_x ? size_x : 0);
 				float y1 = c_y + (!dir_y ? size_z : 0);
 				float z1 = c_z + (dir_x ? size_x : dir_y ? size_z : 0);
@@ -123,8 +124,8 @@ public class Generator_Cylinder {
 					verts0.add(new Vertex(verts0.get(0)));
 				}
 				//
-				float xSize2 = (float)((dir.positive ? -1 : 1) * Math.sin((segpi) * index * 2F + Static.PI) * radius2 * c_s);
-				float zSize2 = (float)(-Math.cos((segpi) * index * 2F + Static.PI) * radius2 * c_s);
+				float xSize2 = (float)((dir.positive ? -1 : 1) * Math.sin((segpi) * index * 2F + Static.PI + seg_off) * radius2 * c_s);
+				float zSize2 = (float)(-Math.cos((segpi) * index * 2F + Static.PI + seg_off) * radius2 * c_s);
 				x0 = c_x + (!dir_x ? xSize2 : 0);
 				y1 = c_y + (!dir_y ? zSize2 : 0);
 				z1 = c_z + (dir_x ? xSize2 : (dir_y ? zSize2 : 0));
