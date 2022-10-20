@@ -186,5 +186,9 @@ public class Vec3f {
 	public boolean isNull(){
 		return x == 0f && y == 0f && z == 0f;
 	}
+
+	public Vec3f copy(){
+		return new Vec3f(x, y, z);
+	}
     
 }
