@@ -13,6 +13,6 @@ public class FRL {
 	@Mod.Instance("frl")
 	private static FRL INSTANCE;
 	public static final String MODID = "frl";
-	public static final String VERSION = "1.1";
+	public static final String VERSION = "1.2";
 	
 }
