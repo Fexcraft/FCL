@@ -18,7 +18,7 @@ public class Path {
 	public Vec3f[] rootpath;
 	public Vec3f[] vecpath;
 	public float length;
-	public int segmentator;
+	public int segmentator = 4;
 	
 	public Path(Vec3f[] vec316fs, Vec3f vector){
 		start = vec316fs[0];
