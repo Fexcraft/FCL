@@ -43,17 +43,17 @@ public class Generator<GLO> {
 	}
 	
 	public Polyhedron<GLO> make(){
-		Type type = map.getValue("type", Type.CUBOID);
+		Type type = map.getValue("type", Type.NONE);
 		switch(type){
 			case CYLINDER:{
 				Generator_Cylinder.make(poly, map);
 				break;
 			}
-			case CUBOID:
-			default:{
+			case CUBOID:{
 				Generator_Cuboid.make(poly, map);
 				break;
 			}
+			default: break;
 		}
 		return poly;
 	}
@@ -85,7 +85,7 @@ public class Generator<GLO> {
 	
 	public static enum Type {
 		
-		CUBOID, CYLINDER
+		NONE, CUBOID, CYLINDER
 		
 	}
 
