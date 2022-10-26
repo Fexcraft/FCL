@@ -228,7 +228,7 @@ public class Path {
 	
 	@Override
 	public String toString(){
-		return String.format("Path[%s-%s, %s, %s]", start, end, vecpath.length);
+		return String.format("Path[%s-%s, %s]", start, end, vecpath.length);
 	}
 
 	public float oppositePassed(float sec){
