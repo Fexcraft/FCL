@@ -13,9 +13,13 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.12.77'
+version = '1.12.77-' + getDateSuffix()
 group = 'net.fexcraft.lib' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'FCL'
+
+def getDateSuffix(){
+    return new Date().format('ddMMyyHHmm')
+}
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
