@@ -54,17 +54,17 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 	
 	public static void chat(ICommandSender sender, Object obj){
 		if(sender == null) log("SENDERNULL||" + obj.toString());
-		sender.sendMessage(new TextComponentString("[DEBUG]: " + obj.toString()));
+		else sender.sendMessage(new TextComponentString("[DEBUG]: " + obj.toString()));
 	}
 	
 	public static void chat(ICommandSender sender, Throwable obj){
 		if(sender == null) log("SENDERNULL||" + obj.toString());
-		sender.sendMessage(new TextComponentString(ExceptionUtils.getStackTrace(obj)));
+		else sender.sendMessage(new TextComponentString(ExceptionUtils.getStackTrace(obj)));
 	}
 	
 	public static void chat(ICommandSender sender, String string){
 		if(sender == null) log("SENDERNULL||" + string);
-		sender.sendMessage(new TextComponentString(Formatter.format(string)));
+		else sender.sendMessage(new TextComponentString(Formatter.format(string)));
 	}
 	
 	public static void chatnn(ICommandSender sender, String string){
