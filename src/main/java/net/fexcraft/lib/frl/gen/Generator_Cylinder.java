@@ -36,13 +36,13 @@ public class Generator_Cylinder {
 		float seg_height = map.getValue("seg_height", 1f);
 		Vec3f topoff = map.getValue("top_offset", null);
 		AxisRotator toprot = map.getValue("top_rot", null);
-		float x = map.getValue("x"), y = map.getValue("y"), z = map.getValue("z");
+		float x = map.getValue("x", 0f), y = map.getValue("y", 0f), z = map.getValue("z", 0f);
 		boolean[] rems = intToBoolArray(map.getArray("rem_poly"), 6);
 		if(radius2 == 0f) rems[3] = true;
 		boolean[] deuv = intToBoolArray(map.getArray("detached_uv"), 6);
 		ArrayList<float[]> uv = map.getArray("uv", 6, null);
-		float texw = map.getValue("texture_width");
-		float texh = map.getValue("texture_height");
+		float texw = map.getValue("texture_width", 1f);
+		float texh = map.getValue("texture_height", 1f);
 		//boolean noinner = radius2 == 0f;
 		float diameter = (int)Math.floor(radius * 2F);
 		float texheight = (int)Math.floor(length);
