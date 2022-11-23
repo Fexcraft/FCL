@@ -89,16 +89,18 @@ public class Polyhedron<GLO> {
 		return this;
 	}
 
-	public void pos(float x, float y, float z){
+	public Polyhedron<GLO> pos(float x, float y, float z){
 		posX = x;
 		posY = y;
 		posZ = z;
+		return this;
 	}
 
-	public void rot(float x, float y, float z){
+	public Polyhedron<GLO> rot(float x, float y, float z){
 		rotX = x;
 		rotY = y;
 		rotZ = z;
+		return this;
 	}
 
 }
