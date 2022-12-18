@@ -21,9 +21,17 @@ public interface SignCapability {
 	
 	public TileEntitySign getTileEntity();
 
-	public NBTBase writeToNBT(Capability<SignCapability> capability, EnumFacing side);
+	public default NBTBase writeToNBT(Capability<SignCapability> capability, SignCapability instance, EnumFacing side){
+		return writeToNBT(capability, side);
+	}
 
-	public void readNBT(Capability<SignCapability> capability, EnumFacing side, NBTBase nbt);
+	public default void readNBT(Capability<SignCapability> capability, SignCapability instance, EnumFacing side, NBTBase nbt){
+		readNBT(capability, side, nbt);
+	}
+
+	public default NBTBase writeToNBT(Capability<SignCapability> capability, EnumFacing side){ return null; }
+
+	public default void readNBT(Capability<SignCapability> capability, EnumFacing side, NBTBase nbt){}
 
 	public boolean isActive();
 	
@@ -46,14 +54,20 @@ public interface SignCapability {
 		public boolean isActive();
 
 		public boolean onPlayerInteract(SignCapability cap, PlayerInteractEvent event, IBlockState state, TileEntitySign tileentity);
-		
-		@Nullable
-		public NBTBase writeToNBT(Capability<SignCapability> capability, EnumFacing side);
 
-		public void readNBT(Capability<SignCapability> capability, EnumFacing side, @Nullable NBTBase nbt);
+		public default NBTBase writeToNBT(Capability<SignCapability> capability, SignCapability instance, EnumFacing side){
+			return writeToNBT(capability, side);
+		}
+
+		public default void readNBT(Capability<SignCapability> capability, SignCapability instance, EnumFacing side, NBTBase nbt){
+			readNBT(capability, side, nbt);
+		}
 		
-		default void sendUpdate(TileEntitySign tileentity){
-			
+		public default NBTBase writeToNBT(Capability<SignCapability> capability, EnumFacing side){ return null; }
+
+		public default void readNBT(Capability<SignCapability> capability, EnumFacing side, @Nullable NBTBase nbt){}
+		
+		public default void sendUpdate(TileEntitySign tileentity){
 			Static.getServer().getPlayerList().getPlayers().forEach(player -> {
 				if(player.getPosition().distanceSq(tileentity.getPos()) < 256)
 				player.connection.sendPacket(tileentity.getUpdatePacket());
