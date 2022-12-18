@@ -42,12 +42,12 @@ public class SignCapabilityImpl implements SignCapability {
 	}
 
 	@Override
-	public NBTBase writeToNBT(Capability<SignCapability> capability, EnumFacing side){
+	public NBTBase writeToNBT(Capability<SignCapability> capability, SignCapability instance, EnumFacing side){
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setBoolean("active", active);
 		if(isActive()){
 			listeners.forEach(listener -> {
-				NBTBase nbt = listener.writeToNBT(capability, side);
+				NBTBase nbt = listener.writeToNBT(capability, instance, side);
 				if(nbt != null){
 					compound.setTag(listener.getId().toString(), nbt);
 				}
@@ -57,12 +57,12 @@ public class SignCapabilityImpl implements SignCapability {
 	}
 
 	@Override
-	public void readNBT(Capability<SignCapability> capability, EnumFacing side, NBTBase nbt){
+	public void readNBT(Capability<SignCapability> capability, SignCapability instance, EnumFacing side, NBTBase nbt){
 		NBTTagCompound compound = (NBTTagCompound)nbt;
 		active = compound.getBoolean("active");
 		if(isActive()){
 			listeners.forEach(listener -> {
-				listener.readNBT(capability, side, compound.hasKey(listener.getId().toString()) ? compound.getTag(listener.getId().toString()) : null);
+				listener.readNBT(capability, instance, side, compound.hasKey(listener.getId().toString()) ? compound.getTag(listener.getId().toString()) : null);
 			});
 		}
 	}
@@ -97,7 +97,7 @@ public class SignCapabilityImpl implements SignCapability {
 		return listeners.stream().anyMatch(listener -> listener.getId().equals(rs) && listener.isActive());
 	}
 
-	@SuppressWarnings("unchecked") @Override
+	@Override
 	public <T> T getListener(Class<T> clazz, ResourceLocation rs){
 		return (T)listeners.stream().filter(listener -> listener.getId().equals(rs)).findFirst().get();
 	}
