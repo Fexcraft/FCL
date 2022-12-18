@@ -64,12 +64,12 @@ public class SignCapabilitySerializer implements ICapabilitySerializable<NBTBase
 
 		@Override
 		public NBTBase writeNBT(Capability<SignCapability> capability, SignCapability instance, EnumFacing side){
-			return instance.writeToNBT(capability, side);
+			return instance.writeToNBT(capability, instance, side);
 		}
 
 		@Override
 		public void readNBT(Capability<SignCapability> capability, SignCapability instance, EnumFacing side, NBTBase nbt){
-			instance.readNBT(capability, side, nbt);
+			instance.readNBT(capability, instance, side, nbt);
 		}
 		
 	}
