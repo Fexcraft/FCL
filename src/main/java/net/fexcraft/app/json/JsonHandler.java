@@ -31,13 +31,18 @@ public class JsonHandler {
 	private static String FLOATN = "^\\-?\\d+\\.\\d+$";
 	
 	public static JsonObject<?> parse(String str, boolean defmap){
-		JsonObject<?> root;
-		str = str.trim();
-		if(str.startsWith("{")){
-			root = parseMap(new JsonMap(), str).obj;
+		return parse(new CharList(str), defmap);
+	}
+	
+	public static JsonObject<?> parse(CharList str, boolean defmap){
+		JsonObject<?> root = null;
+		Parser parser = new Parser();
+		str = parser.trim(str);
+		if(str.starts('{')){
+			root = parser.parseMap(new JsonMap(), str).obj;
 		}
-		else if(str.startsWith("[")){
-			root = parseArray(new JsonArray(), str).obj;
+		else if(str.starts('[')){
+			root = parser.parseArray(new JsonArray(), str).obj;
 		}
 		else return defmap ? new JsonMap() : new JsonArray();
 		return root;
@@ -45,7 +50,7 @@ public class JsonHandler {
 
 	public static JsonObject<?> parse(File file, boolean defmap){
 		try{
-			return parse(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8), defmap);
+			return parse(new CharList(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8)), defmap);
 		}
 		catch(IOException e){
 			e.printStackTrace();
@@ -61,113 +66,173 @@ public class JsonHandler {
 		BufferedInputStream bis = new BufferedInputStream(stream);
 		ByteArrayOutputStream buf = new ByteArrayOutputStream();
 		for(int res = bis.read(); res != -1; res = bis.read()) buf.write((byte)res);
-		return parse(buf.toString(StandardCharsets.UTF_8.name()), defmap);
+		String str = buf.toString(StandardCharsets.UTF_8.name());
+		bis.close(); buf.close();
+		return parse(new CharList(str), defmap);
 	}
 
 	public static JsonMap parse(InputStream stream) throws IOException {
 		return parse(stream, true).asMap();
 	}
+	
+	private static class Parser {
+		
+		private final Ret RET = new Ret();
+		private final CharList COPY = new CharList();
+		private CharList key = null, val = null;
+		private char s = ' ';
+		private int index = 0;
 
-	private static Ret parseMap(JsonMap root, String str){
-		if(str.startsWith("{")) str = str.substring(1);
-		while(str.length() > 0){
-			str = str.trim();
-			char s = str.charAt(0);
-			if(s == '"'){
-				String key = scanTill(str, '"');
-				str = str.substring(key.length() + 1);
-				key = key.substring(1);
-				str = str.trim().substring(1).trim();//removing colon
-				s = str.charAt(0);
-				if(s == '{'){
-					Ret ret = parseMap(new JsonMap(), str);
-					root.add(key, ret.obj);
-					str = ret.str;
+		private Ret parseMap(JsonMap root, CharList str){
+			if(str.starts('{')) str = sub(str, 1);
+			while(str.size() > 0){
+				str = trim(str);
+				s = str.get(0);
+				if(s == '"'){
+					key = scanTill(str, '"');
+					str = sub(str, key.size() + 1);
+					key = sub(key, 1);
+					str = trim(sub(trim(str), 1));//removing colon
+					s = str.get(0);
+					if(s == '{'){
+						parseMap(new JsonMap(), str);
+						root.add(key.asString(), RET.obj);
+						str = RET.str;
+					}
+					else if(s == '['){
+						parseArray(new JsonArray(), str);
+						root.add(key.asString(), RET.obj);
+						str = RET.str;
+					}
+					else if(s == '"'){
+						val = scanTill(str, '"');
+						str = sub(str, val.size() + 1);
+						root.add(key.asString(), parseValue(sub(val, 1).asString()));
+					}
+					else{
+						val = scanTill(str, ',');
+						str = sub(str, val.size());
+						root.add(key.asString(), parseValue(val.asString()));
+					}
+				}
+				else if(s == ',') str = sub(str, 1);
+				else if(s == '}') break;
+				else str = sub(str, 1);
+			}
+			if(str.starts('}')) str = sub(str, 1);
+			return RET.set(root, str);
+		}
+
+		private Ret parseArray(JsonArray root, CharList str){
+			if(str.starts('[')) str = sub(str, 1);
+			while(str.size() > 0){
+				str = trim(str);
+				s = str.get(0);
+				if(s == '"'){
+					val = scanTill(str, '"');
+					str = sub(str, val.size() + 1);
+					root.add(parseValue(sub(val, 1).asString()));
+				}
+				else if(s == '{'){
+					parseMap(new JsonMap(), str);
+					root.add(RET.obj);
+					str = RET.str;
 				}
 				else if(s == '['){
-					Ret ret = parseArray(new JsonArray(), str);
-					root.add(key, ret.obj);
-					str = ret.str;
+					parseArray(new JsonArray(), str);
+					root.add(RET.obj);
+					str = RET.str;
 				}
-				else if(s == '"'){
-					String val = scanTill(str, '"');
-					str = str.substring(val.length() + 1);
-					root.add(key, parseValue(val.substring(1)));
-				}
-				else{
-					String val = scanTill(str, ',');
-					str = str.substring(val.length());
-					root.add(key, parseValue(val));
+				else if(s == ',') str = sub(str, 1);
+				else if(s == ']') break;
+				else {
+					val = scanTill(str, ',');
+					str = sub(str, val.size());
+					root.add(parseValue(val.asString()));
 				}
 			}
-			else if(s == ',') str = str.substring(1);
-			else if(s == '}') break;
-			else str = str.substring(1);
+			if(str.starts(']')) str = sub(str, 1);
+			return RET.set(root, str);
 		}
-		if(str.startsWith("}")) str = str.substring(1);
-		return new Ret(root, str);
-	}
 
-	private static Ret parseArray(JsonArray root, String str){
-		if(str.startsWith("[")) str = str.substring(1);
-		while(str.length() > 0){
-			str = str.trim();
-			char s = str.charAt(0);
-			if(s == '"'){
-				String val = scanTill(str, '"');
-				str = str.substring(val.length() + 1);
-				root.add(parseValue(val.substring(1)));
+		private static JsonObject<?> parseValue(String val){
+			val = val.trim();
+			if(val.equals("null")){
+				return new JsonObject<String>(val);//new JsonObject<Object>(null);
 			}
-			else if(s == '{'){
-				Ret ret = parseMap(new JsonMap(), str);
-				root.add(ret.obj);
-				str = ret.str;
+			else if(Pattern.matches(NUMBER, val)){
+				long leng = Long.parseLong(val);
+				if(leng < Integer.MAX_VALUE){
+					return new JsonObject<>((int)leng);
+				}
+				else return new JsonObject<>(leng);
 			}
-			else if(s == '['){
-				Ret ret = parseArray(new JsonArray(), str);
-				root.add(ret.obj);
-				str = ret.str;
+			else if(Pattern.matches(FLOATN, val)){
+				return new JsonObject<>(Float.parseFloat(val));
 			}
-			else if(s == ',') str = str.substring(1);
-			else if(s == ']') break;
-			else {
-				String val = scanTill(str, ',');
-				str = str.substring(val.length());
-				root.add(parseValue(val));
-			}
+			else if(val.equals("true")) return new JsonObject<>(true);
+			else if(val.equals("false")) return new JsonObject<>(false);
+			else return new JsonObject<>(val);
 		}
-		if(str.startsWith("]")) str = str.substring(1);
-		return new Ret(root, str);
-	}
 
-	private static JsonObject<?> parseValue(String val){
-		val = val.trim();
-		if(val.equals("null")){
-			return new JsonObject<String>(val);//new JsonObject<Object>(null);
+		private CharList scanTill(CharList str, char c){
+			index = 1;
+			while(index < str.size() && end(str.get(index), c) /*&& str.get(index - 1) != '\\'*/) index++;
+			return sub(str, 0, index);
 		}
-		else if(Pattern.matches(NUMBER, val)){
-			long leng = Long.parseLong(val);
-			if(leng < Integer.MAX_VALUE){
-				return new JsonObject<>((int)leng);
+
+		private static boolean end(char e, char c){
+			return e != c && e != ']' && e != '}';
+		}
+		
+		private CharList sub(CharList str, int b){
+			while(b > 0){
+				str.remove(0);
+				b--;
 			}
-			else return new JsonObject<>(leng);
+			return str;
 		}
-		else if(Pattern.matches(FLOATN, val)){
-			return new JsonObject<>(Float.parseFloat(val));
+		
+		private CharList sub(CharList str, int b, int e){
+			CharList list = new CharList();
+			for(int i = b; i < e; i++) list.add(str.get(i));
+			return list;
 		}
-		else if(val.equals("true")) return new JsonObject<>(true);
-		else if(val.equals("false")) return new JsonObject<>(false);
-		else return new JsonObject<>(val);
+		
+		private CharList trim(CharList str){
+			int s = 0, z = str.size();
+			while(s < z && str.get(s) <= ' ') s++;
+			while(s < z && str.get(z - 1) <= ' ') z--;
+			if(s > 0 || z < str.size()){
+				COPY.addAll(str);
+				str.clear();
+				for(int i = s; i < z; i++) str.add(COPY.get(i));
+				COPY.clear();
+				return str;
+			}
+			else return str;
+		}
+		
 	}
+	
+	public static class CharList extends ArrayList<Character> {
 
-	private static String scanTill(String str, char c){
-		int index = 1;
-		while(index < str.length() && end(str.charAt(index), c) /*&& str.charAt(index - 1) != '\\'*/) index++;
-		return str.substring(0, index);
-	}
+		public CharList(){}
 
-	private static boolean end(char e, char c){
-		return e != c && e != ']' && e != '}';
+		public CharList(String str){
+			for(char c : str.toCharArray()) add(c);
+		}
+
+		public String asString(){
+			StringBuffer buffer = new StringBuffer();
+			for(char c : this) buffer.append(c);
+			return buffer.toString();
+		}
+
+		public boolean starts(char c){
+			return get(0) == c;
+		}
+		
 	}
 
 	public static String toString(JsonObject<?> obj){
@@ -247,12 +312,13 @@ public class JsonHandler {
 	
 	private static class Ret {
 		
-		private final JsonObject<?> obj;
-		private final String str;
+		private JsonObject<?> obj;
+		private CharList str;
 		
-		public Ret(JsonObject<?> obj, String str){
+		public Ret set(JsonObject<?> obj, CharList str){
 			this.obj = obj;
 			this.str = str;
+			return this;
 		}
 		
 	}
@@ -304,7 +370,7 @@ public class JsonHandler {
 			else if(entry.getValue() instanceof String){
 				json.add(entry.getKey(), entry.getValue() + "");
 			}
-			else json.add(entry.getKey(), parseValue(entry.getValue() + ""));
+			else json.add(entry.getKey(), Parser.parseValue(entry.getValue() + ""));
 		}
 		return json;
 	}
@@ -321,13 +387,13 @@ public class JsonHandler {
 			else if(obj instanceof String){
 				json.add(obj + "");
 			}
-			else json.add(parseValue(obj + ""));
+			else json.add(Parser.parseValue(obj + ""));
 		}
 		return json;
 	}
 
 	public static Object dewrap(String obj){
-		return dewrap(parse(obj, true).asMap());
+		return dewrap(parse(new CharList(obj), true).asMap());
 	}
 
 	public static HashMap<String, Object> dewrap(JsonMap map){
