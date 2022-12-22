@@ -25,6 +25,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -77,9 +78,10 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 	}
 	
 	public static void link(ICommandSender sender, String string, String link){
-		TextComponentString textcomponent = new TextComponentString(Formatter.format(string));
-		textcomponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link == null ? string : link));
-		sender.sendMessage(textcomponent);
+		TextComponentString component = new TextComponentString(Formatter.format(string));
+		component.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link = (link == null ? string : link)));
+		component.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString(link)));
+		sender.sendMessage(component);
 	}
 	
 	private static int sec = -1;
