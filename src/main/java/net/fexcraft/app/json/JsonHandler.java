@@ -80,6 +80,7 @@ public class JsonHandler {
 		private final Ret RET = new Ret();
 		private final CharList COPY = new CharList();
 		private CharList key = null, val = null;
+		private String tkey = null;
 		private char s = ' ';
 		private int index = 0;
 
@@ -95,8 +96,9 @@ public class JsonHandler {
 					str = trim(sub(trim(str), 1));//removing colon
 					s = str.get(0);
 					if(s == '{'){
+						tkey = key.asString();
 						parseMap(new JsonMap(), str);
-						root.add(key.asString(), RET.obj);
+						root.add(tkey, RET.obj);
 						str = RET.str;
 					}
 					else if(s == '['){
