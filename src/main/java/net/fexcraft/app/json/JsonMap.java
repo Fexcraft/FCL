@@ -45,11 +45,6 @@ public class JsonMap extends JsonObject<Map<String, JsonObject<?>>> {
 	}
 	
 	public JsonObject<?> add(String key, JsonObject<?> elm){
-		if(key.contains(".")){
-			String sub = key.substring(0, key.indexOf("."));
-			if(!value.containsKey(sub)) value.put(sub, new JsonMap());
-			return value.get(sub).asMap().add(key.substring(key.indexOf(".") + 1), elm);
-		}
 		return value.put(key, elm);
 	}
 	
