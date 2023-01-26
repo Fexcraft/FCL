@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.12.79-' + getDateSuffix()
+version = '1.12.80-' + getDateSuffix()
 group = 'net.fexcraft.lib' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'FCL'
 
