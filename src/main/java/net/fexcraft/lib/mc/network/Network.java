@@ -11,11 +11,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.fexcraft.lib.common.utils.HttpUtil;
-import net.fexcraft.lib.common.utils.HttpsUtil;
 import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.lib.mc.utils.Statics;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -29,11 +28,6 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 public class Network {
 	
 	private static boolean fcl_version_checked = false;
-	private static boolean check_notifications = false;
-
-	public static void checkConfig(Configuration config){
-		check_notifications = config.getBoolean("notifications", "general", false, "Should FCL check for notifications from fexcraft.net? This is UUID based, you may need to configure your fexcraft.net account for this to work.");
-	}
 	
 	public static JsonObject getModData(String modid){
 		return getModData(modid, null);
@@ -59,7 +53,7 @@ public class Network {
 			for(String s : array){
 				if(s.equals(current_version)){
 					Print.log("THIS VERSION OF " + modid.toUpperCase() + " IS BLOCKED/REMOVED, PLEASE UPDATE;");
-					Static.halt(1);
+					Statics.halt(1);
 					break;
 				}
 			}
@@ -80,7 +74,7 @@ public class Network {
 			for(String s : array){
 				if(s.equals(current_version)){
 					Print.log("THIS VERSION OF " + modid.toUpperCase() + " IS BLOCKED/REMOVED, PLEASE UPDATE;");
-					Static.halt(1);
+					Statics.halt(1);
 					break;
 				}
 			}
@@ -110,49 +104,7 @@ public class Network {
 		}
 	}
 
-	public static void checkStatus(){
-		if(!check_notifications) return;
-		try{
-			String id = "unknown";
-			if(Static.side().isClient()){
-				id = net.minecraft.client.Minecraft.getMinecraft().getSession().getPlayerID();
-			}
-			else{
-				id = "server";
-			}
-			JsonObject obj = HttpsUtil.request("https://fexcraft.net/minecraft/fcl/request", "mode=status&id=" + id, 1000);
-			if(obj == null || obj.entrySet().isEmpty()) return;
-			if(obj.has("notify")){
-				JsonArray notes = obj.get("notify").getAsJsonArray();
-				notifications = new String[notes.size()];
-				for(int i = 0; i < notes.size(); i++){
-					if(notes.get(i).isJsonPrimitive()){
-						notifications[i] = notes.get(i).getAsString();
-					}
-					else{
-						//TODO if necessary someday, advanced parsing and so on.
-					}
-				}
-			}
-			status_data = obj;
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	private static String[] notifications;
 	private static JsonObject status_data;
-
-	public static boolean anyNewNotifications(){
-		return check_notifications && notifications != null && notifications.length > 0;
-	}
-
-	public static void notify(EntityPlayer player){
-		for(String str : notifications){
-			Print.chat(player, Formatter.format(str));
-		}
-	}
 	
 	public JsonObject getStatusJson(){
 		return status_data;
