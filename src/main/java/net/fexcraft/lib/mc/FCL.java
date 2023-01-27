@@ -14,7 +14,7 @@ import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
 import net.fexcraft.lib.mc.registry.CreativeTab;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.lib.mc.utils.Statics;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -51,13 +51,11 @@ public class FCL {
 	
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) throws Exception{
-		Static.setAsMcLib(true);
-		Static.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
-		Static.setIsServer((side = event.getSide()).isServer());
+		Statics.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
+		Statics.setIsServer((side = event.getSide()).isServer());
 		//configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
-		Network.checkConfig(config);
 		config.save();
 		FCLRegistry.prepare(event.getSide(), event.getAsmData());
 		if(event.getSide().isClient()){
