@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:5.1.+'
     }
 }
         
@@ -20,6 +20,8 @@ archivesBaseName = 'FCL'
 def getDateSuffix(){
     return new Date().format('ddMMyyHHmm')
 }
+
+sourceSets.main.java.srcDirs += [ new File(file('..'), "/Json/src") ]
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
