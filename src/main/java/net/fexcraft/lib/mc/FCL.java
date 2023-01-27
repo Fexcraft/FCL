@@ -52,7 +52,7 @@ public class FCL {
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) throws Exception{
 		Static.setAsMcLib(true);
-		Static.setDevmode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
+		Static.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
 		Static.setIsServer((side = event.getSide()).isServer());
 		//configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
