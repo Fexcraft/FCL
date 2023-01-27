@@ -13,15 +13,15 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = TMT.MODID, name = "(Fex's) Turbo Model Thingy", version = TMT.VERSION, clientSideOnly = true, acceptableRemoteVersions = "*", acceptedMinecraftVersions = "*", dependencies = "required-after:fcl")
 public class TMT {
 	
-	@Mod.Instance("tmt")
+	@Mod.Instance("net/fexcraft/lib/tmt")
 	private static TMT INSTANCE;
-	public static final String MODID = "tmt";
+	public static final String MODID = "net/fexcraft/lib/tmt";
 	public static final String VERSION = "1.15";
 	
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event){
 		SimpleUpdateHandler.register(MODID, 1, VERSION);
-		SimpleUpdateHandler.setUpdateMessage(MODID, Formatter.format("&0[&9TMT&0]&7") + " Update available! (" + SimpleUpdateHandler.getLatestVersionOf("tmt") + ")");
+		SimpleUpdateHandler.setUpdateMessage(MODID, Formatter.format("&0[&9TMT&0]&7") + " Update available! (" + SimpleUpdateHandler.getLatestVersionOf("net/fexcraft/lib/tmt") + ")");
 	}
 	
 }
