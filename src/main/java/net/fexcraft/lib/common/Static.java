@@ -1,5 +1,7 @@
 package net.fexcraft.lib.common;
 
+import net.fexcraft.app.json.FJson;
+
 import java.io.InputStream;
 import java.util.Random;
 
