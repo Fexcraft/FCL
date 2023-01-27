@@ -14,7 +14,7 @@ import com.google.common.collect.ImmutableMap;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonObject;
-import net.fexcraft.lib.common.math.Axis3DL;
+import net.fexcraft.lib.mc.utils.Axis3DL;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.Vec3f;
