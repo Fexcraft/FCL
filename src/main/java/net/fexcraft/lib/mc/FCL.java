@@ -62,6 +62,7 @@ public class FCL {
 		FCLRegistry.prepare(event.getSide(), event.getAsmData());
 		if(event.getSide().isClient()){
 			net.fexcraft.lib.mc.render.LoaderReg.ister();
+			net.fexcraft.lib.common.math.AxisRotator.DefHolder.DEF_IMPL = net.fexcraft.lib.mc.utils.Axis3DL.class;
 		}
 	}
 	
