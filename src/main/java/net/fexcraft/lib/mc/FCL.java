@@ -13,9 +13,12 @@ import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
 import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
 import net.fexcraft.lib.mc.registry.CreativeTab;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
+import net.fexcraft.lib.mc.render.FCLBlockModel;
+import net.fexcraft.lib.mc.render.FCLBlockModelLoader;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Statics;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -50,7 +53,7 @@ public class FCL {
 	//private static File configdir;
 	
 	@Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) throws Exception{
+    public void preInit(FMLPreInitializationEvent event) throws Exception {
 		Statics.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
 		Statics.setIsServer((side = event.getSide()).isServer());
 		//configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
@@ -61,6 +64,7 @@ public class FCL {
 		if(event.getSide().isClient()){
 			net.fexcraft.lib.mc.render.LoaderReg.ister();
 			net.fexcraft.lib.common.math.AxisRotator.DefHolder.DEF_IMPL = net.fexcraft.lib.mc.utils.Axis3DL.class;
+			net.fexcraft.lib.mc.render.FCLBlockModelLoader.addBlockModel(new ResourceLocation("fcl:models/block/blueprinttable"), (FCLBlockModel)((Class<?>)FCLRegistry.getModel("fcl:models/block/bpt")).newInstance());
 		}
 	}
 	

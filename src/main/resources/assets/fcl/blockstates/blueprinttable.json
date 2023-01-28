@@ -1,9 +1,27 @@
 {
+    "forge_marker": 1,
+    "defaults": {
+        "model": "fcl:bpt",
+        "transform": "forge:default-block",
+        "custom": {
+            "t-x": 0.5,
+            "t-z": 0.5
+        }
+    },
     "variants": {
-        "normal": { "model": "fcl:blueprinttable" },
-        "facing=north": { "model": "fcl:blueprinttable", "y": 180 },
-        "facing=south": { "model": "fcl:blueprinttable" },
-        "facing=west":  { "model": "fcl:blueprinttable", "y": 90 },
-        "facing=east":  { "model": "fcl:blueprinttable", "y": 270 }
+        "facing": {
+            "north": {
+                "custom": { "y": 0 }
+            },
+            "south": {
+                "custom": { "y": 180 }
+            },
+            "west": {
+                "custom": { "y": -90 }
+            },
+            "east": {
+                "custom": { "y": 90 }
+            }
+        }
     }
 }

@@ -1,15 +1,6 @@
 {
-    "parent": "fcl:block/blueprinttable",
-    "display": {
-        "thirdperson": {
-            "rotation": [ 10, -45, 170 ],
-            "translation": [ 0, 1.5, -2.75 ],
-            "scale": [ 0.375, 0.375, 0.375 ]
-        },
-		"gui": {
-            "rotation": [ 30, 45, 0 ],
-            "translation": [ 0, 0, 0 ],
-            "scale": [ 0.625, 0.625, 0.625 ]
-		}
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "fcl:items/bpt"
     }
 }
