@@ -20,9 +20,9 @@ public class Pos {
 
     public Pos(float x, float y, float z){
         this.x = x; this.y = y; this.z = z;
-        x16 = x * Statics.sixteenth;
-        y16 = y * Statics.sixteenth;
-        z16 = z * Statics.sixteenth;
+        x16 = x * Static.sixteenth;
+        y16 = y * Static.sixteenth;
+        z16 = z * Static.sixteenth;
     }
 
     public Pos(float[] pos){

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 
-import net.fexcraft.lib.mc.utils.Statics;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.block.BlockWallSign;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTBase;
@@ -68,7 +68,7 @@ public interface SignCapability {
 		public default void readNBT(Capability<SignCapability> capability, EnumFacing side, @Nullable NBTBase nbt){}
 		
 		public default void sendUpdate(TileEntitySign tileentity){
-			Statics.getServer().getPlayerList().getPlayers().forEach(player -> {
+			Static.getServer().getPlayerList().getPlayers().forEach(player -> {
 				if(player.getPosition().distanceSq(tileentity.getPos()) < 256)
 				player.connection.sendPacket(tileentity.getUpdatePacket());
 			});

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import net.fexcraft.lib.mc.api.packet.IPacketListener;
 import net.fexcraft.lib.mc.api.packet.IPacketReceiver;
 import net.fexcraft.lib.mc.network.packet.PacketTileEntityUpdate;
-import net.fexcraft.lib.mc.utils.Statics;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IThreadListener;
@@ -58,14 +58,14 @@ public class TileEntityUpdatePacketHandler{
 		
 		@Override
 		public IMessage onMessage(final PacketTileEntityUpdate packet, MessageContext ctx) {
-			IThreadListener ls = Statics.getServer();
+			IThreadListener ls = Static.getServer();
 			ls.addScheduledTask(new Runnable(){
 				@SuppressWarnings("unchecked")
 				@Override
 				public void run() {
-					Chunk ck = Statics.getServer().worlds[packet.dim].getChunk(packet.pos);
+					Chunk ck = Static.getServer().worlds[packet.dim].getChunk(packet.pos);
 					if(ck.isLoaded()){
-						TileEntity te = Statics.getServer().worlds[packet.dim].getTileEntity(packet.pos);
+						TileEntity te = Static.getServer().worlds[packet.dim].getTileEntity(packet.pos);
 						if(te instanceof IPacketReceiver){
 							((IPacketReceiver<PacketTileEntityUpdate>)te).processServerPacket(packet);
 						}

@@ -4,7 +4,7 @@ import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Statics;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTBase;
@@ -55,7 +55,7 @@ public class PaintableImplementation implements Paintable {
 
 	@Override
 	public void setColor(EnumDyeColor dye){
-		color = Statics.fromDyeColor(dye);
+		color = Static.fromDyeColor(dye);
 	}
 
 	@Override

@@ -26,7 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
  *
  *         MC version/mirror of net.fexcraft.lib.common.Static.class
  */
-public class Statics extends net.fexcraft.lib.common.Static {
+public class Static extends net.fexcraft.lib.common.Static {
 
 	private static final HashMap<UUID, String> UUID_PLAYER_CACHE = new HashMap<UUID, String>();
 

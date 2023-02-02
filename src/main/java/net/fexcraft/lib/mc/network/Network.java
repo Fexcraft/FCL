@@ -6,20 +6,16 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.fexcraft.lib.common.utils.HttpUtil;
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Statics;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
@@ -53,7 +49,7 @@ public class Network {
 			for(String s : array){
 				if(s.equals(current_version)){
 					Print.log("THIS VERSION OF " + modid.toUpperCase() + " IS BLOCKED/REMOVED, PLEASE UPDATE;");
-					Statics.halt(1);
+					Static.halt(1);
 					break;
 				}
 			}
@@ -74,7 +70,7 @@ public class Network {
 			for(String s : array){
 				if(s.equals(current_version)){
 					Print.log("THIS VERSION OF " + modid.toUpperCase() + " IS BLOCKED/REMOVED, PLEASE UPDATE;");
-					Statics.halt(1);
+					Static.halt(1);
 					break;
 				}
 			}

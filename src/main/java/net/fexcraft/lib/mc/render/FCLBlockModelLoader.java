@@ -19,7 +19,7 @@ import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
-import net.fexcraft.lib.mc.utils.Statics;
+import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -211,7 +211,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 		private Model root;
 		//
 		private Vec3f translate;
-		private float scale = Statics.sixteenth;
+		private float scale = Static.sixteenth;
 		private Axis3DL axis, axis1, axis2;
 
 		public BakedModel(ResourceLocation modellocation, Model state, VertexFormat format, FCLBlockModel blockmodel){
@@ -247,7 +247,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 				translate.x = root.customdata.containsKey("t-x") ? Float.parseFloat(root.customdata.get("t-x")) : 0;
 				translate.y = root.customdata.containsKey("t-y") ? Float.parseFloat(root.customdata.get("t-y")) : 0;
 				translate.z = root.customdata.containsKey("t-z") ? Float.parseFloat(root.customdata.get("t-z")) : 0;
-				scale = root.customdata.containsKey("scale") ? Float.parseFloat(root.customdata.get("scale")) : Statics.sixteenth;
+				scale = root.customdata.containsKey("scale") ? Float.parseFloat(root.customdata.get("scale")) : Static.sixteenth;
 			}
 			else axis1.setAngles(180, 180, 0);
 			Collection<ModelRendererTurbo> mrts = model.getPolygons(state, side, root.customdata, rand);

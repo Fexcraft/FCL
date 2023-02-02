@@ -7,16 +7,14 @@ import net.fexcraft.lib.mc.capabilities.paint.PaintableSerializer;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapabilitySerializer;
 import net.fexcraft.lib.mc.gui.GuiHandler;
-import net.fexcraft.lib.mc.network.Network;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
 import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
 import net.fexcraft.lib.mc.registry.CreativeTab;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.render.FCLBlockModel;
-import net.fexcraft.lib.mc.render.FCLBlockModelLoader;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Statics;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -54,8 +52,8 @@ public class FCL {
 	
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) throws Exception {
-		Statics.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
-		Statics.setIsServer((side = event.getSide()).isServer());
+		Static.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
+		Static.setIsServer((side = event.getSide()).isServer());
 		//configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();

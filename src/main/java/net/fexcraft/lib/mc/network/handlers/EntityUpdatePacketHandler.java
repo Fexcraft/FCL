@@ -5,7 +5,7 @@ import java.util.HashSet;
 import net.fexcraft.lib.mc.api.packet.IPacketListener;
 import net.fexcraft.lib.mc.api.packet.IPacketReceiver;
 import net.fexcraft.lib.mc.network.packet.PacketEntityUpdate;
-import net.fexcraft.lib.mc.utils.Statics;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.IThreadListener;
@@ -57,12 +57,12 @@ public class EntityUpdatePacketHandler {
 		
 		@Override
 		public IMessage onMessage(final PacketEntityUpdate packet, MessageContext ctx) {
-			IThreadListener ls = Statics.getServer();
+			IThreadListener ls = Static.getServer();
 			ls.addScheduledTask(new Runnable(){
 				@SuppressWarnings("unchecked")
 				@Override
 				public void run(){
-					Entity entity = Statics.getServer().worlds[packet.dim].getEntityByID(packet.id);
+					Entity entity = Static.getServer().worlds[packet.dim].getEntityByID(packet.id);
 					if(entity != null && entity instanceof IPacketReceiver){
 						((IPacketReceiver<PacketEntityUpdate>)entity).processServerPacket(packet);
 					}

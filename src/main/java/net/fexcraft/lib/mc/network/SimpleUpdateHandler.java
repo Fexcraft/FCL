@@ -9,7 +9,7 @@ import com.google.gson.JsonObject;
 import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Statics;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
@@ -115,7 +115,7 @@ public class SimpleUpdateHandler{
 				Print.log("Malformed Moddata JSON for modid '" + modid + "'!");
 				Print.log(obj.get(modid).toString());
 				Print.log("-----------------------");
-				Statics.stop();
+				Static.stop();
 				return "error";
 			}
 		}
@@ -132,7 +132,7 @@ public class SimpleUpdateHandler{
 					for(String modid : mods_to_update){
 						String string = update_message_queue.get(modid);
 						if(string == null || string.length() < 4) continue;
-						if(Statics.dev()){
+						if(Static.dev()){
 							Print.log(Formatter.format(update_message_queue.get(modid)));
 						}
 						else{
