@@ -116,6 +116,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 		private HashMap<ResourceLocation, TextureAtlasSprite> textures = new HashMap<>();
 		private Collection<ResourceLocation> textur;
 		private FCLBlockModel blockmodel;
+		protected TextureAtlasSprite particle;
 		private static final IModelState defstate = new IModelState(){
 			@Override
 			public Optional<TRSRTransformation> apply(Optional<? extends IModelPart> part){
@@ -157,7 +158,10 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 
 		@Override
 		public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> func){
-			for(ResourceLocation loc : textur) textures.put(loc, func.apply(loc));
+			for(ResourceLocation loc : textur){
+				textures.put(loc, func.apply(loc));
+				if(loc.getPath().endsWith("particle")) particle = textures.get(loc);
+			}
 			return new BakedModel(modellocation, this, format, blockmodel);
 		}
 
@@ -166,7 +170,9 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			if(coll == null) coll = new ArrayList<>();
 			if(customdata != null && customdata.containsKey("textures")){
 				JsonArray array = JsonHandler.parse(customdata.get("textures"), false).asArray();
-				for(JsonObject<?> elm : array.elements()) coll.add(new ResourceLocation(elm.string_value()));
+				for(JsonObject<?> elm : array.elements()){
+					coll.add(new ResourceLocation(elm.string_value()));
+				}
 			}
 			if(coll.size() == 0){
 				String str = modellocation.toString().replace("models/block", "blocks");
@@ -365,7 +371,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 		@Override
 		@Nonnull
 		public TextureAtlasSprite getParticleTexture(){
-			return ModelLoader.White.INSTANCE;
+			return root.particle == null ? deftex : root.particle;
 		}
 
 		@Override
@@ -381,7 +387,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 
 		@Override
 		public boolean isAmbientOcclusion(){
-			return false;
+			return true;
 		}
 
 	}
