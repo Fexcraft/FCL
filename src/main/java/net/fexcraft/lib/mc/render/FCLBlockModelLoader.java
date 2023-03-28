@@ -7,18 +7,15 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.google.common.collect.ImmutableMap;
-
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonObject;
-import net.fexcraft.lib.mc.utils.Axis3DL;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
+import net.fexcraft.lib.mc.utils.Axis3DL;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.minecraft.block.properties.IProperty;
@@ -37,7 +34,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.obj.OBJModel.TextureCoordinate;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad.Builder;
@@ -46,6 +42,7 @@ import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Somewhat based on the OBJLoader in Forge/FML.
@@ -57,12 +54,10 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 	private static final FCLBlockModelLoader INSTANCE = new FCLBlockModelLoader();
 	private static final TreeMap<ResourceLocation, FCLBlockModel> MAP = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Model> MODELS = new TreeMap<>();
-	private static final TreeMap<ResourceLocation, Model> BAKEDMODELS = new TreeMap<>();
 
 	@Override
 	public void onResourceManagerReload(IResourceManager resourcemanager){
 		MODELS.clear();
-		BAKEDMODELS.clear();
 		BakedModel.tempres.clear();
 		BakedModel.quads.clear();
 	}
