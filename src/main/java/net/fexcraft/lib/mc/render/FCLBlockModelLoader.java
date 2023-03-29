@@ -119,6 +119,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			};
 		};
 		private Map<String, String> customdata;
+		private boolean amoc;
 
 		private Model(ResourceLocation rs){
 			this.modellocation = rs;
@@ -138,6 +139,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 					}
 				}
 			}
+			amoc = customdata.containsKey("ambient_occlusion") && Boolean.parseBoolean(customdata.get("ambient_occlusion"));
 			getTexturesFromModel();
 		}
 
@@ -382,7 +384,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 
 		@Override
 		public boolean isAmbientOcclusion(){
-			return true;
+			return root.amoc;
 		}
 
 	}
