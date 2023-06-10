@@ -1,13 +1,12 @@
 package net.fexcraft.lib.mc.utils;
 
-import org.lwjgl.opengl.GL11;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
+import net.fexcraft.app.json.FJson;
+import net.fexcraft.app.json.JsonArray;
+import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.Vec3f;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.Vec3d;
+import org.lwjgl.opengl.GL11;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -56,12 +55,12 @@ public class Pos {
 
 	public com.google.gson.JsonElement toJson(boolean asarray){
 		if(asarray){
-			JsonArray array = new JsonArray();
+			com.google.gson.JsonArray array = new com.google.gson.JsonArray();
 			array.add(x); array.add(y); array.add(z);
 			return array;
 		}
 		else{
-	        JsonObject obj = new JsonObject();
+			com.google.gson.JsonObject obj = new com.google.gson.JsonObject();
 	        obj.addProperty("x", x);
 	        obj.addProperty("y", y);
 	        obj.addProperty("z", z);
@@ -72,16 +71,37 @@ public class Pos {
 	public static Pos fromJson(com.google.gson.JsonElement elm, boolean wasarray){
 		float x, y, z;
 		if(wasarray){
-			JsonArray array = elm.getAsJsonArray();
+			com.google.gson.JsonArray array = elm.getAsJsonArray();
 			x = array.size() > 0 ? array.get(0).getAsFloat() : 0;
 			y = array.size() > 1 ? array.get(1).getAsFloat() : 0;
 			z = array.size() > 2 ? array.get(2).getAsFloat() : 0;
 		}
 		else{
-			JsonObject obj = elm.getAsJsonObject();
+			com.google.gson.JsonObject obj = elm.getAsJsonObject();
 			x = obj.has("x") ? obj.get("x").getAsFloat() : 0;
 			y = obj.has("y") ? obj.get("y").getAsFloat() : 0;
 			z = obj.has("z") ? obj.get("z").getAsFloat() : 0;
+		}
+		return new Pos(x, y, z);
+	}
+
+	public FJson asJson(boolean asarray){
+		return asarray ? new JsonArray(x, y, z) : new JsonMap("x", x, "y", y, "z", z);
+	}
+
+	public static Pos frJson(FJson json, boolean wasarray){
+		float x, y, z;
+		if(wasarray){
+			JsonArray array = json.asArray();
+			x = array.size() > 0 ? array.get(0).float_value() : 0;
+			y = array.size() > 1 ? array.get(1).float_value() : 0;
+			z = array.size() > 2 ? array.get(2).float_value() : 0;
+		}
+		else{
+			JsonMap map = json.asMap();
+			x = map.getFloat("x", 0);
+			y = map.getFloat("y", 0);
+			z = map.getFloat("z", 0);
 		}
 		return new Pos(x, y, z);
 	}
