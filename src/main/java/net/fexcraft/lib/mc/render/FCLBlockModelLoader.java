@@ -10,7 +10,7 @@ import javax.vecmath.Matrix4f;
 import com.google.common.collect.ImmutableMap;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonHandler;
-import net.fexcraft.app.json.JsonObject;
+import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.Vec3f;
@@ -167,7 +167,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			if(coll == null) coll = new ArrayList<>();
 			if(customdata != null && customdata.containsKey("textures")){
 				JsonArray array = JsonHandler.parse(customdata.get("textures"), false).asArray();
-				for(JsonObject<?> elm : array.elements()){
+				for(JsonValue<?> elm : array.elements()){
 					coll.add(new ResourceLocation(elm.string_value()));
 				}
 			}
