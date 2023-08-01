@@ -13,6 +13,7 @@ import net.fexcraft.lib.mc.utils.Static;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
+@Deprecated
 public class SimpleUpdateHandler{
 	
 	private static JsonObject obj = new JsonObject();
