@@ -115,7 +115,7 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 		if(Static.dev()){
 			String str = "[\n";
 			for(int i = 0; i < objs.length; i++){
-				str += "\t" + (objs[i] == null ? ">> IS null;" : String.valueOf(objs[i]) + (i == objs.length - 1 ? "" : ", ")) + "\n";
+				str += "\t" + (objs[i] == null ? ":null:" : String.valueOf(objs[i]) + (i == objs.length - 1 ? "" : ", ")) + "\n";
 			}
 			log(str + "]");
 		}
