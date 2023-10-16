@@ -2,11 +2,10 @@ package net.fexcraft.lib.mc.capabilities.sign;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import net.fexcraft.lib.common.math.Time;
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.network.Network;
-import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTBase;
