@@ -2,8 +2,8 @@ package net.fexcraft.lib.mc.crafting;
 
 import java.util.ArrayList;
 
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.gui.GenericContainer;
-import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
