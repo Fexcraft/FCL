@@ -1,7 +1,7 @@
 package net.fexcraft.lib.mc;
 
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
-import net.fexcraft.lib.mc.utils.Formatter;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
