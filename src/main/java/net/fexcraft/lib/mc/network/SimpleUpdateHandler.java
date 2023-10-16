@@ -5,9 +5,8 @@ import java.util.HashSet;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.FCL;
-import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
