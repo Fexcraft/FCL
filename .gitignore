@@ -23,8 +23,7 @@ run
 .nb*
 *.jar
 localrepos
-old/
-gradle/
+
 
 # Files from Forge MDK
 forge*changelog.txt
