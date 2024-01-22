@@ -22,8 +22,8 @@ def getDateSuffix(){
 }
 
 sourceSets.main.java.srcDirs += [
-    new File("./deps/Json/src"),
-    new File("./deps/FCLN/src")
+    new File(file('..'), "/Json/src"),
+    new File(file('..'), "/FCLN/src")
 ]
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
