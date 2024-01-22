@@ -1,6 +1,3 @@
-[submodule "deps/Json"]
-	path = deps/Json
-	url = https://github.com/fexcraft-net/Json.git
 [submodule "deps/FCLN"]
 	path = deps/FCLN
 	url = https://github.com/fexcraft-net/FCLN.git
