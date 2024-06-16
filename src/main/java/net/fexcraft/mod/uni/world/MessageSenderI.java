@@ -10,7 +10,7 @@ import net.minecraft.util.text.TextComponentString;
  */
 public class MessageSenderI implements MessageSender {
 
-	private final ICommandSender sender;
+	public final ICommandSender sender;
 
 	public MessageSenderI(ICommandSender sender){
 		this.sender = sender;
