@@ -15,6 +15,13 @@ import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.render.FCLBlockModel;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.IDLManager;
+import net.fexcraft.mod.uni.impl.IDLM;
+import net.fexcraft.mod.uni.impl.TagCWI;
+import net.fexcraft.mod.uni.impl.TagLWI;
+import net.fexcraft.mod.uni.tag.TagCW;
+import net.fexcraft.mod.uni.tag.TagLW;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -52,6 +59,12 @@ public class FCL {
 	
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) throws Exception {
+		EnvInfo.CLIENT = event.getSide().isClient();
+		EnvInfo.DEV = (Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment");
+		IDLManager.INSTANCE[0] = new IDLM();
+		TagCW.SUPPLIER[0] = () -> new TagCWI();
+		TagCW.WRAPPER[0] = obj -> new TagCWI(obj);
+		TagLW.SUPPLIER[0] = () -> new TagLWI();
 		Static.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
 		Static.setIsServer((side = event.getSide()).isServer());
 		//configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
