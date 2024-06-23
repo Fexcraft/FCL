@@ -2,6 +2,7 @@ package net.fexcraft.lib.mc;
 
 import java.util.UUID;
 
+import net.fexcraft.lib.mc.capabilities.FCLCapabilities;
 import net.fexcraft.lib.mc.capabilities.paint.Paintable;
 import net.fexcraft.lib.mc.capabilities.paint.PaintableSerializer;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
@@ -17,11 +18,15 @@ import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDLManager;
+import net.fexcraft.mod.uni.UniPlayer;
 import net.fexcraft.mod.uni.impl.IDLM;
 import net.fexcraft.mod.uni.impl.TagCWI;
 import net.fexcraft.mod.uni.impl.TagLWI;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
+import net.fexcraft.mod.uni.util.UniPlayerCallable;
+import net.fexcraft.mod.uni.util.UniPlayerStorage;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -102,6 +107,8 @@ public class FCL {
 		MinecraftForge.EVENT_BUS.register(new SignCapabilitySerializer.EventHandler());
 		CapabilityManager.INSTANCE.register(SignCapability.class, new SignCapabilitySerializer.Storage(), new SignCapabilitySerializer.Callable());
 		CapabilityManager.INSTANCE.register(Paintable.class, new PaintableSerializer.Storage(), new PaintableSerializer.Callable());
+		CapabilityManager.INSTANCE.register(UniPlayer.class, new UniPlayerStorage(), new UniPlayerCallable());
+		UniPlayer.GETTER = ent -> ((EntityPlayer)ent).getCapability(FCLCapabilities.PLAYER, null);
 		SignCapabilitySerializer.addListener(net.fexcraft.lib.mc.capabilities.sign.ExampleListener.class);
 		//RecipeRegistry.importVanillaRecipes();
 		NBTTagCompoundPacketHandler.addListener(Side.SERVER, new net.fexcraft.lib.mc.gui.ServerReceiver());
