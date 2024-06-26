@@ -26,6 +26,8 @@ import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.util.UniPlayerCallable;
 import net.fexcraft.mod.uni.util.UniPlayerStorage;
+import net.fexcraft.mod.uni.world.EntityWI;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
@@ -109,6 +111,7 @@ public class FCL {
 		CapabilityManager.INSTANCE.register(Paintable.class, new PaintableSerializer.Storage(), new PaintableSerializer.Callable());
 		CapabilityManager.INSTANCE.register(UniPlayer.class, new UniPlayerStorage(), new UniPlayerCallable());
 		UniPlayer.GETTER = ent -> ((EntityPlayer)ent).getCapability(FCLCapabilities.PLAYER, null);
+		UniPlayer.ENTITY_GETTER = ent -> new EntityWI((Entity)ent);
 		SignCapabilitySerializer.addListener(net.fexcraft.lib.mc.capabilities.sign.ExampleListener.class);
 		//RecipeRegistry.importVanillaRecipes();
 		NBTTagCompoundPacketHandler.addListener(Side.SERVER, new net.fexcraft.lib.mc.gui.ServerReceiver());
