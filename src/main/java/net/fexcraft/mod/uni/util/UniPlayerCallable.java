@@ -1,12 +1,12 @@
 package net.fexcraft.mod.uni.util;
 
-import net.fexcraft.mod.uni.UniPlayer;
+import net.fexcraft.mod.uni.UniEntity;
 
-public class UniPlayerCallable implements java.util.concurrent.Callable<UniPlayer> {
+public class UniPlayerCallable implements java.util.concurrent.Callable<UniEntity> {
 
 	@Override
-	public UniPlayer call() throws Exception {
-		return new UniPlayer();
+	public UniEntity call() throws Exception {
+		return new UniEntity();
 	}
 
 }

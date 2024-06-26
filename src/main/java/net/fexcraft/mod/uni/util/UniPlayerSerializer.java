@@ -1,7 +1,7 @@
 package net.fexcraft.mod.uni.util;
 
 import net.fexcraft.lib.mc.capabilities.FCLCapabilities;
-import net.fexcraft.mod.uni.UniPlayer;
+import net.fexcraft.mod.uni.UniEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
@@ -10,7 +10,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 public class UniPlayerSerializer implements ICapabilitySerializable<NBTBase>{
 	
-	private UniPlayer instance;
+	private UniEntity instance;
 	
 	public UniPlayerSerializer(Entity entity){
 		(instance = FCLCapabilities.PLAYER.getDefaultInstance()).set(entity);
