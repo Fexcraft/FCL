@@ -3,7 +3,9 @@ package net.fexcraft.mod.uni.world;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.ui.UIKey;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -92,7 +94,13 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public void openUI(String id, V3I pos){
-		//TODO
+		openUI(UIKey.find(id), pos);
+	}
+
+	@Override
+	public void openUI(UIKey key, V3I pos){
+		if(key == null || entity instanceof EntityPlayer == false) return;
+		((EntityPlayer)entity).openGui(UniReg.getInst(key), key.id, world.local(), pos.x, pos.y, pos.z);
 	}
 
 	@Override
