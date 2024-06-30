@@ -2,6 +2,7 @@ package net.fexcraft.lib.mc;
 
 import java.util.UUID;
 
+import net.fexcraft.lib.frl.GLO;
 import net.fexcraft.lib.mc.capabilities.FCLCapabilities;
 import net.fexcraft.lib.mc.capabilities.paint.Paintable;
 import net.fexcraft.lib.mc.capabilities.paint.PaintableSerializer;
@@ -25,12 +26,15 @@ import net.fexcraft.mod.uni.impl.TagCWI;
 import net.fexcraft.mod.uni.impl.TagLWI;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
-import net.fexcraft.mod.uni.ui.UIPacketListener;
+import net.fexcraft.mod.uni.ui.*;
 import net.fexcraft.mod.uni.util.UniPlayerCallable;
 import net.fexcraft.mod.uni.util.UniPlayerStorage;
 import net.fexcraft.mod.uni.world.EntityWI;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -76,6 +80,21 @@ public class FCL {
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
 		Static.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
 		Static.setIsServer((side = event.getSide()).isServer());
+		if(EnvInfo.CLIENT){
+			UITab.IMPLEMENTATION = UUITab.class;
+			UIButton.IMPLEMENTATION = UUIButton.class;
+			UIText.IMPLEMENTATION = UUIText.class;
+			UIField.IMPLEMENTATION = UUIField.class;
+			ContainerInterface.TRANSLATOR = str -> I18n.format(str);
+			ContainerInterface.TRANSFORMAT = (str, objs) -> I18n.format(str, objs);
+		}
+		UISlot.SLOT_GETTER = (type, args) -> {
+			switch(type){
+				case "default":
+				default:
+					return new Slot((IInventory)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]);
+			}
+		};
 		//configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
