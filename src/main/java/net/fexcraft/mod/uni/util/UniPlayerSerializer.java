@@ -13,7 +13,7 @@ public class UniPlayerSerializer implements ICapabilitySerializable<NBTBase>{
 	private UniEntity instance;
 	
 	public UniPlayerSerializer(Entity entity){
-		(instance = FCLCapabilities.PLAYER.getDefaultInstance()).set(entity);
+		instance = new UniEntity().set(entity);
 	}
 
 	@Override
