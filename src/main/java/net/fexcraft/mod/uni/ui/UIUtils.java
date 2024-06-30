@@ -4,14 +4,10 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import scala.swing.Applet;
-
-import java.io.IOException;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -21,7 +17,7 @@ public class UIUtils {
 	public static JsonMap getMapC(String mod, UIKey key){
 		ResourceLocation loc = null;
 		try{
-			loc = new ResourceLocation(mod, UniReg.MENU_JSON.get(key) + ".json");
+			loc = new ResourceLocation(mod, UniReg.MENU_JSON_C.get(key) + ".json");
 			return JsonHandler.parse(net.minecraft.client.Minecraft.getMinecraft().getResourceManager().getResource(loc).getInputStream());
 		}
 		catch(Exception e){
@@ -34,7 +30,7 @@ public class UIUtils {
 	public static JsonMap getMapS(String mod, UIKey key){
 		String loc = null;
 		try{
-			loc = UniReg.MENU_JSON.get(key) + ".json";
+			loc = UniReg.MENU_JSON_S.get(key) + ".json";
 			return JsonHandler.parse(UniReg.getInst(mod).getClass().getClassLoader().getResourceAsStream(loc));
 		}
 		catch(Exception e){
@@ -49,7 +45,7 @@ public class UIUtils {
 		JsonMap map = getMapC(mod, key);
 		try{
 			ContainerInterface con = UniReg.MENU.get(key).getConstructor(JsonMap.class, UniEntity.class, V3I.class).newInstance(map, UniEntity.get(player), new V3I(x, y, z));
-			return UniReg.GUI.get(key).getConstructor(JsonMap.class, ContainerInterface.class).newInstance(map, con);
+			return new UniUI(UniReg.GUI.get(key).getConstructor(JsonMap.class, ContainerInterface.class).newInstance(map, con), player);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -61,7 +57,7 @@ public class UIUtils {
 		UIKey key = UIKey.find(mod, id);
 		JsonMap map = getMapS(mod, key);
 		try{
-			return UniReg.MENU.get(key).getConstructor(JsonMap.class, UniEntity.class, V3I.class).newInstance(map, UniEntity.get(player), new V3I(x, y, z));
+			return new UniCon(UniReg.MENU.get(key).getConstructor(JsonMap.class, UniEntity.class, V3I.class).newInstance(map, UniEntity.get(player), new V3I(x, y, z)), player);
 		}
 		catch(Exception e){
 			e.printStackTrace();
