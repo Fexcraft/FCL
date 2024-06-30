@@ -14,6 +14,7 @@ import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
 import net.fexcraft.lib.mc.registry.CreativeTab;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.render.FCLBlockModel;
+import net.fexcraft.lib.mc.utils.CapabilityEvents;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.uni.EnvInfo;
@@ -107,6 +108,7 @@ public class FCL {
 		CreativeTab.getIcons();
 		//
 		MinecraftForge.EVENT_BUS.register(new SignCapabilitySerializer.EventHandler());
+		MinecraftForge.EVENT_BUS.register(new CapabilityEvents());
 		CapabilityManager.INSTANCE.register(SignCapability.class, new SignCapabilitySerializer.Storage(), new SignCapabilitySerializer.Callable());
 		CapabilityManager.INSTANCE.register(Paintable.class, new PaintableSerializer.Storage(), new PaintableSerializer.Callable());
 		CapabilityManager.INSTANCE.register(UniEntity.class, new UniPlayerStorage(), new UniPlayerCallable());
