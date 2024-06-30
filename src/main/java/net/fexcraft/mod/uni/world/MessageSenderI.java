@@ -49,4 +49,9 @@ public class MessageSenderI implements MessageSender {
 		}
 	}
 
+	@Override
+	public String getName(){
+		return sender.getName();
+	}
+
 }
