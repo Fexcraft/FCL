@@ -32,7 +32,7 @@ public class UniCon extends Container {
 		this.player = player;
 		con.SEND_TO_CLIENT = (com, pass) -> {
 			com.set("target_listener", "fcl:ui");
-			PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com.local()), (EntityPlayerMP)player);
+			PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com.local()), pass.entity.local());
 			//Packets.sendTo(Packet_TagListener.class, (Passenger)pass, "ui", com);
 		};
 		con.SEND_TO_SERVER = com -> {
