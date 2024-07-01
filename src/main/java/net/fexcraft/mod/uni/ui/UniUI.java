@@ -136,7 +136,7 @@ public class UniUI extends GuiContainer {
 			if(!tab.visible()) continue;
 			for(UIButton button : tab.buttons.values()){
 				if(!button.visible()) continue;
-				if(button.tooltip != null && button.hovered()) tooltip.add(I18n.format(button.tooltip));
+				if(button.tooltip != null && button.hovered()) tooltip.add(button.tooltip);
 			}
 		}
 		if(tooltip.size() > 0) drawHoveringText(tooltip, mx, my);
