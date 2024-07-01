@@ -2,7 +2,7 @@ package net.fexcraft.lib.mc;
 
 import java.util.UUID;
 
-import net.fexcraft.lib.frl.GLO;
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.capabilities.FCLCapabilities;
 import net.fexcraft.lib.mc.capabilities.paint.Paintable;
 import net.fexcraft.lib.mc.capabilities.paint.PaintableSerializer;
@@ -30,7 +30,6 @@ import net.fexcraft.mod.uni.ui.*;
 import net.fexcraft.mod.uni.util.UniPlayerCallable;
 import net.fexcraft.mod.uni.util.UniPlayerStorage;
 import net.fexcraft.mod.uni.world.EntityWI;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -85,8 +84,8 @@ public class FCL {
 			UIButton.IMPLEMENTATION = UUIButton.class;
 			UIText.IMPLEMENTATION = UUIText.class;
 			UIField.IMPLEMENTATION = UUIField.class;
-			ContainerInterface.TRANSLATOR = str -> I18n.format(str);
-			ContainerInterface.TRANSFORMAT = (str, objs) -> I18n.format(str, objs);
+			ContainerInterface.TRANSLATOR = str -> Formatter.format(net.minecraft.client.resources.I18n.format(str));
+			ContainerInterface.TRANSFORMAT = (str, objs) -> Formatter.format(net.minecraft.client.resources.I18n.format(str, objs));
 		}
 		UISlot.SLOT_GETTER = (type, args) -> {
 			switch(type){
