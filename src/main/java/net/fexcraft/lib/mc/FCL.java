@@ -21,9 +21,9 @@ import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.UniEntity;
-import net.fexcraft.mod.uni.impl.IDLM;
-import net.fexcraft.mod.uni.impl.TagCWI;
-import net.fexcraft.mod.uni.impl.TagLWI;
+import net.fexcraft.mod.uni.impl.*;
+import net.fexcraft.mod.uni.item.ItemWrapper;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.ui.*;
@@ -34,6 +34,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -77,6 +79,13 @@ public class FCL {
 		TagCW.SUPPLIER[0] = () -> new TagCWI();
 		TagCW.WRAPPER[0] = obj -> new TagCWI(obj);
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
+		StackWrapper.SUPPLIER = obj -> {
+			if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
+			if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
+			return null;
+		};
+		ItemWrapper.GETTER = id -> Item.REGISTRY.getObject(new ResourceLocation(id));
+		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		Static.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
 		Static.setIsServer((side = event.getSide()).isServer());
 		if(EnvInfo.CLIENT){
