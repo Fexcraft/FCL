@@ -144,6 +144,22 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
+	public int getInventorySize(){
+		if(!isPlayer()) return 0;
+		return ((EntityPlayer)entity).inventory.mainInventory.size();
+	}
+
+	@Override
+	public StackWrapper getStackAt(int idx){
+		return StackWrapper.wrap(((EntityPlayer)entity).inventory.mainInventory.get(idx));
+	}
+
+	@Override
+	public void addStack(StackWrapper stack){
+		((EntityPlayer)entity).addItemStackToInventory(stack.local());
+	}
+
+	@Override
 	public <E> E local(){
 		return (E)entity;
 	}
