@@ -6,6 +6,7 @@ import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.ui.UIKey;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -13,6 +14,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -203,6 +205,23 @@ public class EntityWI implements EntityW {
 	@Override
 	public void dismount(){
 		entity.dismountRidingEntity();
+	}
+
+	@Override
+	public V3D getEyeVec(){
+		Vec3d vec = Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
+		return new V3D(vec.x, vec.y, vec.z);
+	}
+
+	@Override
+	public V3D getLookVec(){
+		Vec3d vec = Minecraft.getMinecraft().getRenderViewEntity().getLook(Minecraft.getMinecraft().getRenderPartialTicks());
+		return new V3D(vec.x, vec.y, vec.z);
+	}
+
+	@Override
+	public boolean isShiftDown(){
+		return entity.isSneaking();
 	}
 
 }
