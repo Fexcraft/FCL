@@ -12,13 +12,13 @@ public class UniPlayerStorage implements IStorage<UniEntity> {
 	@Override
 	public NBTBase writeNBT(Capability<UniEntity> capability, UniEntity instance, EnumFacing side) {
 		TagCW com = TagCW.create();
-		instance.save(com);
+		instance.appended.save(com);
 		return com.local();
 	}
 
 	@Override
 	public void readNBT(Capability<UniEntity> capability, UniEntity instance, EnumFacing side, NBTBase nbt){
-		instance.load(TagCW.wrap(nbt));
+		instance.appended.load(TagCW.wrap(nbt));
 	}
 
 }
