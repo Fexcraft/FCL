@@ -1,6 +1,7 @@
 package net.fexcraft.mod.uni.world;
 
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.mod.uni.EnvInfo;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
@@ -24,6 +25,14 @@ public class MessageSenderI implements MessageSender {
 	@Override
 	public void send(String str, Object... args){
 		sender.sendMessage(new TextComponentString(Formatter.format(str, args)));
+	}
+
+	@Override
+	public void sendLink(Object root, String url){
+		if(EnvInfo.CLIENT){
+			net.minecraft.client.Minecraft.getMinecraft().displayGuiScreen(
+				new net.minecraft.client.gui.GuiConfirmOpenLink((net.minecraft.client.gui.inventory.GuiContainer)root, url, 31102009, true));
+		}
 	}
 
 	@Override
