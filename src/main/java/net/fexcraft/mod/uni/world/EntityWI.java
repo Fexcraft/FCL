@@ -3,11 +3,10 @@ package net.fexcraft.mod.uni.world;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.ui.UIKey;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityMob;
@@ -178,18 +177,26 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public void send(String s){
-		entity.sendMessage(new TextComponentString(Formatter.format(I18n.format(s))));
+		entity.sendMessage(new TextComponentString(Formatter.format(net.minecraft.client.resources.I18n.format(s))));
 	}
 
 	@Override
 	public void send(String str, Object... args){
-		entity.sendMessage(new TextComponentString(Formatter.format(I18n.format(str, args))));
+		entity.sendMessage(new TextComponentString(Formatter.format(net.minecraft.client.resources.I18n.format(str, args))));
+	}
+
+	@Override
+	public void sendLink(Object root, String url){
+		if(EnvInfo.CLIENT){
+			net.minecraft.client.Minecraft.getMinecraft().displayGuiScreen(
+				new net.minecraft.client.gui.GuiConfirmOpenLink((net.minecraft.client.gui.inventory.GuiContainer)root, url, 31102009, true));
+		}
 	}
 
 	@Override
 	public void bar(String s){
 		if(entity instanceof EntityPlayer){
-			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(I18n.format(s))), true);
+			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(net.minecraft.client.resources.I18n.format(s))), true);
 		}
 		else entity.sendMessage(new TextComponentString(Formatter.format(s)));
 	}
@@ -197,7 +204,7 @@ public class EntityWI implements EntityW {
 	@Override
 	public void bar(String s, Object... objs){
 		if(entity instanceof EntityPlayer){
-			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(I18n.format(s, objs))), true);
+			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(net.minecraft.client.resources.I18n.format(s, objs))), true);
 		}
 		else entity.sendMessage(new TextComponentString(Formatter.format(s)));
 	}
@@ -209,13 +216,13 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public V3D getEyeVec(){
-		Vec3d vec = Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks());
+		Vec3d vec = net.minecraft.client.Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(net.minecraft.client.Minecraft.getMinecraft().getRenderPartialTicks());
 		return new V3D(vec.x, vec.y, vec.z);
 	}
 
 	@Override
 	public V3D getLookVec(){
-		Vec3d vec = Minecraft.getMinecraft().getRenderViewEntity().getLook(Minecraft.getMinecraft().getRenderPartialTicks());
+		Vec3d vec = net.minecraft.client.Minecraft.getMinecraft().getRenderViewEntity().getLook(net.minecraft.client.Minecraft.getMinecraft().getRenderPartialTicks());
 		return new V3D(vec.x, vec.y, vec.z);
 	}
 
