@@ -25,6 +25,7 @@ public class UUIField extends UIField {
 		field.setText(value);
 		field.setEnabled(enabled);
 		field.setVisible(visible);
+		field.setMaxStringLength(maxlength);
 	}
 
 	@Override
