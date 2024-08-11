@@ -95,13 +95,7 @@ public class FCL {
 			ContainerInterface.TRANSLATOR = str -> Formatter.format(net.minecraft.client.resources.I18n.format(str));
 			ContainerInterface.TRANSFORMAT = (str, objs) -> Formatter.format(net.minecraft.client.resources.I18n.format(str, objs));
 		}
-		UISlot.SLOT_GETTER = (type, args) -> {
-			switch(type){
-				case "default":
-				default:
-					return new Slot((IInventory)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]);
-			}
-		};
+		UISlot.GETTERS.put("default", args -> new Slot((IInventory)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]));
 		//configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
