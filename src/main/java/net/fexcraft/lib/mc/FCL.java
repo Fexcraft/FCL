@@ -83,6 +83,7 @@ public class FCL {
 			if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
 			return null;
 		};
+		UniEntity.ENTITY_GETTER = ent -> new EntityWI((Entity)ent);
 		ItemWrapper.GETTER = id -> Item.REGISTRY.getObject(new ResourceLocation(id));
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		Static.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
@@ -134,7 +135,6 @@ public class FCL {
 		CapabilityManager.INSTANCE.register(Paintable.class, new PaintableSerializer.Storage(), new PaintableSerializer.Callable());
 		CapabilityManager.INSTANCE.register(UniEntity.class, new UniPlayerStorage(), new UniPlayerCallable());
 		UniEntity.GETTER = ent -> ((EntityPlayer)ent).getCapability(FCLCapabilities.PLAYER, null);
-		UniEntity.ENTITY_GETTER = ent -> new EntityWI((Entity)ent);
 		UIPacketListener.register();
 		SignCapabilitySerializer.addListener(net.fexcraft.lib.mc.capabilities.sign.ExampleListener.class);
 		//RecipeRegistry.importVanillaRecipes();
