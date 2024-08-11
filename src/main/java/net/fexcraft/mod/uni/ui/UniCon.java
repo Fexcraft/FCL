@@ -62,8 +62,7 @@ public class UniCon extends Container {
 			for(int y = 0; y < slot.repeat_y; y++){
 				for(int x = 0; x < slot.repeat_x; x++){
 					try{
-						addSlotToContainer((Slot)UISlot.SLOT_GETTER.apply(slot.type,
-							new Object[]{ inventory, x + (y * slot.repeat_x) + slot.index, slot.x + x * 18, slot.y + y * 18 }));
+						addSlot((Slot)UISlot.get(slot.type,new Object[]{ inventory, x + (y * slot.repeat_x) + slot.index, slot.x + x * 18, slot.y + y * 18 }));
 					}
 					catch(Exception e){
 						Print.log("error during inventory slot creation");
