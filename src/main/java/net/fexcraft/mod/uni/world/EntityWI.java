@@ -13,6 +13,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -229,6 +230,11 @@ public class EntityWI implements EntityW {
 	@Override
 	public boolean isShiftDown(){
 		return entity.isSneaking();
+	}
+
+	@Override
+	public void playSound(Object event, float volume, float pitch){
+		entity.playSound((SoundEvent)event, volume, pitch);
 	}
 
 }
