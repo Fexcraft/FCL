@@ -2,6 +2,7 @@ package net.fexcraft.mod.uni.impl;
 
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
+import net.fexcraft.mod.uni.tag.TagType;
 import net.minecraft.nbt.*;
 
 import java.util.Iterator;
@@ -115,6 +116,22 @@ public class TagLWI implements TagLW {
 	@Override
 	public boolean empty(){
 		return list == null || list.isEmpty();
+	}
+
+	@Override
+	public TagType getType(int idx){
+		NBTBase base = list.get(idx);
+		if(base instanceof NBTTagCompound) return TagType.COMPOUND;
+		if(base instanceof NBTTagList) return TagType.LIST;
+		if(base instanceof NBTTagString) return TagType.STRING;
+		if(base instanceof NBTTagLong) return TagType.LONG;
+		if(base instanceof NBTTagInt) return TagType.INT;
+		if(base instanceof NBTTagIntArray) return TagType.INT_ARRAY;
+		if(base instanceof NBTTagShort) return TagType.SHORT;
+		if(base instanceof NBTTagByte) return TagType.BYTE;
+		if(base instanceof NBTTagFloat) return TagType.FLOAT;
+		if(base instanceof NBTTagDouble) return TagType.DOUBLE;
+		return TagType.UNKNOWN;
 	}
 
 	@Override
