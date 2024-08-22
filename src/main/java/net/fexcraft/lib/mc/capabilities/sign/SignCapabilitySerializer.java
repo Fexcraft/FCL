@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import net.fexcraft.lib.mc.capabilities.FCLCapabilities;
+import net.fexcraft.mod.uni.util.FCLCapabilities;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability.Listener;
 import net.minecraft.block.BlockSign;
 import net.minecraft.block.state.IBlockState;
