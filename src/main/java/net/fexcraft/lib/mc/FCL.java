@@ -139,7 +139,7 @@ public class FCL {
 		CapabilityManager.INSTANCE.register(SignCapability.class, new SignCapabilitySerializer.Storage(), new SignCapabilitySerializer.Callable());
 		CapabilityManager.INSTANCE.register(UniEntity.class, new UniPlayerStorage(), new UniPlayerCallable());
 		CapabilityManager.INSTANCE.register(UniChunk.class, new UniChunkStorage(), new UniChunkCallable());
-		UniEntity.GETTER = ent -> ((EntityPlayer)ent).getCapability(FCLCapabilities.PLAYER, null);
+		UniEntity.GETTER = ent -> ((Entity)ent).getCapability(FCLCapabilities.PLAYER, null);
 		UniChunk.GETTER = ck -> ((Chunk)ck).getCapability(FCLCapabilities.CHUNK, null);
 		UIPacketListener.register();
 		SignCapabilitySerializer.addListener(net.fexcraft.lib.mc.capabilities.sign.ExampleListener.class);
