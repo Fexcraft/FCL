@@ -74,6 +74,11 @@ public class TagLWI implements TagLW {
 	}
 
 	@Override
+	public void add(TagLW value){
+		list.appendTag(value.local());
+	}
+
+	@Override
 	public int size(){
 		return list.tagCount();
 	}
