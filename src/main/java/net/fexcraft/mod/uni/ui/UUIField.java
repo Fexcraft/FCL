@@ -75,8 +75,14 @@ public class UUIField extends UIField {
 		field.setText(text);
 	}
 
+	@Override
 	public String text(){
 		return field.getText();
+	}
+
+	@Override
+	public void maxlength(int nl){
+		field.setMaxStringLength(nl);
 	}
 
 }
