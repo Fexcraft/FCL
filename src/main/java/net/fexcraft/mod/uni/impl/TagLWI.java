@@ -49,6 +49,11 @@ public class TagLWI implements TagLW {
 	}
 
 	@Override
+	public TagLW getList(int idx){
+		return new TagLWI((NBTTagList)list.get(idx));
+	}
+
+	@Override
 	public void add(String value){
 		list.appendTag(new NBTTagString(value));
 	}
