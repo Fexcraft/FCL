@@ -22,11 +22,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ExternalTextureHelper {
 	
 	private static final Map<String, UCResourceLocation> map = new HashMap<String, UCResourceLocation>();
-	public static final String PREFIX = "fcl:remote/";
 	
 	public static UCResourceLocation get(String s){
 		if(map.containsKey(s)) return map.get(s);
-		UCResourceLocation texture = new UCResourceLocation(PREFIX, s);
+		UCResourceLocation texture = new UCResourceLocation("fc-url", s);
 		ITextureObject object = Minecraft.getMinecraft().renderEngine.getTexture(texture);
         if(object == null){
         	SimplerThreadImageDownloader thid = new SimplerThreadImageDownloader(s, texture);
