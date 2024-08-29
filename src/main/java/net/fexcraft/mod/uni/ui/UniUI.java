@@ -6,7 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import net.fexcraft.lib.common.math.RGB;
+import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.impl.ResLoc;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,7 +23,6 @@ import org.lwjgl.input.Mouse;
  */
 public class UniUI extends GuiContainer {
 
-	protected LinkedHashMap<String, UITab> tabs = new LinkedHashMap<>();
 	protected ArrayList<String> tooltip = new ArrayList<>();
 	//
 	protected UniCon container;
@@ -41,6 +42,11 @@ public class UniUI extends GuiContainer {
 			}
 
 			@Override
+			public void drawFull(float x, float y, int w, int h){
+				drawModalRectWithCustomSizedTexture((int)x, (int)y, 0, 0, w, h, w, h);
+			}
+
+			@Override
 			public void draw(int x, int y, StackWrapper stack){
 				RenderHelper.enableGUIStandardItemLighting();
 				itemRender.renderItemIntoGUI(stack.local(), x, y);
@@ -55,6 +61,16 @@ public class UniUI extends GuiContainer {
 			@Override
 			public void apply(RGB color){
 				color.glColorApply();
+			}
+
+			@Override
+			public String translate(String str, Object... args){
+				return I18n.format(str, args);
+			}
+
+			@Override
+			public IDL loadExternal(String urltex){
+				return new ResLoc(ExternalTextureHelper.get(urltex).toString());
 			}
 		};
 	}
@@ -76,8 +92,7 @@ public class UniUI extends GuiContainer {
 		ui.screen_height = height;
 		ui.gLeft = guiLeft;
 		ui.gTop = guiTop;
-		tabs.clear();
-		tabs.putAll(ui.tabs);
+		ui.init();
 	}
 
 	@Override
@@ -89,7 +104,7 @@ public class UniUI extends GuiContainer {
 		GlStateManager.enableBlend();
 		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		for(UITab tab : tabs.values()){
+		for(UITab tab : ui.tabs.values()){
 			if(!tab.visible()) continue;
 			bindTexture(tab.texture);
 			tab.buttons.forEach((key, button) -> {
@@ -132,7 +147,7 @@ public class UniUI extends GuiContainer {
 	protected void postdraw(float ticks, int mx, int my){
 		tooltip.clear();
 		ui.getTooltip(mx, my, tooltip);
-		for(UITab tab : tabs.values()){
+		for(UITab tab : ui.tabs.values()){
 			if(!tab.visible()) continue;
 			for(UIButton button : tab.buttons.values()){
 				if(!button.visible()) continue;
@@ -154,7 +169,7 @@ public class UniUI extends GuiContainer {
 	protected void keyTyped(char c, int code) throws IOException {
 		boolean invbutton = this.mc.gameSettings.keyBindInventory.isActiveAndMatches(code);
 		boolean keytyped = false;
-		for(UITab tab : tabs.values()){
+		for(UITab tab : ui.tabs.values()){
 			if(!tab.visible() || tab.fields.isEmpty()) continue;
 			boolean bool = false;
 			for(UIField field : tab.fields.values()){
@@ -182,7 +197,7 @@ public class UniUI extends GuiContainer {
 		int x = Mouse.getEventX() * width / mc.displayWidth;
 		int y = this.height - Mouse.getEventY() * height / mc.displayHeight - 1;
 		boolean exit = false;
-		for(UITab tab : tabs.values()){
+		for(UITab tab : ui.tabs.values()){
 			if(!tab.visible()) continue;
 			for(Entry<String, UIButton> entry : tab.buttons.entrySet()){
 				if(exit) break;
