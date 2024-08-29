@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import net.fexcraft.lib.common.math.RGB;
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.impl.ResLoc;
@@ -65,7 +66,7 @@ public class UniUI extends GuiContainer {
 
 			@Override
 			public String translate(String str, Object... args){
-				return I18n.format(str, args);
+				return Formatter.format(I18n.format(str, args));
 			}
 
 			@Override
