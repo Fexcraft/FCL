@@ -222,4 +222,6 @@ public class UniUI extends GuiContainer {
 		mc.renderEngine.bindTexture((ResourceLocation)texture);
 	}
 
+	public void initField(UIField field){}
+
 }
