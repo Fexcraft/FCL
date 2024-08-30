@@ -2,6 +2,7 @@ package net.fexcraft.mod.uni.world;
 
 import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -65,6 +66,12 @@ public class WrapperHolderImpl extends WrapperHolder {
 			list.add(prof.getId());
 		}
 		return list;
+	}
+
+	@Override
+	public UUID getUUIDFor0(String string){
+		GameProfile gp = Static.getServer().getPlayerProfileCache().getGameProfileForUsername(string);
+		return gp == null ? null : gp.getId();
 	}
 
 	@Override
