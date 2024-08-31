@@ -75,6 +75,17 @@ public class WrapperHolderImpl extends WrapperHolder {
 	}
 
 	@Override
+	public String getNameFor0(UUID uuid){
+		GameProfile gp = Static.getServer().getPlayerProfileCache().getProfileByUUID(uuid);
+		return gp == null ? "N/F" : gp.getName();
+	}
+
+	@Override
+	public void schedule0(Runnable run){
+		Static.getServer().addScheduledTask(run);
+	}
+
+	@Override
 	public void reset(){
 		client = null;
 	}
