@@ -146,6 +146,7 @@ public class UniUI extends GuiContainer {
 	}
 
 	protected void postdraw(float ticks, int mx, int my){
+		ui.postdraw(ticks, mx, my);
 		tooltip.clear();
 		ui.getTooltip(mx, my, tooltip);
 		for(UITab tab : ui.tabs.values()){
@@ -156,7 +157,6 @@ public class UniUI extends GuiContainer {
 			}
 		}
 		if(tooltip.size() > 0) drawHoveringText(tooltip, mx, my);
-		ui.postdraw(ticks, mx, my);
 	}
 
 
