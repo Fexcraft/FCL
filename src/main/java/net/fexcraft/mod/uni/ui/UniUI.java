@@ -11,6 +11,7 @@ import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.impl.ResLoc;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -222,6 +223,13 @@ public class UniUI extends GuiContainer {
 		mc.renderEngine.bindTexture((ResourceLocation)texture);
 	}
 
-	public void initField(UIField field){}
+	public void initField(UIField field){
+		GuiTextField gfield = ((UUIField)field).field;
+		gfield.width = field.width;
+		gfield.height = field.height;
+		gfield.x = field.x;
+		gfield.y = field.y;
+		gfield.setEnableBackgroundDrawing(field.background);
+	}
 
 }
