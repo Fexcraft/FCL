@@ -21,9 +21,23 @@ def getDateSuffix(){
     return new Date().format('ddMMyyHHmm')
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs += 'src/main/java'
+            srcDirs += new File(file('../..'), "/Json/src")
+            srcDirs += new File(file('..'), "/common/src")
+        }
+        resources {
+            srcDirs += 'src/main/resources'
+            srcDirs += new File(file('..'), "/common/res")
+        }
+    }
+}
+
 sourceSets.main.java.srcDirs += [
-    new File(file('..'), "/Json/src"),
-    new File(file('..'), "/FCLN/src")
+    new File(file('../..'), "/Json/src"),
+    new File(file('..'), "/common/src")
 ]
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
