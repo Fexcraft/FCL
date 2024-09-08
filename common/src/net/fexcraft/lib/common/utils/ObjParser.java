@@ -189,8 +189,7 @@ public class ObjParser {
 			}
 		}
 		catch(Exception e){
-			e.printStackTrace();
-			Print.console("Exception on line " + line + "; " + s + " ; " + group);
+			System.out.println("Exception on line " + line + "; " + s + " ; " + group + "; " + e.getMessage());
 			model.errors = true;
 			//Static.stop();
 		}
