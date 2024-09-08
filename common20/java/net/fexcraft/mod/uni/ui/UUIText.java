@@ -30,8 +30,8 @@ public class UUIText extends UIText {
 				yy = root.y + root.height / 2 + y - height / 2;
 			}
 			else{
-				xx = (x < 0) ? (root.x + root.width + x - textwidth) : (root.x + x);
-				yy = (y < 0) ? (root.y + root.height + y - height) : (root.y + y);
+				xx = x < 0 ? root.x + root.width + x - textwidth : (root.x + x);
+				yy = y < 0 ? root.y + root.height + y - height : (root.y + y);
 			}
 			if(!root.absolute){
 				xx += gl;
@@ -41,8 +41,8 @@ public class UUIText extends UIText {
 		}
 		else{
 			hovered(gl, gt, mx, my);
-			xx = absolute ? ((x < 0) ? (uui.getGuiLeft() + x) : x) : (gl + x);
-			yy = absolute ? ((y < 0) ? (uui.getGuiTop() + y) : y) : (gt + y);
+			xx = absolute ? x < 0 ? ui.screen_width + x : x : gl + x;
+			yy = absolute ? y < 0 ? ui.screen_height + y : y : gt + y;
 		}
 		if(scale == 0.0F || (scale < 0.0F && textwidth < width)){
 			uui.matrix.drawString(uui.getMinecraft().font, value, xx, yy, hovered ? hover.packed : color.packed, shadow);
