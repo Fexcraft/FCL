@@ -38,7 +38,9 @@ public class UserInterface {
 		this.container = container.set(this);
 		if(map.has("texts")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("texts").entries()){
-				texts.put(entry.getKey(), UIElement.create(UIText.IMPLEMENTATION, this, entry.getValue().asMap()));
+				UIText text = UIElement.create(UIText.IMPLEMENTATION, this, entry.getValue().asMap());
+				texts.put(entry.getKey(), text);
+				text.translate();
 			}
 		}
 		if(map.has("buttons")){
