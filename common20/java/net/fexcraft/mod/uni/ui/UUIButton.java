@@ -29,8 +29,8 @@ public class UUIButton extends UIButton {
 				for(int col = 0; col < palette[row].length; col++){
 					int a = col * palsize[0];
 					int b = row * palsize[1];
-					int c = absolute ? x < 0 ? uui.width + x : x : gl + x;
-					int d = absolute ? y < 0 ? uui.height + y : y : gt + y;
+					int c = absolute ? x < 0 ? ui.screen_width + x : x : gl + x;
+					int d = absolute ? y < 0 ? ui.screen_height + y : y : gt + y;
 					rgb = palette[row][col];
 					uui.matrix.setColor((rgb.packed >> 16 & 0xFF) / 255.0F, (rgb.packed >> 8 & 0xFF) / 255.0F, (rgb.packed & 0xFF) / 255.0F, rgb.alpha);
 					uui.matrix.blit(resloc, c + a, d + b, u, v, palsize[0], palsize[1]);
@@ -43,7 +43,7 @@ public class UUIButton extends UIButton {
 		uui.matrix.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 		uui.matrix.setColor((rgb.packed >> 16 & 0xFF) / 255.0F, (rgb.packed >> 8 & 0xFF) / 255.0F, (rgb.packed & 0xFF) / 255.0F, rgb.alpha);
 		if(absolute){
-			uui.matrix.blit((texture == null) ? (ResourceLocation)uui.actex : (ResourceLocation)texture, (x < 0) ? (uui.getGuiLeft() + x) : x, (y < 0) ? (uui.getGuiTop() + y) : y, u, v, width, height);
+			uui.matrix.blit((texture == null) ? (ResourceLocation)uui.actex : (ResourceLocation)texture, x < 0 ? ui.screen_width + x : x, y < 0 ? ui.screen_height + y : y, u, v, width, height);
 		}
 		else{
 			uui.matrix.blit((texture == null) ? (ResourceLocation)uui.actex : (ResourceLocation)texture, gl + x, gt + y, u, v, width, height);
