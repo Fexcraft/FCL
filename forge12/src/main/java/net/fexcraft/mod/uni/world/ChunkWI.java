@@ -31,6 +31,16 @@ public class ChunkWI implements ChunkW {
 	}
 
 	@Override
+	public int x(){
+		return chunk.x;
+	}
+
+	@Override
+	public int z(){
+		return chunk.z;
+	}
+
+	@Override
 	public WorldW getWorld(){
 		return world;
 	}
