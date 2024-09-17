@@ -5,8 +5,10 @@ import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.mc.utils.Static;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +26,12 @@ public class WrapperHolderImpl extends WrapperHolder {
 			client = getWorld(net.minecraft.client.Minecraft.getMinecraft().world);
 		}
 		return (W)client;
+	}
+
+	@Override
+	public File getWorldFolder0(WorldW wr){
+		World world = wr.local();
+		return new File(world.getSaveHandler().getWorldDirectory(), (wr.dim() == 0 ? "" : world.provider.getSaveFolder()));
 	}
 
 	@Override
