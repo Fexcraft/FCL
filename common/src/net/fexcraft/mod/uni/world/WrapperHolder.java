@@ -2,6 +2,7 @@ package net.fexcraft.mod.uni.world;
 
 import net.fexcraft.lib.common.math.V3I;
 
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,6 +30,12 @@ public abstract class WrapperHolder {
 	}
 
 	public abstract <W extends WorldW> W getClientWorld0();
+
+	public static File getWorldFolder(WorldW world){
+		return INSTANCE.getWorldFolder0(world);
+	}
+
+	public abstract File getWorldFolder0(WorldW world);
 
 	public static V3I getPos(Object obj){
 		return INSTANCE.getPos0(obj);
