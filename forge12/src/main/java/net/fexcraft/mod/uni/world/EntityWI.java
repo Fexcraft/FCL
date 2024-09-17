@@ -3,6 +3,7 @@ package net.fexcraft.mod.uni.world;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.lib.mc.utils.LinkOpener;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -189,8 +190,7 @@ public class EntityWI implements EntityW {
 	@Override
 	public void sendLink(Object root, String url){
 		if(EnvInfo.CLIENT){
-			net.minecraft.client.Minecraft.getMinecraft().displayGuiScreen(
-				new net.minecraft.client.gui.GuiConfirmOpenLink((net.minecraft.client.gui.inventory.GuiContainer)root, url, 31102009, true));
+			LinkOpener.open(root, url);
 		}
 	}
 
