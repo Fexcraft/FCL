@@ -3,6 +3,9 @@ package net.fexcraft.mod.uni.world;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.minecraft.entity.player.EntityPlayer;
+
+import java.util.List;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -32,5 +35,7 @@ public abstract class WorldW {
 	public abstract void drop(StackWrapper stack, V3D vec);
 
 	public abstract StateWrapper getStateAt(V3I pos);
+
+	public abstract List<EntityW> getPlayers();
 
 }
