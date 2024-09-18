@@ -17,6 +17,8 @@ public interface TagLW extends Iterable<TagCW> {
 
 	public int getInteger(int idx);
 
+	public long getLong(int idx);
+
 	public TagCW getCompound(int idx);
 
 	public TagLW getList(int idx);
