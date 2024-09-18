@@ -2,13 +2,18 @@ package net.fexcraft.mod.uni.impl;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.StateWrapper;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -70,6 +75,15 @@ public class WorldWI extends WorldW {
 	@Override
 	public StateWrapper getStateAt(V3I pos){
 		return StateWrapper.of(level.getBlockState(new BlockPos(pos.x, pos.y, pos.z)));
+	}
+
+	@Override
+	public List<EntityW> getPlayers(){
+		List<EntityW> list = new ArrayList<>();
+		for(Player player : level.players()){
+			list.add(UniEntity.getEntity(player));
+		}
+		return list;
 	}
 
 }
