@@ -2,17 +2,20 @@ package net.fexcraft.mod.uni.impl;
 
 import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.CubeSide;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -101,6 +104,27 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	public void reset(){
 		client = null;
+	}
+
+	@Override
+	public TagCW read0(File file){
+		try{
+			return TagCW.wrap(NbtIo.read(file));
+		}
+		catch(IOException e){
+			e.printStackTrace();
+			return TagCW.create();
+		}
+	}
+
+	@Override
+	public void write0(TagCW compound, File file){
+		try{
+			NbtIo.write(compound.local(), file);
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
 }
