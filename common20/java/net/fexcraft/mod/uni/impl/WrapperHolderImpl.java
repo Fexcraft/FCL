@@ -9,8 +9,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 			client = getWorld(net.minecraft.client.Minecraft.getInstance().level);
 		}
 		return (W)client;
+	}
+
+	@Override
+	public File getWorldFolder0(WorldW world){
+		return FMLPaths.GAMEDIR.get().toFile();
 	}
 
 	@Override
