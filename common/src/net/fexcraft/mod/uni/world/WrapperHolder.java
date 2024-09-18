@@ -2,10 +2,8 @@ package net.fexcraft.mod.uni.world;
 
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.tag.TagCW;
-import net.minecraft.nbt.CompressedStreamTools;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -95,5 +93,17 @@ public abstract class WrapperHolder {
 	}
 
 	protected abstract void write0(TagCW compound, File file);
+
+	public static V3I mutPos(Object pos){
+		return INSTANCE.mutPos0(pos);
+	}
+
+	protected abstract V3I mutPos0(Object pos);
+
+	public static V3I mutPos(int x, int y, int z){
+		return INSTANCE.mutPos0(x, y, z);
+	}
+
+	protected abstract V3I mutPos0(int x, int y, int z);
 
 }
