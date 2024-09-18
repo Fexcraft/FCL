@@ -37,4 +37,6 @@ public abstract class WorldW {
 
 	public abstract List<EntityW> getPlayers();
 
+	public abstract boolean isPositionLoaded(V3I pos);
+
 }
