@@ -32,6 +32,16 @@ public class ChunkWI implements ChunkW {
 	}
 
 	@Override
+	public int x(){
+		return chunk.getPos().x;
+	}
+
+	@Override
+	public int z(){
+		return chunk.getPos().z;
+	}
+
+	@Override
 	public WorldW getWorld(){
 		return WrapperHolder.getWorld(chunk.getLevel());
 	}
