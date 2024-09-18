@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -23,6 +24,7 @@ import java.util.UUID;
 public class WrapperHolderImpl extends WrapperHolder {
 
 	private static WorldW client;
+	private static V3I mvec = new V3I();
 
 	@Override
 	public <W extends WorldW> W getClientWorld0(){
@@ -120,6 +122,17 @@ public class WrapperHolderImpl extends WrapperHolder {
 		catch(IOException e){
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	protected V3I mutPos0(Object obj){
+		BlockPos pos = (BlockPos)obj;
+		return mvec.set(pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	@Override
+	protected V3I mutPos0(int x, int y, int z){
+		return mvec.set(x, y, z);
 	}
 
 }
