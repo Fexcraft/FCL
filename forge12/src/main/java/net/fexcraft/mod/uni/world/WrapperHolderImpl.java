@@ -3,12 +3,16 @@ package net.fexcraft.mod.uni.world;
 import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.mod.uni.tag.TagCW;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -96,6 +100,26 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	public void reset(){
 		client = null;
+	}
+
+	@Override
+	public TagCW read0(File file){
+		try{
+			return TagCW.wrap(CompressedStreamTools.read(file));
+		}
+		catch(Exception e){
+			return TagCW.create();
+		}
+	}
+
+	@Override
+	public void write0(TagCW compound, File file){
+		try{
+			CompressedStreamTools.write(compound.local(), file);
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
 }
