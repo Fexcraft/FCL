@@ -46,6 +46,10 @@ public class V3I {
 		z = array.length >= index ? array[index] : 0;
 	}
 
+	public V3I(long lng){
+		//TODO
+	}
+
 	public V3I sub(V3I vec){
         return sub(vec.x, vec.y, vec.z);
     }
@@ -163,6 +167,10 @@ public class V3I {
 
 	public static V3I fromString(String str){
 		return new V3I(str.split(";"), 0);
+	}
+
+	public long asLong(){
+		return 0;//TODO
 	}
 
 }
