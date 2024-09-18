@@ -7,6 +7,7 @@ import net.fexcraft.mod.uni.item.StackWrapper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 public class WorldWI extends WorldW {
 
+	protected MutableBlockPos mpos = new MutableBlockPos();
 	protected World world;
 
 	public WorldWI(World level){
@@ -84,6 +86,11 @@ public class WorldWI extends WorldW {
 			list.add(UniEntity.getEntity(ent));
 		}
 		return list;
+	}
+
+	@Override
+	public boolean isPositionLoaded(V3I pos){
+		return world.isBlockLoaded(mpos.setPos(pos.x, pos.y, pos.z));
 	}
 
 }
