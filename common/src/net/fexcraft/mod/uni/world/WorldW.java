@@ -3,7 +3,6 @@ package net.fexcraft.mod.uni.world;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.item.StackWrapper;
-import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
