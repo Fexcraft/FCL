@@ -76,4 +76,8 @@ public interface EntityW extends MessageSender {
 
 	public void playSound(Object event, float volume, float pitch);
 
+	public void remove();
+
+	public boolean isRemoved();
+
 }
