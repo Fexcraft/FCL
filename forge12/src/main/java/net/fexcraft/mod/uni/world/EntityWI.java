@@ -237,4 +237,14 @@ public class EntityWI implements EntityW {
 		entity.playSound((SoundEvent)event, volume, pitch);
 	}
 
+	@Override
+	public void remove(){
+		entity.setDead();
+	}
+
+	@Override
+	public boolean isRemoved(){
+		return entity.isDead;
+	}
+
 }
