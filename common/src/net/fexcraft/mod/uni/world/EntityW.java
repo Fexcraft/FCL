@@ -36,6 +36,8 @@ public interface EntityW extends MessageSender {
 
 	public V3D getPos();
 
+	public V3I getV3I();
+
 	public void decreaseXZMotion(double x);
 
 	public void setYawPitch(float oyaw, float opitch, float yaw, float pitch);
