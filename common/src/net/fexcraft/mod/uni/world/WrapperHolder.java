@@ -83,7 +83,7 @@ public abstract class WrapperHolder {
 	public abstract void reset();
 	
 	public static TagCW read(File file){
-		return INSTANCE.read(file);
+		return INSTANCE.read0(file);
 	}
 	
 	protected abstract TagCW read0(File file);
