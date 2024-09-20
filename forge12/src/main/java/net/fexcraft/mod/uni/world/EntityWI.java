@@ -178,6 +178,11 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
+	public V3I getV3I(){
+		return new V3I((int)entity.posX, (int)entity.posY, (int)entity.posZ);
+	}
+
+	@Override
 	public void send(String s){
 		entity.sendMessage(new TextComponentString(Formatter.format(net.minecraft.client.resources.I18n.format(s))));
 	}
