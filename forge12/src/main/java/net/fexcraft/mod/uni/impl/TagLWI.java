@@ -44,11 +44,6 @@ public class TagLWI implements TagLW {
 	}
 
 	@Override
-	public long getLong(int idx){
-		return ((NBTTagLong)list.get(idx)).getLong();
-	}
-
-	@Override
 	public TagCW getCompound(int idx){
 		return new TagCWI(list.getCompoundTagAt(idx));
 	}
