@@ -8,6 +8,7 @@ import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.StateWrapper;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 public class WorldWI extends WorldW {
 
+	protected MutableBlockPos mpos = new MutableBlockPos();
 	protected Level level;
 
 	public WorldWI(Level world){
@@ -84,6 +86,11 @@ public class WorldWI extends WorldW {
 			list.add(UniEntity.getEntity(player));
 		}
 		return list;
+	}
+
+	@Override
+	public boolean isPositionLoaded(V3I pos){
+		return level.isLoaded(mpos.set(pos.x, pos.y, pos.z));
 	}
 
 }
