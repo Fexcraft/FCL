@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
@@ -26,6 +25,7 @@ import java.util.UUID;
  */
 public class WrapperHolderImpl extends WrapperHolder {
 
+	private V3I vpos = new V3I();
 	private WorldW client;
 
 	@Override
@@ -125,6 +125,17 @@ public class WrapperHolderImpl extends WrapperHolder {
 		catch(IOException e){
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	protected V3I mutPos0(Object pos){
+		BlockPos bpos = (BlockPos)pos;
+		return vpos.set(bpos.getX(), bpos.getY(), bpos.getZ());
+	}
+
+	@Override
+	protected V3I mutPos0(int x, int y, int z){
+		return vpos.set(x, y, z);
 	}
 
 }
