@@ -93,6 +93,11 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
+	public V3I getV3I(){
+		return new V3I((int)entity.position().x, (int)entity.position().y, (int)entity.position().z);
+	}
+
+	@Override
 	public void decreaseXZMotion(double x){
 		//
 	}
@@ -217,6 +222,16 @@ public class EntityWI implements EntityW {
 	@Override
 	public void playSound(Object event, float volume, float pitch){
 		entity.playSound((SoundEvent)event, volume, pitch);
+	}
+
+	@Override
+	public void remove(){
+		entity.discard();
+	}
+
+	@Override
+	public boolean isRemoved(){
+		return entity.isRemoved();
 	}
 
 }
