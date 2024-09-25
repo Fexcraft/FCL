@@ -39,4 +39,6 @@ public abstract class WorldW {
 
 	public abstract boolean isPositionLoaded(V3I pos);
 
+	public abstract Object dimkey();
+
 }
