@@ -30,6 +30,12 @@ public abstract class WrapperHolder {
 		return INSTANCE.getClientWorld0();
 	}
 
+	public static boolean isSinglePlayer(){
+		return false;
+	}
+
+	protected abstract boolean isSinglePlayer0();
+
 	public abstract <W extends WorldW> W getClientWorld0();
 
 	public static File getWorldFolder(WorldW world){
