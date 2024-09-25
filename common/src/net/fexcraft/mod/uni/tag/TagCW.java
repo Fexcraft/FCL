@@ -23,6 +23,8 @@ public interface TagCW {
 
 	public boolean getBoolean(String key);
 
+	public byte getByte(String key);
+
 	public TagCW getCompound(String key);
 
 	public TagLW getList(String key);
