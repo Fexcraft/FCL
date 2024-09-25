@@ -80,6 +80,7 @@ public class FCL {
 		TagCW.SUPPLIER[0] = () -> new TagCWI();
 		TagCW.WRAPPER[0] = obj -> new TagCWI(obj);
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
+		TagLW.WRAPPER[0] = obj -> new TagLWI(obj);
 		StackWrapper.SUPPLIER = obj -> {
 			if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
 			if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
