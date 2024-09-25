@@ -61,6 +61,11 @@ public class TagCWI implements TagCW {
 	}
 
 	@Override
+	public byte getByte(String key){
+		return compound.getByte(key);
+	}
+
+	@Override
 	public TagCW getCompound(String key){
 		return new TagCWI(compound.getCompoundTag(key));
 	}
