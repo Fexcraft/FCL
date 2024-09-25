@@ -1,7 +1,6 @@
 package net.fexcraft.mod.uni.tag;
 
-import java.util.Iterator;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -38,9 +37,15 @@ public interface TagLW extends Iterable<TagCW> {
 	//
 
 	public static Supplier<TagLW>[] SUPPLIER = new Supplier[1];
+	public static Function<Object, TagLW>[] WRAPPER = new Function[1];
 
 	public static TagLW create(){
 		return SUPPLIER[0].get();
+	}
+
+	public static TagLW wrap(Object com){
+		if(com instanceof TagLW) return (TagLW)com;
+		return WRAPPER[0].apply(com);
 	}
 
 	public abstract <T> T local();
