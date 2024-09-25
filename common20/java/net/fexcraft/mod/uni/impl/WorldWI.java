@@ -93,4 +93,9 @@ public class WorldWI extends WorldW {
 		return level.isLoaded(mpos.set(pos.x, pos.y, pos.z));
 	}
 
+	@Override
+	public Object dimkey(){
+		return level.dimension();
+	}
+
 }
