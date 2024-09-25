@@ -24,6 +24,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -53,6 +54,7 @@ public class FCL20 {
 			AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
 		}
 		TagCW.WRAPPER[0] = com -> new TagCWI((CompoundTag)com);
+		TagLW.WRAPPER[0] = com -> new TagLWI((ListTag)com);
 		TagCW.SUPPLIER[0] = () -> new TagCWI();
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
 		ItemWrapper.GETTER = id -> BuiltInRegistries.ITEM.get(new ResourceLocation(id));
