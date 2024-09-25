@@ -35,6 +35,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 	}
 
 	@Override
+	protected boolean isSinglePlayer0(){
+		return Static.getServer() != null && Static.getServer().isSinglePlayer();
+	}
+
+	@Override
 	public File getWorldFolder0(WorldW wr){
 		World world = wr.local();
 		return new File(world.getSaveHandler().getWorldDirectory(), (wr.dim() == 0 ? "" : world.provider.getSaveFolder()));
