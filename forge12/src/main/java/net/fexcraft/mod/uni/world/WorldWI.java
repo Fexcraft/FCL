@@ -93,4 +93,9 @@ public class WorldWI extends WorldW {
 		return world.isBlockLoaded(mpos.setPos(pos.x, pos.y, pos.z));
 	}
 
+	@Override
+	public Object dimkey(){
+		return dim();
+	}
+
 }
