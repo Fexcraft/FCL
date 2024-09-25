@@ -29,6 +29,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 	private WorldW client;
 
 	@Override
+	protected boolean isSinglePlayer0(){
+		return ServerLifecycleHooks.getCurrentServer() != null && ServerLifecycleHooks.getCurrentServer().isSingleplayer();
+	}
+
+	@Override
 	public <W extends WorldW> W getClientWorld0(){
 		if(client == null){
 			client = getWorld(net.minecraft.client.Minecraft.getInstance().level);
