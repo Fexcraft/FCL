@@ -19,8 +19,11 @@ public class TagLWI implements TagLW {
 		list = new NBTTagList();
 	}
 
-	public TagLWI(NBTTagList ls){
-		list = ls;
+	public TagLWI(Object ls){
+		if(ls instanceof NBTTagList){
+			list = (NBTTagList)ls;
+		}
+		else list = new NBTTagList();
 	}
 
 	@Override
