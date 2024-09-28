@@ -11,6 +11,8 @@ public interface Appendable<T> {
 
 	public default void load(T type, TagCW com){}
 
+	public default void copy(T old, Appendable<T> app){}
+
 	/** May return `null` if conditions not met. */
 	public Appendable<T> create(T type);
 
