@@ -4,6 +4,7 @@ import net.fexcraft.mod.uni.tag.TagCW;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -52,6 +53,13 @@ public class Appended<T> {
 			if(com.has(val.id())){
 				val.load(type, com.getCompound(val.id()));
 			}
+		}
+	}
+
+	public void copy(Appended<T> old){
+		for(Map.Entry<Class<?>, Appendable<T>> entry : appended.entrySet()){
+			Appendable<T> ov = old.get((Class<Appendable<T>>)entry.getKey());
+			if(ov != null) entry.getValue().copy(old.type, ov);
 		}
 	}
 
