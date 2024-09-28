@@ -44,4 +44,8 @@ public class UniEntity {
 		appendables.add(app);
 	}
 
+	public void copy(UniEntity old){
+		appended.copy(old.appended);
+	}
+
 }
