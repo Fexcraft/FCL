@@ -2,6 +2,7 @@ package net.fexcraft.mod.uni.impl;
 
 import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fcl.FCL20;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.CubeSide;
 import net.fexcraft.mod.uni.world.WorldW;
@@ -10,8 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +29,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	protected boolean isSinglePlayer0(){
-		return ServerLifecycleHooks.getCurrentServer() != null && ServerLifecycleHooks.getCurrentServer().isSingleplayer();
+		return FCL20.SERVER.get() != null && FCL20.SERVER.get().isSingleplayer();
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	public File getWorldFolder0(WorldW world){
-		return FMLPaths.GAMEDIR.get().toFile();
+		return FCL20.MAINDIR;
 	}
 
 	@Override
@@ -83,7 +82,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	public List<UUID> getOnlinePlayerIDs0(){
 		List<UUID> list = new ArrayList<>();
-		for(ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()){
+		for(ServerPlayer player : FCL20.SERVER.get().getPlayerList().getPlayers()){
 			list.add(player.getGameProfile().getId());
 		}
 		return list;
@@ -91,19 +90,19 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	public UUID getUUIDFor0(String string){
-		Optional<GameProfile> gp = ServerLifecycleHooks.getCurrentServer().getProfileCache().get(string);
+		Optional<GameProfile> gp = FCL20.SERVER.get().getProfileCache().get(string);
 		return gp.isPresent() ? gp.get().getId() : null;
 	}
 
 	@Override
 	public String getNameFor0(UUID uuid){
-		Optional<GameProfile> gp = ServerLifecycleHooks.getCurrentServer().getProfileCache().get(uuid);
+		Optional<GameProfile> gp = FCL20.SERVER.get().getProfileCache().get(uuid);
 		return gp.isPresent() ? gp.get().getName() : "N/F";
 	}
 
 	@Override
 	public void schedule0(Runnable run){
-		ServerLifecycleHooks.getCurrentServer().execute(run);
+		FCL20.SERVER.get().execute(run);
 	}
 
 	@Override
