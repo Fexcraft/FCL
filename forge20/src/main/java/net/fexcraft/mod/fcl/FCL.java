@@ -33,12 +33,14 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 
 import static net.minecraft.network.chat.Component.literal;
@@ -61,6 +63,8 @@ public class FCL {
 
 	public FCL(){
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		FCL20.SERVER = () -> ServerLifecycleHooks.getCurrentServer();
+		FCL20.MAINDIR = FMLPaths.GAMEDIR.get().toFile();
 		FCL20.init(!FMLEnvironment.production, FMLLoader.getDist().isClient());
 		StackWrapper.SUPPLIER = obj -> {
 			if(obj instanceof ItemWrapper){
