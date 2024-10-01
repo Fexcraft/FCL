@@ -3,7 +3,8 @@
 	"package": "net.fexcraft.mod.fcl.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin"
+		"ServerMixin",
+		"StackMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
