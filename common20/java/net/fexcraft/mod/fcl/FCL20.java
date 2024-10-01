@@ -26,6 +26,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -41,10 +42,16 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.io.File;
+import java.util.function.Supplier;
+
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
 public class FCL20 {
+
+	public static Supplier<MinecraftServer> SERVER;
+	public static File MAINDIR;
 
 	public static void init(boolean dev, boolean client){
 		EnvInfo.CLIENT = client;
