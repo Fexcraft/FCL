@@ -2,16 +2,16 @@
 	"schemaVersion": 1,
 	"id": "fcl",
 	"version": "${version}",
-	"name": "FCL",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Fexcraft Common Library",
+	"description": "General Library Mod for Fexcraft Mods.",
 	"authors": [
-		"Me!"
+		"FEX___96"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://fexcraft.net/",
+		"sources": "https://github.com/Fexcraft/FCL"
 	},
-	"license": "CC0-1.0",
+	"license": "ARR",
 	"icon": "assets/fcl/icon.png",
 	"environment": "*",
 	"entrypoints": {
