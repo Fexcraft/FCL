@@ -80,6 +80,19 @@ public class Polyhedron<GL extends GLO> {
 		texV = turbo.texoffy;
 		return this;
 	}
+
+	public Polyhedron<GL> importMRT(TexturedPolygon tp, float scale){
+		Vertex[] verts = new Vertex[tp.getVertices().length];
+		for(int i = 0; i < verts.length; i++){
+			verts[i] = new ColoredVertex(new Vec3f(tp.getVertices()[i].vector.scale(scale)), tp.getVertices()[i].textureX, tp.getVertices()[i].textureY);
+			Vec3f vec0 = new Vec3f(tp.getVertices()[1].vector.sub(tp.getVertices()[0].vector));
+			Vec3f vec1 = new Vec3f(tp.getVertices()[1].vector.sub(tp.getVertices()[2].vector));
+			Vec3f vec2 = vec1.cross(vec0).normalize();
+			verts[i].norm(vec2);
+		}
+		polygons.add(new Polygon(verts));
+		return this;
+	}
 	
 	public void clear(){
 		polygons.clear();
