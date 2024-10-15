@@ -17,6 +17,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -184,12 +185,12 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public void send(String s){
-		entity.sendMessage(new TextComponentString(Formatter.format(net.minecraft.client.resources.I18n.format(s))));
+		entity.sendMessage(new TextComponentString(Formatter.format(I18n.translateToLocal(s))));
 	}
 
 	@Override
 	public void send(String str, Object... args){
-		entity.sendMessage(new TextComponentString(Formatter.format(net.minecraft.client.resources.I18n.format(str, args))));
+		entity.sendMessage(new TextComponentString(Formatter.format(I18n.translateToLocalFormatted(str, args))));
 	}
 
 	@Override
@@ -202,7 +203,7 @@ public class EntityWI implements EntityW {
 	@Override
 	public void bar(String s){
 		if(entity instanceof EntityPlayer){
-			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(net.minecraft.client.resources.I18n.format(s))), true);
+			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(I18n.translateToLocal(s))), true);
 		}
 		else entity.sendMessage(new TextComponentString(Formatter.format(s)));
 	}
@@ -210,7 +211,7 @@ public class EntityWI implements EntityW {
 	@Override
 	public void bar(String s, Object... objs){
 		if(entity instanceof EntityPlayer){
-			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(net.minecraft.client.resources.I18n.format(s, objs))), true);
+			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(I18n.translateToLocalFormatted(s, objs))), true);
 		}
 		else entity.sendMessage(new TextComponentString(Formatter.format(s)));
 	}
