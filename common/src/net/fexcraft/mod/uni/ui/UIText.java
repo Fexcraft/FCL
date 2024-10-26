@@ -50,4 +50,8 @@ public class UIText extends UIElement {
 		return value;
 	}
 
+	public void set_initial(){
+		value = initial_value;
+	}
+
 }
