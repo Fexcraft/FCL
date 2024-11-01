@@ -14,8 +14,14 @@ import net.fexcraft.lib.common.math.RGB;
  *
  */
 public class DefaultRenderer extends Renderer<GLO> {
+
+	private Material material;
 	
 	public void render(Polyhedron<GLO> poly){
+		if(poly.glObj.material != material){
+			material = poly.glObj.material;
+			material.applyTexture();
+		}
 		if(poly.glId == null || poly.recompile){
 			compile(poly);
 		}
