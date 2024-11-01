@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 public class Material {
 
 	public static LinkedHashMap<String, Material> REGISTRY = new LinkedHashMap<>();
+	public static Class<? extends Material> IMPL = Material.class;
 	public static final Material NONE = new Material("fcl:none");
 	static{
 		REGISTRY.put(NONE.id, NONE);
@@ -24,9 +25,14 @@ public class Material {
 	public static Material get(String id, boolean create){
 		if(REGISTRY.containsKey(id)) return REGISTRY.get(id);
 		if(create){
-			Material mat = new Material(id);
-			REGISTRY.put(mat.id, mat);
-			return mat;
+			try{
+				Material mat = IMPL.getConstructor(String.class).newInstance(id);
+				REGISTRY.put(mat.id, mat);
+				return mat;
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		return NONE;
 	}
@@ -34,5 +40,7 @@ public class Material {
 	public boolean none(){
 		return this == NONE;
 	}
+
+	public void applyTexture(){}
 
 }
