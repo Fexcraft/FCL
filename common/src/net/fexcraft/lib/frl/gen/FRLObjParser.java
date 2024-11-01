@@ -103,7 +103,7 @@ public class FRLObjParser {
 					continue;
 				}
 				else if(s.startsWith("usemtl")){
-					mat = Material.get(id + "?" + s.substring(s.indexOf(" " + 1)), true);
+					mat = Material.get(id + "?" + s.substring(s.indexOf(" ") + 1), true);
 					if(!faces.get(group).containsKey(mat)) faces.get(group).put(mat, new ArrayList<>());
 				}
 				else if(s.startsWith("f ")){
