@@ -15,6 +15,8 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -74,6 +76,15 @@ public class UniUI extends GuiContainer {
 			public IDL loadExternal(String urltex){
 				return new ResLoc(ExternalTextureHelper.get(urltex).toString());
 			}
+
+			@Override
+			public void drawLine(double sx, double sy, double ex, double ey, float[] color){
+				Tessellator.getInstance().getBuffer().begin(3, DefaultVertexFormats.POSITION_COLOR);
+				Tessellator.getInstance().getBuffer().pos(sx, sy, zLevel + 1).color(color[0], color[1], color[2], 1F).endVertex();
+				Tessellator.getInstance().getBuffer().pos(ex, ey, zLevel + 1).color(color[0], color[1], color[2], 1F).endVertex();
+				Tessellator.getInstance().draw();
+			}
+
 		};
 	}
 
