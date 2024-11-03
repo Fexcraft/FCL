@@ -144,6 +144,8 @@ public class UserInterface {
 
 		public IDL loadExternal(String urltex);
 
+		public void drawLine(double sx, double sy, double ex, double ey, float[] color);
+
 	}
 
 }
