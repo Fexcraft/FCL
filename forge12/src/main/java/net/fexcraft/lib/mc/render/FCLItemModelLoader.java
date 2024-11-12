@@ -124,7 +124,12 @@ public class FCLItemModelLoader implements ICustomModelLoader {
 		public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType perspective){
 			FCLItemModel model = FCLItemModelLoader.INSTANCE.getItemModel(modelloc);
 			if(model != null){
-				model.renderItem(perspective, state.stack, state.entity);
+				try{
+					model.renderItem(perspective, state.stack, state.entity);
+				}
+				catch(Exception e){
+					//
+				}
 			}
 			return Pair.of(this, null);
 		}
