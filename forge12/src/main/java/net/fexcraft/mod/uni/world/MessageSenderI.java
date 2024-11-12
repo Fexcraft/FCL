@@ -6,6 +6,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
 
+import java.util.UUID;
+
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
@@ -61,6 +63,11 @@ public class MessageSenderI implements MessageSender {
 	@Override
 	public String getName(){
 		return sender.getName();
+	}
+
+	@Override
+	public UUID getUUID(){
+		return sender.getCommandSenderEntity().getUniqueID();
 	}
 
 }
