@@ -1,5 +1,7 @@
 package net.fexcraft.mod.uni.world;
 
+import java.util.UUID;
+
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
@@ -21,4 +23,10 @@ public interface MessageSender {
 
 	public String getName();
 
+	/** May return null. */
+	public default EntityW asEntity(){
+		return this instanceof EntityW ? (EntityW)this : null;
+	}
+
+	public UUID getUUID();
 }
