@@ -91,6 +91,11 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			public IDL loadExternal(String urltex){
 				return ExternalTextures.get("fcl", urltex);
 			}
+
+			@Override
+			public void drawLine(double sx, double sy, double ex, double ey, float[] color){
+
+			}
 		};
 		imageWidth = ui.width;
 		imageHeight = ui.height;
