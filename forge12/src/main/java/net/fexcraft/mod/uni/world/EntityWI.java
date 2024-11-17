@@ -7,6 +7,7 @@ import net.fexcraft.lib.mc.utils.LinkOpener;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.UIKey;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -251,6 +252,11 @@ public class EntityWI implements EntityW {
 	@Override
 	public boolean isRemoved(){
 		return entity.isDead;
+	}
+
+	@Override
+	public void onPacket(EntityW player, TagCW packet){
+		//
 	}
 
 }
