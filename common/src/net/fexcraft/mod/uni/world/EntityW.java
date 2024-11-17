@@ -3,6 +3,7 @@ package net.fexcraft.mod.uni.world;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.UIKey;
 
 import java.util.UUID;
@@ -82,4 +83,5 @@ public interface EntityW extends MessageSender {
 
 	public boolean isRemoved();
 
+	public void onPacket(EntityW player, TagCW packet);
 }
