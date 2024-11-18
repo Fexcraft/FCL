@@ -180,6 +180,11 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
+	public void setPos(V3D pos){
+		entity.setPosition(pos.x, pos.y, pos.z);
+	}
+
+	@Override
 	public V3I getV3I(){
 		return new V3I((int)entity.posX, (int)entity.posY, (int)entity.posZ);
 	}
