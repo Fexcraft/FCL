@@ -4,6 +4,7 @@ import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.UIKey;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
@@ -90,6 +91,11 @@ public class EntityWI implements EntityW {
 	@Override
 	public V3D getPos(){
 		return new V3D(entity.position().x, entity.position().y, entity.position().z);
+	}
+
+	@Override
+	public void setPos(V3D pos){
+		entity.setPos(pos.x, pos.y, pos.z);
 	}
 
 	@Override
@@ -232,6 +238,11 @@ public class EntityWI implements EntityW {
 	@Override
 	public boolean isRemoved(){
 		return entity.isRemoved();
+	}
+
+	@Override
+	public void onPacket(EntityW player, TagCW packet){
+		//
 	}
 
 }
