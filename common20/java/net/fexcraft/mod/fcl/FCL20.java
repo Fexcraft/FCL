@@ -79,7 +79,7 @@ public class FCL20 {
 			}
 			else return StateWrapper.DEFAULT;
 		};
-		UniEntity.ENTITY_GETTER = ent -> EntityUtil.get((Entity)ent);
+		UniEntity.ENTITY_GETTER = ent -> EntityUtil.wrap((Entity)ent);
 		UniChunk.CHUNK_GETTER = ck -> new ChunkWI((LevelChunk)ck);
 		WrapperHolderImpl.LEVEL_PROVIDER = lvl -> new WorldWI((Level)lvl);
 		UISlot.GETTERS.put("default", args -> new Slot((Container)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]));
