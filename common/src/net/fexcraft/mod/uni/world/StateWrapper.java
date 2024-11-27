@@ -16,6 +16,7 @@ public abstract class StateWrapper {
 
     public static StateWrapper DEFAULT = null;
     public static Function<Object, StateWrapper> STATE_WRAPPER = null;
+    public static BiFunction<Object, String, StateWrapper> COMMAND_WRAPPER = null;
     public static BiFunction<StackWrapper, PlacingContext, StateWrapper> STACK_WRAPPER = null;
     public static ConcurrentHashMap<Object, StateWrapper> WRAPPERS = new ConcurrentHashMap<>();
 
@@ -28,7 +29,12 @@ public abstract class StateWrapper {
         return STACK_WRAPPER.apply(stack, ctx);
     }
 
-    public static class PlacingContext {
+    /** Command type state format. */
+	public static StateWrapper from(Object block, String state_arg){
+        return COMMAND_WRAPPER.apply(block, state_arg);
+	}
+
+	public static class PlacingContext {
 
         public final CubeSide side;
         public final EntityW placer;
@@ -59,5 +65,10 @@ public abstract class StateWrapper {
     public abstract IDL getIDL();
 
     public abstract int get12Meta();
+
+    @Override
+    public boolean equals(Object o){
+        return direct().equals(o instanceof StateWrapper ? ((StateWrapper)o).direct() : o);
+    }
 
 }
