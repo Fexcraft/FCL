@@ -53,8 +53,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	public CubeSide getSide0(Object o){
-		CubeSide facing = (CubeSide)o;
-		switch(facing){
+		switch((Direction)o){
 			case UP: return CubeSide.UP;
 			case DOWN: return CubeSide.DOWN;
 			case NORTH: return CubeSide.NORTH;
@@ -67,7 +66,6 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	public <S> S getLocalSide0(CubeSide side){
-		Direction dir = Direction.NORTH;
 		switch(side){
 			case UP: return (S)Direction.UP;
 			case DOWN: return (S)Direction.DOWN;
@@ -76,7 +74,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 			case EAST: return (S)Direction.EAST;
 			case SOUTH: return (S)Direction.SOUTH;
 		}
-		return (S)dir;
+		return (S)Direction.NORTH;
 	}
 
 	@Override
