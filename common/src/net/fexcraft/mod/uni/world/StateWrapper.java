@@ -34,6 +34,8 @@ public abstract class StateWrapper {
         return COMMAND_WRAPPER.apply(block, state_arg);
 	}
 
+	public abstract String getStateString();
+
 	public static class PlacingContext {
 
         public final CubeSide side;
