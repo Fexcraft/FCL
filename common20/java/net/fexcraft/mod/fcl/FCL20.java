@@ -38,11 +38,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.io.File;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -68,6 +70,28 @@ public class FCL20 {
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.defaultBlockState());
 		StateWrapper.STATE_WRAPPER = state -> new StateWrapperI((BlockState)state);
+		StateWrapper.COMMAND_WRAPPER = (blk, arg) -> {
+			try{
+				Block block = blk == null ? null : (Block)blk;
+				if(block == null){
+					String[] split = arg.split(" ");
+					arg = split[1];
+					block = BuiltInRegistries.BLOCK.get(new ResourceLocation(split[0]));
+				}
+				BlockState state = block.defaultBlockState();
+				String[] pairs = arg.split(",");
+				for(String pair : pairs){
+					String[] sp = pair.split("=");
+					Property<?> prop = getProperty(state, sp[0]);
+					if(prop != null) state = setPropValue(state, prop, sp[1]);
+				}
+				return new StateWrapperI(state);//BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(), arg, false).blockState());
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				return StateWrapper.DEFAULT;
+			}
+		};
 		StateWrapper.STACK_WRAPPER = (stack, ctx) ->{
 			Item item = stack.getItem().local();
 			if(item instanceof BlockItem){
@@ -91,6 +115,20 @@ public class FCL20 {
 			ContainerInterface.TRANSLATOR = str -> Formatter.format(I18n.get(str));
 			ContainerInterface.TRANSFORMAT = (str, objs) -> Formatter.format(I18n.get(str, objs));
 		}
+	}
+
+	private static Property<?> getProperty(BlockState state, String str){
+		for(Property<?> prop : state.getProperties()){
+			if(prop.getName().equals(str)) return prop;
+		}
+		return null;
+	}
+
+	private static <C extends Comparable<C>> BlockState setPropValue(BlockState state, Property<C> prop, String str){
+		Optional<C> opt = prop.getValue(str);
+		FCL.LOGGER.info(opt.toString());
+		if(opt.isPresent()) return state.setValue(prop, opt.get());
+		return state;
 	}
 
 }
