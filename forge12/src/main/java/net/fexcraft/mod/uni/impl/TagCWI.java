@@ -3,10 +3,12 @@ package net.fexcraft.mod.uni.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.tag.TagType;
 import net.minecraft.nbt.*;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -72,7 +74,16 @@ public class TagCWI implements TagCW {
 
 	@Override
 	public TagLW getList(String key){
-		return new TagLWI((NBTTagList)compound.getTag(key));
+		return new TagLWI(compound.getTag(key));
+	}
+
+	@Override
+	public V3I getV3I(String key){
+		if(compound.getTag(key) instanceof NBTTagLong){
+			BlockPos blk = BlockPos.fromLong(compound.getLong(key));
+			return new V3I(blk.getX(), blk.getY(), blk.getZ());
+		}
+		else return new V3I(getIntArray(key), 0);
 	}
 
 	@Override
@@ -138,6 +149,12 @@ public class TagCWI implements TagCW {
 	@Override
 	public void set(String key, byte[] val){
 		compound.setByteArray(key, val);
+	}
+
+	@Override
+	public void set(String key, V3I vec, boolean packed){
+		if(packed) set(key, new BlockPos(vec.x, vec.y, vec.z).toLong());
+		else set(key, vec.toIntegerArray());
 	}
 
 	@Override
