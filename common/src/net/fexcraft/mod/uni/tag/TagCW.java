@@ -5,6 +5,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.lib.common.math.V3I;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -34,6 +35,8 @@ public interface TagCW {
 		TagLW list = getList(key);
 		return new V3D(list.getDouble(0), list.getDouble(1), list.getDouble(2));
 	}
+
+	public V3I getV3I(String key);
 
 	public int[] getIntArray(String key);
 
@@ -68,6 +71,8 @@ public interface TagCW {
 		list.add(vec.z);
 		set(key, list);
 	}
+
+	public void set(String key, V3I vec, boolean packed);
 
 	public int size();
 
