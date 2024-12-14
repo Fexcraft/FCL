@@ -50,6 +50,12 @@ public abstract class WrapperHolder {
 
 	public abstract V3I getPos0(Object o);
 
+	public static V3I getPos(long l){
+		return INSTANCE.getPos0(l);
+	}
+
+	public abstract V3I getPos0(long l);
+
 	public static CubeSide getSide(Object o){
 		return INSTANCE.getSide0(o);
 	}
