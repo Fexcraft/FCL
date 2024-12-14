@@ -5,10 +5,8 @@ import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -49,6 +47,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 	public V3I getPos0(Object o){
 		BlockPos pos = (BlockPos)o;
 		return new V3I(pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	@Override
+	public V3I getPos0(long l){
+		return getPos0(BlockPos.fromLong(l));
 	}
 
 	@Override
