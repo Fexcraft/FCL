@@ -140,7 +140,7 @@ public class V3I {
 	}
 
 	public int[] toIntegerArray(){
-		return new int[]{ x, y, z};
+		return new int[]{ x, y, z };
 	}
 
 	public void copy(V3I vec){
