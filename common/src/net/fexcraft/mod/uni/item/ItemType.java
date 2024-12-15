@@ -11,5 +11,6 @@ public enum ItemType {
 	CONTAINER,
 	VEHICLE,
 	FVTM_BLOCK,
+	WIRE
 
 }
