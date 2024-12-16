@@ -74,6 +74,10 @@ public interface TagCW {
 
 	public void set(String key, V3I vec, boolean packed);
 
+	public default void set(String key, V3I vec){
+		set(key, vec, false);
+	}
+
 	public int size();
 
 	//
