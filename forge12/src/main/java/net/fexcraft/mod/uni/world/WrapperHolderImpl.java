@@ -1,8 +1,11 @@
 package net.fexcraft.mod.uni.world;
 
 import com.mojang.authlib.GameProfile;
+import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.util.EnumFacing;
@@ -12,6 +15,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -141,6 +145,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	protected V3I mutPos0(int x, int y, int z){
 		return mvec.set(x, y, z);
+	}
+
+	@Override
+	protected InputStream getDataResource0(IDL loc) throws IOException{
+		return WrapperHolder.class.getClassLoader().getResourceAsStream("data/" + loc.space() + "/" + loc.path());
 	}
 
 }
