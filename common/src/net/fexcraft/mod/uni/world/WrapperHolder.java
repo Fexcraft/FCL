@@ -1,9 +1,12 @@
 package net.fexcraft.mod.uni.world;
 
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.tag.TagCW;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -117,5 +120,11 @@ public abstract class WrapperHolder {
 	}
 
 	protected abstract V3I mutPos0(int x, int y, int z);
+
+	public static InputStream getDataResource(IDL loc) throws IOException {
+		return INSTANCE.getDataResource0(loc);
+	}
+
+	protected abstract InputStream getDataResource0(IDL loc) throws IOException;
 
 }
