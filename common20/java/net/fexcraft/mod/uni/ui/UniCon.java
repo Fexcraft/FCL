@@ -41,12 +41,11 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 	protected UniUI uni;
 
 
-	public UniCon(int id, Inventory inv, String coninpos, V3I pos){
+	public UniCon(int id, Inventory inv, String coninpos, V3I pos, JsonMap map){
 		super(FCL.UNIVERSAL.get(), id);
 		stack = inv.player.getItemInHand(InteractionHand.MAIN_HAND);
 		player = inv.player;
 		ui_type = UIKey.find(coninpos);
-		JsonMap map = getJson(UniReg.MENU_JSON.get(ui_type));
 		UniEntity entity = UniEntity.get(inv.player);
 		try{
 			con = UniReg.MENU.get(ui_type).getConstructor(JsonMap.class, UniEntity.class, V3I.class).newInstance(map, entity, pos);
@@ -89,7 +88,9 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 	}
 
 	public UniCon(int id, Inventory inv, FriendlyByteBuf buffer){
-		this(id, inv, buffer.readUtf(buffer.readInt()), new V3I(buffer.readInt(), buffer.readInt(), buffer.readInt()));
+		this(id, inv, buffer.readUtf(buffer.readInt()),
+			new V3I(buffer.readInt(), buffer.readInt(), buffer.readInt()),
+			JsonHandler.parse(buffer.readUtf(buffer.readInt()), true).asMap());
 	}
 
 	public Slot addSlot(Slot slot){
@@ -134,16 +135,6 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 
 	public ContainerInterface container(){
 		return con;
-	}
-
-	public static JsonMap getJson(IDL loc){
-		try{
-			return JsonHandler.parse(WrapperHolder.getDataResource(loc));
-		}
-		catch(IOException e){
-			e.printStackTrace();
-			return new JsonMap();
-		}
 	}
 
 	@Override
