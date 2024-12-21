@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.resources.Resource;
 
 import java.io.File;
 import java.io.IOException;
@@ -149,7 +150,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	protected InputStream getDataResource0(IDL loc) throws IOException {
-		var is = FCL20.SERVER.get().getResourceManager().getResource(loc.local());
+		Optional<Resource> is = FCL20.SERVER.get().getResourceManager().getResource(loc.local());
 		return is.isPresent() ? is.get().open() : null;
 	}
 
