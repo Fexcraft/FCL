@@ -1,9 +1,11 @@
 package net.fexcraft.mod.fcl;
 
 import com.mojang.logging.LogUtils;
+import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.mod.fcl.util.*;
 import net.fexcraft.mod.uni.UniChunk;
 import net.fexcraft.mod.uni.UniEntity;
+import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.impl.SWI;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -102,7 +104,7 @@ public class FCL {
 
 					@Override
 					public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player){
-						return new UniCon(i, inventory, ui, pos);
+						return new UniCon(i, inventory, ui, pos, UniReg.getMenuJson(ui));
 					}
 				}, buf -> {
 					buf.writeInt(ui.length());
@@ -110,6 +112,9 @@ public class FCL {
 					buf.writeInt(pos.x);
 					buf.writeInt(pos.y);
 					buf.writeInt(pos.z);
+					String str = JsonHandler.toString(UniReg.getMenuJson(ui), JsonHandler.PrintOption.FLAT);
+					buf.writeInt(str.length());
+					buf.writeUtf(str);//TODO send once and cache instead
 				});
 			}
 			catch(Exception e){
