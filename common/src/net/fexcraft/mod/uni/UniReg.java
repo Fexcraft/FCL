@@ -16,8 +16,7 @@ public class UniReg {
 	public static ConcurrentHashMap<String, Object> INSTANCES = new ConcurrentHashMap<>();
 	public static LinkedHashMap<UIKey, Class<? extends UserInterface>> GUI = new LinkedHashMap<>();
 	public static LinkedHashMap<UIKey, Class<? extends ContainerInterface>> MENU = new LinkedHashMap<>();
-	public static LinkedHashMap<UIKey, String> MENU_JSON_S = new LinkedHashMap<>();
-	public static LinkedHashMap<UIKey, String> MENU_JSON_C = new LinkedHashMap<>();
+	public static LinkedHashMap<UIKey, IDL> MENU_JSON = new LinkedHashMap<>();
 
 	public static void registerMod(String id, Object inst){
 		INSTANCES.put(id, inst);
@@ -30,10 +29,13 @@ public class UniReg {
 	}
 
 	public static boolean registerMenu(UIKey key, String loc, Class<? extends ContainerInterface> con){
+		return registerMenu(key, IDLManager.getIDLCached(loc + ".json"), con);
+	}
+
+	public static boolean registerMenu(UIKey key, IDL idl, Class<? extends ContainerInterface> con){
 		if(MENU.containsKey(key)) return false;
 		MENU.put(key, con);
-		MENU_JSON_S.put(key, loc);
-		MENU_JSON_C.put(key, loc.substring(loc.indexOf("/", loc.indexOf("/") + 1) + 1));
+		MENU_JSON.put(key, idl);
 		return true;
 	}
 
