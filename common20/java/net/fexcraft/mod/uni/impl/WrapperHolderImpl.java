@@ -3,6 +3,7 @@ package net.fexcraft.mod.uni.impl;
 import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL20;
+import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.CubeSide;
 import net.fexcraft.mod.uni.world.WorldW;
@@ -14,6 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -143,6 +145,12 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	protected V3I mutPos0(int x, int y, int z){
 		return vpos.set(x, y, z);
+	}
+
+	@Override
+	protected InputStream getDataResource0(IDL loc) throws IOException {
+		var is = FCL20.SERVER.get().getResourceManager().getResource(loc.local());
+		return is.isPresent() ? is.get().open() : null;
 	}
 
 }
