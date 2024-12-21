@@ -17,7 +17,7 @@ public class UIUtils {
 	public static JsonMap getMap(String mod, UIKey key){
 		String loc = null;
 		try{
-			IDL idl = UniReg.MENU_JSON.get(key);
+			IDL idl = UniReg.MENU_LOC.get(key);
 			loc = "data/" + idl.space() + "/" + idl.path();
 			return JsonHandler.parse(UniReg.getInst(mod).getClass().getClassLoader().getResourceAsStream(loc));
 		}
