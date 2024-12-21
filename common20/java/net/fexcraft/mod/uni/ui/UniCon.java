@@ -7,9 +7,11 @@ import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.fcl.util.UIPacketReceiver;
 import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.tag.TagCW;
+import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
@@ -39,13 +41,12 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 	protected UniUI uni;
 
 
-	public UniCon(int id, Inventory inv, String coninpos, FriendlyByteBuf buffer, V3I pos){
+	public UniCon(int id, Inventory inv, String coninpos, V3I pos){
 		super(FCL.UNIVERSAL.get(), id);
 		stack = inv.player.getItemInHand(InteractionHand.MAIN_HAND);
 		player = inv.player;
-		ui_type = UIKey.find(coninpos == null ? buffer.readUtf(buffer.readInt()) : coninpos);
-		JsonMap map = getJson(UniReg.MENU_JSON_S.get(ui_type) + ".json");
-		pos = buffer == null ? pos : new V3I(buffer.readInt(), buffer.readInt(), buffer.readInt());
+		ui_type = UIKey.find(coninpos);
+		JsonMap map = getJson(UniReg.MENU_JSON.get(ui_type));
 		UniEntity entity = UniEntity.get(inv.player);
 		try{
 			con = UniReg.MENU.get(ui_type).getConstructor(JsonMap.class, UniEntity.class, V3I.class).newInstance(map, entity, pos);
@@ -88,7 +89,7 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 	}
 
 	public UniCon(int id, Inventory inv, FriendlyByteBuf buffer){
-		this(id, inv, buffer.readUtf(buffer.readInt()), buffer, null);
+		this(id, inv, buffer.readUtf(buffer.readInt()), new V3I(buffer.readInt(), buffer.readInt(), buffer.readInt()));
 	}
 
 	public Slot addSlot(Slot slot){
@@ -135,13 +136,12 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 		return con;
 	}
 
-	public static JsonMap getJson(String loc){
+	public static JsonMap getJson(IDL loc){
 		try{
-			return JsonHandler.parse(UniCon.class.getClassLoader().getResourceAsStream(loc));
+			return JsonHandler.parse(WrapperHolder.getDataResource(loc));
 		}
 		catch(IOException e){
 			e.printStackTrace();
-			if(EnvInfo.DEV) throw new RuntimeException(e);
 			return new JsonMap();
 		}
 	}
