@@ -54,7 +54,15 @@ public class FCL {
 	public static final String MODID = "fcl";
 	public static final Logger LOGGER = LogUtils.getLogger();
 	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(Registries.MENU, MODID);
-	public static final RegistryObject<MenuType<UniCon>> UNIVERSAL = CONTAINERS.register("universal", () -> IForgeMenuType.create(UniCon::new));
+	public static final RegistryObject<MenuType<UniCon>> UNIVERSAL = CONTAINERS.register("universal", () -> {
+		try{
+			return IForgeMenuType.create(UniCon::new);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	});
 	public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder.named(new ResourceLocation("fcl", "channel"))
 		.clientAcceptedVersions(pro -> true)
 		.serverAcceptedVersions(pro -> true)
@@ -85,23 +93,28 @@ public class FCL {
 			return v.isPresent() ? v.get() : null;
 		};
 		EntityUtil.UI_OPENER = (player, ui, pos) -> {
-			NetworkHooks.openScreen((ServerPlayer)player, new MenuProvider() {
-				@Override
-				public Component getDisplayName(){
-					return literal("Fexcraft Universal UI");
-				}
+			try{
+				NetworkHooks.openScreen((ServerPlayer)player, new MenuProvider() {
+					@Override
+					public Component getDisplayName(){
+						return literal("Fexcraft Universal UI");
+					}
 
-				@Override
-				public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player){
-					return new UniCon(i, inventory, ui, null, pos);
-				}
-			}, buf -> {
-				buf.writeInt(ui.length());
-				buf.writeUtf(ui);
-				buf.writeInt(pos.x);
-				buf.writeInt(pos.y);
-				buf.writeInt(pos.z);
-			});
+					@Override
+					public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player){
+						return new UniCon(i, inventory, ui, pos);
+					}
+				}, buf -> {
+					buf.writeInt(ui.length());
+					buf.writeUtf(ui);
+					buf.writeInt(pos.x);
+					buf.writeInt(pos.y);
+					buf.writeInt(pos.z);
+				});
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		};
 		//UniEntity.GETTER
 		//
