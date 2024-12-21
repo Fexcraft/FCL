@@ -52,6 +52,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 	}
 
 	@Override
+	public V3I getPos0(long l){
+		return getPos0(BlockPos.of(l));
+	}
+
+	@Override
 	public CubeSide getSide0(Object o){
 		switch((Direction)o){
 			case UP: return CubeSide.UP;
