@@ -52,7 +52,6 @@ import java.util.function.Supplier;
  */
 public class FCL20 {
 
-	public static Supplier<MinecraftServer> SERVER;
 	public static File MAINDIR;
 
 	public static void init(boolean dev, boolean client){
@@ -126,7 +125,7 @@ public class FCL20 {
 
 	private static <C extends Comparable<C>> BlockState setPropValue(BlockState state, Property<C> prop, String str){
 		Optional<C> opt = prop.getValue(str);
-		FCL.LOGGER.info(opt.toString());
+		//FCL.LOGGER.info(opt.toString());
 		if(opt.isPresent()) return state.setValue(prop, opt.get());
 		return state;
 	}
