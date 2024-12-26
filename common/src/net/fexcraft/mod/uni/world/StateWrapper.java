@@ -66,7 +66,7 @@ public abstract class StateWrapper {
 
     public abstract IDL getIDL();
 
-    public abstract int get12Meta();
+    public int get12Meta(){ return 0; }
 
     @Override
     public boolean equals(Object o){

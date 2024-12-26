@@ -18,9 +18,9 @@ public abstract class ItemWrapper {
 		return wrapper;
 	}
 
-	public abstract void linkContainer();
+	public void linkContainer(){}
 
-	public abstract void regToDict();
+	public void regToDict(){}
 
 	public abstract <LI> LI local();
 

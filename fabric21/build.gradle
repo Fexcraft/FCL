@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'fabric-loom' version '1.9-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -12,12 +12,10 @@ sourceSets {
 			srcDirs += 'src/main/java'
 			srcDirs += new File(file('..'), "/common/src")
 			srcDirs += new File(file('../..'), "/Json/src")
-			srcDirs += new File(file('..'), "/common20/java")
 		}
 		resources {
 			srcDirs += 'src/main/resources'
 			srcDirs += new File(file('..'), "/common/res")
-			srcDirs += new File(file('..'), "/common20/resources")
 		}
 	}
 }
@@ -54,7 +52,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	it.options.release = 21
 }
 
 java {
@@ -63,8 +61,8 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
