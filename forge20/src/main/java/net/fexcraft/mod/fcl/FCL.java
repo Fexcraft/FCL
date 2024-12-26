@@ -73,7 +73,6 @@ public class FCL {
 
 	public FCL(){
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-		FCL20.SERVER = () -> ServerLifecycleHooks.getCurrentServer();
 		FCL20.MAINDIR = FMLPaths.GAMEDIR.get().toFile();
 		FCL20.init(!FMLEnvironment.production, FMLLoader.getDist().isClient());
 		StackWrapper.SUPPLIER = obj -> {
