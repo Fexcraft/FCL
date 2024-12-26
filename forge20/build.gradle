@@ -15,12 +15,10 @@ sourceSets {
             srcDirs += 'src/main/java'
             srcDirs += new File(file('..'), "/common/src")
             srcDirs += new File(file('../..'), "/Json/src")
-            srcDirs += new File(file('..'), "/common20/java")
         }
         resources {
             srcDirs += 'src/main/resources'
             srcDirs += new File(file('..'), "/common/res")
-            srcDirs += new File(file('..'), "/common20/resources")
         }
     }
 }
