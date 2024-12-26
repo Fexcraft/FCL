@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.Resource;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	protected boolean isSinglePlayer0(){
-		return FCL20.SERVER.get() != null && FCL20.SERVER.get().isSingleplayer();
+		return ServerLifecycleHooks.getCurrentServer() != null && ServerLifecycleHooks.getCurrentServer().isSingleplayer();
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	public List<UUID> getOnlinePlayerIDs0(){
 		List<UUID> list = new ArrayList<>();
-		for(ServerPlayer player : FCL20.SERVER.get().getPlayerList().getPlayers()){
+		for(ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()){
 			list.add(player.getGameProfile().getId());
 		}
 		return list;
@@ -96,19 +97,19 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	public UUID getUUIDFor0(String string){
-		Optional<GameProfile> gp = FCL20.SERVER.get().getProfileCache().get(string);
+		Optional<GameProfile> gp = ServerLifecycleHooks.getCurrentServer().getProfileCache().get(string);
 		return gp.isPresent() ? gp.get().getId() : null;
 	}
 
 	@Override
 	public String getNameFor0(UUID uuid){
-		Optional<GameProfile> gp = FCL20.SERVER.get().getProfileCache().get(uuid);
+		Optional<GameProfile> gp = ServerLifecycleHooks.getCurrentServer().getProfileCache().get(uuid);
 		return gp.isPresent() ? gp.get().getName() : "N/F";
 	}
 
 	@Override
 	public void schedule0(Runnable run){
-		FCL20.SERVER.get().execute(run);
+		ServerLifecycleHooks.getCurrentServer().execute(run);
 	}
 
 	@Override
@@ -150,7 +151,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	protected InputStream getDataResource0(IDL loc) throws IOException {
-		Optional<Resource> is = FCL20.SERVER.get().getResourceManager().getResource(loc.local());
+		Optional<Resource> is = ServerLifecycleHooks.getCurrentServer().getResourceManager().getResource(loc.local());
 		return is.isPresent() ? is.get().open() : null;
 	}
 
