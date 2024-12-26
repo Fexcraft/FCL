@@ -3,6 +3,8 @@ package net.fexcraft.lib.mc;
 import java.util.UUID;
 
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.mod.fcl.UniFCL;
+import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.util.FCLCapabilities;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapabilitySerializer;
@@ -103,10 +105,7 @@ public class FCL {
 			ContainerInterface.TRANSFORMAT = (str, objs) -> Formatter.format(net.minecraft.client.resources.I18n.format(str, objs));
 		}
 		UISlot.GETTERS.put("default", args -> new Slot((IInventory)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]));
-		//configdir = new File(event.getSuggestedConfigurationFile().getParentFile(), "/fcl/");
-		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-		config.load();
-		config.save();
+		UniFCL.registerUI(instance);
 		FCLRegistry.prepare(event.getSide(), event.getAsmData());
 		if(event.getSide().isClient()){
 			net.fexcraft.lib.mc.render.LoaderReg.ister();

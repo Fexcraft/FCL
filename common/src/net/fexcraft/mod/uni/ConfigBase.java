@@ -6,6 +6,8 @@ import net.fexcraft.lib.common.math.RGB;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
@@ -15,13 +17,22 @@ import java.util.function.BiConsumer;
  */
 public abstract class ConfigBase {
 
+	public static final LinkedHashMap<String, ConfigBase> CONFIGS = new LinkedHashMap<>();
 	protected final File file;
+	protected LinkedHashMap<String, ArrayList<ConfigEntry>> categories = new LinkedHashMap<>();
 	protected ArrayList<ConfigEntry> entries = new ArrayList<>();
 	protected ArrayList<Runnable> listeners = new ArrayList<>();
 	protected boolean changes = false;
+	protected String name;
 
 	public ConfigBase(File fl){
+		this(fl, fl.getName());
+	}
+
+	public ConfigBase(File fl, String nome){
 		file = fl;
+		name = nome;
+		CONFIGS.put(name, this);
 		if(!file.exists()){
 			file.getParentFile().mkdirs();
 			JsonMap map = new JsonMap();
@@ -42,26 +53,87 @@ public abstract class ConfigBase {
 	public void reload(){
 		changes = false;
 		JsonMap map = JsonHandler.parse(file);
+		createCategories();
 		onReload(map);
 		for(ConfigEntry entry : entries) entry.consumer.accept(entry, map);
 		if(changes) JsonHandler.print(file, map, PrintOption.SPACED);
 		for(Runnable run : listeners) run.run();
 	}
 
+	private void createCategories(){
+		categories.clear();
+		for(ConfigEntry entry : entries){
+			if(!categories.containsKey(entry.cat)) categories.put(entry.cat, new ArrayList<>());
+			categories.get(entry.cat).add(entry);
+		}
+	}
+
 	public void addListener(Runnable run){
 		listeners.add(run);
+	}
+
+	public Map<String, ArrayList<ConfigEntry>> getCategories(){
+		return categories;
+	}
+
+	public ArrayList<ConfigEntry> getEntries(){
+		return entries;
+	}
+
+	public String name(){
+		return name;
+	}
+
+	public int getCategoryIndex(String cat){
+		int idx = 0;
+		for(String key : categories.keySet()){
+			if(key.equals(cat)) return idx;
+			idx++;
+		}
+		return -1;
+	}
+
+	public String getCategoryByIndex(int idx){
+		int cat = 0;
+		for(String key : categories.keySet()){
+			if(cat == idx) return key;
+			cat++;
+		}
+		return null;
+	}
+
+	public ArrayList<ConfigEntry> getCategoryEntries(int idx){
+		int cat = 0;
+		for(ArrayList<ConfigEntry> list : categories.values()){
+			if(cat == idx) return list;
+			cat++;
+		}
+		return null;
+	}
+
+	public ConfigEntry getEntry(String cat, String key){
+		ArrayList<ConfigEntry> entries = categories.get(cat);
+		if(entries != null){
+			for(ConfigEntry entry : entries){
+				if(entry.key.equals(key)) return entry;
+			}
+		}
+		return null;
 	}
 
 	public static class ConfigEntry {
 
 		private ConfigBase base;
-		private String key;
-		private String cat;
+		public final String key;
+		public final String cat;
 		private String info;
 		private JsonValue defval;
+		private JsonValue value;
 		private BiConsumer<ConfigEntry, JsonMap> consumer;
 		private float min;
 		private float max;
+		private Boolean req_level;
+		private Boolean req_start;
 
 		public ConfigEntry(ConfigBase base, String cat, String key, JsonValue def){
 			this.cat = cat;
@@ -102,36 +174,48 @@ public abstract class ConfigBase {
 			return this;
 		}
 
+		public ConfigEntry req(boolean re_level, boolean re_start){
+			req_level = re_level;
+			req_start = re_start;
+			return this;
+		}
+
 		public String getString(JsonMap map){
 			map = checkCat(map);
 			if(!map.has(key)) fill(map);
-			return map.getMap(key).get("value").string_value();
+			value = map.getMap(key).get("value");
+			return value.string_value();
 		}
 
 		public boolean getBoolean(JsonMap map){
 			map = checkCat(map);
 			if(!map.has(key)) fill(map);
-			return map.getMap(key).get("value").bool();
+			value = map.getMap(key).get("value");
+			return value.bool();
 		}
 
 		public int getInteger(JsonMap map){
 			map = checkCat(map);
 			if(!map.has(key)) fill(map);
 			int i = map.getMap(key).get("value").integer_value();
-			return i > max ? (int)max : i < min ? (int)min : i;
+			i = i > max ? (int)max : i < min ? (int)min : i;
+			value = new JsonValue(i);
+			return i;
 		}
 
 		public float getFloat(JsonMap map){
 			map = checkCat(map);
 			if(!map.has(key)) fill(map);
 			float f = map.getMap(key).get("value").float_value();
-			return f > max ? max : f < min ? min : f;
+			f = f > max ? max : f < min ? min : f;
+			value = new JsonValue(f);
+			return f;
 		}
 
 		public FJson getJson(JsonMap map){
 			map = checkCat(map);
 			if(!map.has(key)) fill(map);
-			return map.getMap(key).get("value");
+			return value = map.getMap(key).get("value");
 		}
 
 		private JsonMap checkCat(JsonMap map){
@@ -146,6 +230,34 @@ public abstract class ConfigBase {
 			con.add("value", defval);
 			map.add(key, con);
 			base.changes = true;
+		}
+
+		public String info(){
+			return info;
+		}
+
+		public float min(){
+			return min;
+		}
+
+		public float max(){
+			return max;
+		}
+
+		public JsonValue initial(){
+			return defval;
+		}
+
+		public JsonValue value(){
+			return value == null ? defval : value;
+		}
+
+		public Boolean reqLevelRestart(){
+			return req_level;
+		}
+
+		public Boolean reqGameRestart(){
+			return req_start;
 		}
 
 	}

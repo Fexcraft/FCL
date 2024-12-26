@@ -1,0 +1,28 @@
+# Blocks / Tiles
+tile.fcl:workbench.name=Workbench
+tile.fcl:blueprinttable.name=Blueprint Table
+
+# GUIs
+gui.fcl.blueprinttable0.title=FCL Recipes  [%s]
+gui.fcl.blueprinttable0.catdesc=Items: %s || Recipes: %s
+gui.fcl.blueprinttable1.recipes=Recipes: %s
+gui.fcl.blueprinttable2.recstatus=Recipe (%s) out of [%s]
+gui.fcl.blueprinttable2.craftsuccess=&7Crafted &3 %spcs&7 of &9%s&7.
+gui.fcl.blueprinttable2.craftmissing=&7Missing components to craft the Selected Item.
+gui.fcl.recipe.testcat0=TestCategory0
+gui.fcl.recipe.testcat1=TestCategory1
+gui.fcl.recipe.testcat2=TestCategory2
+gui.fcl.recipe.generic=FCL Generic Essentials
+
+# Config UI
+ui.fcl.config.categories=&aCategories: &7%s
+ui.fcl.config.entries=&eEntries: &7%s
+ui.fcl.config.value=&bValue: &7%s
+ui.fcl.config.default=&bDefault: &7%s
+ui.fcl.config.range=&aRange: &7%s ~ %s
+ui.fcl.config.no_req_info=&cNo information available if changing this setting requires a restart.
+ui.fcl.config.no_req_restart=&dDoes not require a restart for changes to apply.
+ui.fcl.config.no_req_restart_info=&c&oMay not apply to cached values/instances.
+ui.fcl.config.req_level_restart0=&eCLIENT: &cRequires exiting the world and joining back for changes to apply.
+ui.fcl.config.req_level_restart1=&aSERVER: &cRequires unloading and loading the world for changes to apply.
+ui.fcl.config.req_game_restart=&cRequires restarting the game/server for changes to apply.

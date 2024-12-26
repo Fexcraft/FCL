@@ -1,7 +1,11 @@
 package net.fexcraft.mod.fcl;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.logging.LogUtils;
 import net.fexcraft.app.json.JsonHandler;
+import net.fexcraft.lib.common.math.Time;
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.util.*;
 import net.fexcraft.mod.uni.UniChunk;
 import net.fexcraft.mod.uni.UniEntity;
@@ -11,6 +15,7 @@ import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UniCon;
+import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,9 +30,11 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -45,6 +52,9 @@ import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 
+import java.util.Map;
+
+import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.network.chat.Component.literal;
 
 /**
@@ -120,8 +130,9 @@ public class FCL {
 				e.printStackTrace();
 			}
 		};
-		//UniEntity.GETTER
+		UniFCL.registerUI(this);
 		//
+		MinecraftForge.EVENT_BUS.register(this);
 		CONTAINERS.register(bus);
 		bus.addListener(this::commonSetup);
 	}
@@ -176,6 +187,16 @@ public class FCL {
 			event.register(UniChunk.class);
 		}
 
+	}
+
+	@SubscribeEvent
+	public void onCmdReg(RegisterCommandsEvent event){
+		event.getDispatcher().register(Commands.literal("fcl")
+			.executes(cmd -> {
+				if(cmd.getSource().isPlayer()) UniEntity.getEntity(cmd.getSource().getPlayer()).openUI(UniFCL.SELECT_CONFIG, V3I.NULL);
+				return 0;
+			})
+		);
 	}
 
 }
