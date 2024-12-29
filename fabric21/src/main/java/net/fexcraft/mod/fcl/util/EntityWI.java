@@ -12,6 +12,7 @@ import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.UUID;
 
@@ -157,7 +159,7 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public void closeUI(){
-		//TODO ((Player)entity).closeContainer();
+		((ServerPlayer)entity).closeContainer();
 	}
 
 	@Override
@@ -187,12 +189,14 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public void send(String s){
-		//TODO entity.sendSystemMessage(Component.literal(Formatter.format(Component.translatable(s).getString())));
+		if(entity instanceof ServerPlayer == false) return;
+		((ServerPlayer)entity).sendSystemMessage(Component.literal(Formatter.format(Component.translatable(s).getString())));
 	}
 
 	@Override
 	public void send(String str, Object... args){
-		//TODO entity.sendSystemMessage(Component.translatable(str, args));
+		if(entity instanceof ServerPlayer == false) return;
+		((ServerPlayer)entity).sendSystemMessage(Component.translatable(str, args));
 	}
 
 	@Override
