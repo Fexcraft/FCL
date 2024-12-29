@@ -6,6 +6,7 @@ import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.fcl.util.UIPacketReceiver;
+import net.fexcraft.mod.fcl.util.UISync;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -39,11 +40,11 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 	protected net.fexcraft.mod.uni.ui.UniUI uni;
 
 
-	public UniCon(int id, Inventory inv, String coninpos, V3I pos, JsonMap map){
-		super(FCL.UNIVERSAL.get(), id);
+	public UniCon(int id, Inventory inv, UIKey key, V3I pos, JsonMap map){
+		super(FCL.UNIVERSAL, id);
 		stack = inv.player.getItemInHand(InteractionHand.MAIN_HAND);
 		player = inv.player;
-		ui_type = UIKey.find(coninpos);
+		ui_type = key;
 		UniEntity entity = UniEntity.get(inv.player);
 		try{
 			con = UniReg.MENU.get(ui_type).getConstructor(JsonMap.class, UniEntity.class, V3I.class).newInstance(map, entity, pos);
@@ -85,10 +86,8 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 		con.init();
 	}
 
-	public UniCon(int id, Inventory inv, FriendlyByteBuf buffer){
-		this(id, inv, buffer.readUtf(buffer.readInt()),
-			new V3I(buffer.readInt(), buffer.readInt(), buffer.readInt()),
-			JsonHandler.parse(buffer.readUtf(buffer.readInt()), true).asMap());
+	public UniCon(int id, Inventory inv){
+		this(id, inv, null, null, null);
 	}
 
 	public Slot addSlot(Slot slot){
