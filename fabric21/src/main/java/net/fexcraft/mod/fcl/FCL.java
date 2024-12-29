@@ -8,15 +8,13 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.mixint.EWProvider;
 import net.fexcraft.mod.fcl.mixint.SWProvider;
 import net.fexcraft.mod.fcl.util.*;
-import net.fexcraft.mod.uni.EnvInfo;
-import net.fexcraft.mod.uni.UniChunk;
-import net.fexcraft.mod.uni.UniEntity;
-import net.fexcraft.mod.uni.UniReg;
+import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.impl.*;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -91,6 +89,33 @@ public class FCL implements ModInitializer {
 	@Override
 	public void onInitialize(){
 		GAMEDIR = FabricLoader.getInstance().getGameDirectory();
+		new ConfigBase(new File(GAMEDIR, "/config/fcl.json")) {
+			@Override
+			protected void fillInfo(JsonMap map){
+
+			}
+
+			@Override
+			protected void fillEntries(){
+				entries.add(new ConfigEntry(this, "1", "1111", 100000).rang(0, 1000)
+					.info("2")
+					.req(false, true)
+				);
+				entries.add(new ConfigEntry(this, "2", "2222", true)
+					.info("1")
+					.req(false, false)
+				);
+				entries.add(new ConfigEntry(this, "3", "3333", 5).rang(1, 60)
+					.info("0")
+					.req(true, true)
+				);
+			}
+
+			@Override
+			protected void onReload(JsonMap map){
+
+			}
+		};
 		init(FabricLoader.getInstance().isDevelopmentEnvironment(), false);
 		WrapperHolder.INSTANCE = new WrapperHolderImpl();
 		StackWrapper.SUPPLIER = obj -> {
@@ -115,7 +140,7 @@ public class FCL implements ModInitializer {
 		PayloadTypeRegistry.playC2S().register(UI_PACKET_TYPE, UI_PACKET_CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(UI_PACKET_TYPE, (packet, context) -> {
 			context.server().execute(() -> {
-				((UniCon)context.player().containerMenu).onPacket(packet.com(), false);
+				((UniCon)context.player().containerMenu).onPacket(packet.com().local(), false);
 			});
 		});
 		UNIVERSAL = Registry.register(BuiltInRegistries.MENU, "fcl:universal", new ExtendedScreenHandlerType<UniCon, UISync>(new ExtendedScreenHandlerType.ExtendedFactory<UniCon, UISync>() {
@@ -148,6 +173,9 @@ public class FCL implements ModInitializer {
 			catch(Exception e){
 				e.printStackTrace();
 			}
+		};
+		ContainerInterface.SEND_TO_CLIENT = (com, player) -> {
+			ServerPlayNetworking.getSender((ServerPlayer)player.entity.direct()).sendPacket(new UIPacket(com));
 		};
 		UniFCL.registerUI(this);
 	}
