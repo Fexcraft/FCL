@@ -11,10 +11,12 @@ import net.fexcraft.mod.uni.UniChunk;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.impl.SWI;
+import net.fexcraft.mod.uni.impl.WrapperHolderImpl;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UniCon;
+import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -85,6 +87,7 @@ public class FCL {
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FCL20.MAINDIR = FMLPaths.GAMEDIR.get().toFile();
 		FCL20.init(!FMLEnvironment.production, FMLLoader.getDist().isClient());
+		WrapperHolder.INSTANCE = new WrapperHolderImpl();
 		StackWrapper.SUPPLIER = obj -> {
 			if(obj instanceof ItemWrapper){
 				return StackWrapper.SUPPLIER.apply(new ItemStack((Item)((ItemWrapper)obj).local()));
