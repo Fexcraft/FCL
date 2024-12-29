@@ -6,6 +6,7 @@ import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UIElement;
 import net.fexcraft.mod.uni.ui.UniUI;
 import net.fexcraft.mod.uni.ui.UserInterface;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -26,7 +27,7 @@ public class UUIButton extends UIButton {
 		if(texture != null) uui.bindTexture(texture);
 		int u = enabled ? (hovered ? htx : tx) : dtx;
 		int v = enabled ? (hovered ? hty : ty) : dty;
-		//TODO uui.matrix.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+		ui.drawer.applyWhite();
 		if(palette != null){
 			ResourceLocation resloc = (texture == null) ? uui.actex.local() : texture.local();
 			for(int row = 0; row < palette.length; row++){
@@ -36,23 +37,23 @@ public class UUIButton extends UIButton {
 					int c = absolute ? x < 0 ? ui.screen_width + x : x : gl + x;
 					int d = absolute ? y < 0 ? ui.screen_height + y : y : gt + y;
 					rgb = palette[row][col];
-					//TODO uui.matrix.setColor((rgb.packed >> 16 & 0xFF) / 255.0F, (rgb.packed >> 8 & 0xFF) / 255.0F, (rgb.packed & 0xFF) / 255.0F, rgb.alpha);
-					//TODO uui.matrix.blit(resloc, c + a, d + b, u, v, palsize[0], palsize[1]);
+					ui.drawer.apply(rgb);
+					uui.matrix.blit(RenderType::guiOpaqueTexturedBackground, resloc, c + a, d + b, u, v, palsize[0], palsize[1], 256, 256, uui.packed);
 				}
 			}
-			//TODO uui.matrix.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+			ui.drawer.applyWhite();
 			return;
 		}
 		rgb = enabled ? (hovered ? hcolor : ecolor) : dcolor;
-		//TODO uui.matrix.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-		//TODO uui.matrix.setColor((rgb.packed >> 16 & 0xFF) / 255.0F, (rgb.packed >> 8 & 0xFF) / 255.0F, (rgb.packed & 0xFF) / 255.0F, rgb.alpha);
+		ui.drawer.applyWhite();
+		ui.drawer.apply(rgb);
 		if(absolute){
-			//TODO uui.matrix.blit((texture == null) ? uui.actex.local() : texture.local(), x < 0 ? ui.screen_width + x : x, y < 0 ? ui.screen_height + y : y, u, v, width, height);
+			uui.matrix.blit(RenderType::guiTextured, (texture == null) ? uui.actex.local() : texture.local(), x < 0 ? ui.screen_width + x : x, y < 0 ? ui.screen_height + y : y, u, v, width, height, 256, 256, uui.packed);
 		}
 		else{
-			//TODO uui.matrix.blit((texture == null) ? uui.actex.local() : texture.local(), gl + x, gt + y, u, v, width, height);
+			uui.matrix.blit(RenderType::guiTextured, (texture == null) ? uui.actex.local() : texture.local(), gl + x, gt + y, u, v, width, height, 256, 256, uui.packed);
 		}
-		//TODO uui.matrix.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+		ui.drawer.applyWhite();
 	}
 
 }
