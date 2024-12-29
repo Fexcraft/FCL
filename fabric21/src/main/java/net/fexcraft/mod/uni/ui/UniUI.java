@@ -2,7 +2,6 @@ package net.fexcraft.mod.uni.ui;
 
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.InputConstants;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.utils.Formatter;
@@ -17,11 +16,13 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.*;
@@ -39,6 +40,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	protected GuiGraphics matrix;
 	protected UITab deftab;
 	protected IDL actex;
+	protected int packed = ARGB.colorFromFloat(1, 1, 1, 1);
 
 	public UniUI(UniCon con, Inventory inventory, Component component){
 		super(con, inventory, component);
@@ -58,12 +60,12 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			private float[] colarr;
 			@Override
 			public void draw(float x, float y, int u, int v, int w, int h){
-				//TODO matrix.blit(actex.local(), (int)x, (int)y, u, v, w, h);
+				matrix.blit(RenderType::guiTextured, actex.local(), (int)x, (int)y, u, v, w, h, w, h, 256, 256, packed);
 			}
 
 			@Override
 			public void drawFull(float x, float y, int w, int h){
-				//TODO matrix.blit(actex.local(), (int)x, (int)y, 0, 0, w, h, w, h);
+				matrix.blit(RenderType::guiTextured, actex.local(), (int)x, (int)y, 0, 0, 1, 1, 1, 1, packed);
 			}
 
 			@Override
@@ -80,7 +82,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			@Override
 			public void apply(RGB color){
 				colarr = color.toFloatArray();
-				//TODO matrix.setColor(colarr[0], colarr[1], colarr[2], 1);
+				packed = ARGB.colorFromFloat(1f, colarr[0], colarr[1], colarr[2]);
 			}
 
 			@Override
@@ -223,8 +225,8 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		}
 		Slot slot = hoveredSlot;
 		if(slot != null && !slot.getItem().isEmpty()){
-			//TODO List<Component> list = slot.getItem().getTooltipLines(menu.player, TooltipFlag.ADVANCED);
-			//TODO matrix.renderTooltip(minecraft.font, list, Optional.empty(), mx, my);
+			List<Component> list = slot.getItem().getTooltipLines(Item.TooltipContext.EMPTY, menu.player, TooltipFlag.ADVANCED);
+			matrix.renderTooltip(minecraft.font, list, Optional.empty(), mx, my);
 		}
 	}
 
@@ -238,10 +240,10 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			int tx = tab.enabled() ? (tab.hovered() ? tab.htx : tab.tx) : tab.dtx;
 			int ty = tab.enabled() ? (tab.hovered() ? tab.hty : tab.ty) : tab.dty;
 			if(tab.absolute){
-				//TODO matrix.blit(tab.texture.local(), (tab.x < 0) ? (width + tab.x) : tab.x, (tab.y < 0) ? (height + tab.y) : tab.y, tx, ty, tab.width, tab.height);
+				matrix.blit(RenderType::guiTextured, tab.texture.local(), (tab.x < 0) ? (width + tab.x) : tab.x, (tab.y < 0) ? (height + tab.y) : tab.y, tx, ty, tab.width, tab.height, 256, 256, packed);
 				continue;
 			}
-			//TODO matrix.blit(tab.texture.local(), leftPos + tab.x, topPos + tab.y, tx, ty, tab.width, tab.height);
+			matrix.blit(RenderType::guiTextured, tab.texture.local(), leftPos + tab.x, topPos + tab.y, tx, ty, tab.width, tab.height, 256, 256, packed);
 		}
 		ui.drawbackground(ticks, mx, my);
 	}
@@ -251,7 +253,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	}
 
 	public void bindTexture(IDL texture){
-		//TODO minecraft.getTextureManager().bindForSetup(texture.local());
+		RenderType.guiTextured(texture.local());
 	}
 
 	//TODO
@@ -286,6 +288,11 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 
 	public Minecraft getMinecraft(){
 		return minecraft;
+	}
+
+	@Override
+	public void renderTransparentBackground(GuiGraphics graphics){
+		if(ui.background) super.renderTransparentBackground(graphics);
 	}
 
 }
