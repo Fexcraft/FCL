@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"main": [
 			"net.fexcraft.mod.fcl.FCL"
+		],
+		"client": [
+			"net.fexcraft.mod.fcl.FCLC"
 		]
 	},
 	"mixins": [
