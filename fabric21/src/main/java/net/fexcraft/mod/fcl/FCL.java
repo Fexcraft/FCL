@@ -11,6 +11,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fcl.mixint.CWProvider;
 import net.fexcraft.mod.fcl.mixint.EWProvider;
 import net.fexcraft.mod.fcl.mixint.SWProvider;
 import net.fexcraft.mod.fcl.util.*;
@@ -128,6 +129,7 @@ public class FCL implements ModInitializer {
 			return StackWrapper.EMPTY;
 		};
 		UniEntity.GETTER = ent -> ((EWProvider)ent).fcl_wrapper();
+		UniChunk.GETTER = ck -> ((CWProvider)ck).fcl_wrapper();
 		//
 		CommandRegistrationCallback.EVENT.register((dispatcher, registry, env) ->
 			dispatcher.register(literal("fcl").executes(com -> {
