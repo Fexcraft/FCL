@@ -2,6 +2,8 @@ package net.fexcraft.lib.mc.crafting;
 
 import net.fexcraft.lib.mc.FCL;
 import net.fexcraft.lib.mc.api.registry.fBlock;
+import net.fexcraft.mod.fcl.UniFCL;
+import net.fexcraft.mod.uni.UniEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -50,7 +52,7 @@ public class BluePrintTable extends Block {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(!world.isRemote){
 			if(!player.isSneaking()){
-				player.openGui(FCL.getInstance(), 0, world, pos.getX(), pos.getY(), pos.getZ());
+				UniEntity.getEntity(player).openUI(UniFCL.SELECT_RECIPE_CATEGORY, pos.getX(), pos.getY(), pos.getZ());
 				player.addStat(StatList.CRAFTING_TABLE_INTERACTION);
 				return true;
 			}
