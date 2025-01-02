@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class BluePrintTableGui0 extends GenericGui<GenericContainer.DefImpl> {
 	
-	private static final ResourceLocation texture = new ResourceLocation("fcl:textures/gui/bpt_0.png");
+	private static final ResourceLocation texture = new ResourceLocation("fcl:textures/gui/select_recipe.png");
 	private ArrayList<String> tooltip = new ArrayList<>();
 	private static int scroll;
 
