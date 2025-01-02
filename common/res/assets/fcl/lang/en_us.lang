@@ -2,6 +2,10 @@
 tile.fcl:workbench.name=Workbench
 tile.fcl:blueprinttable.name=Blueprint Table
 
+# Recipes
+recipe.fcl.general=General FCL Recipes
+recipe.fcl.testing=Testing FCL Recipes
+
 # GUIs
 gui.fcl.blueprinttable0.title=FCL Recipes  [%s]
 gui.fcl.blueprinttable0.catdesc=Items: %s || Recipes: %s
@@ -26,3 +30,6 @@ ui.fcl.config.no_req_restart_info=&c&oMay not apply to cached values/instances.
 ui.fcl.config.req_level_restart0=&eCLIENT: &cRequires exiting the world and joining back for changes to apply.
 ui.fcl.config.req_level_restart1=&aSERVER: &cRequires unloading and loading the world for changes to apply.
 ui.fcl.config.req_game_restart=&cRequires restarting the game/server for changes to apply.
+
+# Recipe UI
+ui.fcl.recipe.categories=Recipe Categories
