@@ -1,8 +1,6 @@
 package net.fexcraft.mod.fcl.ui;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.lib.common.math.Time;
-import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.uni.ConfigBase;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
@@ -19,12 +17,12 @@ import static net.fexcraft.mod.uni.ui.ContainerInterface.TRANSFORMAT;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class SelectConfig extends UserInterface {
+public class SelModConfig extends UserInterface {
 
 	private ArrayList<ConfigBase> configs;
 	private int scroll;
 
-	public SelectConfig(JsonMap map, ContainerInterface container) throws Exception{
+	public SelModConfig(JsonMap map, ContainerInterface container) throws Exception{
 		super(map, container);
 		configs = ((ManageConfigCon)container).configs;
 	}
