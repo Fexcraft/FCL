@@ -11,5 +11,7 @@
 	"ui.fcl.config.no_req_restart_info": "&c&oMay not apply to cached values/instances.",
 	"ui.fcl.config.req_level_restart0": "&eCLIENT: &cRequires exiting the world and joining back for changes to apply.",
 	"ui.fcl.config.req_level_restart1": "&aSERVER: &cRequires unloading and loading the world for changes to apply.",
-	"ui.fcl.config.req_game_restart": "&cRequires restarting the game/server for changes to apply."
+	"ui.fcl.config.req_game_restart": "&cRequires restarting the game/server for changes to apply.",
+
+	"ui.fcl.recipe.categories": "Recipe Categories"
 }
