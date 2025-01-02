@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fcl.UniFCL;
-import net.fexcraft.mod.uni.UniReg;
+import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.util.FCLCapabilities;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapabilitySerializer;
@@ -18,9 +18,6 @@ import net.fexcraft.lib.mc.render.FCLBlockModel;
 import net.fexcraft.lib.mc.utils.CapabilityEvents;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
-import net.fexcraft.mod.uni.EnvInfo;
-import net.fexcraft.mod.uni.UniChunk;
-import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.impl.*;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -34,11 +31,13 @@ import net.fexcraft.mod.uni.util.UniPlayerStorage;
 import net.fexcraft.mod.uni.world.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -53,6 +52,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * 
@@ -106,6 +106,19 @@ public class FCL {
 		}
 		UISlot.GETTERS.put("default", args -> new Slot((IInventory)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]));
 		UniFCL.registerUI(instance);
+		FclRecipe.EQUALS = (stack0, stack1) -> ItemStack.areItemStacksEqual(stack0.local(), stack1.local());
+		FclRecipe.VALIDATE = comp -> {
+			if(comp.tag) return OreDictionary.doesOreNameExist(comp.id);
+			else return !comp.stack.empty();
+		};
+		FclRecipe.IS_IN_TAG = (comp, sw) -> {
+			NonNullList<ItemStack> stacks = OreDictionary.getOres(comp.id);
+			ItemStack stack = sw.local();
+			for(ItemStack is : stacks){
+				if(ItemStack.areItemStacksEqual(is, stack)) return true;
+			}
+			return false;
+		};
 		FCLRegistry.prepare(event.getSide(), event.getAsmData());
 		if(event.getSide().isClient()){
 			net.fexcraft.lib.mc.render.LoaderReg.ister();
@@ -116,8 +129,10 @@ public class FCL {
 	
 	@Mod.EventHandler
     public void init(FMLInitializationEvent event) throws Exception{
-		MinecraftForge.EVENT_BUS.register(new SimpleUpdateHandler.EventHandler());
+		//MinecraftForge.EVENT_BUS.register(new SimpleUpdateHandler.EventHandler());
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+		FclRecipe.newBuilder("recipe.fcl.general").add(new ItemStack(Blocks.COBBLESTONE, 3)).output(new ItemStack(Blocks.STONE_STAIRS, 1)).register();
+		FclRecipe.newBuilder("recipe.fcl.testing").add("ingotIron", 9).output(new ItemStack(Blocks.IRON_BLOCK, 1)).register();
 	}
 	
 	@Mod.EventHandler
