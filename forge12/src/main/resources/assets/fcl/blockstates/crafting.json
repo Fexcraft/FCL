@@ -4,6 +4,9 @@
         "model": "fcl:crafting",
         "transform": "forge:default-block",
         "custom": {
+            "textures": [
+                "fcl:block/crafting"
+            ],
             "t-x": 0.5,
             "t-z": 0.5
         }
