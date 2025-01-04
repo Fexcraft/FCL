@@ -16,8 +16,6 @@ import java.util.Map;
 @fModel(registryname = "fcl:models/block/crafting")
 public class CraftingModel12 extends CraftingModel implements FCLBlockModel {
 
-	private static final ArrayList<ArrayList<ModelRendererTurbo>> groups = new ArrayList<>();
-
 	public CraftingModel12(){ super(); }
 
 	@Override
