@@ -112,14 +112,6 @@ public class FCL {
 			if(comp.tag) return OreDictionary.doesOreNameExist(comp.id);
 			else return !comp.stack.empty();
 		};
-		FclRecipe.IS_IN_TAG = (comp, sw) -> {
-			NonNullList<ItemStack> stacks = OreDictionary.getOres(comp.id);
-			ItemStack stack = sw.local();
-			for(ItemStack is : stacks){
-				if(ItemStack.areItemStacksEqual(is, stack)) return true;
-			}
-			return false;
-		};
 		FclRecipe.GET_TAG_AS_LIST = (comp) -> {
 			ArrayList<StackWrapper> list = new ArrayList<>();
 			NonNullList<ItemStack> stacks = OreDictionary.getOres(comp.id);
