@@ -51,9 +51,12 @@ public class UniUI extends GuiContainer {
 			}
 
 			@Override
-			public void draw(int x, int y, StackWrapper stack){
+			public void draw(int x, int y, StackWrapper stack, boolean text){
 				RenderHelper.enableGUIStandardItemLighting();
-				itemRender.renderItemIntoGUI(stack.local(), x, y);
+				itemRender.renderItemAndEffectIntoGUI(stack.local(), x, y);
+				if(text){
+					itemRender.renderItemOverlayIntoGUI(fontRenderer, stack.local(), x, y, null);
+				}
 			}
 
 			@Override
