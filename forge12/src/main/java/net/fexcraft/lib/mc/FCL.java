@@ -1,5 +1,6 @@
 package net.fexcraft.lib.mc;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import net.fexcraft.lib.common.utils.Formatter;
@@ -118,6 +119,16 @@ public class FCL {
 				if(ItemStack.areItemStacksEqual(is, stack)) return true;
 			}
 			return false;
+		};
+		FclRecipe.GET_TAG_AS_LIST = (comp) -> {
+			ArrayList<StackWrapper> list = new ArrayList<>();
+			NonNullList<ItemStack> stacks = OreDictionary.getOres(comp.id);
+			for(ItemStack stack : stacks){
+				StackWrapper wrapper = StackWrapper.wrap(stack.copy());
+				wrapper.count(comp.amount);
+				list.add(wrapper);
+			}
+			return list;
 		};
 		FCLRegistry.prepare(event.getSide(), event.getAsmData());
 		if(event.getSide().isClient()){
