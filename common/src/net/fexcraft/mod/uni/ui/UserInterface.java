@@ -126,7 +126,11 @@ public class UserInterface {
 
 		public void drawFull(float x, float y, int w, int h);
 
-		public void draw(int x, int y, StackWrapper stack);
+		public default void draw(int x, int y, StackWrapper stack){
+			draw(x, y, stack, false);
+		}
+
+		public void draw(int x, int y, StackWrapper stack, boolean withtext);
 
 		public void bind(IDL texture);
 
