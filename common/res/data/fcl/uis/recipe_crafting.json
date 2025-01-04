@@ -1,0 +1,18 @@
+{
+	"_info_": "FCL Recipe Crafting UI",
+	"background": true,
+	"size": [ 226, 207 ],
+	"tabs": {
+		"main": {
+			"texture": "fcl:textures/ui/recipe_crafting.png",
+			"size": [ 226, 207 ],
+			"pos": [ 0, 0 ]
+		}
+	},
+	"texts": {
+
+	},
+	"buttons": {
+
+	}
+}
