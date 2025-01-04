@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.lib.mc.crafting.RecipeRegistry;
 import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.util.FCLCapabilities;
@@ -33,10 +34,12 @@ import net.fexcraft.mod.uni.world.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -136,6 +139,9 @@ public class FCL {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		FclRecipe.newBuilder("recipe.fcl.general").add(new ItemStack(Blocks.COBBLESTONE, 3)).output(new ItemStack(Blocks.STONE_STAIRS, 1)).register();
 		FclRecipe.newBuilder("recipe.fcl.testing").add("ingotIron", 9).output(new ItemStack(Blocks.IRON_BLOCK, 1)).register();
+		RecipeRegistry.addShapedRecipe("fcl:crafting", null, new ItemStack(FCLRegistry.getBlock("fcl:crafting"), 1), 3, 2,
+				Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)), Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)), Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)),
+                Ingredient.fromStacks(new ItemStack(Blocks.LOG)), Ingredient.fromStacks(new ItemStack(Blocks.CRAFTING_TABLE)), Ingredient.fromStacks(new ItemStack(Blocks.LOG)));
 	}
 	
 	@Mod.EventHandler
