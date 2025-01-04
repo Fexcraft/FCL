@@ -13,5 +13,6 @@
 	"ui.fcl.config.req_level_restart1": "&aSERVER: &cRequires unloading and loading the world for changes to apply.",
 	"ui.fcl.config.req_game_restart": "&cRequires restarting the game/server for changes to apply.",
 
-	"ui.fcl.recipe.categories": "Recipe Categories"
+	"ui.fcl.recipe.categories": "Recipe Categories",
+	"ui.fcl.recipe.results": "Results: %s"
 }
