@@ -16,5 +16,10 @@
 	"ui.fcl.recipe.categories": "Recipe Categories",
 	"ui.fcl.recipe.results": "Results: %s",
 	"ui.fcl.recipe.selected": "Recipe %s of %s",
-	"ui.fcl.recipe.amount": "Amount: %s"
+	"ui.fcl.recipe.amount": "Amount: %s",
+	"ui.fcl.recipe.not_enough_comp": "Not enough of Tag/Ore: %s",
+	"ui.fcl.recipe.not_enough_item": "Not enough of: %s",
+	"ui.fcl.recipe.comp_invalid0": "One of the recipe components is invalid.",
+	"ui.fcl.recipe.comp_invalid1": "This is a mod/pack config error.",
+	"ui.fcl.recipe.craft_success": "&eCrafted &7x%s &eof &7%s x %s"
 }
