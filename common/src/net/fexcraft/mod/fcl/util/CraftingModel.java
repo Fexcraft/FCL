@@ -5,11 +5,11 @@ import net.fexcraft.lib.tmt.ModelRendererTurbo;
 
 import java.util.ArrayList;
 
-public class BPTModel {
+public class CraftingModel {
 
 	private static final ArrayList<ArrayList<ModelRendererTurbo>> groups = new ArrayList<>();
 
-	public BPTModel(){
+	public CraftingModel(){
 		super();
 		int textureX = 128;
 		int textureY = 128;
