@@ -77,7 +77,7 @@ public class FCL {
 	@Mod.Instance("fcl")
 	private static FCL instance;
 	private static Side side;
-	//private static File configdir;
+	public static UniFCL CONFIG;
 	
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) throws Exception {
@@ -108,6 +108,7 @@ public class FCL {
 			ContainerInterface.TRANSLATOR = str -> Formatter.format(net.minecraft.client.resources.I18n.format(str));
 			ContainerInterface.TRANSFORMAT = (str, objs) -> Formatter.format(net.minecraft.client.resources.I18n.format(str, objs));
 		}
+		CONFIG = new UniFCL(event.getModConfigurationDirectory());
 		UISlot.GETTERS.put("default", args -> new Slot((IInventory)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]));
 		UniFCL.registerUI(instance);
 		FclRecipe.EQUALS = (stack0, stack1) -> ItemStack.areItemStacksEqual(stack0.local(), stack1.local());
@@ -137,8 +138,10 @@ public class FCL {
     public void init(FMLInitializationEvent event) throws Exception{
 		//MinecraftForge.EVENT_BUS.register(new SimpleUpdateHandler.EventHandler());
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-		FclRecipe.newBuilder("recipe.fcl.general").add(new ItemStack(Blocks.COBBLESTONE, 4)).output(new ItemStack(Blocks.STONE_STAIRS, 5)).register();
-		FclRecipe.newBuilder("recipe.fcl.testing").add("ingotIron", 9).output(new ItemStack(Blocks.IRON_BLOCK, 1)).register();
+		if(UniFCL.EXAMPLE_RECIPES){
+			FclRecipe.newBuilder("recipe.fcl.testing").add(new ItemStack(Blocks.COBBLESTONE, 4)).output(new ItemStack(Blocks.STONE_STAIRS, 5)).register();
+			FclRecipe.newBuilder("recipe.fcl.testing").add("ingotIron", 9).output(new ItemStack(Blocks.IRON_BLOCK, 1)).register();
+		}
 		RecipeRegistry.addShapedRecipe("fcl:crafting", null, new ItemStack(FCLRegistry.getBlock("fcl:crafting"), 1), 3, 2,
 				Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)), Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)), Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)),
                 Ingredient.fromStacks(new ItemStack(Blocks.LOG)), Ingredient.fromStacks(new ItemStack(Blocks.CRAFTING_TABLE)), Ingredient.fromStacks(new ItemStack(Blocks.LOG)));
