@@ -6,13 +6,84 @@
 		"main": {
 			"texture": "fcl:textures/ui/recipe_crafting.png",
 			"size": [ 226, 207 ],
-			"pos": [ 0, 0 ]
+			"pos": [ 0, 0 ],
+			"texts": [
+				"recipe",
+				"selected",
+				"amount"
+			],
+			"buttons": [
+				"prev", "next",
+				"up", "down",
+				"more", "less",
+				"craft", "craftexit"
+			]
 		}
 	},
 	"texts": {
-
+		"recipe": {
+			"size": [ 156, 8 ],
+			"pos": [ 46, 7 ],
+			"autoscale": true,
+			"color": "242424"
+		},
+		"selected": {
+			"size": [ 156, 8 ],
+			"pos": [ 46, 21 ],
+			"autoscale": true,
+			"color": "242424"
+		},
+		"amount": {
+			"size": [ 45, 8 ],
+			"pos": [ 174, 156 ],
+			"autoscale": true,
+			"color": "242424"
+		}
 	},
 	"buttons": {
-
+		"prev": {
+			"size": [ 15, 12 ],
+			"pos": [ 27, 19 ]
+		},
+		"next": {
+			"size": [ 15, 12 ],
+			"pos": [ 206, 19 ]
+		},
+		"up": {
+			"size": [ 23, 9 ],
+			"pos": [ 172, 124 ]
+		},
+		"down": {
+			"size": [ 23, 9 ],
+			"pos": [ 198, 124 ]
+		},
+		"less": {
+			"size": [ 11, 9 ],
+			"pos": [ 197, 168 ]
+		},
+		"more": {
+			"size": [ 11, 9 ],
+			"pos": [ 209, 168 ]
+		},
+		"craft": {
+			"size": [ 23, 18 ],
+			"pos": [ 172, 184 ]
+		},
+		"craftexit": {
+			"size": [ 23, 18 ],
+			"pos": [ 198, 184 ]
+		}
+	},
+	"slots": {
+		"player3x9": {
+			"pos": [ 6, 129 ],
+			"index": 9,
+			"repeat": [ 9, 3 ]
+		},
+		"player1x9": {
+			"pos": [ 6, 185 ],
+			"index": 0,
+			"repeat": [ 9, 1 ]
+		}
 	}
 }
