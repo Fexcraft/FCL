@@ -49,6 +49,53 @@ public class FclRecipe {
 		register(category, this);
 	}
 
+	public static int indexOfCategory(String cat){
+		int idx = 0;
+		for (String key : RECIPES.keySet()) {
+			if(key.equals(cat)) return idx;
+			idx++;
+		}
+		return -1;
+	}
+
+	public static LinkedHashMap<IDL, ArrayList<FclRecipe>> getCategoryAt(int cat){
+		int idx = 0;
+		for(String key : RECIPES.keySet()) {
+			if(idx == cat) return RECIPES.get(key);
+			idx++;
+		}
+		return null;
+	}
+
+	public static String getCategoryIdAt(int cat){
+		int idx = 0;
+		for(String key : RECIPES.keySet()) {
+			if(idx == cat) return key;
+			idx++;
+		}
+		return null;
+	}
+
+	public static IDL getResultKey(String category, int kid){
+		LinkedHashMap<IDL, ArrayList<FclRecipe>> results = RECIPES.get(category);
+		int idx = 0;
+		for(IDL key : results.keySet()){
+			if(idx == kid) return key;
+			idx++;
+		}
+		return null;
+	}
+
+	public static int getResultIdx(String category, String res){
+		LinkedHashMap<IDL, ArrayList<FclRecipe>> results = RECIPES.get(category);
+		int idx = 0;
+		for(IDL key : results.keySet()){
+			if(key.colon().equals(res)) return idx;
+			idx++;
+		}
+		return -1;
+	}
+
 	public static Builder newBuilder(String cat){
 		return new Builder(cat);
 	}
