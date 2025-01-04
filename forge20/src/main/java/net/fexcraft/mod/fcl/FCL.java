@@ -7,6 +7,7 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.util.*;
+import net.fexcraft.mod.uni.FclRecipe;
 import net.fexcraft.mod.uni.UniChunk;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
@@ -31,6 +32,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -54,6 +56,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static net.minecraft.commands.Commands.argument;
@@ -82,11 +85,13 @@ public class FCL {
 		.serverAcceptedVersions(pro -> true)
 		.networkProtocolVersion(() -> "fcl")
 		.simpleChannel();
+	public static UniFCL CONFIG;
 
 	public FCL(){
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FCL20.MAINDIR = FMLPaths.GAMEDIR.get().toFile();
 		FCL20.init(!FMLEnvironment.production, FMLLoader.getDist().isClient());
+		CONFIG = new UniFCL(FMLPaths.CONFIGDIR.get().toFile());
 		WrapperHolder.INSTANCE = new WrapperHolderImpl();
 		StackWrapper.SUPPLIER = obj -> {
 			if(obj instanceof ItemWrapper){
@@ -134,6 +139,16 @@ public class FCL {
 			}
 		};
 		UniFCL.registerUI(this);
+		FclRecipe.EQUALS = (stack0, stack1) -> ItemStack.isSameItemSameTags(stack0.local(), stack1.local());
+		FclRecipe.VALIDATE = comp -> {
+			if(comp.tag) return false;//TODO
+			else return !comp.stack.empty();
+		};
+		FclRecipe.GET_TAG_AS_LIST = (comp) -> {
+			ArrayList<StackWrapper> list = new ArrayList<>();
+			//TODO
+			return list;
+		};
 		//
 		MinecraftForge.EVENT_BUS.register(this);
 		CONTAINERS.register(bus);
@@ -156,6 +171,11 @@ public class FCL {
 		});
 		ContainerInterface.SEND_TO_CLIENT = (com, player) -> CHANNEL.send(PacketDistributor.PLAYER.with(() -> player.entity.local()), new UIPacketF(com.local()));
 		ContainerInterface.SEND_TO_SERVER = com -> CHANNEL.sendToServer(new UIPacketF(com.local()));
+		//
+		if(UniFCL.EXAMPLE_RECIPES){
+			FclRecipe.newBuilder("recipe.fcl.testing").add(new ItemStack(Blocks.COBBLESTONE, 4)).output(new ItemStack(Blocks.STONE_STAIRS, 5)).register();
+			FclRecipe.newBuilder("recipe.fcl.testing").add("c:ingots/iron", 9).output(new ItemStack(Blocks.IRON_BLOCK, 1)).register();
+		}
 	}
 
 	@Mod.EventBusSubscriber(modid = "fcl", bus = Mod.EventBusSubscriber.Bus.FORGE)
