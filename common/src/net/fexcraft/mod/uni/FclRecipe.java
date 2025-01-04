@@ -15,7 +15,6 @@ import java.util.function.Function;
 public class FclRecipe {
 
 	public static LinkedHashMap<String, LinkedHashMap<IDL, ArrayList<FclRecipe>>> RECIPES = new LinkedHashMap<>();
-	public static BiFunction<Component, StackWrapper, Boolean> IS_IN_TAG;
 	public static BiFunction<StackWrapper, StackWrapper, Boolean> EQUALS;
 	public static Function<Component, Boolean> VALIDATE;
 	public static Function<Component, List<StackWrapper>> GET_TAG_AS_LIST;
@@ -169,11 +168,6 @@ public class FclRecipe {
 			amount = this.stack.count();
 			tag = false;
 			id = null;
-		}
-
-		public boolean equals(StackWrapper other){
-			if(tag) return IS_IN_TAG.apply(this, other);
-			else return EQUALS.apply(stack, other);
 		}
 
 		public void refreshList(){
