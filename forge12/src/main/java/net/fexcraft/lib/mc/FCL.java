@@ -129,7 +129,7 @@ public class FCL {
 		if(event.getSide().isClient()){
 			net.fexcraft.lib.mc.render.LoaderReg.ister();
 			net.fexcraft.lib.common.math.AxisRotator.DefHolder.DEF_IMPL = net.fexcraft.lib.mc.utils.Axis3DL.class;
-			net.fexcraft.lib.mc.render.FCLBlockModelLoader.addBlockModel(new ResourceLocation("fcl:models/block/blueprinttable"), (FCLBlockModel)((Class<?>)FCLRegistry.getModel("fcl:models/block/bpt")).newInstance());
+			net.fexcraft.lib.mc.render.FCLBlockModelLoader.addBlockModel(new ResourceLocation("fcl:models/block/crafting"), (FCLBlockModel)((Class<?>)FCLRegistry.getModel("fcl:models/block/crafting")).newInstance());
 		}
 	}
 	
@@ -137,7 +137,7 @@ public class FCL {
     public void init(FMLInitializationEvent event) throws Exception{
 		//MinecraftForge.EVENT_BUS.register(new SimpleUpdateHandler.EventHandler());
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-		FclRecipe.newBuilder("recipe.fcl.general").add(new ItemStack(Blocks.COBBLESTONE, 3)).output(new ItemStack(Blocks.STONE_STAIRS, 1)).register();
+		FclRecipe.newBuilder("recipe.fcl.general").add(new ItemStack(Blocks.COBBLESTONE, 4)).output(new ItemStack(Blocks.STONE_STAIRS, 5)).register();
 		FclRecipe.newBuilder("recipe.fcl.testing").add("ingotIron", 9).output(new ItemStack(Blocks.IRON_BLOCK, 1)).register();
 		RecipeRegistry.addShapedRecipe("fcl:crafting", null, new ItemStack(FCLRegistry.getBlock("fcl:crafting"), 1), 3, 2,
 				Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)), Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)), Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)),
