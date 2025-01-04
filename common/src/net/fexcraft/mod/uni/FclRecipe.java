@@ -18,6 +18,7 @@ public class FclRecipe {
 	public static BiFunction<Component, StackWrapper, Boolean> IS_IN_TAG;
 	public static BiFunction<StackWrapper, StackWrapper, Boolean> EQUALS;
 	public static Function<Component, Boolean> VALIDATE;
+	public static Function<Component, List<StackWrapper>> GET_TAG_AS_LIST;
 	//
 	public final StackWrapper output;
 	public final List<Component> components;
@@ -147,6 +148,7 @@ public class FclRecipe {
 		public final String id;
 		public final int amount;
 		public final StackWrapper stack;
+		public List<StackWrapper> list;
 
 		public Component(String tagid, int am){
 			tag = true;
@@ -172,6 +174,10 @@ public class FclRecipe {
 		public boolean equals(StackWrapper other){
 			if(tag) return IS_IN_TAG.apply(this, other);
 			else return EQUALS.apply(stack, other);
+		}
+
+		public void refreshList(){
+			list = GET_TAG_AS_LIST.apply(this);
 		}
 
 	}
