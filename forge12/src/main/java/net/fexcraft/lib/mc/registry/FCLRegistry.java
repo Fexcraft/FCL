@@ -21,7 +21,6 @@ import net.fexcraft.lib.mc.api.registry.fCommand;
 import net.fexcraft.lib.mc.api.registry.fEntity;
 import net.fexcraft.lib.mc.api.registry.fItem;
 import net.fexcraft.lib.mc.api.registry.fModel;
-import net.fexcraft.lib.mc.api.registry.fRecipeHolder;
 import net.fexcraft.lib.mc.api.registry.fTESR;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.block.Block;
@@ -55,7 +54,6 @@ public class FCLRegistry {
 	private static final String entity = fEntity.class.getCanonicalName();
 	private static final String model = fModel.class.getCanonicalName();
 	private static final String tesr = fTESR.class.getCanonicalName();
-	private static final String recipeholder = fRecipeHolder.class.getCanonicalName();
 	private static ASMDataTable table;
 	private static int eid = 0;
 	//
@@ -184,18 +182,6 @@ public class FCLRegistry {
 		
 		@SubscribeEvent
 		public void registerRecipes(RegistryEvent.Register<IRecipe> event){
-			Set<ASMData> data = table.getAll(recipeholder);
-			for(ASMData entry : data){
-				try{
-					Class<?> clazz = Class.forName(entry.getClassName());
-					fRecipeHolder rph = (fRecipeHolder)clazz.getAnnotation(fRecipeHolder.class);
-					if(rph.value().equals(modid)){ clazz.newInstance(); }
-				}
-				catch(Exception e){
-					e.printStackTrace();
-				}
-			}
-			//
 			IForgeRegistry<IRecipe> reg = event.getRegistry();
 			for(Entry<ResourceLocation, IRecipe> entry : recipes.entrySet()){
 				try{
