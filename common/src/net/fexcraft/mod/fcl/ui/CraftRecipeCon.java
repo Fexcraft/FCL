@@ -3,13 +3,12 @@ package net.fexcraft.mod.fcl.ui;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.UniFCL;
-import net.fexcraft.mod.uni.ConfigBase;
+import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.ConfigBase.ConfigEntry;
-import net.fexcraft.mod.uni.FclRecipe;
-import net.fexcraft.mod.uni.IDL;
-import net.fexcraft.mod.uni.UniEntity;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
+import net.fexcraft.mod.uni.ui.InventoryInterface;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,7 +16,7 @@ import java.util.LinkedHashMap;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class CraftRecipeCon extends ContainerInterface {
+public class CraftRecipeCon extends InventoryInterface {
 
 	public CraftRecipeCon(JsonMap map, UniEntity ply, V3I pos){
 		super(map, ply, pos);
@@ -30,18 +29,34 @@ public class CraftRecipeCon extends ContainerInterface {
 
 	@Override
 	public void packet(TagCW com, boolean client){
-		if(com.has("main")){
-			player.entity.openUI(UniFCL.SELECT_RECIPE_CATEGORY, V3I.NULL);
+		if(com.has("ret")){
+			int catidx = FclRecipe.indexOfCategory(com.getString("ret"));
+			player.entity.openUI(UniFCL.SELECT_RECIPE_RESULT, catidx, 0, 0);
 		}
 		if(com.has("cat")){
-			int catidx = FclRecipe.indexOfCategory(com.getString("cat"));
-			if(com.has("res")){
-				player.entity.openUI(UniFCL.RECIPE_CRAFTING, catidx, FclRecipe.getResultIdx(com.getString("cat"), com.getString("res")), 0);
-			}
-			else{
-				player.entity.openUI(UniFCL.SELECT_RECIPE_RESULT, catidx, 0, 0);
-			}
+			FclRecipe rec = FclRecipe.RECIPES.get(com.getString("cat")).get(IDLManager.getIDL(com.getString("res"))).get(com.getInteger("idx"));
+			//
 		}
+	}
+
+	@Override
+	public Object getInventory(){
+		return null;
+	}
+
+	@Override
+	public void setInventoryContent(int index, TagCW com){
+
+	}
+
+	@Override
+	public StackWrapper getInventoryContent(int index){
+		return null;
+	}
+
+	@Override
+	public boolean isInventoryEmpty(int at){
+		return true;
 	}
 
 }
