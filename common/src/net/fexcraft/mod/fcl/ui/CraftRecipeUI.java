@@ -120,6 +120,7 @@ public class CraftRecipeUI extends UserInterface {
 				com.set("cat", category);
 				com.set("res", key.colon());
 				com.set("idx", selrec);
+				com.set("am", amount);
 				SEND_TO_SERVER.accept(com);
 				return true;
 			}
