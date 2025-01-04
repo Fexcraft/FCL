@@ -1,22 +1,11 @@
 //FMT-Marker FVTM-1.6
-package net.fexcraft.lib.mc.crafting;
+package net.fexcraft.mod.fcl.util;
 
-import net.fexcraft.lib.mc.api.registry.fModel;
-import net.fexcraft.lib.mc.render.FCLBlockModel;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
 
-/** This file was exported via the FVTM Exporter v1.6 of<br>
- *  FMT (Fex's Modelling Toolbox) v.3.0.0 &copy; 2023 - fexcraft.net<br>
- *  All rights reserved. For this Model's License contact the Author/Creator.
- */
-@fModel(registryname = "fcl:models/block/bpt")
-public class BPTModel implements FCLBlockModel {
+public class BPTModel {
 
 	private static final ArrayList<ArrayList<ModelRendererTurbo>> groups = new ArrayList<>();
 
@@ -169,13 +158,6 @@ public class BPTModel implements FCLBlockModel {
 		);
 		groups.add(cup);
 		//
-	}
-
-	@Override
-	public Collection<ModelRendererTurbo> getPolygons(IBlockState state, EnumFacing side, Map<String, String> arguments, long rand){
-		ArrayList<ModelRendererTurbo> list = new ArrayList<>();
-		for(ArrayList<ModelRendererTurbo> tlist : groups) list.addAll(tlist);
-		return list;
 	}
 
 }

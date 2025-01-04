@@ -1,15 +1,2 @@
 # Blocks / Tiles
-tile.fcl:workbench.name=FCL工作台
-tile.fcl:blueprinttable.name=FCL蓝图桌
-
-# GUIs
-gui.fcl.blueprinttable0.title=FCL蓝图 [%s]
-gui.fcl.blueprinttable0.catdesc=项目:%s || 蓝图:%s
-gui.fcl.blueprinttable1.recipes=蓝图:%s
-gui.fcl.blueprinttable2.recstatus=蓝图 %s/%s
-gui.fcl.blueprinttable2.craftsuccess=&7已制作&3 %s件 &9%s&7.
-gui.fcl.blueprinttable2.craftmissing=&7缺少制作物资.
-gui.fcl.recipe.testcat0=测试0
-gui.fcl.recipe.testcat1=测试1
-gui.fcl.recipe.testcat2=测试2
-gui.fcl.recipe.generic=FCL基础物品
+tile.fcl:crafting.name=FCL蓝图桌
