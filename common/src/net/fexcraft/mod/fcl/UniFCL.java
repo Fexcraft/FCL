@@ -26,10 +26,11 @@ public class UniFCL {
 		UniReg.registerMenu(UniFCL.SELECT_CONFIG_CATEGORY, "fcl:uis/select_config", ManageConfigCon.class);
 		UniReg.registerUI(UniFCL.SELECT_CONFIG_ENTRY, SelEntryConfig.class);
 		UniReg.registerMenu(UniFCL.SELECT_CONFIG_ENTRY, "fcl:uis/select_config", ManageConfigCon.class);
+		//
 		UniReg.registerUI(UniFCL.SELECT_RECIPE_CATEGORY, SelCatRecipe.class);
-		UniReg.registerMenu(UniFCL.SELECT_RECIPE_CATEGORY, "fcl:uis/select_recipe", CraftRecipeCon.class);
+		UniReg.registerMenu(UniFCL.SELECT_RECIPE_CATEGORY, "fcl:uis/select_recipe", SelRecipeCon.class);
 		UniReg.registerUI(UniFCL.SELECT_RECIPE_RESULT, SelResRecipe.class);
-		UniReg.registerMenu(UniFCL.SELECT_RECIPE_RESULT, "fcl:uis/select_recipe", CraftRecipeCon.class);
+		UniReg.registerMenu(UniFCL.SELECT_RECIPE_RESULT, "fcl:uis/select_recipe", SelRecipeCon.class);
 		UniReg.registerUI(UniFCL.RECIPE_CRAFTING, CraftRecipeUI.class);
 		UniReg.registerMenu(UniFCL.RECIPE_CRAFTING, "fcl:uis/recipe_crafting", CraftRecipeCon.class);
 	}
