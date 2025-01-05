@@ -15,7 +15,7 @@ import java.util.zip.ZipInputStream;
 import javax.annotation.Nullable;
 
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.mc.FCL;
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.lib.mc.api.registry.fBlock;
 import net.fexcraft.lib.mc.api.registry.fCommand;
 import net.fexcraft.lib.mc.api.registry.fEntity;
