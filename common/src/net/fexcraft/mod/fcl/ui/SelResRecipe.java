@@ -44,6 +44,7 @@ public class SelResRecipe extends UserInterface {
 		for(int i = 0; i < 6; i++){
 			int j = scroll + i;
 			if(j >= results.size()) buttons.get("entry_" + i).text.value("");
+			else if(results.get(keyset[j]).isEmpty()) buttons.get("entry_" + i).text.value("empty");
 			else buttons.get("entry_" + i).text.value(results.get(keyset[j]).get(0).output.getName());
 		}
 	}
