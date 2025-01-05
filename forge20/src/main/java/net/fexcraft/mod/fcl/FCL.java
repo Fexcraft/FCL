@@ -23,6 +23,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -52,6 +54,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
@@ -100,6 +103,7 @@ public class FCL {
 			if(obj instanceof ItemStack){
 				var v = ((ItemStack)obj).getCapability(StackWrapperProvider.CAPABILITY).resolve();
 				if(v.isPresent()) return v.get();
+				else return StackWrapperProvider.wrap((ItemStack)obj);
 			};
 			return StackWrapper.EMPTY;
 		};
@@ -139,14 +143,20 @@ public class FCL {
 			}
 		};
 		UniFCL.registerUI(this);
-		FclRecipe.EQUALS = (stack0, stack1) -> ItemStack.isSameItemSameTags(stack0.local(), stack1.local());
 		FclRecipe.VALIDATE = comp -> {
-			if(comp.tag) return false;//TODO
+			if(comp.tag){
+				if(comp.key == null) comp.key = ItemTags.create(new ResourceLocation(comp.id));
+				return ForgeRegistries.ITEMS.tags().getTag((TagKey<Item>)comp.key) != null;
+			}
 			else return !comp.stack.empty();
 		};
 		FclRecipe.GET_TAG_AS_LIST = (comp) -> {
 			ArrayList<StackWrapper> list = new ArrayList<>();
-			//TODO
+			if(comp.key == null) comp.key = ItemTags.create(new ResourceLocation(comp.id));
+			var tags = ForgeRegistries.ITEMS.tags().getTag((TagKey<Item>)comp.key);
+			for(Item item : tags){
+				list.add(StackWrapper.wrap(new ItemStack(item, comp.amount)));
+			}
 			return list;
 		};
 		//
@@ -174,7 +184,7 @@ public class FCL {
 		//
 		if(UniFCL.EXAMPLE_RECIPES){
 			FclRecipe.newBuilder("recipe.fcl.testing").add(new ItemStack(Blocks.COBBLESTONE, 4)).output(new ItemStack(Blocks.STONE_STAIRS, 5)).register();
-			FclRecipe.newBuilder("recipe.fcl.testing").add("c:ingots/iron", 9).output(new ItemStack(Blocks.IRON_BLOCK, 1)).register();
+			FclRecipe.newBuilder("recipe.fcl.testing").add("minecraft:logs", 9).output(new ItemStack(Blocks.TRAPPED_CHEST, 1)).register();
 		}
 	}
 
@@ -216,7 +226,7 @@ public class FCL {
 	public void onCmdReg(RegisterCommandsEvent event){
 		event.getDispatcher().register(Commands.literal("fcl")
 			.executes(cmd -> {
-				if(cmd.getSource().isPlayer()) UniEntity.getEntity(cmd.getSource().getPlayer()).openUI(UniFCL.SELECT_CONFIG, V3I.NULL);
+				if(cmd.getSource().isPlayer()) UniEntity.getEntity(cmd.getSource().getPlayer()).openUI(UniFCL.SELECT_RECIPE_CATEGORY, V3I.NULL);
 				return 0;
 			})
 		);
