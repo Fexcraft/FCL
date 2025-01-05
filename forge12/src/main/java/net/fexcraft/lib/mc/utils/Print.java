@@ -7,6 +7,7 @@ import java.util.zip.Deflater;
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.mod.fcl.FCL;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
@@ -29,28 +30,28 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
+import static net.fexcraft.mod.fcl.FCL.LOGGER;
+
 public class Print extends net.fexcraft.lib.common.utils.Print {
-	
-	private static final Logger logger = LogManager.getLogger("FCL");
 	
 	public static void log(Object obj){
 		if(obj instanceof Iterable){
 			Iterable<?> inte = (Iterable<?>)obj;
-			logger.info("ITERABLE: {");
+			LOGGER.info("ITERABLE: {");
 			for(Object object : inte){
-				logger.info("    " + (object == null ? ">> IS null;" : String.valueOf(object)));
+				LOGGER.info("    " + (object == null ? ">> IS null;" : String.valueOf(object)));
 			}
-			logger.info("}");
+			LOGGER.info("}");
 			return;
 		}
 		if(obj instanceof Throwable){
-			logger.info(ExceptionUtils.getStackTrace((Throwable)obj));
+			LOGGER.info(ExceptionUtils.getStackTrace((Throwable)obj));
 		}
-		logger.info(obj == null ? "[OBJ IS NULL]" : String.valueOf(obj));
+		LOGGER.info(obj == null ? "[OBJ IS NULL]" : String.valueOf(obj));
 	}
 	
 	public static void log(Object prefix, Object obj){
-		logger.info("[" + String.valueOf(prefix) + "]> " + String.valueOf(obj));
+		LOGGER.info("[" + String.valueOf(prefix) + "]> " + String.valueOf(obj));
 	}
 	
 	public static void chat(ICommandSender sender, Object obj){
@@ -89,13 +90,13 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 	public static void logOAS(String string){
 		if(Time.getSecond() != sec){
 			sec = Time.getSecond();
-			logger.info(string);
+			LOGGER.info(string);
 		}
 	}
 
 	public static void spam(int l, Object obj){
 		for(int i = 0; i < l; i++){
-			logger.error(obj == null ? ">> IS null;" : String.valueOf(obj));
+			LOGGER.error(obj == null ? ">> IS null;" : String.valueOf(obj));
 		}
 	}
 
