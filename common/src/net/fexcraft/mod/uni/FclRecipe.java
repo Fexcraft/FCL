@@ -1,6 +1,7 @@
 package net.fexcraft.mod.uni;
 
 import com.google.common.collect.ImmutableList;
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.item.StackWrapper;
 
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import java.util.function.Function;
 public class FclRecipe {
 
 	public static LinkedHashMap<String, LinkedHashMap<IDL, ArrayList<FclRecipe>>> RECIPES = new LinkedHashMap<>();
-	public static BiFunction<StackWrapper, StackWrapper, Boolean> EQUALS;
 	public static Function<Component, Boolean> VALIDATE;
 	public static Function<Component, List<StackWrapper>> GET_TAG_AS_LIST;
 	//
@@ -34,13 +34,19 @@ public class FclRecipe {
 
 	public static void register(String category, FclRecipe recipe){
 		if(category.length() == 0) return;
+		if(recipe.output.empty()){
+			FCL.LOGGER.info("Failed to register recipe for '" + category + "': no output");
+			return;
+		}
+		for(Component comp : recipe.components){
+			if(!VALIDATE.apply(comp)){
+				FCL.LOGGER.info("Failed to register recipe for '" + category + "': invalid component / " + (comp.tag ? comp.id : "empty"));
+				return;
+			}
+		}
 		if(!RECIPES.containsKey(category)) RECIPES.put(category, new LinkedHashMap<>());
 		if(!RECIPES.get(category).containsKey(recipe.output.getIDL())){
 			RECIPES.get(category).put(recipe.output.getIDL(), new ArrayList<>());
-		}
-		if(recipe.output.empty()) return;//TODO error logging
-		for(Component comp : recipe.components){
-			if(!VALIDATE.apply(comp)) return;//TODO error logging
 		}
 		RECIPES.get(category).get(recipe.output.getIDL()).add(recipe);
 	}
@@ -148,6 +154,7 @@ public class FclRecipe {
 		public final int amount;
 		public final StackWrapper stack;
 		public List<StackWrapper> list;
+		public Object key;
 
 		public Component(String tagid, int am){
 			tag = true;
