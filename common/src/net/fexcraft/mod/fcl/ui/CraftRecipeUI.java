@@ -140,7 +140,7 @@ public class CraftRecipeUI extends UserInterface {
 			if(z>= 0 && z < results.get(selrec).components.size()){
 				comp = results.get(selrec).components.get(z);
 				if(comp.tag){
-					if(comp.list != null){
+					if(comp.list != null && comp.list.size() > 0){
 						list.add(comp.list.get(current % comp.list.size()).getName());
 					}
 				}
