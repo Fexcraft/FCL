@@ -135,4 +135,15 @@ public class SWI extends StackWrapper {
 		return BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
 	}
 
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof StackWrapper){
+			return equals(((StackWrapper)o).direct());
+		}
+		else if(o instanceof ItemStack){
+			return ItemStack.isSameItemSameTags(stack, (ItemStack)o);
+		}
+		else return super.equals(o);
+	}
+
 }
