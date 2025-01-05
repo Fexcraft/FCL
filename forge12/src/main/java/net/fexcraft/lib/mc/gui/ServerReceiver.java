@@ -1,6 +1,6 @@
 package net.fexcraft.lib.mc.gui;
 
-import net.fexcraft.lib.mc.FCL;
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.lib.mc.api.packet.IPacketListener;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.minecraft.entity.player.EntityPlayerMP;
