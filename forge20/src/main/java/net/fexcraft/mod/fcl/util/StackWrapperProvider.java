@@ -23,14 +23,18 @@ public class StackWrapperProvider implements ICapabilityProvider {
 	private StackWrapper wrapper;
 
 	public StackWrapperProvider(ItemStack stack){
+		wrapper = wrap(stack);
+		optional = LazyOptional.of(() -> wrapper);
+	}
+
+	public static StackWrapper wrap(ItemStack stack){
 		try{
-			wrapper = IMPL.getConstructor(ItemStack.class).newInstance(stack);
+			return IMPL.getConstructor(ItemStack.class).newInstance(stack);
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			wrapper = new SWI(stack);
+			return new SWI(stack);
 		}
-		optional = LazyOptional.of(() -> wrapper);
 	}
 
 	@Override
