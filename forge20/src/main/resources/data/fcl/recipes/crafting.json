@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "minecraft:acacia_planks"
+    },
+    ";": {
+      "tag": "minecraft:logs"
+    },
+    ":": {
+      "item": "minecraft:crafting_table"
+    }
+  },
+  "pattern": [
+    "###",
+    ";:;"
+  ],
+  "result": {
+    "item": "fcl:crafting",
+    "count": 1
+  }
+}
