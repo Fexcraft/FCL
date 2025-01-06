@@ -57,7 +57,7 @@ public class TexturedPolygon {
 	        };
 		}
 		boolean gnorm = list.isEmpty() || list.size() != vertices.length;
-        if(gnorm) checkGenerated();
+        if(gnorm) genIfMissingNormals();
         if(TRIANGULATED_QUADS && vertices.length == 4){
             if(rgb == null && color == null){
             	triangleT(scale, 0, 1, 2, gnorm, 0);
@@ -134,7 +134,7 @@ public class TexturedPolygon {
     	else GL11.glNormal3f(norm.x, norm.y, norm.z);
 	}
 
-	private void checkGenerated(){
+	public void genIfMissingNormals(){
     	if(normals.length >= 3) return;
         if(TRIANGULATED_QUADS && vertices.length == 4){
 	        Vec3f vec0 = new Vec3f(vertices[1].vector.sub(vertices[0].vector));
