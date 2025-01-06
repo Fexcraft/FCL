@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class CraftingModel {
 
-	protected static final ArrayList<ArrayList<ModelRendererTurbo>> groups = new ArrayList<>();
+	public static final ArrayList<ArrayList<ModelRendererTurbo>> groups = new ArrayList<>();
 
 	public CraftingModel(){
 		super();
