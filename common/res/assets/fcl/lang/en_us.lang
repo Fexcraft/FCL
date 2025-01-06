@@ -1,6 +1,5 @@
 # Blocks / Tiles
-tile.fcl:workbench.name=Workbench
-tile.fcl:blueprinttable.name=Blueprint Table
+tile.fcl:crafting.name=FCL Crafting Table
 
 # Recipes
 recipe.fcl.general=General FCL Recipes
