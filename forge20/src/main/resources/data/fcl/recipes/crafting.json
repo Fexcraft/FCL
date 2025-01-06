@@ -1,9 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
   "key": {
     "#": {
-      "item": "minecraft:acacia_planks"
+      "item": "minecraft:iron_ingot"
     },
     ";": {
       "tag": "minecraft:logs"
