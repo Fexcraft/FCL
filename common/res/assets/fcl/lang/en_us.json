@@ -1,6 +1,8 @@
 {
 	"##INFO##": "FCL Lang File | en_us",
 
+	"block.fcl.crafting": "FCL Crafting Table",
+
 	"ui.fcl.config.categories": "&aCategories: %s",
 	"ui.fcl.config.entries": "&eEntries: %s",
 	"ui.fcl.config.value": "&bValue: %s",
