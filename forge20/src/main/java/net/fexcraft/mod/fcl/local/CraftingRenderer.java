@@ -10,6 +10,7 @@ import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.core.Direction;
 import org.joml.Quaternionf;
 
 import java.util.ArrayList;
@@ -32,7 +33,8 @@ public class CraftingRenderer implements BlockEntityRenderer<CraftingEntity> {
 		FCLRenderTypes.setCutout(TEXTURE);
 		pose.pushPose();
 		pose.translate(0.5, 0, 0.5);
-		pose.mulPose(new Quaternionf().rotateAxis(Static.toRadians(tile.getBlockState().getValue(FACING).toYRot()), AY));
+		Direction dir = tile.getBlockState().getValue(FACING);
+		pose.mulPose(new Quaternionf().rotateAxis(Static.toRadians(dir.getAxis() == Direction.Axis.Z ? dir.toYRot() : dir.toYRot() - 180), AY));
 		pose.mulPose(new Quaternionf().rotateAxis(Static.rad180, AZ));
 		for(ArrayList<ModelRendererTurbo> group : MODEL.groups){
 			for(ModelRendererTurbo turbo : group){
