@@ -1,11 +1,10 @@
 package net.fexcraft.mod.fcl;
 
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.logging.LogUtils;
 import net.fexcraft.app.json.JsonHandler;
-import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fcl.local.CraftingBlock;
+import net.fexcraft.mod.fcl.local.CraftingEntity;
 import net.fexcraft.mod.fcl.util.*;
 import net.fexcraft.mod.uni.FclRecipe;
 import net.fexcraft.mod.uni.UniChunk;
@@ -32,14 +31,19 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -56,13 +60,10 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.network.chat.Component.literal;
 
 /**
@@ -88,6 +89,15 @@ public class FCL {
 		.serverAcceptedVersions(pro -> true)
 		.networkProtocolVersion(() -> "fcl")
 		.simpleChannel();
+	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+	public static final DeferredRegister<BlockEntityType<?>> BLOCKENTS = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
+	//
+	public static final RegistryObject<Block> CRAFTING_BLOCK = BLOCKS.register("crafting", () -> new CraftingBlock());
+	public static final RegistryObject<Item> CRAFTING_ITEM = ITEMS.register("crafting", () -> new BlockItem(CRAFTING_BLOCK.get(), new Item.Properties()));
+	public static final RegistryObject<BlockEntityType<CraftingEntity>> CRAFTING_ENTITY = BLOCKENTS.register("crafting", () ->
+			BlockEntityType.Builder.of(CraftingEntity::new, CRAFTING_BLOCK.get()).build(null));
+	//
 	public static UniFCL CONFIG;
 
 	public FCL(){
@@ -161,6 +171,9 @@ public class FCL {
 		};
 		//
 		MinecraftForge.EVENT_BUS.register(this);
+		ITEMS.register(bus);
+		BLOCKS.register(bus);
+		BLOCKENTS.register(bus);
 		CONTAINERS.register(bus);
 		bus.addListener(this::commonSetup);
 	}
@@ -226,7 +239,7 @@ public class FCL {
 	public void onCmdReg(RegisterCommandsEvent event){
 		event.getDispatcher().register(Commands.literal("fcl")
 			.executes(cmd -> {
-				if(cmd.getSource().isPlayer()) UniEntity.getEntity(cmd.getSource().getPlayer()).openUI(UniFCL.SELECT_RECIPE_CATEGORY, V3I.NULL);
+				if(cmd.getSource().isPlayer()) UniEntity.getEntity(cmd.getSource().getPlayer()).openUI(UniFCL.SELECT_CONFIG_CATEGORY, V3I.NULL);
 				return 0;
 			})
 		);
