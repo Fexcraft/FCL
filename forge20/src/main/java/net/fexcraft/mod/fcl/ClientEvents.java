@@ -1,6 +1,8 @@
 package net.fexcraft.mod.fcl;
 
+import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.fcl.local.CraftingRenderer;
+import net.fexcraft.mod.fcl.util.Renderer120;
 import net.fexcraft.mod.uni.ui.UniUI;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -18,6 +20,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void clientInit(FMLClientSetupEvent event){
+        ModelRendererTurbo.RENDERER = new Renderer120();
         MenuScreens.register(FCL.UNIVERSAL.get(), UniUI::new);
     }
 
