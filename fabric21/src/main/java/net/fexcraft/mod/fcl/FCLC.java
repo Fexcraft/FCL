@@ -2,7 +2,9 @@ package net.fexcraft.mod.fcl;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.mod.fcl.util.Axis3DL;
 import net.fexcraft.mod.fcl.util.UIPacket;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.ui.*;
@@ -26,6 +28,7 @@ public class FCLC implements ClientModInitializer {
 			});
 		});
 		//
+		AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
 		UITab.IMPLEMENTATION = UUITab.class;
 		UIText.IMPLEMENTATION = UUIText.class;
 		UIField.IMPLEMENTATION = UUIField.class;
