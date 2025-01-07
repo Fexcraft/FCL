@@ -127,12 +127,23 @@ public class SWI extends StackWrapper {
 
 	@Override
 	public IDL getIDL(){
-		return IDLManager.getIDL(getID());
+		return IDLManager.getIDLCached(getID());
 	}
 
 	@Override
 	public String getID(){
 		return BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+	}
+
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof StackWrapper){
+			return equals(((StackWrapper)o).direct());
+		}
+		else if(o instanceof ItemStack){
+			return ItemStack.isSameItemSameComponents(stack, (ItemStack)o);
+		}
+		else return super.equals(o);
 	}
 
 }
