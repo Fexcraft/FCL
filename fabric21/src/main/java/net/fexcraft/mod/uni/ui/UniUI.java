@@ -69,8 +69,9 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			}
 
 			@Override
-			public void draw(int x, int y, StackWrapper stack){
+			public void draw(int x, int y, StackWrapper stack, boolean text){
 				matrix.renderItem(stack.local(), x, y);
+				if(text) matrix.renderItemDecorations(font, stack.local(), x, y);
 			}
 
 			@Override
