@@ -3,6 +3,8 @@ package net.fexcraft.mod.fcl;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -26,8 +28,10 @@ import net.fexcraft.mod.uni.world.StateWrapper;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -37,6 +41,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -62,6 +68,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -76,6 +83,7 @@ public class FCL implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 	public static File GAMEDIR;
 	public static Supplier<MinecraftServer> SERVER = null;
+	public static UniFCL CONFIG;
 	//
 	public static final ResourceLocation UI_PACKET = ResourceLocation.parse("fcl:ui");
 	public static final CustomPacketPayload.Type<UIPacket> UI_PACKET_TYPE = new CustomPacketPayload.Type<>(UI_PACKET);
@@ -90,34 +98,8 @@ public class FCL implements ModInitializer {
 	@Override
 	public void onInitialize(){
 		GAMEDIR = FabricLoader.getInstance().getGameDirectory();
-		new ConfigBase(new File(GAMEDIR, "/config/fcl.json")) {
-			@Override
-			protected void fillInfo(JsonMap map){
-
-			}
-
-			@Override
-			protected void fillEntries(){
-				entries.add(new ConfigEntry(this, "1", "1111", 100000).rang(0, 1000)
-					.info("2")
-					.req(false, true)
-				);
-				entries.add(new ConfigEntry(this, "2", "2222", true)
-					.info("1")
-					.req(false, false)
-				);
-				entries.add(new ConfigEntry(this, "3", "3333", 5).rang(1, 60)
-					.info("0")
-					.req(true, true)
-				);
-			}
-
-			@Override
-			protected void onReload(JsonMap map){
-
-			}
-		};
-		init(FabricLoader.getInstance().isDevelopmentEnvironment(), false);
+		CONFIG = new UniFCL(new File(GAMEDIR, "/config/"));
+		init(FabricLoader.getInstance().isDevelopmentEnvironment());
 		WrapperHolder.INSTANCE = new WrapperHolderImpl();
 		StackWrapper.SUPPLIER = obj -> {
 			if(obj instanceof ItemWrapper){
@@ -180,15 +162,34 @@ public class FCL implements ModInitializer {
 			ServerPlayNetworking.getSender((ServerPlayer)player.entity.direct()).sendPacket(new UIPacket(com));
 		};
 		UniFCL.registerUI(this);
+		FclRecipe.VALIDATE = comp -> {
+			if(comp.tag){
+				if(comp.key == null) comp.key = TagKey.create(Registries.ITEM, ResourceLocation.parse(comp.id));
+				return comp.key != null;
+			}
+			else return !comp.stack.empty();
+		};
+		FclRecipe.GET_TAG_AS_LIST = (comp) -> {
+			ArrayList<StackWrapper> list = new ArrayList<>();
+			if(comp.key == null) comp.key = TagKey.create(Registries.ITEM, ResourceLocation.parse(comp.id));
+			var tags = BuiltInRegistries.ITEM.getTagOrEmpty((TagKey<Item>) comp.key);
+			for(Holder<Item> item : tags){
+				list.add(StackWrapper.wrap(new ItemStack(item, comp.amount)));
+			}
+			return list;
+		};
+		CommonLifecycleEvents.TAGS_LOADED.register((ra, bool) -> {
+			if(UniFCL.EXAMPLE_RECIPES){
+				FclRecipe.newBuilder("recipe.fcl.testing").add(new ItemStack(Blocks.COBBLESTONE, 4)).output(new ItemStack(Blocks.STONE_STAIRS, 5)).register();
+				FclRecipe.newBuilder("recipe.fcl.testing").add("minecraft:logs", 9).output(new ItemStack(Blocks.TRAPPED_CHEST, 1)).register();
+			}
+		});
 	}
 
-	private void init(boolean dev, boolean client){
-		EnvInfo.CLIENT = client;
+	private void init(boolean dev){
+		EnvInfo.CLIENT = false;
 		EnvInfo.DEV = dev;
-		UniReg.LOADER_VERSION = "1.20";
-		if(client){
-			AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
-		}
+		UniReg.LOADER_VERSION = "1.21";
 		TagCW.WRAPPER[0] = com -> new TagCWI((CompoundTag)com);
 		TagLW.WRAPPER[0] = com -> new TagLWI((ListTag)com);
 		TagCW.SUPPLIER[0] = () -> new TagCWI();
