@@ -33,4 +33,14 @@ public class ResLoc implements IDL {
 		return (Q)resloc;
 	}
 
+	@Override
+	public boolean equals(Object o){
+		return resloc.equals(o);
+	}
+
+	@Override
+	public String toString(){
+		return colon();
+	}
+
 }
