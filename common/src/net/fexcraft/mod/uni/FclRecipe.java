@@ -44,11 +44,12 @@ public class FclRecipe {
 				return;
 			}
 		}
+		IDL idl = recipe.output.getIDL();
 		if(!RECIPES.containsKey(category)) RECIPES.put(category, new LinkedHashMap<>());
-		if(!RECIPES.get(category).containsKey(recipe.output.getIDL())){
-			RECIPES.get(category).put(recipe.output.getIDL(), new ArrayList<>());
+		if(!RECIPES.get(category).containsKey(idl)){
+			RECIPES.get(category).put(idl, new ArrayList<>());
 		}
-		RECIPES.get(category).get(recipe.output.getIDL()).add(recipe);
+		RECIPES.get(category).get(idl).add(recipe);
 	}
 
 	public void register(String category){
