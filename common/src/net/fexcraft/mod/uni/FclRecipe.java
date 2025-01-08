@@ -5,6 +5,7 @@ import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.item.StackWrapper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -23,6 +24,11 @@ public class FclRecipe {
 	public final List<Component> components;
 
 	public FclRecipe(StackWrapper stack, Component... comps){
+		output = stack;
+		components = ImmutableList.copyOf(comps);
+	}
+
+	public FclRecipe(StackWrapper stack, Collection<Component> comps){
 		output = stack;
 		components = ImmutableList.copyOf(comps);
 	}
