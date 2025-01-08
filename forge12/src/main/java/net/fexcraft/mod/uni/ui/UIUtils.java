@@ -22,7 +22,7 @@ public class UIUtils {
 			return JsonHandler.parse(UniReg.getInst(mod).getClass().getClassLoader().getResourceAsStream(loc));
 		}
 		catch(Exception e){
-			Print.log("ui-loc: " + loc);
+			Print.log("ui-loc [" + key.key + "]: " + loc);
 			e.printStackTrace();
 			return new JsonMap();
 		}
