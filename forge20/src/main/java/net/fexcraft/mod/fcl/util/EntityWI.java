@@ -187,7 +187,7 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public void send(String s){
-		entity.sendSystemMessage(Component.literal(Formatter.format(Component.translatable(s).getString())));
+		entity.sendSystemMessage(Component.translatable(s));
 	}
 
 	@Override
