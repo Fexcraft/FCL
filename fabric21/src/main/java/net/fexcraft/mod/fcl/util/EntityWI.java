@@ -190,7 +190,7 @@ public class EntityWI implements EntityW {
 	@Override
 	public void send(String s){
 		if(entity instanceof ServerPlayer == false) return;
-		((ServerPlayer)entity).sendSystemMessage(Component.literal(Formatter.format(Component.translatable(s).getString())));
+		((ServerPlayer)entity).sendSystemMessage(Component.translatable(s));
 	}
 
 	@Override
