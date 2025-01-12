@@ -1,19 +1,14 @@
 package net.fexcraft.mod.uni.ui;
 
-import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.fcl.util.UIPacketReceiver;
-import net.fexcraft.mod.fcl.util.UISync;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.tag.TagCW;
-import net.fexcraft.mod.uni.ui.UniUI;
-import net.fexcraft.mod.uni.ui.*;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
@@ -38,7 +33,6 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 	protected ContainerInterface con;
 	protected UIKey ui_type;
 	protected net.fexcraft.mod.uni.ui.UniUI uni;
-
 
 	public UniCon(int id, Inventory inv, UIKey key, V3I pos, JsonMap map){
 		super(FCL.UNIVERSAL, id);
@@ -69,11 +63,11 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 		slots.clear();
 		InventoryInterface invcon = (InventoryInterface)con;
 		for(UISlot slot : uislots){
-			Container inventory = slot.playerinv ? player.getInventory() : (Container)invcon.getInventory();
+			Container inventory = slot.playerinv ? inv : (Container)invcon.getInventory();
 			for(int y = 0; y < slot.repeat_y; y++){
 				for(int x = 0; x < slot.repeat_x; x++){
 					try{
-						addSlot((Slot)UISlot.get(slot.type,new Object[]{ inventory, x + (y * slot.repeat_x) + slot.index, slot.x + x * 18, slot.y + y * 18 }));
+						addSlot((Slot)UISlot.get(slot.type, new Object[]{ inventory, x + (y * slot.repeat_x) + slot.index, slot.x + x * 18, slot.y + y * 18 }));
 					}
 					catch(Exception e){
 						e.printStackTrace();
@@ -84,10 +78,6 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 		}
 		con.root = this;
 		con.init();
-	}
-
-	public UniCon(int id, Inventory inv){
-		this(id, inv, null, null, null);
 	}
 
 	public Slot addSlot(Slot slot){
