@@ -4,15 +4,16 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fcl.local.CraftingBlock;
+import net.fexcraft.mod.fcl.local.CraftingEntity;
 import net.fexcraft.mod.fcl.mixint.CWProvider;
 import net.fexcraft.mod.fcl.mixint.EWProvider;
 import net.fexcraft.mod.fcl.mixint.SWProvider;
@@ -38,10 +39,10 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -49,18 +50,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -70,6 +71,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static net.minecraft.commands.Commands.literal;
@@ -92,6 +94,10 @@ public class FCL implements ModInitializer {
 	public static final ResourceLocation UI_SYNC = ResourceLocation.parse("fcl:ui_sync");
 	public static final CustomPacketPayload.Type<UISync> UI_SYNC_TYPE = new CustomPacketPayload.Type<>(UI_SYNC);
 	public static final StreamCodec<RegistryFriendlyByteBuf, UISync> UI_SYNC_CODEC = StreamCodec.of(UISync::encode, UISync::new);
+	//
+	public static final Block CRAFTING_BLOCK = register("fcl:crafting", CraftingBlock::new, BlockBehaviour.Properties.of().noOcclusion().mapColor(MapColor.COLOR_LIGHT_GRAY));
+	public static final BlockEntityType<CraftingEntity> CRAFTING_ENTITY = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "fcl:crafting",
+			FabricBlockEntityTypeBuilder.create(CraftingEntity::new, CRAFTING_BLOCK).build());
 	//
 	public static ExtendedScreenHandlerType<UniCon, UISync> UNIVERSAL;
 	private static boolean recipereg;
@@ -186,6 +192,9 @@ public class FCL implements ModInitializer {
 				FclRecipe.newBuilder("recipe.fcl.testing").add("minecraft:logs", 9).output(new ItemStack(Blocks.TRAPPED_CHEST, 1)).register();
 			}
 		});
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(content -> {
+			content.accept(new ItemStack(CRAFTING_BLOCK), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+		});
 	}
 
 	private void init(boolean dev){
@@ -194,8 +203,8 @@ public class FCL implements ModInitializer {
 		UniReg.LOADER_VERSION = "1.21";
 		TagCW.WRAPPER[0] = com -> new TagCWI((CompoundTag)com);
 		TagLW.WRAPPER[0] = com -> new TagLWI((ListTag)com);
-		TagCW.SUPPLIER[0] = () -> new TagCWI();
-		TagLW.SUPPLIER[0] = () -> new TagLWI();
+		TagCW.SUPPLIER[0] = TagCWI::new;
+		TagLW.SUPPLIER[0] = TagLWI::new;
 		ItemWrapper.GETTER = id -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(id));
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.defaultBlockState());
@@ -251,6 +260,14 @@ public class FCL implements ModInitializer {
 		//FCL.LOGGER.info(opt.toString());
 		if(opt.isPresent()) return state.setValue(prop, opt.get());
 		return state;
+	}
+
+	/** ref: wiki.fabricmc.net/tutorial:blocks#registering_blocks_in_1212 */
+	public static Block register(String idl, Function<Block.Properties, Block> factory, Block.Properties props){
+		ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, ResourceLocation.parse(idl));
+		Block block = Blocks.register(key, factory, props);
+		Items.registerBlock(block);
+		return block;
 	}
 
 }
