@@ -94,6 +94,7 @@ public class FCL implements ModInitializer {
 	public static final StreamCodec<RegistryFriendlyByteBuf, UISync> UI_SYNC_CODEC = StreamCodec.of(UISync::encode, UISync::new);
 	//
 	public static ExtendedScreenHandlerType<UniCon, UISync> UNIVERSAL;
+	private static boolean recipereg;
 
 	@Override
 	public void onInitialize(){
@@ -140,7 +141,7 @@ public class FCL implements ModInitializer {
 				player.openMenu(new ExtendedScreenHandlerFactory<>() {
 					@Override
 					public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player){
-						return new UniCon(0, inventory, key, pos, UniReg.getMenuJson(ui));
+						return new UniCon(i, inventory, key, pos, UniReg.getMenuJson(ui));
 					}
 
 					@Override
@@ -179,7 +180,8 @@ public class FCL implements ModInitializer {
 			return list;
 		};
 		CommonLifecycleEvents.TAGS_LOADED.register((ra, bool) -> {
-			if(UniFCL.EXAMPLE_RECIPES){
+			if(!recipereg && UniFCL.EXAMPLE_RECIPES){
+				recipereg = true;
 				FclRecipe.newBuilder("recipe.fcl.testing").add(new ItemStack(Blocks.COBBLESTONE, 4)).output(new ItemStack(Blocks.STONE_STAIRS, 5)).register();
 				FclRecipe.newBuilder("recipe.fcl.testing").add("minecraft:logs", 9).output(new ItemStack(Blocks.TRAPPED_CHEST, 1)).register();
 			}
