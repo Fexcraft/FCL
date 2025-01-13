@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.fexcraft.lib.mc.registry.UCResourceLocation;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.ITextureObject;
@@ -21,11 +20,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ExternalTextureHelper {
 	
-	private static final Map<String, UCResourceLocation> map = new HashMap<String, UCResourceLocation>();
+	private static final Map<String, ResourceLocation> map = new HashMap<>();
 	
-	public static UCResourceLocation get(String s){
+	public static ResourceLocation get(String s){
 		if(map.containsKey(s)) return map.get(s);
-		UCResourceLocation texture = new UCResourceLocation("fc-url", s);
+		ResourceLocation texture = new ResourceLocation("fc-url", s);
 		ITextureObject object = Minecraft.getMinecraft().renderEngine.getTexture(texture);
         if(object == null){
         	SimplerThreadImageDownloader thid = new SimplerThreadImageDownloader(s, texture);
