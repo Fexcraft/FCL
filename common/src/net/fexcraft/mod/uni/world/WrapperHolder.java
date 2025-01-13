@@ -34,7 +34,7 @@ public abstract class WrapperHolder {
 	}
 
 	public static boolean isSinglePlayer(){
-		return false;
+		return INSTANCE.isSinglePlayer0();
 	}
 
 	protected abstract boolean isSinglePlayer0();
