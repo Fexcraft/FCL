@@ -22,16 +22,18 @@ public class SWI extends StackWrapper {
 	public SWI(ItemWrapper item){
 		super(item);
 		stack = new ItemStack((Item)item.direct());
-	}
-
-	@Override
-	public void set(Object obj){
-		stack = (ItemStack)obj;
+		appended.init(appendables);
 	}
 
 	public SWI(ItemStack is){
 		super(ItemWrapper.get(is.getItem().getRegistryName().toString()));
 		stack = is;
+		appended.init(appendables);
+	}
+
+	@Override
+	public void set(Object obj){
+		stack = (ItemStack)obj;
 	}
 
 	@Override
