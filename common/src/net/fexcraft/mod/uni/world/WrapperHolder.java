@@ -2,6 +2,7 @@ package net.fexcraft.mod.uni.world;
 
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
 
 import java.io.File;
@@ -36,6 +37,18 @@ public abstract class WrapperHolder {
 	public static boolean isSinglePlayer(){
 		return INSTANCE.isSinglePlayer0();
 	}
+
+	public static EntityW getPlayer(UUID uuid){
+		return INSTANCE.getPlayer0(uuid);
+	}
+
+	protected abstract EntityW getPlayer0(UUID uuid);
+
+	public static List<UniEntity> getPlayers(){
+		return INSTANCE.getPlayers0();
+	}
+
+	protected abstract List<UniEntity> getPlayers0();
 
 	protected abstract boolean isSinglePlayer0();
 
