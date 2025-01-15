@@ -5,8 +5,10 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.tag.TagCW;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -17,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +37,27 @@ public class WrapperHolderImpl extends WrapperHolder {
 			client = getWorld(net.minecraft.client.Minecraft.getMinecraft().world);
 		}
 		return (W)client;
+	}
+
+	@Override
+	protected EntityW getPlayer0(UUID uuid){
+		for(EntityPlayerMP player : Static.getServer().getPlayerList().getPlayers()){
+			if(player.getGameProfile().getId().equals(uuid)){
+				UniEntity ent = UniEntity.get(player);
+				return ent != null ? ent.entity  : null;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	protected List<UniEntity> getPlayers0(){
+		ArrayList<UniEntity> list = new ArrayList<>();
+		for(EntityPlayerMP player : Static.getServer().getPlayerList().getPlayers()){
+			UniEntity ent = UniEntity.get(player);
+			if(ent != null) list.add(ent);
+		}
+		return list;
 	}
 
 	@Override
