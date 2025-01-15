@@ -5,8 +5,10 @@ import net.fexcraft.mod.fcl.ui.*;
 import net.fexcraft.mod.uni.ConfigBase;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.ui.UIKey;
+import net.fexcraft.mod.uni.world.MessageSender;
 
 import java.io.File;
+import java.util.UUID;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -22,6 +24,7 @@ public class UniFCL extends ConfigBase {
 	public static UIKey SELECT_RECIPE_RESULT = new UIKey(105, "fcl:sel_rec_res");
 	public static UIKey RECIPE_CRAFTING = new UIKey(106, "fcl:craft_recipe");
 	//
+	public static UUID NULL_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
 	public static boolean EXAMPLE_RECIPES;
 
 	public UniFCL(File configdir) {
@@ -63,5 +66,44 @@ public class UniFCL extends ConfigBase {
 	protected void onReload(JsonMap map){
 		//
 	}
+
+	public static final MessageSender LOG = new MessageSender(){
+
+		@Override
+		public void send(String s){
+			FCL.LOGGER.info(s);
+		}
+
+		@Override
+		public void send(String str, Object... args){
+			FCL.LOGGER.info(str, args);
+		}
+
+		@Override
+		public void bar(String s){
+			FCL.LOGGER.info(s);
+		}
+
+		@Override
+		public void bar(String str, Object... args){
+			FCL.LOGGER.info(str, args);
+		}
+
+		@Override
+		public void dismount(){
+			//
+		}
+
+		@Override
+		public String getName(){
+			return "LOG";
+		}
+
+		@Override
+		public UUID getUUID(){
+			return NULL_UUID;
+		}
+
+	};
 
 }
