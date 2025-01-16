@@ -1,6 +1,7 @@
 package net.fexcraft.lib.mc.render;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -18,13 +19,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.imageio.ImageIO;
+
 public class ExternalTextureHelper {
 	
 	private static final Map<String, ResourceLocation> map = new HashMap<>();
 	
 	public static ResourceLocation get(String s){
 		if(map.containsKey(s)) return map.get(s);
-		ResourceLocation texture = new ResourceLocation("fc-url", s);
+		ResourceLocation texture = new ResourceLocation("fcl-url", s);
 		ITextureObject object = Minecraft.getMinecraft().renderEngine.getTexture(texture);
         if(object == null){
         	SimplerThreadImageDownloader thid = new SimplerThreadImageDownloader(s, texture);
@@ -32,6 +35,23 @@ public class ExternalTextureHelper {
         }
         map.put(s, texture);
         return texture;
+	}
+
+	public static ResourceLocation get(String s, byte[] arr){
+		if(map.containsKey(s)){
+			if(arr != null) map.remove(s);
+			else return map.get(s);
+		}
+		if(arr == null) return new ResourceLocation(s);
+		ResourceLocation tex = new ResourceLocation(s);
+		ITextureObject object = Minecraft.getMinecraft().renderEngine.getTexture(tex);
+		if(object != null) Minecraft.getMinecraft().renderEngine.deleteTexture(tex);
+		if(object == null){
+			BufferedTextureLoader thid = new BufferedTextureLoader(tex, arr);
+			Minecraft.getMinecraft().renderEngine.loadTexture(tex, thid);
+		}
+		map.put(s, tex);
+		return tex;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -95,6 +115,38 @@ public class ExternalTextureHelper {
 			thread.start();
 	    }
 	    
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static class BufferedTextureLoader extends SimpleTexture {
+
+		private BufferedImage image;
+		private byte[] array;
+		private boolean uploaded;
+
+		public BufferedTextureLoader(ResourceLocation resloc, byte[] arr) {
+			super(resloc);
+			array = arr;
+		}
+
+		private void checkIfUploaded(){
+			if(uploaded || image == null) return;
+			if(textureLocation != null) deleteGlTexture();
+			TextureUtil.uploadTextureImage(super.getGlTextureId(), image);
+			uploaded = true;
+		}
+
+		@Override
+		public int getGlTextureId(){
+			checkIfUploaded();
+			return super.getGlTextureId();
+		}
+
+		@Override
+		public void loadTexture(IResourceManager resman) throws IOException {
+			image = ImageIO.read(new ByteArrayInputStream(array));
+		}
+
 	}
 	
 }
