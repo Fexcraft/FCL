@@ -1,11 +1,14 @@
 package net.fexcraft.mod.fcl.util;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import net.fexcraft.mod.uni.impl.ResLoc;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.HttpTexture;
 import net.minecraft.resources.ResourceLocation;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -14,8 +17,6 @@ import java.util.*;
 public class ExternalTextures {
 
 	private static final Map<String, ResLoc> MAP = new HashMap<>();
-	private static final HashSet<String> KEY = new HashSet<>();
-	static{ KEY.add("documents"); }
 
 	public static ResLoc get(String mid, String url){
 		if(MAP.containsKey(url)) return MAP.get(url);
@@ -26,6 +27,20 @@ public class ExternalTextures {
 		file.deleteOnExit();
 		Minecraft.getInstance().textureManager.register(texture, new HttpTexture(file, url, texture, false, null));
 		return texture;
+	}
+
+	public static ResourceLocation get(String s, byte[] arr) throws IOException {
+		if(MAP.containsKey(s)){
+			if(arr != null) MAP.remove(s);
+			else return MAP.get(s);
+		}
+		if(arr == null) return new ResourceLocation(s);
+		ResourceLocation tex = new ResourceLocation(s);
+		File file = new File("./temp/fcl_download/" + tex.getPath());
+		if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
+		file.deleteOnExit();
+		Minecraft.getInstance().textureManager.register(tex, new DynamicTexture(NativeImage.read(arr)));
+		return tex;
 	}
 
 }
