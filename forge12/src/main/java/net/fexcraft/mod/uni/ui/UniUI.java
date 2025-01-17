@@ -195,13 +195,13 @@ public class UniUI extends GuiContainer {
 					//break;
 				}
 			}
-			if(!bool){
+			if(!bool && !invbutton){
 				super.keyTyped(c, code);
 			}
 			else keytyped = true;
 		}
 		if(!keytyped) keytyped = ui.keytyped(c, code);
-		if(!keytyped && (code == 1 || invbutton)) mc.player.closeScreen();
+		if(!keytyped && code == 1) mc.player.closeScreen();
 	}
 
 	@Override
