@@ -4,15 +4,19 @@ import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL20;
 import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.CubeSide;
+import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.io.File;
@@ -34,6 +38,24 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	protected boolean isSinglePlayer0(){
 		return ServerLifecycleHooks.getCurrentServer() != null && ServerLifecycleHooks.getCurrentServer().isSingleplayer();
+	}
+
+	@Override
+	protected EntityW getPlayer0(UUID uuid){
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		Player player = server.getPlayerList().getPlayer(uuid);
+		return player == null ? null : UniEntity.getEntity(player);
+	}
+
+	@Override
+	protected List<UniEntity> getPlayers0(){
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		ArrayList<UniEntity> list = new ArrayList<>();
+		for(ServerPlayer player : server.getPlayerList().getPlayers()){
+			UniEntity ent = UniEntity.get(player);
+			if(ent != null) list.add(ent);
+		}
+		return list;
 	}
 
 	@Override
