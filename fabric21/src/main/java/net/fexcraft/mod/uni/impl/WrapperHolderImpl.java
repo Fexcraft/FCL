@@ -4,8 +4,10 @@ import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.CubeSide;
+import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.core.BlockPos;
@@ -14,6 +16,7 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.world.entity.player.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +38,24 @@ public class WrapperHolderImpl extends WrapperHolder {
 	protected boolean isSinglePlayer0(){
 		MinecraftServer server = FCL.SERVER.get();
 		return server != null && server.isSingleplayer();
+	}
+
+	@Override
+	protected EntityW getPlayer0(UUID uuid){
+		MinecraftServer server = FCL.SERVER.get();
+		Player player = server.getPlayerList().getPlayer(uuid);
+		return player == null ? null : UniEntity.getEntity(player);
+	}
+
+	@Override
+	protected List<UniEntity> getPlayers0(){
+		MinecraftServer server = FCL.SERVER.get();
+		ArrayList<UniEntity> list = new ArrayList<>();
+		for(ServerPlayer player : server.getPlayerList().getPlayers()){
+			UniEntity ent = UniEntity.get(player);
+			if(ent != null) list.add(ent);
+		}
+		return list;
 	}
 
 	@Override
