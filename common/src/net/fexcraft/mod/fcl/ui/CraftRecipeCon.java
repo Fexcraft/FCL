@@ -4,11 +4,10 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.*;
-import net.fexcraft.mod.uni.ConfigBase.ConfigEntry;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniInventory;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
-import net.fexcraft.mod.uni.ui.InventoryInterface;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -16,7 +15,7 @@ import java.util.LinkedHashMap;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class CraftRecipeCon extends InventoryInterface {
+public class CraftRecipeCon extends ContainerInterface {
 
 	public CraftRecipeCon(JsonMap map, UniEntity ply, V3I pos){
 		super(map, ply, pos);
@@ -121,26 +120,6 @@ public class CraftRecipeCon extends InventoryInterface {
 				consume(copy, comp.stack, comp.stack.count());
 			}
 		}
-	}
-
-	@Override
-	public Object getInventory(){
-		return null;
-	}
-
-	@Override
-	public void setInventoryContent(int index, TagCW com){
-
-	}
-
-	@Override
-	public StackWrapper getInventoryContent(int index){
-		return null;
-	}
-
-	@Override
-	public boolean isInventoryEmpty(int at){
-		return true;
 	}
 
 }
