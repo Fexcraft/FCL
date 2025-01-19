@@ -6,6 +6,7 @@ import java.util.UUID;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.crafting.RecipeRegistry;
 import net.fexcraft.mod.uni.*;
+import net.fexcraft.mod.uni.item.UniInventory;
 import net.fexcraft.mod.uni.util.FCLCapabilities;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapabilitySerializer;
@@ -39,6 +40,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -90,6 +92,7 @@ public class FCL {
 		StackWrapper.SUPPLIER = obj -> {
 			if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
 			if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
+			if(obj instanceof TagCW) return new SWI(new ItemStack((NBTTagCompound)((TagCW)obj).direct()));
 			return null;
 		};
 		UniEntity.ENTITY_GETTER = ent -> new EntityWI((Entity)ent);
@@ -98,6 +101,7 @@ public class FCL {
 		WrapperHolder.LEVEL_PROVIDER = lvl -> new WorldWI((World)lvl);
 		ItemWrapper.GETTER = id -> Item.REGISTRY.getObject(new ResourceLocation(id));
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
+		UniInventory.IMPL = UniInventory12.class;
 		Static.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
 		Static.setIsServer((side = event.getSide()).isServer());
 		if(EnvInfo.CLIENT){
