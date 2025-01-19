@@ -53,6 +53,14 @@ public abstract class StackWrapper {
 
 	public abstract void count(int am);
 
+	public void decr(int am){
+		count(count() - am);
+	}
+
+	public void incr(int am){
+		count(count() + am);
+	}
+
 	public abstract StackWrapper copy();
 
 	public abstract void save(TagCW com);
