@@ -5,7 +5,6 @@ import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -30,39 +29,45 @@ public class UniCon extends Container {
 	public UniCon(ContainerInterface con, EntityPlayer player){
 		this.con = con;
 		this.player = player;
-		con.SEND_TO_CLIENT = (com, pass) -> {
-			com.set("target_listener", "fcl:ui");
-			PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com.local()), pass.entity.local());
-			//Packets.sendTo(Packet_TagListener.class, (Passenger)pass, "ui", com);
-		};
-		con.SEND_TO_SERVER = com -> {
-			com.set("target_listener", "fcl:ui");
-			PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(com.local()));
-			//Packets.send(Packet_TagListener.class, "ui", com);
-		};
-		if(!con.ui_map.has("slots") || con instanceof InventoryInterface == false) return;
+		if(ContainerInterface.SEND_TO_CLIENT == null){
+			ContainerInterface.SEND_TO_CLIENT = (com, pass) -> {
+				com.set("target_listener", "fcl:ui");
+				PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com.local()), pass.entity.local());
+				//Packets.sendTo(Packet_TagListener.class, (Passenger)pass, "ui", com);
+			};
+		}
+		if(ContainerInterface.SEND_TO_SERVER == null){
+			ContainerInterface.SEND_TO_SERVER = com -> {
+				com.set("target_listener", "fcl:ui");
+				PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(com.local()));
+				//Packets.send(Packet_TagListener.class, "ui", com);
+			};
+		}
+		if(con.ui_map.has("slots")) initInv();
+		con.root = this;
+		con.init();
+	}
+
+	private void initInv(){
 		ArrayList<UISlot> uislots = new ArrayList<>();
-		if(con.ui_map.has("slots")){
-			for(Map.Entry<String, JsonValue<?>> entry : con.ui_map.getMap("slots").entries()){
-				try{
-					uislots.add(new UISlot(con.ui, entry.getValue().asMap()));
-				}
-				catch(Exception e){
-					Print.log("error during inventory slot parsing");
-					e.printStackTrace();
-				}
+		for(Map.Entry<String, JsonValue<?>> entry : con.ui_map.getMap("slots").entries()){
+			try{
+				uislots.add(new UISlot(con.ui, entry.getValue().asMap()));
+			}
+			catch(Exception e){
+				Print.log("error during inventory slot parsing");
+				e.printStackTrace();
 			}
 		}
 		slots = 0;
 		inventoryItemStacks.clear();
 		inventorySlots.clear();
-		InventoryInterface invcon = (InventoryInterface)con;
 		for(UISlot slot : uislots){
-			IInventory inventory = slot.playerinv ? player.inventory : (IInventory)invcon.getInventory();
+			IInventory inventory = slot.playerinv ? player.inventory : con.inventory.cast();
 			for(int y = 0; y < slot.repeat_y; y++){
 				for(int x = 0; x < slot.repeat_x; x++){
 					try{
-						addSlot((Slot)UISlot.get(slot.type,new Object[]{ inventory, x + (y * slot.repeat_x) + slot.index, slot.x + x * 18, slot.y + y * 18 }));
+						addSlot((Slot)UISlot.get(slot.type, new Object[]{ inventory, x + (y * slot.repeat_x) + slot.index, slot.x + x * 18, slot.y + y * 18 }));
 					}
 					catch(Exception e){
 						Print.log("error during inventory slot creation");
@@ -72,8 +77,15 @@ public class UniCon extends Container {
 				}
 			}
 		}
-		con.root = this;
-		con.init();
+	}
+
+	public void addSlot(String type, Object... args){
+		try{
+			addSlot((Slot)UISlot.get(type, args));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	@Override
