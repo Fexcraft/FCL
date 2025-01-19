@@ -3,6 +3,7 @@ package net.fexcraft.mod.uni.ui;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.UniEntity;
+import net.fexcraft.mod.uni.item.UniInventory;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
 
@@ -20,6 +21,7 @@ public class ContainerInterface {
 	public static Consumer<TagCW> SEND_TO_SERVER;
 	public static Function<String, String> TRANSLATOR;
 	public static BiFunction<String, Object[], String> TRANSFORMAT;
+	public UniInventory inventory;
 	public UserInterface ui;//client side only
 	public Object root;
 	public UIKey uiid;
@@ -46,7 +48,9 @@ public class ContainerInterface {
 		return this;
 	}
 
-	public void onClosed(){}
+	public void onClosed(){
+		if(inventory != null) inventory.close(player);
+	}
 
 	public void update(Object localcon){}
 
