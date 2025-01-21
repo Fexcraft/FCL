@@ -14,10 +14,6 @@ import java.util.function.Function;
 public abstract class StackWrapper {
 
 	public static StackWrapper EMPTY = null;
-	public static Function<Object, StackWrapper> SUPPLIER = null;
-	//
-	protected static ArrayList<Appendable<StackWrapper>> appendables = new ArrayList<>();
-	public final Appended<StackWrapper> appended = new Appended<>(this);
 	//
 	protected ItemWrapper item;
 
@@ -82,21 +78,13 @@ public abstract class StackWrapper {
 	public abstract <C> C getContent(Object contenttype);
 
 	/** For ItemWrapper or ItemStacks. */
+	@Deprecated
 	public static StackWrapper wrap(Object obj){
-		return SUPPLIER.apply(obj);
-	}
-
-	public static <A> A wrapAndGetApp(Object stack, Class<A> clazz){
-		StackWrapper wrapper = SUPPLIER.apply(stack);
-		return wrapper == null ? null : wrapper.appended.get(clazz);
+		return UniStack.getStack(obj);
 	}
 
 	public abstract IDL getIDL();
 
 	public abstract String getID();
-
-	public static void register(Appendable<StackWrapper> app){
-		appendables.add(app);
-	}
 
 }
