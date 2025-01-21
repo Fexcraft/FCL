@@ -7,7 +7,8 @@ import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.crafting.RecipeRegistry;
 import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.item.UniInventory;
-import net.fexcraft.mod.uni.util.FCLCapabilities;
+import net.fexcraft.mod.uni.item.UniStack;
+import net.fexcraft.mod.uni.util.*;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapabilitySerializer;
 import net.fexcraft.lib.mc.gui.GuiHandler;
@@ -26,10 +27,6 @@ import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.ui.*;
-import net.fexcraft.mod.uni.util.UniChunkCallable;
-import net.fexcraft.mod.uni.util.UniChunkStorage;
-import net.fexcraft.mod.uni.util.UniPlayerCallable;
-import net.fexcraft.mod.uni.util.UniPlayerStorage;
 import net.fexcraft.mod.uni.world.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -89,20 +86,15 @@ public class FCL {
 		TagCW.WRAPPER[0] = obj -> new TagCWI(obj);
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
 		TagLW.WRAPPER[0] = obj -> new TagLWI(obj);
-		StackWrapper.SUPPLIER = obj -> {
-			if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
-			if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
-			if(obj instanceof TagCW) return new SWI(new ItemStack((NBTTagCompound)((TagCW)obj).direct()));
-			return null;
-		};
 		UniEntity.ENTITY_GETTER = ent -> new EntityWI((Entity)ent);
 		UniChunk.CHUNK_GETTER = ck -> new ChunkWI((Chunk)ck);
+		UniStack.STACK_GETTER = obj -> SWI.parse(obj);
 		WrapperHolder.INSTANCE = new WrapperHolderImpl();
 		WrapperHolder.LEVEL_PROVIDER = lvl -> new WorldWI((World)lvl);
 		ItemWrapper.GETTER = id -> Item.REGISTRY.getObject(new ResourceLocation(id));
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		UniInventory.IMPL = UniInventory12.class;
-		Static.setDevMode((Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment"));
+		Static.setDevMode(EnvInfo.DEV);
 		Static.setIsServer((side = event.getSide()).isServer());
 		if(EnvInfo.CLIENT){
 			UITab.IMPLEMENTATION = UUITab.class;
@@ -177,8 +169,13 @@ public class FCL {
 		CapabilityManager.INSTANCE.register(SignCapability.class, new SignCapabilitySerializer.Storage(), new SignCapabilitySerializer.Callable());
 		CapabilityManager.INSTANCE.register(UniEntity.class, new UniPlayerStorage(), new UniPlayerCallable());
 		CapabilityManager.INSTANCE.register(UniChunk.class, new UniChunkStorage(), new UniChunkCallable());
+		CapabilityManager.INSTANCE.register(UniStack.class, new UniStackStorage(), new UniStackCallable());
 		UniEntity.GETTER = ent -> ((Entity)ent).getCapability(FCLCapabilities.PLAYER, null);
 		UniChunk.GETTER = ck -> ((Chunk)ck).getCapability(FCLCapabilities.CHUNK, null);
+		UniStack.GETTER = stk -> {
+			ItemStack stack = (ItemStack)(stk instanceof StackWrapper ? ((StackWrapper)stk).direct() : stk);
+			return stack.getCapability(FCLCapabilities.STACK, null);
+		};
 		UIPacketListener.register();
 		SignCapabilitySerializer.addListener(net.fexcraft.lib.mc.capabilities.sign.ExampleListener.class);
 		//RecipeRegistry.importVanillaRecipes();
