@@ -113,7 +113,15 @@ public class FCL {
 			ContainerInterface.TRANSFORMAT = (str, objs) -> Formatter.format(net.minecraft.client.resources.I18n.format(str, objs));
 		}
 		CONFIG = new UniFCL(event.getModConfigurationDirectory());
-		UISlot.GETTERS.put("default", args -> new Slot((IInventory)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]));
+		UISlot.GETTERS.put("default", args -> new Slot((IInventory)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]){
+			@Override
+			public boolean isItemValid(ItemStack stack){
+				if(args[0] instanceof UniInventory){
+					return ((UniInventory12)args[0]).valid((Integer)args[1], StackWrapper.wrap(stack));
+				}
+				return super.isItemValid(stack);
+			}
+		});
 		UniFCL.registerUI(instance);
 		FclRecipe.VALIDATE = comp -> {
 			if(comp.tag) return OreDictionary.doesOreNameExist(comp.id);
