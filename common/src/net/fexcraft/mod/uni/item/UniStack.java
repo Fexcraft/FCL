@@ -42,6 +42,15 @@ public class UniStack {
 		return stack == null ? null : uni.getApp(clazz);
 	}
 
+	public static UniStack create(Object obj){
+		StackWrapper stack = STACK_GETTER.apply(obj);
+		return GETTER.apply(stack);
+	}
+
+	public static StackWrapper createStack(Object obj){
+		return STACK_GETTER.apply(obj);
+	}
+
 	public static StackWrapper getStack(Object stack){
 		if(GETTER == null || stack instanceof ItemWrapper) return STACK_GETTER.apply(stack);
 		UniStack uni = GETTER.apply(stack);
