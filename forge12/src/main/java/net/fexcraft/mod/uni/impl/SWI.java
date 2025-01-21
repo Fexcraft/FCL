@@ -22,13 +22,18 @@ public class SWI extends StackWrapper {
 	public SWI(ItemWrapper item){
 		super(item);
 		stack = new ItemStack((Item)item.direct());
-		appended.init(appendables);
 	}
 
 	public SWI(ItemStack is){
 		super(ItemWrapper.get(is.getItem().getRegistryName().toString()));
 		stack = is;
-		appended.init(appendables);
+	}
+
+	public static SWI parse(Object obj){
+		if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
+		if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
+		if(obj instanceof TagCW) return new SWI(new ItemStack((NBTTagCompound)((TagCW)obj).direct()));
+		return null;
 	}
 
 	@Override
