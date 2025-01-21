@@ -3,6 +3,7 @@ package net.fexcraft.mod.uni.util;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.fexcraft.mod.uni.UniChunk;
 import net.fexcraft.mod.uni.UniEntity;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
@@ -19,5 +20,8 @@ public class FCLCapabilities {
 
 	@CapabilityInject(UniChunk.class)
 	public static final Capability<UniChunk> CHUNK = null;
+
+	@CapabilityInject(UniStack.class)
+	public static final Capability<UniStack> STACK = null;
 	
 }
