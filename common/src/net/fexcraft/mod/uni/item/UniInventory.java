@@ -1,9 +1,11 @@
 package net.fexcraft.mod.uni.item;
 
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static net.fexcraft.mod.uni.item.StackWrapper.EMPTY;
@@ -14,6 +16,7 @@ import static net.fexcraft.mod.uni.item.StackWrapper.EMPTY;
 public abstract class UniInventory {
 
 	public static Class<? extends UniInventory> IMPL = null;
+	protected HashMap<Integer, UniItemValidator> validators = new HashMap<>();
 	protected ArrayList<StackWrapper> stacks;
 	protected List<Object> local;
 	protected boolean drop_on_close;
@@ -65,6 +68,14 @@ public abstract class UniInventory {
 
 	public <INV> INV cast(){
 		return (INV)this;
+	}
+
+	public void addValidator(int idx, UniItemValidator val){
+		validators.put(idx, val);
+	}
+
+	public void addValidator(int from, int to, UniItemValidator val){
+		for(int idx = from; idx < to; idx++) validators.put(idx, val);
 	}
 
 	public boolean empty(){
@@ -140,7 +151,8 @@ public abstract class UniInventory {
 	}
 
 	public boolean valid(int idx, StackWrapper stack){
-		return true;
+		UniItemValidator val = validators.get(idx);
+		return val == null || val.isValid(idx, stack);
 	}
 
 	public void clear(){
@@ -155,6 +167,12 @@ public abstract class UniInventory {
 	@Override
 	public String toString(){
 		return "UniInventory[" + name + "]";
+	}
+
+	public static interface UniItemValidator {
+
+		public boolean isValid(int idx, StackWrapper stack);
+
 	}
 
 }
