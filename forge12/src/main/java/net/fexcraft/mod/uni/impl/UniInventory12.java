@@ -55,6 +55,7 @@ public class UniInventory12 extends UniInventory implements IInventory, IItemHan
 	@Override
 	public ItemStack insertItem(int idx, @Nonnull ItemStack stack, boolean sim){
 		if(stack.isEmpty()) return ItemStack.EMPTY;
+		if(!valid(idx, StackWrapper.wrap(stack))) return stack;
 		int rem = stacksize;
 		StackWrapper local = get(idx);
 		if(!local.empty()){
