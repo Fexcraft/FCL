@@ -5,6 +5,7 @@ import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.item.ItemType;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -99,7 +100,7 @@ public class SWI extends StackWrapper {
 
 	@Override
 	public StackWrapper copy(){
-		return wrap(stack.copy());
+		return UniStack.createStack(stack.copy());
 	}
 
 	@Override
