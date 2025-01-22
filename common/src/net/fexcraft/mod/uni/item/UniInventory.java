@@ -27,7 +27,7 @@ public abstract class UniInventory {
 		this.local = local;
 		stacks = new ArrayList<>();
 		for(int i = 0; i < local.size(); i++){
-			stacks.add(i, StackWrapper.wrap(local.get(i)));
+			stacks.add(i, UniStack.createStack(local.get(i)));
 		}
 	}
 
@@ -105,7 +105,7 @@ public abstract class UniInventory {
 	}
 
 	public void set(int idx, TagCW com){
-		set(idx, StackWrapper.wrap(com));
+		set(idx, UniStack.createStack(com));
 	}
 
 	public StackWrapper get(int idx, int am){
