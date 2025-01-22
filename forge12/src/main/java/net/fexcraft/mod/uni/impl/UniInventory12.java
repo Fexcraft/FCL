@@ -3,6 +3,7 @@ package net.fexcraft.mod.uni.impl;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.item.UniInventory;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -55,7 +56,7 @@ public class UniInventory12 extends UniInventory implements IInventory, IItemHan
 	@Override
 	public ItemStack insertItem(int idx, @Nonnull ItemStack stack, boolean sim){
 		if(stack.isEmpty()) return ItemStack.EMPTY;
-		if(!valid(idx, StackWrapper.wrap(stack))) return stack;
+		if(!valid(idx, UniStack.getStack(stack))) return stack;
 		int rem = stacksize;
 		StackWrapper local = get(idx);
 		if(!local.empty()){
@@ -66,7 +67,7 @@ public class UniInventory12 extends UniInventory implements IInventory, IItemHan
 		boolean over = stack.getCount() > rem;
 		if(!sim){
 			if(local.empty()){
-				set(idx, StackWrapper.wrap(over ? ItemHandlerHelper.copyStackWithSize(stack, rem) : stack));
+				set(idx, UniStack.getStack(over ? ItemHandlerHelper.copyStackWithSize(stack, rem) : stack));
 			}
 			else local.incr(over ? rem : stack.getCount());
 		}
@@ -84,7 +85,7 @@ public class UniInventory12 extends UniInventory implements IInventory, IItemHan
 			return stack.local();
 		}
 		else{
-			if(!sim) set(idx, StackWrapper.wrap(ItemHandlerHelper.copyStackWithSize(stack.local(), stack.count() - rem)));
+			if(!sim) set(idx, UniStack.getStack(ItemHandlerHelper.copyStackWithSize(stack.local(), stack.count() - rem)));
 			return ItemHandlerHelper.copyStackWithSize(stack.local(), stack.count() - rem);
 		}
 	}
@@ -96,7 +97,7 @@ public class UniInventory12 extends UniInventory implements IInventory, IItemHan
 
 	@Override
 	public boolean isItemValid(int idx, ItemStack stack){
-		return valid(idx, StackWrapper.wrap(stack));
+		return valid(idx, UniStack.getStack(stack));
 	}
 
 	@Override
@@ -111,7 +112,7 @@ public class UniInventory12 extends UniInventory implements IInventory, IItemHan
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack){
-		set(index, StackWrapper.wrap(stack));
+		set(index, UniStack.getStack(stack));
 	}
 
 	@Override
@@ -141,7 +142,7 @@ public class UniInventory12 extends UniInventory implements IInventory, IItemHan
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack){
-		return valid(index, StackWrapper.wrap(stack));
+		return valid(index, UniStack.getStack(stack));
 	}
 
 	@Override
