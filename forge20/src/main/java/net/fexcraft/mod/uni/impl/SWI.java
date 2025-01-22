@@ -5,6 +5,7 @@ import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.item.ItemType;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -16,12 +17,9 @@ public class SWI extends StackWrapper {
 
 	public ItemStack stack;
 
-	/** Use StackWrapper.wrap() instead of direct. */
-	@Deprecated
-	public SWI(ItemWrapper item){
+	protected SWI(ItemWrapper item){
 		super(item);
 		stack = new ItemStack((ItemLike)item.direct());
-		appended.init(appendables);
 	}
 
 	@Override
@@ -29,12 +27,16 @@ public class SWI extends StackWrapper {
 		stack = (ItemStack)obj;
 	}
 
-	/** Use StackWrapper.wrap() instead of direct. */
-	@Deprecated
-	public SWI(ItemStack stack){
+	protected SWI(ItemStack stack){
 		super(new IWI(stack.getItem()));
 		this.stack = stack;
-		appended.init(appendables);
+	}
+
+	public static SWI parse(Object obj){
+		if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
+		if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
+		if(obj instanceof TagCW) return new SWI(ItemStack.of((CompoundTag)((TagCW)obj).direct()));
+		return null;
 	}
 
 	public ItemStack local(){
@@ -93,7 +95,7 @@ public class SWI extends StackWrapper {
 
 	@Override
 	public StackWrapper copy(){
-		return wrap(stack.copy());
+		return UniStack.createStack(stack.copy());
 	}
 
 	@Override
