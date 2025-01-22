@@ -109,7 +109,7 @@ public class FCL {
 			@Override
 			public boolean isItemValid(ItemStack stack){
 				if(args[0] instanceof UniInventory){
-					return ((UniInventory12)args[0]).valid((Integer)args[1], StackWrapper.wrap(stack));
+					return ((UniInventory12)args[0]).valid((Integer)args[1], UniStack.getStack(stack));
 				}
 				return super.isItemValid(stack);
 			}
@@ -123,7 +123,7 @@ public class FCL {
 			ArrayList<StackWrapper> list = new ArrayList<>();
 			NonNullList<ItemStack> stacks = OreDictionary.getOres(comp.id);
 			for(ItemStack stack : stacks){
-				StackWrapper wrapper = StackWrapper.wrap(stack.copy());
+				StackWrapper wrapper = UniStack.getStack(stack.copy());
 				wrapper.count(comp.amount);
 				list.add(wrapper);
 			}
