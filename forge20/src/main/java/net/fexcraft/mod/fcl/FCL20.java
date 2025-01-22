@@ -11,6 +11,8 @@ import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.impl.*;
 import net.fexcraft.mod.uni.item.ItemWrapper;
+import net.fexcraft.mod.uni.item.UniInventory;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.ui.*;
@@ -67,6 +69,7 @@ public class FCL20 {
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
 		ItemWrapper.GETTER = id -> BuiltInRegistries.ITEM.get(new ResourceLocation(id));
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
+		UniInventory.IMPL = UniInventory20.class;
 		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.defaultBlockState());
 		StateWrapper.STATE_WRAPPER = state -> new StateWrapperI((BlockState)state);
 		StateWrapper.COMMAND_WRAPPER = (blk, arg) -> {
@@ -102,6 +105,7 @@ public class FCL20 {
 			}
 			else return StateWrapper.DEFAULT;
 		};
+		UniStack.STACK_GETTER = obj -> SWI.parse(obj);
 		UniEntity.ENTITY_GETTER = ent -> EntityUtil.wrap((Entity)ent);
 		UniChunk.CHUNK_GETTER = ck -> new ChunkWI((LevelChunk)ck);
 		WrapperHolderImpl.LEVEL_PROVIDER = lvl -> new WorldWI((Level)lvl);
