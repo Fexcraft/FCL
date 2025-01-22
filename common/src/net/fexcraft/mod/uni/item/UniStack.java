@@ -11,7 +11,7 @@ import java.util.function.Function;
  */
 public class UniStack {
 
-	public static Function<Object, UniStack> GETTER = null;
+	public static Function<Object, UniStack> GETTER = obj -> null;
 	public static Function<Object, StackWrapper> STACK_GETTER = null;
 	private static ArrayList<Appendable<UniStack>> appendables = new ArrayList<>();
 	public final Appended<UniStack> appended = new Appended(this);
@@ -47,12 +47,12 @@ public class UniStack {
 		return GETTER.apply(stack);
 	}
 
+	/** To be used in cases where the Capability may not be available yet, or for cases where you need a NEW stack. */
 	public static StackWrapper createStack(Object obj){
 		return STACK_GETTER.apply(obj);
 	}
 
 	public static StackWrapper getStack(Object stack){
-		if(GETTER == null || stack instanceof ItemWrapper) return STACK_GETTER.apply(stack);
 		UniStack uni = GETTER.apply(stack);
 		if(uni == null) return STACK_GETTER.apply(stack);//happens on init before capabilities are functional
 		return GETTER.apply(stack).stack;
