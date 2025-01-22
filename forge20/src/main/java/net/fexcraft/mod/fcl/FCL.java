@@ -14,6 +14,7 @@ import net.fexcraft.mod.uni.impl.SWI;
 import net.fexcraft.mod.uni.impl.WrapperHolderImpl;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UniCon;
 import net.fexcraft.mod.uni.world.WrapperHolder;
@@ -32,7 +33,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -43,7 +43,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -106,16 +105,10 @@ public class FCL {
 		FCL20.init(!FMLEnvironment.production, FMLLoader.getDist().isClient());
 		CONFIG = new UniFCL(FMLPaths.CONFIGDIR.get().toFile());
 		WrapperHolder.INSTANCE = new WrapperHolderImpl();
-		StackWrapper.SUPPLIER = obj -> {
-			if(obj instanceof ItemWrapper){
-				return StackWrapper.SUPPLIER.apply(new ItemStack((Item)((ItemWrapper)obj).local()));
-			}
-			if(obj instanceof ItemStack){
-				var v = ((ItemStack)obj).getCapability(StackWrapperProvider.CAPABILITY).resolve();
-				if(v.isPresent()) return v.get();
-				else return StackWrapperProvider.wrap((ItemStack)obj);
-			};
-			return StackWrapper.EMPTY;
+		UniStack.GETTER = obj -> {
+			ItemStack stack = (ItemStack)(obj instanceof StackWrapper ? ((StackWrapper)obj).direct() : obj);
+			var v = stack.getCapability(UniStackProvider.CAPABILITY).resolve();
+			return v.isPresent() ? v.get() : null;
 		};
 		UniEntity.GETTER = ent -> {
 			var v = ((Entity)ent).getCapability(UniEntityProvider.CAPABILITY).resolve();
@@ -165,7 +158,7 @@ public class FCL {
 			if(comp.key == null) comp.key = ItemTags.create(new ResourceLocation(comp.id));
 			var tags = ForgeRegistries.ITEMS.tags().getTag((TagKey<Item>)comp.key);
 			for(Item item : tags){
-				list.add(StackWrapper.wrap(new ItemStack(item, comp.amount)));
+				list.add(UniStack.createStack(new ItemStack(item, comp.amount)));
 			}
 			return list;
 		};
@@ -179,7 +172,7 @@ public class FCL {
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event){
-		StackWrapper.EMPTY = new SWI(ItemStack.EMPTY);
+		StackWrapper.EMPTY = SWI.parse(ItemStack.EMPTY);
 		CHANNEL.registerMessage(1, UIPacketF.class, (packet, buffer) -> buffer.writeNbt(packet.com()), buffer -> new UIPacketF(buffer.readNbt()), (packet, context) -> {
 			context.get().enqueueWork(() -> {
 				if(context.get().getDirection().getOriginationSide().isClient()){
@@ -213,7 +206,7 @@ public class FCL {
 
 		@SubscribeEvent
 		public static void onAttachStackCaps(AttachCapabilitiesEvent<ItemStack> event){
-			event.addCapability(new ResourceLocation("fcl:stack"), new StackWrapperProvider(event.getObject()));
+			event.addCapability(new ResourceLocation("fcl:stack"), new UniStackProvider(event.getObject()));
 		}
 
 		@SubscribeEvent
