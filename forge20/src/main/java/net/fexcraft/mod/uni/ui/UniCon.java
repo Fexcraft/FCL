@@ -10,7 +10,9 @@ import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
+import net.fexcraft.mod.uni.item.UniInventory;
 import net.fexcraft.mod.uni.tag.TagCW;
+import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -23,6 +25,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -54,23 +58,25 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 			e.printStackTrace();
 		}
 		con.uiid = ui_type;
-		if(!con.ui_map.has("slots")) return;
+		if(con.ui_map.has("slots")) initInv();
+		con.root = this;
+		con.init();
+	}
+
+	private void initInv(){
 		ArrayList<UISlot> uislots = new ArrayList<>();
-		if(con.ui_map.has("slots")){
-			for(Map.Entry<String, JsonValue<?>> entry : con.ui_map.getMap("slots").entries()){
-				try{
-					uislots.add(new UISlot(con.ui, entry.getValue().asMap()));
-				}
-				catch(Exception e){
-					e.printStackTrace();
-				}
+		for(Map.Entry<String, JsonValue<?>> entry : con.ui_map.getMap("slots").entries()){
+			try{
+				uislots.add(new UISlot(con.ui, entry.getValue().asMap()));
+			}
+			catch(Exception e){
+				e.printStackTrace();
 			}
 		}
 		slotam = 0;
 		slots.clear();
-		InventoryInterface invcon = (InventoryInterface)con;
 		for(UISlot slot : uislots){
-			Container inventory = slot.playerinv ? player.getInventory() : (Container)invcon.getInventory();
+			Container inventory = slot.playerinv ? player.getInventory() : (Container)con.inventory;
 			for(int y = 0; y < slot.repeat_y; y++){
 				for(int x = 0; x < slot.repeat_x; x++){
 					try{
@@ -83,8 +89,15 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 				}
 			}
 		}
-		con.root = this;
-		con.init();
+	}
+
+	public void addSlot(String type, Object... args){
+		try{
+			addSlot((Slot)UISlot.get(type, args));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	public UniCon(int id, Inventory inv, FriendlyByteBuf buffer){
