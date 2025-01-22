@@ -77,12 +77,6 @@ public abstract class StackWrapper {
 	/** FVTM specific. */
 	public abstract <C> C getContent(Object contenttype);
 
-	/** For ItemWrapper or ItemStacks. */
-	@Deprecated
-	public static StackWrapper wrap(Object obj){
-		return UniStack.getStack(obj);
-	}
-
 	public abstract IDL getIDL();
 
 	public abstract String getID();
