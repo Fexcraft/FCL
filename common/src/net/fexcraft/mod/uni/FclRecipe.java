@@ -3,6 +3,7 @@ package net.fexcraft.mod.uni;
 import com.google.common.collect.ImmutableList;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +35,7 @@ public class FclRecipe {
 	}
 
 	public FclRecipe(Object stack, Component... comps){
-		output = StackWrapper.wrap(stack);
+		output = UniStack.createStack(stack);
 		components = ImmutableList.copyOf(comps);
 	}
 
@@ -129,7 +130,7 @@ public class FclRecipe {
 		}
 
 		public Builder output(Object stack){
-			this.stack = StackWrapper.wrap(stack);
+			this.stack = UniStack.createStack(stack);
 			return this;
 		}
 
@@ -178,7 +179,7 @@ public class FclRecipe {
 		}
 
 		public Component(Object stack){
-			this.stack = StackWrapper.wrap(stack);
+			this.stack = UniStack.createStack(stack);
 			amount = this.stack.count();
 			tag = false;
 			id = null;
