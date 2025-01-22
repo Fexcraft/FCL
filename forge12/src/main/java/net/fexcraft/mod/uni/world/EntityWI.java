@@ -7,6 +7,7 @@ import net.fexcraft.lib.mc.utils.LinkOpener;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.item.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.UIKey;
 import net.minecraft.entity.Entity;
@@ -130,7 +131,7 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public StackWrapper getHeldItem(boolean main){
-		return entity instanceof EntityPlayer ? StackWrapper.wrap(((EntityPlayer)entity).getHeldItem(main ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND)) : StackWrapper.EMPTY;
+		return entity instanceof EntityPlayer ? UniStack.getStack(((EntityPlayer)entity).getHeldItem(main ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND)) : StackWrapper.EMPTY;
 	}
 
 	@Override
@@ -156,7 +157,7 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public StackWrapper getStackAt(int idx){
-		return StackWrapper.wrap(((EntityPlayer)entity).inventory.mainInventory.get(idx));
+		return UniStack.getStack(((EntityPlayer)entity).inventory.mainInventory.get(idx));
 	}
 
 	@Override
