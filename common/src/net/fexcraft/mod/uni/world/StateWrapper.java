@@ -3,7 +3,7 @@ package net.fexcraft.mod.uni.world;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.IDL;
-import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.inv.StackWrapper;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
