@@ -3,7 +3,7 @@ package net.fexcraft.mod.uni.util;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.fexcraft.mod.uni.UniChunk;
 import net.fexcraft.mod.uni.UniEntity;
-import net.fexcraft.mod.uni.item.UniStack;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
