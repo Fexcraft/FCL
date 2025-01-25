@@ -9,7 +9,7 @@ import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fcl.util.ExternalTextures;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniReg;
-import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
