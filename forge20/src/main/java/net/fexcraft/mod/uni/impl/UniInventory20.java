@@ -1,7 +1,7 @@
 package net.fexcraft.mod.uni.impl;
 
-import net.fexcraft.mod.uni.item.UniInventory;
-import net.fexcraft.mod.uni.item.UniStack;
+import net.fexcraft.mod.uni.inv.UniInventory;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
