@@ -6,14 +6,9 @@ import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.fcl.util.UIPacketReceiver;
-import net.fexcraft.mod.uni.EnvInfo;
-import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
-import net.fexcraft.mod.uni.item.UniInventory;
 import net.fexcraft.mod.uni.tag.TagCW;
-import net.fexcraft.mod.uni.world.WorldW;
-import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
@@ -24,9 +19,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Map;
 
