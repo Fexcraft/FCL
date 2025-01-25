@@ -2,14 +2,13 @@ package net.fexcraft.mod.uni;
 
 import com.google.common.collect.ImmutableList;
 import net.fexcraft.mod.fcl.FCL;
-import net.fexcraft.mod.uni.item.StackWrapper;
-import net.fexcraft.mod.uni.item.UniStack;
+import net.fexcraft.mod.uni.inv.StackWrapper;
+import net.fexcraft.mod.uni.inv.UniStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
