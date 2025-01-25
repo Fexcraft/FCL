@@ -5,7 +5,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.mod.uni.IDL;
-import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.inv.StackWrapper;
 
 import java.util.LinkedHashMap;
 import java.util.List;
