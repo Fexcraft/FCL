@@ -4,13 +4,11 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.*;
-import net.fexcraft.mod.uni.item.StackWrapper;
-import net.fexcraft.mod.uni.item.UniInventory;
+import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
