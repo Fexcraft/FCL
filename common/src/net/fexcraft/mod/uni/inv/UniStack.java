@@ -1,4 +1,4 @@
-package net.fexcraft.mod.uni.item;
+package net.fexcraft.mod.uni.inv;
 
 import net.fexcraft.mod.uni.Appendable;
 import net.fexcraft.mod.uni.Appended;

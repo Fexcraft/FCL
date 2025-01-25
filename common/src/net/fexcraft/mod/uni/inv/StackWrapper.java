@@ -1,11 +1,10 @@
-package net.fexcraft.mod.uni.item;
+package net.fexcraft.mod.uni.inv;
 
-import net.fexcraft.mod.uni.Appendable;
-import net.fexcraft.mod.uni.Appended;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.tag.TagCW;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.function.Function;
 
 /**
@@ -13,7 +12,12 @@ import java.util.function.Function;
  */
 public abstract class StackWrapper {
 
+	/** Function's Type is a local Item */
+	public static HashMap<String, Function<Object, Boolean>> ITEM_TYPES = new HashMap<>();
+	public static HashMap<String, Function<StackWrapper, Object>> CONTENT_TYPES = new HashMap<>();
 	public static StackWrapper EMPTY = null;
+	public static String IT_LEAD = "lead";
+	public static String IT_FOOD = "food";
 	//
 	protected ItemWrapper item;
 
@@ -65,17 +69,25 @@ public abstract class StackWrapper {
 
 	public abstract void createTagIfMissing();
 
-	public abstract boolean isItemOf(ItemType type);
+	public boolean isItemOf(String type){
+		Function<Object, Boolean> func = ITEM_TYPES.get(type);
+		return func != null && func.apply(getItem().direct());
+	}
 
-	public boolean isItemOfAny(ItemType... types){
-		for(ItemType type : types){
-			if(isItemOf(type)) return true;
-		}
+	public boolean isItemOfAny(String... types){
+		for(String type : types) if(isItemOf(type)) return true;
 		return false;
 	}
 
-	/** FVTM specific. */
-	public abstract <C> C getContent(Object contenttype);
+	public boolean isItemOfAny(Collection<String> types){
+		for(String type : types) if(isItemOf(type)) return true;
+		return false;
+	}
+
+	public <C> C getContent(String type){
+		Function<StackWrapper, Object> func = CONTENT_TYPES.get(type);
+		return func == null ? null : (C)func.apply(this);
+	}
 
 	public abstract IDL getIDL();
 

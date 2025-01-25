@@ -1,6 +1,5 @@
-package net.fexcraft.mod.uni.item;
+package net.fexcraft.mod.uni.inv;
 
-import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
 
@@ -8,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static net.fexcraft.mod.uni.item.StackWrapper.EMPTY;
+import static net.fexcraft.mod.uni.inv.StackWrapper.EMPTY;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
