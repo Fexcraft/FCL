@@ -2,7 +2,6 @@ package net.fexcraft.mod.uni.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import net.fexcraft.lib.common.math.RGB;
@@ -10,7 +9,7 @@ import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.render.ExternalTextureHelper;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.impl.ResLoc;
-import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
