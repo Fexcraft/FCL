@@ -1,6 +1,6 @@
 package net.fexcraft.mod.uni.util;
 
-import net.fexcraft.mod.uni.item.UniStack;
+import net.fexcraft.mod.uni.inv.UniStack;
 
 public class UniStackCallable implements java.util.concurrent.Callable<UniStack> {
 
