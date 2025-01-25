@@ -3,9 +3,8 @@ package net.fexcraft.mod.uni.ui;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.UniEntity;
-import net.fexcraft.mod.uni.item.UniInventory;
+import net.fexcraft.mod.uni.inv.UniInventory;
 import net.fexcraft.mod.uni.tag.TagCW;
-import net.fexcraft.mod.uni.world.EntityW;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
