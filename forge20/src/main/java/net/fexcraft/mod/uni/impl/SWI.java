@@ -2,15 +2,13 @@ package net.fexcraft.mod.uni.impl;
 
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
-import net.fexcraft.mod.uni.item.ItemType;
-import net.fexcraft.mod.uni.item.ItemWrapper;
-import net.fexcraft.mod.uni.item.StackWrapper;
-import net.fexcraft.mod.uni.item.UniStack;
+import net.fexcraft.mod.uni.inv.ItemWrapper;
+import net.fexcraft.mod.uni.inv.StackWrapper;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.LeadItem;
 import net.minecraft.world.level.ItemLike;
 
 public class SWI extends StackWrapper {
@@ -111,20 +109,6 @@ public class SWI extends StackWrapper {
 	@Override
 	public void createTagIfMissing(){
 		if(!stack.hasTag()) stack.setTag(new CompoundTag());
-	}
-
-	@Override
-	public boolean isItemOf(ItemType type){
-		switch(type){
-			case LEAD: return stack.getItem() instanceof LeadItem;
-			case FOOD: return stack.getItem().isEdible();
-		}
-		return false;
-	}
-
-	@Override
-	public <C> C getContent(Object contenttype){
-		return null;
 	}
 
 	@Override
