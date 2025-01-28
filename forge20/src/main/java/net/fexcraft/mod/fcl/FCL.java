@@ -221,7 +221,7 @@ public class FCL {
 		@SubscribeEvent
 		public void registerCaps(RegisterCapabilitiesEvent event){
 			event.register(UniEntity.class);
-			event.register(StackWrapper.class);
+			event.register(UniStack.class);
 			event.register(UniChunk.class);
 		}
 
