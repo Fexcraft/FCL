@@ -1,6 +1,6 @@
 package net.fexcraft.mod.uni.impl;
 
-import net.fexcraft.mod.uni.item.ItemWrapper;
+import net.fexcraft.mod.uni.inv.ItemWrapper;
 import net.minecraft.world.item.Item;
 
 /**
