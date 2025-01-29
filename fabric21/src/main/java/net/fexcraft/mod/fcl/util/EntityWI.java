@@ -2,8 +2,8 @@ package net.fexcraft.mod.fcl.util;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.lib.common.utils.Formatter;
-import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.inv.StackWrapper;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.UIKey;
 import net.fexcraft.mod.uni.world.EntityW;
@@ -20,7 +20,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.UUID;
 
@@ -154,7 +153,7 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public StackWrapper getHeldItem(boolean main){
-		return StackWrapper.wrap(((Player)entity).getItemInHand(main ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND));
+		return UniStack.getStack(((Player)entity).getItemInHand(main ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND));
 	}
 
 	@Override
@@ -179,7 +178,7 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public StackWrapper getStackAt(int idx){
-		return StackWrapper.wrap(((Player)entity).getInventory().getItem(idx));
+		return UniStack.getStack(((Player)entity).getInventory().getItem(idx));
 	}
 
 	@Override
