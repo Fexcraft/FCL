@@ -5,6 +5,7 @@ import net.fexcraft.mod.uni.tag.TagCW;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -31,9 +32,17 @@ public abstract class StackWrapper {
 
 	public abstract Object direct();
 
-	public abstract StackWrapper setTag(TagCW tag);
+	public abstract StackWrapper updateTag(TagCW tag);
 
-	public abstract TagCW getTag();
+	public void updateTag(Consumer<TagCW> cons){
+		TagCW com = copyTag();
+		cons.accept(com);
+		updateTag(com);
+	}
+
+	public abstract TagCW directTag();
+
+	public abstract TagCW copyTag();
 
 	public abstract boolean hasTag();
 
@@ -66,8 +75,6 @@ public abstract class StackWrapper {
 	public abstract void save(TagCW com);
 
 	public abstract boolean empty();
-
-	public abstract void createTagIfMissing();
 
 	public boolean isItemOf(String type){
 		Function<Object, Boolean> func = ITEM_TYPES.get(type);
