@@ -21,7 +21,7 @@ public class ChunkMixin implements CWProvider {
 
 	@Override
 	public UniChunk fcl_wrapper(){
-		if(wrapper == null) wrapper = new UniChunk().set((LevelChunk)(Object)this);
+		if(wrapper == null) wrapper = new UniChunk().set(this);
 		return wrapper;
 	}
 
