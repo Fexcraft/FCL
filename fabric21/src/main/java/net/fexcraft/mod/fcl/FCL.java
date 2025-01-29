@@ -20,8 +20,10 @@ import net.fexcraft.mod.fcl.mixint.SWProvider;
 import net.fexcraft.mod.fcl.util.*;
 import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.impl.*;
-import net.fexcraft.mod.uni.item.ItemWrapper;
-import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.inv.ItemWrapper;
+import net.fexcraft.mod.uni.inv.StackWrapper;
+import net.fexcraft.mod.uni.inv.UniInventory;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.ui.*;
@@ -31,6 +33,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -52,6 +55,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -99,6 +103,9 @@ public class FCL implements ModInitializer {
 	public static final BlockEntityType<CraftingEntity> CRAFTING_ENTITY = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "fcl:crafting",
 			FabricBlockEntityTypeBuilder.create(CraftingEntity::new, CRAFTING_BLOCK).build());
 	//
+	public static final DataComponentType<CustomData> FCLTAG = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, ResourceLocation.parse("fcl:data"),
+		DataComponentType.<CustomData>builder().persistent(CustomData.CODEC).build());
+ 	//
 	public static ExtendedScreenHandlerType<UniCon, UISync> UNIVERSAL;
 	private static boolean recipereg;
 
@@ -108,14 +115,9 @@ public class FCL implements ModInitializer {
 		CONFIG = new UniFCL(new File(GAMEDIR, "/config/"));
 		init(FabricLoader.getInstance().isDevelopmentEnvironment());
 		WrapperHolder.INSTANCE = new WrapperHolderImpl();
-		StackWrapper.SUPPLIER = obj -> {
-			if(obj instanceof ItemWrapper){
-				return StackWrapper.SUPPLIER.apply(new ItemStack((Item)((ItemWrapper)obj).local()));
-			}
-			if(obj instanceof ItemStack){
-				return ((SWProvider)obj).fcl_wrapper();
-			};
-			return StackWrapper.EMPTY;
+		UniStack.GETTER = obj -> {
+			ItemStack stack = (ItemStack)(obj instanceof StackWrapper ? ((StackWrapper)obj).direct() : obj);
+			return ((SWProvider)(Object)stack).fcl_wrapper();
 		};
 		UniEntity.GETTER = ent -> ((EWProvider)ent).fcl_wrapper();
 		UniChunk.GETTER = ck -> ((CWProvider)ck).fcl_wrapper();
@@ -181,7 +183,7 @@ public class FCL implements ModInitializer {
 			if(comp.key == null) comp.key = TagKey.create(Registries.ITEM, ResourceLocation.parse(comp.id));
 			var tags = BuiltInRegistries.ITEM.getTagOrEmpty((TagKey<Item>) comp.key);
 			for(Holder<Item> item : tags){
-				list.add(StackWrapper.wrap(new ItemStack(item, comp.amount)));
+				list.add(UniStack.createStack(new ItemStack(item, comp.amount)));
 			}
 			return list;
 		};
@@ -207,6 +209,7 @@ public class FCL implements ModInitializer {
 		TagLW.SUPPLIER[0] = TagLWI::new;
 		ItemWrapper.GETTER = id -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(id));
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
+		UniInventory.IMPL = UniInventory21.class;
 		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.defaultBlockState());
 		StateWrapper.STATE_WRAPPER = state -> new StateWrapperI((BlockState)state);
 		StateWrapper.COMMAND_WRAPPER = (blk, arg) -> {
@@ -242,6 +245,7 @@ public class FCL implements ModInitializer {
 			}
 			else return StateWrapper.DEFAULT;
 		};
+		UniStack.STACK_GETTER = obj -> SWI.parse(obj);
 		UniEntity.ENTITY_GETTER = ent -> EntityUtil.wrap((Entity)ent);
 		UniChunk.CHUNK_GETTER = ck -> new ChunkWI((LevelChunk)ck);
 		WrapperHolderImpl.LEVEL_PROVIDER = lvl -> new LevelW((Level)lvl);
