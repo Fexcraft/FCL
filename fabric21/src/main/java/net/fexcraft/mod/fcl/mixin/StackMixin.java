@@ -1,8 +1,7 @@
 package net.fexcraft.mod.fcl.mixin;
 
 import net.fexcraft.mod.fcl.mixint.SWProvider;
-import net.fexcraft.mod.uni.impl.SWI;
-import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -14,12 +13,12 @@ import org.spongepowered.asm.mixin.Unique;
 public class StackMixin implements SWProvider {
 
 	@Unique
-	public StackWrapper wrapper;
+	public UniStack uni;
 
 	@Override
-	public StackWrapper fcl_wrapper(){
-		if(wrapper == null) wrapper = new SWI((ItemStack)(Object)this);
-		return wrapper;
+	public UniStack fcl_wrapper(){
+		if(uni == null) uni = new UniStack().set(this);
+		return uni;
 	}
 
 }
