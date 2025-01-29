@@ -1,15 +1,16 @@
 package net.fexcraft.mod.uni.impl;
 
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
-import net.fexcraft.mod.uni.item.ItemType;
-import net.fexcraft.mod.uni.item.ItemWrapper;
-import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.inv.ItemWrapper;
+import net.fexcraft.mod.uni.inv.StackWrapper;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.LeadItem;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.ItemLike;
 
 public class SWI extends StackWrapper {
@@ -21,7 +22,6 @@ public class SWI extends StackWrapper {
 	public SWI(ItemWrapper item){
 		super(item);
 		stack = new ItemStack((ItemLike)item.direct());
-		appended.init(appendables);
 	}
 
 	@Override
@@ -34,7 +34,13 @@ public class SWI extends StackWrapper {
 	public SWI(ItemStack stack){
 		super(new IWI(stack.getItem()));
 		this.stack = stack;
-		appended.init(appendables);
+	}
+
+	public static SWI parse(Object obj){
+		if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
+		if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
+		if(obj instanceof TagCW) return new SWI(ItemStack.parse(FCL.SERVER.get().registryAccess(), (CompoundTag)((TagCW)obj).direct()).get());
+		return null;
 	}
 
 	public ItemStack local(){
@@ -46,19 +52,35 @@ public class SWI extends StackWrapper {
 	}
 
 	@Override
-	public StackWrapper setTag(TagCW tag){
-		//TODO stack.setTag(tag.local());
+	public StackWrapper updateTag(TagCW tag){
+		if(!tag.has("fcl")) tag.set("fcl", (byte)0);
+		stack.set(FCL.FCLTAG, CustomData.of(tag.local()));
 		return this;
 	}
 
 	@Override
-	public TagCW getTag(){
-		return TagCW.create();//TODO TagCW.wrap(stack.getTag());
+	public TagCW directTag(){
+		if(!stack.has(FCL.FCLTAG)){
+			CompoundTag tag = new CompoundTag();
+			tag.putByte("fcl", (byte)0);
+			stack.set(FCL.FCLTAG, CustomData.of(tag));
+		}
+		return TagCW.wrap(stack.get(FCL.FCLTAG).getUnsafe());
+	}
+
+	@Override
+	public TagCW copyTag(){
+		if(!stack.has(FCL.FCLTAG)){
+			CompoundTag tag = new CompoundTag();
+			tag.putByte("fcl", (byte)0);
+			stack.set(FCL.FCLTAG, CustomData.of(tag));
+		}
+		return TagCW.wrap(stack.get(FCL.FCLTAG).copyTag());
 	}
 
 	@Override
 	public boolean hasTag(){
-		return true;//TODO stack.hasTag();
+		return stack.has(FCL.FCLTAG);
 	}
 
 	@Override
@@ -93,7 +115,7 @@ public class SWI extends StackWrapper {
 
 	@Override
 	public StackWrapper copy(){
-		return wrap(stack.copy());
+		return UniStack.createStack(stack.copy());
 	}
 
 	@Override
@@ -104,25 +126,6 @@ public class SWI extends StackWrapper {
 	@Override
 	public boolean empty(){
 		return stack.isEmpty();
-	}
-
-	@Override
-	public void createTagIfMissing(){
-		//TODO if(!stack.hasTag()) stack.setTag(new CompoundTag());
-	}
-
-	@Override
-	public boolean isItemOf(ItemType type){
-		switch(type){
-			case LEAD: return stack.getItem() instanceof LeadItem;
-			case FOOD: return false;//TODO stack.getItem().isEdible();
-		}
-		return false;
-	}
-
-	@Override
-	public <C> C getContent(Object contenttype){
-		return null;
 	}
 
 	@Override
