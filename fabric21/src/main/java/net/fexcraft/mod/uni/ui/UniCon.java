@@ -47,7 +47,12 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 			e.printStackTrace();
 		}
 		con.uiid = ui_type;
-		if(!con.ui_map.has("slots")) return;
+		if(con.ui_map.has("slots")) initInv();
+		con.root = this;
+		con.init();
+	}
+
+	private void initInv(){
 		ArrayList<UISlot> uislots = new ArrayList<>();
 		if(con.ui_map.has("slots")){
 			for(Map.Entry<String, JsonValue<?>> entry : con.ui_map.getMap("slots").entries()){
@@ -61,9 +66,8 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 		}
 		slotam = 0;
 		slots.clear();
-		InventoryInterface invcon = (InventoryInterface)con;
 		for(UISlot slot : uislots){
-			Container inventory = slot.playerinv ? inv : (Container)invcon.getInventory();
+			Container inventory = slot.playerinv ? player.getInventory() : (Container)con.inventory;
 			for(int y = 0; y < slot.repeat_y; y++){
 				for(int x = 0; x < slot.repeat_x; x++){
 					try{
@@ -76,8 +80,15 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 				}
 			}
 		}
-		con.root = this;
-		con.init();
+	}
+
+	public void addSlot(String type, Object... args){
+		try{
+			addSlot((Slot)UISlot.get(type, args));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	public Slot addSlot(Slot slot){
