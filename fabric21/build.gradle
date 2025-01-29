@@ -51,6 +51,10 @@ dependencies {
 
 }
 
+loom {
+	accessWidenerPath = file("src/main/resources/fcl.accesswidener")
+}
+
 processResources {
 	inputs.property "version", project.version
 
