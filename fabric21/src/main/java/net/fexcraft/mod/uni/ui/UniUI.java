@@ -2,13 +2,15 @@ package net.fexcraft.mod.uni.ui;
 
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fcl.util.ExternalTextures;
+import net.fexcraft.mod.fcl.util.FCLRenderTypes;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniReg;
-import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -24,6 +26,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
+import org.joml.Matrix4f;
 
 import java.util.*;
 
@@ -65,7 +68,9 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 
 			@Override
 			public void drawFull(float x, float y, int w, int h){
-				matrix.blit(RenderType::guiTextured, actex.local(), (int)x, (int)y, 0, 0, 1, 1, 1, 1, packed);
+				matrix.innerBlit(RenderType::guiTextured, actex.local(),
+					(int)x, (int)x + w, (int)y, (int)y + h, 0, 1, 0, 1, packed
+				);
 			}
 
 			@Override
