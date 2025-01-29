@@ -142,7 +142,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	public TagCW read0(File file){
 		try{
-			return TagCW.create();//TODO .wrap(NbtIo.read(file));
+			return TagCW.wrap(NbtIo.read(file.toPath()));
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -153,7 +153,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	public void write0(TagCW compound, File file){
 		try{
-			//TODO NbtIo.write(compound.local(), file);
+			NbtIo.write(compound.local(), file.toPath());
 		}
 		catch(Exception e){
 			e.printStackTrace();
