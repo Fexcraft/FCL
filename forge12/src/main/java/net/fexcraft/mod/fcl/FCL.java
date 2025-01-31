@@ -142,6 +142,7 @@ public class FCL {
 	
 	@Mod.EventHandler
     public void init(FMLInitializationEvent event) throws Exception{
+		StackWrapper.EMPTY = new SWI(ItemStack.EMPTY);
 		//MinecraftForge.EVENT_BUS.register(new SimpleUpdateHandler.EventHandler());
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		if(UniFCL.EXAMPLE_RECIPES){
