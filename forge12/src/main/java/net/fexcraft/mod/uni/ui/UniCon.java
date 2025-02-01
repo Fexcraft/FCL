@@ -81,7 +81,9 @@ public class UniCon extends Container {
 
 	public void addSlot(String type, Object... args){
 		try{
-			addSlot((Slot)UISlot.get(type, args));
+			Slot slot = (Slot)UISlot.get(type, args);
+			addSlot(slot);
+			slots++;
 		}
 		catch(Exception e){
 			e.printStackTrace();
