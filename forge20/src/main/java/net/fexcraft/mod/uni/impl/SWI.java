@@ -46,14 +46,21 @@ public class SWI extends StackWrapper {
 	}
 
 	@Override
-	public StackWrapper setTag(TagCW tag){
+	public StackWrapper updateTag(TagCW tag){
 		stack.setTag(tag.local());
 		return this;
 	}
 
 	@Override
-	public TagCW getTag(){
+	public TagCW directTag(){
+		if(!stack.hasTag()) stack.setTag(new CompoundTag());
 		return TagCW.wrap(stack.getTag());
+	}
+
+	@Override
+	public TagCW copyTag(){
+		if(!stack.hasTag()) stack.setTag(new CompoundTag());
+		return TagCW.wrap(stack.getTag().copy());
 	}
 
 	@Override
@@ -104,11 +111,6 @@ public class SWI extends StackWrapper {
 	@Override
 	public boolean empty(){
 		return stack.isEmpty();
-	}
-
-	@Override
-	public void createTagIfMissing(){
-		if(!stack.hasTag()) stack.setTag(new CompoundTag());
 	}
 
 	@Override
