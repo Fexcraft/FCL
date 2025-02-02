@@ -25,7 +25,7 @@ sourceSets {
     main {
         java {
             srcDirs += 'src/main/java'
-            srcDirs += new File(file('../..'), "/Json/src")
+            srcDirs += new File(file('..'), "deps/json/src")
             srcDirs += new File(file('..'), "/common/src")
         }
         resources {
@@ -36,7 +36,7 @@ sourceSets {
 }
 
 sourceSets.main.java.srcDirs += [
-    new File(file('../..'), "/Json/src"),
+    new File(file('..'), "deps/json/src"),
     new File(file('..'), "/common/src")
 ]
 
