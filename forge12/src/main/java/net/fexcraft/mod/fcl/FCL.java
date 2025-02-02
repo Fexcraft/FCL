@@ -6,10 +6,7 @@ import java.util.UUID;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.crafting.RecipeRegistry;
 import net.fexcraft.mod.uni.*;
-import net.fexcraft.mod.uni.inv.ItemWrapper;
-import net.fexcraft.mod.uni.inv.StackWrapper;
-import net.fexcraft.mod.uni.inv.UniInventory;
-import net.fexcraft.mod.uni.inv.UniStack;
+import net.fexcraft.mod.uni.inv.*;
 import net.fexcraft.mod.uni.util.*;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapability;
 import net.fexcraft.lib.mc.capabilities.sign.SignCapabilitySerializer;
@@ -97,6 +94,7 @@ public class FCL {
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_LEAD, item -> item instanceof ItemLead);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_FOOD, item -> item instanceof ItemFood);
 		UniInventory.IMPL = UniInventory12.class;
+		UniFluidTank.IMPL = UniFluidTank12.class;
 		Static.setDevMode(EnvInfo.DEV);
 		Static.setIsServer((side = event.getSide()).isServer());
 		if(EnvInfo.CLIENT){
