@@ -50,15 +50,27 @@ public abstract class UniFluidTank {
 
 	public abstract void load(TagCW com);
 
-	@Override
-	public String toString(){
-		return "UniFluidTank[" + name + "]";
+	public abstract <T> T local();
+
+	public boolean isValid(StackWrapper stack){
+		boolean result = true;
+		for(UniFluidValidator validator : validators){
+			if(!validator.isValid(stack)) result = false;
+		}
+		return result;
 	}
+
+	public abstract String getFluidFromStack(StackWrapper stack);
 
 	public static interface UniFluidValidator {
 
-		public boolean isValid(String id);
+		public boolean isValid(StackWrapper stack);
 
+	}
+
+	@Override
+	public String toString(){
+		return "UniFluidTank[" + name + "]";
 	}
 
 }
