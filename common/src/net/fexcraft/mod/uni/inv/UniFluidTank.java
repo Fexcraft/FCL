@@ -3,6 +3,7 @@ package net.fexcraft.mod.uni.inv;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,7 +61,22 @@ public abstract class UniFluidTank {
 		return result;
 	}
 
+	public abstract int amount();
+
+	public abstract void amount(String type, int am);
+
+	public abstract void drain(int am, boolean con);
+
+	/** For tanks that are NOT empty. */
+	public abstract void fill(int am, boolean con);
+
+	public abstract String getFluid();
+
 	public abstract String getFluidFromStack(StackWrapper stack);
+
+	public abstract Pair<StackWrapper, Boolean> drainFrom(StackWrapper stack, int amount);
+
+	public abstract void clear();
 
 	public static interface UniFluidValidator {
 
