@@ -4,6 +4,7 @@ import net.fexcraft.lib.mc.api.packet.IPacketListener;
 import net.fexcraft.lib.mc.api.packet.IPacketReceiver;
 import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +24,11 @@ public class UIPacketListener {
 
 		@Override
 		public void process(PacketNBTTagCompound packet, Object[] objs){
+			if(((EntityPlayer)objs[0]).openContainer instanceof UniCon == false){
+				FCL.LOGGER.info("ERROR: Received packet for UniCon, but Container is of different type.");
+				FCL.LOGGER.info("PACKET: " + packet.nbt);
+				return;
+			}
 			((UniCon)((EntityPlayer)objs[0]).openContainer).container().packet(TagCW.wrap(packet.nbt), true);
 		}
 
@@ -37,6 +43,11 @@ public class UIPacketListener {
 
 		@Override
 		public void process(PacketNBTTagCompound packet, Object[] objs){
+			if(((EntityPlayer)objs[0]).openContainer instanceof UniCon == false){
+				FCL.LOGGER.info("ERROR: Received packet for UniCon, but Container is of different type.");
+				FCL.LOGGER.info("PACKET: " + packet.nbt);
+				return;
+			}
 			((UniCon)((EntityPlayer)objs[0]).openContainer).container().packet(TagCW.wrap(packet.nbt), false);
 		}
 
