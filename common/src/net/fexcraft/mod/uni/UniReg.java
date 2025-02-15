@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class UniReg {
 
-	public static String LOADER_VERSION = null;
+	public static String LOADER_VERSION = "";
 	public static ConcurrentHashMap<String, Object> INSTANCES = new ConcurrentHashMap<>();
 	public static LinkedHashMap<UIKey, Class<? extends UserInterface>> GUI = new LinkedHashMap<>();
 	public static LinkedHashMap<UIKey, Class<? extends ContainerInterface>> MENU = new LinkedHashMap<>();
