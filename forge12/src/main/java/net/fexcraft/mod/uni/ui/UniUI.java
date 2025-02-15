@@ -61,6 +61,7 @@ public class UniUI extends GuiContainer {
 			@Override
 			public void bind(IDL texture){
 				//TexUtil.bindTexture(texture);
+				if(texture.local() == null) return;
 				mc.getTextureManager().bindTexture(texture.local());
 			}
 
