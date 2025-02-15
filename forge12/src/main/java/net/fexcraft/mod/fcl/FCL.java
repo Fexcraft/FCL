@@ -80,6 +80,7 @@ public class FCL {
     public void preInit(FMLPreInitializationEvent event) throws Exception {
 		EnvInfo.CLIENT = event.getSide().isClient();
 		EnvInfo.DEV = (Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment");
+		UniReg.LOADER_VERSION = "1.12";
 		TagCW.SUPPLIER[0] = () -> new TagCWI();
 		TagCW.WRAPPER[0] = obj -> new TagCWI(obj);
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
@@ -90,7 +91,7 @@ public class FCL {
 		WrapperHolder.INSTANCE = new WrapperHolderImpl();
 		WrapperHolder.LEVEL_PROVIDER = lvl -> new WorldWI((World)lvl);
 		ItemWrapper.GETTER = id -> Item.REGISTRY.getObject(new ResourceLocation(id));
-		ItemWrapper.SUPPLIER = item -> ItemWrapper.wrap(new IWI((Item)item));
+		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_LEAD, item -> item instanceof ItemLead);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_FOOD, item -> item instanceof ItemFood);
 		UniInventory.IMPL = UniInventory12.class;
