@@ -44,12 +44,8 @@ public class ExternalTextureHelper {
 		}
 		if(arr == null) return new ResourceLocation(s);
 		ResourceLocation tex = new ResourceLocation(s);
-		ITextureObject object = Minecraft.getMinecraft().renderEngine.getTexture(tex);
-		if(object != null) Minecraft.getMinecraft().renderEngine.deleteTexture(tex);
-		if(object == null){
-			BufferedTextureLoader thid = new BufferedTextureLoader(tex, arr);
-			Minecraft.getMinecraft().renderEngine.loadTexture(tex, thid);
-		}
+		Minecraft.getMinecraft().renderEngine.deleteTexture(tex);
+		Minecraft.getMinecraft().renderEngine.loadTexture(tex, new BufferedTextureLoader(tex, arr));
 		map.put(s, tex);
 		return tex;
 	}
