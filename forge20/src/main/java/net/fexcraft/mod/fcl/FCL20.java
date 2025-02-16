@@ -70,6 +70,7 @@ public class FCL20 {
 		ItemWrapper.GETTER = id -> BuiltInRegistries.ITEM.get(new ResourceLocation(id));
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		UniInventory.IMPL = UniInventory20.class;
+		UniFluidTank20.IMPL = UniFluidTank20.class;
 		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.defaultBlockState());
 		StateWrapper.STATE_WRAPPER = state -> new StateWrapperI((BlockState)state);
 		StateWrapper.COMMAND_WRAPPER = (blk, arg) -> {
