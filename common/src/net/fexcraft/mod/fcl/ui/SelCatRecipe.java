@@ -35,7 +35,7 @@ public class SelCatRecipe extends UserInterface {
 
 	@Override
 	public void predraw(float ticks, int mx, int my){
-		for(int i = 0; i < 6; i++){
+		for(int i = 0; i < 12; i++){
 			int j = scroll + i;
 			if(j >= categories.size()) buttons.get("entry_" + i).text.value("");
 			else buttons.get("entry_" + i).text.value(translate(categories.get(j)));
@@ -74,7 +74,7 @@ public class SelCatRecipe extends UserInterface {
 
 	@Override
 	public void getTooltip(int mx, int my, List<String> list){
-		for(int i = 0; i < 6; i++){
+		for(int i = 0; i < 12; i++){
 			int j = scroll + i;
 			if(j < categories.size() && buttons.get("entry_" + i).hovered()){
 				list.add(PARAGRAPH_SIGN + "9" + categories.get(j));
