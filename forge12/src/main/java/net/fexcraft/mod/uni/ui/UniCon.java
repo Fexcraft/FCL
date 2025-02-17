@@ -22,13 +22,15 @@ public class UniCon extends Container {
 
 	protected EntityPlayer player;
 	protected ContainerInterface con;
+	protected UIKey ui_type;
 	@SideOnly(Side.CLIENT)
 	protected UniUI uni;
 	protected int slots;
 
-	public UniCon(ContainerInterface con, EntityPlayer player){
+	public UniCon(ContainerInterface con, UIKey key, EntityPlayer player){
 		this.con = con;
 		this.player = player;
+		ui_type = key;
 		if(ContainerInterface.SEND_TO_CLIENT == null){
 			ContainerInterface.SEND_TO_CLIENT = (com, pass) -> {
 				com.set("target_listener", "fcl:ui");
@@ -43,6 +45,7 @@ public class UniCon extends Container {
 				//Packets.send(Packet_TagListener.class, "ui", com);
 			};
 		}
+		con.uiid = ui_type;
 		if(con.ui_map.has("slots")) initInv();
 		con.root = this;
 		con.init();
