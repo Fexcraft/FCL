@@ -31,8 +31,8 @@ public class UniUI extends GuiContainer {
 	protected UniCon container;
 	protected UserInterface ui;
 
-	public UniUI(UserInterface ui, UniCon con, EntityPlayer player){
-		super(con == null ? con = new UniCon(ui.container, player) : con);
+	public UniUI(UserInterface ui, UIKey key, UniCon con, EntityPlayer player){
+		super(con == null ? con = new UniCon(ui.container, key, player) : con);
 		this.ui = ui;
 		ui.root = this;
 		(container = con).setup(this);
@@ -91,8 +91,8 @@ public class UniUI extends GuiContainer {
 		};
 	}
 
-	public UniUI(UserInterface ui, EntityPlayer player){
-		this(ui, null, player);
+	public UniUI(UserInterface ui, UIKey key, EntityPlayer player){
+		this(ui, key, null, player);
 	}
 
 	@Override
