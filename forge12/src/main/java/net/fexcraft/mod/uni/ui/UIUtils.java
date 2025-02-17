@@ -33,7 +33,7 @@ public class UIUtils {
 		JsonMap map = getMap(mod, key);
 		try{
 			ContainerInterface con = UniReg.MENU.get(key).getConstructor(JsonMap.class, UniEntity.class, V3I.class).newInstance(map, UniEntity.get(player), new V3I(x, y, z));
-			return new UniUI(UniReg.GUI.get(key).getConstructor(JsonMap.class, ContainerInterface.class).newInstance(map, con), player);
+			return new UniUI(UniReg.GUI.get(key).getConstructor(JsonMap.class, ContainerInterface.class).newInstance(map, con), key, player);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -45,7 +45,7 @@ public class UIUtils {
 		UIKey key = UIKey.find(mod, id);
 		JsonMap map = getMap(mod, key);
 		try{
-			return new UniCon(UniReg.MENU.get(key).getConstructor(JsonMap.class, UniEntity.class, V3I.class).newInstance(map, UniEntity.get(player), new V3I(x, y, z)), player);
+			return new UniCon(UniReg.MENU.get(key).getConstructor(JsonMap.class, UniEntity.class, V3I.class).newInstance(map, UniEntity.get(player), new V3I(x, y, z)), key, player);
 		}
 		catch(Exception e){
 			e.printStackTrace();
