@@ -78,7 +78,7 @@ public abstract class StackWrapper {
 
 	public boolean isItemOf(String type){
 		Function<Object, Boolean> func = ITEM_TYPES.get(type);
-		return func != null && func.apply(getItem().direct());
+		return func != null && getItem() != null && func.apply(getItem().direct());
 	}
 
 	public boolean isItemOfAny(String... types){
