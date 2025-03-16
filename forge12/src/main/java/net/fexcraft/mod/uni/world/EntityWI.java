@@ -32,6 +32,8 @@ public class EntityWI implements EntityW {
 
 	protected Entity entity;
 	protected WorldW world;
+	protected V3D pos = new V3D();
+	protected V3D prev = new V3D();
 
 	public EntityWI(Entity ent){
 		entity = ent;
@@ -177,12 +179,23 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public V3D getPos(){
-		return new V3D(entity.posX, entity.posY, entity.posZ);
+		pos.x = entity.posX;
+		pos.y = entity.posY;
+		pos.z = entity.posZ;
+		return pos;
 	}
 
 	@Override
 	public void setPos(V3D pos){
 		entity.setPosition(pos.x, pos.y, pos.z);
+	}
+
+	@Override
+	public V3D getPrevPos(){
+		prev.x = entity.prevPosX;
+		prev.y = entity.prevPosY;
+		prev.z = entity.prevPosX;
+		return prev;
 	}
 
 	@Override
