@@ -39,6 +39,8 @@ public interface EntityW extends MessageSender {
 
 	public void setPos(V3D pos);
 
+	public V3D getPrevPos();
+
 	public V3I getV3I();
 
 	public void decreaseXZMotion(double x);
