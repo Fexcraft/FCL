@@ -27,6 +27,8 @@ import java.util.UUID;
 public class EntityWI implements EntityW {
 
 	protected Entity entity;
+	protected V3D prev = new V3D();
+	protected V3D pos = new V3D();
 
 	public EntityWI(Entity iah){
 		entity = iah;
@@ -89,12 +91,23 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public V3D getPos(){
-		return new V3D(entity.position().x, entity.position().y, entity.position().z);
+		pos.x = entity.position().x;
+		pos.y = entity.position().y;
+		pos.z = entity.position().z;
+		return pos;
 	}
 
 	@Override
 	public void setPos(V3D pos){
 		entity.setPos(pos.x, pos.y, pos.z);
+	}
+
+	@Override
+	public V3D getPrevPos(){
+		prev.x = entity.xOld;
+		prev.y = entity.yOld;
+		prev.z = entity.zOld;
+		return prev;
 	}
 
 	@Override
