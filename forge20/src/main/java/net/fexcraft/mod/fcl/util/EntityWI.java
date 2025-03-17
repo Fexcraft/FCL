@@ -111,6 +111,13 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
+	public void setPrevPos(V3D pos){
+		entity.xOld = pos.x;
+		entity.yOld = pos.y;
+		entity.zOld = pos.z;
+	}
+
+	@Override
 	public V3I getV3I(){
 		return new V3I((int)entity.position().x, (int)entity.position().y, (int)entity.position().z);
 	}
@@ -255,6 +262,11 @@ public class EntityWI implements EntityW {
 	@Override
 	public void onPacket(EntityW player, TagCW packet){
 		//
+	}
+
+	@Override
+	public void setOnGround(boolean bool){
+		entity.setOnGround(bool);
 	}
 
 }
