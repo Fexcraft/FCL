@@ -194,7 +194,7 @@ public class EntityWI implements EntityW {
 	public V3D getPrevPos(){
 		prev.x = entity.prevPosX;
 		prev.y = entity.prevPosY;
-		prev.z = entity.prevPosX;
+		prev.z = entity.prevPosZ;
 		return prev;
 	}
 
