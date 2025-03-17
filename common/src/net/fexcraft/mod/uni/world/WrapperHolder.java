@@ -54,11 +54,11 @@ public abstract class WrapperHolder {
 
 	public abstract <W extends WorldW> W getClientWorld0();
 
-	public static File getWorldFolder(WorldW world){
-		return INSTANCE.getWorldFolder0(world);
+	public static File getWorldFolder(WorldW world, String name){
+		return INSTANCE.getWorldFolder0(world, name);
 	}
 
-	public abstract File getWorldFolder0(WorldW world);
+	public abstract File getWorldFolder0(WorldW world, String name);
 
 	public static V3I getPos(Object obj){
 		return INSTANCE.getPos0(obj);
