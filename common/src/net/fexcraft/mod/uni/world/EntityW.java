@@ -41,6 +41,8 @@ public interface EntityW extends MessageSender {
 
 	public V3D getPrevPos();
 
+	public void setPrevPos(V3D pos);
+
 	public V3I getV3I();
 
 	public void decreaseXZMotion(double x);
@@ -88,5 +90,7 @@ public interface EntityW extends MessageSender {
 	public boolean isRemoved();
 
 	public void onPacket(EntityW player, TagCW packet);
+
+	public void setOnGround(boolean bool);
 
 }
