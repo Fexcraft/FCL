@@ -190,4 +190,18 @@ public class V3D {
 		return new V3D(x, y, z);
 	}
 
+	public static V3D add(V3D vec, V3D dest){
+		dest.x += vec.x;
+		dest.y += vec.y;
+		dest.z += vec.z;
+		return dest;
+	}
+
+	public static V3D sub(V3D vec, V3D dest){
+		dest.x -= vec.x;
+		dest.y -= vec.y;
+		dest.z -= vec.z;
+		return dest;
+	}
+
 }
