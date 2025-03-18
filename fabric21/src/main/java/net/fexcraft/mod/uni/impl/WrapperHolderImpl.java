@@ -17,6 +17,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.LevelResource;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -67,8 +69,16 @@ public class WrapperHolderImpl extends WrapperHolder {
 	}
 
 	@Override
-	public File getWorldFolder0(WorldW world){
-		return FCL.GAMEDIR;
+	public File getWorldFolder0(WorldW world, String name){
+		try{
+			File file = new File(FCL.SERVER.get().storageSource.getLevelDirectory().path().toFile(), name);
+			if(!file.exists()) file.mkdirs();
+			return file;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return FCL.GAMEDIR;
+		}
 	}
 
 	@Override
