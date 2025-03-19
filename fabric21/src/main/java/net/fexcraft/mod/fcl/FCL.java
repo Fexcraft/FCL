@@ -20,10 +20,7 @@ import net.fexcraft.mod.fcl.mixint.SWProvider;
 import net.fexcraft.mod.fcl.util.*;
 import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.impl.*;
-import net.fexcraft.mod.uni.inv.ItemWrapper;
-import net.fexcraft.mod.uni.inv.StackWrapper;
-import net.fexcraft.mod.uni.inv.UniInventory;
-import net.fexcraft.mod.uni.inv.UniStack;
+import net.fexcraft.mod.uni.inv.*;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.ui.*;
@@ -210,6 +207,7 @@ public class FCL implements ModInitializer {
 		ItemWrapper.GETTER = id -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(id));
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		UniInventory.IMPL = UniInventory21.class;
+		UniFluidTank.IMPL = UniFluidTank21.class;
 		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.defaultBlockState());
 		StateWrapper.STATE_WRAPPER = state -> new StateWrapperI((BlockState)state);
 		StateWrapper.COMMAND_WRAPPER = (blk, arg) -> {
