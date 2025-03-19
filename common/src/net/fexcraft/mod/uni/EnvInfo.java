@@ -16,4 +16,8 @@ public class EnvInfo {
 		return UniReg.LOADER_VERSION.startsWith("1.12");
 	}
 
+	public static boolean is121(){
+		return UniReg.LOADER_VERSION.startsWith("1.2") && !is120();
+	}
+
 }
