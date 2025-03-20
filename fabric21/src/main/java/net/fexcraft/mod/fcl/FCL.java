@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.lib.common.utils.CallbackContainer;
 import net.fexcraft.mod.fcl.local.CraftingBlock;
 import net.fexcraft.mod.fcl.local.CraftingEntity;
 import net.fexcraft.mod.fcl.mixint.CWProvider;
@@ -72,6 +73,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -87,6 +89,8 @@ public class FCL implements ModInitializer {
 	public static File GAMEDIR;
 	public static Supplier<MinecraftServer> SERVER = null;
 	public static UniFCL CONFIG;
+	//
+	public static CallbackContainer INIT_COMPLETE = new CallbackContainer();
 	//
 	public static final ResourceLocation UI_PACKET = ResourceLocation.parse("fcl:ui");
 	public static final CustomPacketPayload.Type<UIPacket> UI_PACKET_TYPE = new CustomPacketPayload.Type<>(UI_PACKET);
@@ -194,6 +198,7 @@ public class FCL implements ModInitializer {
 		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(content -> {
 			content.accept(new ItemStack(CRAFTING_BLOCK), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 		});
+		INIT_COMPLETE.complete();
 	}
 
 	private void init(boolean dev){
