@@ -13,6 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.ItemLike;
 
+import java.util.Optional;
+
 public class SWI extends StackWrapper {
 
 	public ItemStack stack;
@@ -39,7 +41,10 @@ public class SWI extends StackWrapper {
 	public static SWI parse(Object obj){
 		if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
 		if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
-		if(obj instanceof TagCW) return new SWI(ItemStack.parse(FCL.SERVER.get().registryAccess(), (CompoundTag)((TagCW)obj).direct()).get());
+		if(obj instanceof TagCW){
+			Optional<ItemStack> opt = ItemStack.parse(FCL.SERVER.get().registryAccess(), (CompoundTag)((TagCW)obj).direct());
+			return new SWI(opt.isPresent() ? opt.get() : ItemStack.EMPTY);
+		}
 		return null;
 	}
 
