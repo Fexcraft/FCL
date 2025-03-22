@@ -125,7 +125,7 @@ public class SWI extends StackWrapper {
 
 	@Override
 	public void save(TagCW com){
-		stack.save(com.local());
+		stack.save(FCL.SERVER.get().registryAccess(), com.local());
 	}
 
 	@Override
