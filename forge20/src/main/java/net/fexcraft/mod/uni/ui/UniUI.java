@@ -34,6 +34,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	//protected LinkedHashMap<String, UITab> tabs = new LinkedHashMap<>();
 	protected ArrayList<Component> comtip = new ArrayList<>();
 	protected ArrayList<String> tooltip = new ArrayList<>();
+	protected ArrayList<UITab> tabs = new ArrayList<>();
 	protected UserInterface ui;
 	protected GuiGraphics matrix;
 	protected UITab deftab;
@@ -258,7 +259,9 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	public boolean mouseScrolled(double mx, double my, double delta){
 		boolean exit = false;
 		int x = (int)mx, y = (int)my, am = (delta > 0.0D) ? -1 : 1;
-		for(UITab tab : ui.tabs.values()){
+		tabs.clear();
+		tabs.addAll(ui.tabs.values());
+		for(UITab tab : tabs){
 			if(!tab.visible()) continue;
 			for(Map.Entry<String, UIButton> entry : tab.buttons.entrySet()){
 				if(exit) break;
