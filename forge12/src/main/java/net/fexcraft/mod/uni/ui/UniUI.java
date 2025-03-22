@@ -27,6 +27,7 @@ import org.lwjgl.input.Mouse;
 public class UniUI extends GuiContainer {
 
 	protected ArrayList<String> tooltip = new ArrayList<>();
+	protected ArrayList<UITab> tabs = new ArrayList<>();
 	//
 	protected UniCon container;
 	protected UserInterface ui;
@@ -213,7 +214,9 @@ public class UniUI extends GuiContainer {
 		int x = Mouse.getEventX() * width / mc.displayWidth;
 		int y = this.height - Mouse.getEventY() * height / mc.displayHeight - 1;
 		boolean exit = false;
-		for(UITab tab : ui.tabs.values()){
+		tabs.clear();
+		tabs.addAll(ui.tabs.values());
+		for(UITab tab : tabs){
 			if(!tab.visible()) continue;
 			for(Entry<String, UIButton> entry : tab.buttons.entrySet()){
 				if(exit) break;
