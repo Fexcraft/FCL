@@ -35,6 +35,7 @@ public class ResLoc implements IDL {
 
 	@Override
 	public boolean equals(Object o){
+		if(o instanceof IDL || o instanceof String) return colon().equals(o.toString());
 		return resloc.equals(o);
 	}
 
