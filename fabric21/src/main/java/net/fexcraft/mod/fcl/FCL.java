@@ -251,6 +251,7 @@ public class FCL implements ModInitializer {
 		UniStack.STACK_GETTER = obj -> SWI.parse(obj);
 		UniEntity.ENTITY_GETTER = ent -> EntityUtil.wrap((Entity)ent);
 		UniChunk.CHUNK_GETTER = ck -> new ChunkWI((LevelChunk)ck);
+		StackWrapper.EMPTY = SWI.parse(ItemStack.EMPTY);
 		WrapperHolderImpl.LEVEL_PROVIDER = lvl -> new LevelW((Level)lvl);
 		UISlot.GETTERS.put("default", args -> new Slot((Container)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]));
 	}
