@@ -49,7 +49,13 @@ public class UIField extends UIElement {
 	}
 
 	public float number(){
-		return Float.parseFloat(text());
+		try{
+			return Float.parseFloat(text());
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return 0f;
+		}
 	}
 
 }
