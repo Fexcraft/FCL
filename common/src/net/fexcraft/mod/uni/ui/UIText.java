@@ -46,6 +46,16 @@ public class UIText extends UIElement {
 		value = newval;
 	}
 
+	public void transval(String newval){
+		value = newval;
+		translate();
+	}
+
+	public void transval(String newval, Object... args){
+		value = newval;
+		translate(args);
+	}
+
 	public String value(){
 		return value;
 	}
