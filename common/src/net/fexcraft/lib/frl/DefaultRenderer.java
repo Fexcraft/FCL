@@ -117,4 +117,29 @@ public class DefaultRenderer extends Renderer<GLO> {
 		GL11.glDeleteLists(poly.glId, 1);
 	}
 
+	@Override
+	public void push(){
+		GL11.glPushMatrix();
+	}
+
+	@Override
+	public void pop(){
+		GL11.glPopMatrix();
+	}
+
+	@Override
+	public void translate(double x, double y, double z){
+		GL11.glTranslated(x, y, z);
+	}
+
+	@Override
+	public void rotate(float deg, int x, int y, int z){
+		GL11.glRotated(deg, x, y, z);
+	}
+
+	@Override
+	public void scale(double x, double y, double z){
+		GL11.glScaled(x, y, z);
+	}
+
 }
