@@ -16,7 +16,8 @@ public class UUIField extends UIField {
 		field = new GuiTextField(ui._fields++, Minecraft.getMinecraft().fontRenderer, 0, 0, width, height){
 			@Override
 			public void writeText(String text){
-				if(regex != null) text = text.replaceAll(regex, "");
+				//if(regex != null) text = text.replaceAll(regex, "");
+				if(number) text = df.format(Double.parseDouble(text));
 				super.writeText(text);
 			}
 		};
