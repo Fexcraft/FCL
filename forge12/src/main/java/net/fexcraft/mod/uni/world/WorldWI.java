@@ -93,8 +93,8 @@ public class WorldWI extends WorldW {
 	}
 
 	@Override
-	public Object dimkey(){
-		return dim();
+	public String dimkey(){
+		return dim() + (world.isRemote ? "c" : "s");
 	}
 
 }
