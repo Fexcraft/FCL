@@ -95,7 +95,7 @@ public class WorldWI extends WorldW {
 
 	@Override
 	public String dimkey(){
-		return level.dimension().location().toString() + (level.isClientSide ? "c" : "s");
+		return level.dimension().location() + (level.isClientSide ? "c" : "s");
 	}
 
 }
