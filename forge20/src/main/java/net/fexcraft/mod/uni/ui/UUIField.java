@@ -27,8 +27,14 @@ public class UUIField extends UIField {
 		field = new EditBox(Minecraft.getInstance().font, 0, 0, width, height, null){
 			@Override
 			public void setValue(String text){
-				if(number) text = df.format(Double.parseDouble(text));
-				//if(regex != null) text = text.replaceAll(regex, "");
+				if(number){
+					try{
+						text = df.format(Double.parseDouble(text));
+					}
+					catch(Exception e){
+						e.printStackTrace();
+					}
+				}
 				super.setValue(text);
 			}
 		};
