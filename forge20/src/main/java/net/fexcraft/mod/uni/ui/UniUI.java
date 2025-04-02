@@ -22,8 +22,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.TooltipFlag;
+import org.lwjgl.glfw.GLFW;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -289,6 +296,26 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 
 	public GuiGraphics matrix(){
 		return matrix;
+	}
+
+	public String getClipboard(){
+		try{
+			String str = GLFW.glfwGetClipboardString(minecraft.getWindow().getWindow());
+			return str == null ? "" : str;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public void setClipboard(String str){
+		try{
+			GLFW.glfwSetClipboardString(minecraft.getWindow().getWindow(), str);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }
