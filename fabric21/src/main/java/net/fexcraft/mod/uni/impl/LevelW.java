@@ -94,8 +94,8 @@ public class LevelW extends WorldW {
 	}
 
 	@Override
-	public Object dimkey(){
-		return level.dimension();
+	public String dimkey(){
+		return level.dimension().location() + (level.isClientSide ? "c" : "s");
 	}
 
 }
