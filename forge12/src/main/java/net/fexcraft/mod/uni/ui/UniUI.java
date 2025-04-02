@@ -1,5 +1,10 @@
 package net.fexcraft.mod.uni.ui;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map.Entry;
@@ -247,6 +252,30 @@ public class UniUI extends GuiContainer {
 		gfield.x = field.x;
 		gfield.y = field.y;
 		gfield.setEnableBackgroundDrawing(field.background);
+	}
+
+	public String getClipboard(){
+		try{
+			Clipboard cp = Toolkit.getDefaultToolkit().getSystemClipboard();
+			Transferable data = cp.getContents(null);
+			if(!data.isDataFlavorSupported(DataFlavor.stringFlavor)) return "";
+			return data.getTransferData(DataFlavor.stringFlavor).toString();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public void setClipboard(String str){
+		try{
+			Clipboard cp = Toolkit.getDefaultToolkit().getSystemClipboard();
+			StringSelection sel = new StringSelection(str);
+			cp.setContents(sel, new StringSelection("fvtm:sign"));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }
