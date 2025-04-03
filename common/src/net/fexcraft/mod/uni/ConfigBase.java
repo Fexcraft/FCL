@@ -54,8 +54,8 @@ public abstract class ConfigBase {
 		changes = false;
 		JsonMap map = JsonHandler.parse(file);
 		createCategories();
-		onReload(map);
 		for(ConfigEntry entry : entries) if(entry.consumer != null) entry.consumer.accept(entry, map);
+		onReload(map);
 		if(changes) JsonHandler.print(file, map, PrintOption.SPACED);
 		for(Runnable run : listeners) run.run();
 	}
