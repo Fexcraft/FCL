@@ -262,10 +262,10 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		minecraft.textureManager.bindForSetup((ResourceLocation)texture);
 	}
 
-	//TODO
+	@Override
 	public boolean mouseScrolled(double mx, double my, double delta){
 		boolean exit = false;
-		int x = (int)mx, y = (int)my, am = (delta > 0.0D) ? -1 : 1;
+		int x = (int)mx, y = (int)my, am = (delta > 0d) ? -1 : 1;
 		tabs.clear();
 		tabs.addAll(ui.tabs.values());
 		for(UITab tab : tabs){
