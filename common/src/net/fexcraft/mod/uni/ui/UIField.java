@@ -4,6 +4,7 @@ import net.fexcraft.app.json.JsonMap;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -18,6 +19,7 @@ public class UIField extends UIElement {
 	static {
 		nf.setMaximumFractionDigits(4);
 		df.setRoundingMode(RoundingMode.HALF_EVEN);
+		df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
 	}
 	//
 	public String initial_value;
