@@ -27,6 +27,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import org.joml.Matrix4f;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 
@@ -262,10 +263,10 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		RenderType.guiTextured(texture.local());
 	}
 
-	//TODO
-	public boolean mouseScrolled(double mx, double my, double delta){
+	@Override
+	public boolean mouseScrolled(double mx, double my, double sx, double sy){
 		boolean exit = false;
-		int x = (int)mx, y = (int)my, am = (delta > 0.0D) ? -1 : 1;
+		int x = (int)mx, y = (int)my, am = (sy > 0d) ? -1 : 1;
 		for(UITab tab : ui.tabs.values()){
 			if(!tab.visible()) continue;
 			for(Map.Entry<String, UIButton> entry : tab.buttons.entrySet()){
@@ -303,6 +304,26 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 
 	public GuiGraphics matrix(){
 		return matrix;
+	}
+
+	public String getClipboard(){
+		try{
+			String str = GLFW.glfwGetClipboardString(minecraft.getWindow().getWindow());
+			return str == null ? "" : str;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public void setClipboard(String str){
+		try{
+			GLFW.glfwSetClipboardString(minecraft.getWindow().getWindow(), str);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }
