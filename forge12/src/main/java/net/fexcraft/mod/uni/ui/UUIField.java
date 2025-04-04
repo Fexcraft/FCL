@@ -17,7 +17,14 @@ public class UUIField extends UIField {
 			@Override
 			public void writeText(String text){
 				//if(regex != null) text = text.replaceAll(regex, "");
-				if(number) text = df.format(Double.parseDouble(text));
+				if(number){
+					try{
+						text = df.format(Double.parseDouble(text));
+					}
+					catch(Exception e){
+						e.printStackTrace();
+					}
+				}
 				super.writeText(text);
 			}
 		};
