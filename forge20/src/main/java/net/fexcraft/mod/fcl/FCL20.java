@@ -40,6 +40,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -96,15 +97,20 @@ public class FCL20 {
 			}
 		};
 		StateWrapper.STACK_WRAPPER = (stack, ctx) ->{
-			Item item = stack.getItem().local();
-			if(item instanceof BlockItem){
-				Block block = ((BlockItem)item).getBlock();
-				BlockPos pos = new BlockPos(ctx.pos.x, ctx.pos.y, ctx.pos.z);
-				BlockHitResult res = new BlockHitResult(new Vec3(ctx.pos.x, ctx.pos.y, ctx.pos.z), Direction.UP, pos, true);
-				BlockPlaceContext btx = new BlockPlaceContext(ctx.world.local(), ctx.placer.local(), ctx.main ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND, stack.local(), res);
-				return StateWrapper.of(block.getStateForPlacement(btx));
+			try{
+				Item item = stack.getItem().local();
+				if(item instanceof BlockItem){
+					Block block = ((BlockItem)item).getBlock();
+					BlockPos pos = new BlockPos(ctx.pos.x, ctx.pos.y, ctx.pos.z);
+					BlockHitResult res = new BlockHitResult(new Vec3(ctx.pos.x, ctx.pos.y, ctx.pos.z), Direction.UP, pos, true);
+					BlockPlaceContext btx = new BlockPlaceContext(ctx.world.local(), ctx.placer.local(), ctx.main ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND, stack.local(), res);
+					return StateWrapper.of(block.getStateForPlacement(btx));
+				}
 			}
-			else return StateWrapper.DEFAULT;
+			catch(Exception e){
+				//
+			}
+			return StateWrapper.DEFAULT;
 		};
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_LEAD, item -> item instanceof LeadItem);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_FOOD, item -> ((Item)item).isEdible());
