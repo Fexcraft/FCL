@@ -168,6 +168,22 @@ public abstract class UniInventory {
 		return "UniInventory[" + name + "]";
 	}
 
+	public StackWrapper insert(int idx, StackWrapper stack, boolean sim){
+		StackWrapper loc = stacks.get(idx);
+		if(loc.empty()){
+			if(!sim) set(idx, stack);
+			return EMPTY;
+		}
+		if(loc.equals(stack) && loc.count() < loc.maxsize()){
+			int dif = loc.maxsize() - loc.count();
+			if(!sim) loc.incr(Math.min(dif, stack.count()));
+			dif -= stack.count();
+			if(dif <= 0) return EMPTY;
+			else stack.decr(dif);
+		}
+		return stack;
+	}
+
 	public static interface UniItemValidator {
 
 		public boolean isValid(int idx, StackWrapper stack);
