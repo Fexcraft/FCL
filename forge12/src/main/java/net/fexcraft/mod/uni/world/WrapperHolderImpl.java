@@ -10,6 +10,7 @@ import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.server.management.UserListOpsEntry;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -37,6 +38,12 @@ public class WrapperHolderImpl extends WrapperHolder {
 			client = getWorld(net.minecraft.client.Minecraft.getMinecraft().world);
 		}
 		return (W)client;
+	}
+
+	@Override
+	protected boolean isOp0(EntityW player, int lvl){
+		UserListOpsEntry entry = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getEntry(((EntityPlayerMP)player.direct()).getGameProfile());
+		return entry != null && entry.getPermissionLevel() >= lvl;
 	}
 
 	@Override
