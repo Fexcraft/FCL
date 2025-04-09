@@ -38,6 +38,15 @@ public abstract class WrapperHolder {
 		return INSTANCE.isSinglePlayer0();
 	}
 
+	public static boolean isOp(EntityW entity){
+		return INSTANCE.isOp0(entity, 1);
+	}
+	public static boolean isOp(EntityW entity, int lvl){
+		return INSTANCE.isOp0(entity, lvl);
+	}
+
+	protected abstract boolean isOp0(EntityW entity, int lvl);
+
 	public static EntityW getPlayer(UUID uuid){
 		return INSTANCE.getPlayer0(uuid);
 	}
