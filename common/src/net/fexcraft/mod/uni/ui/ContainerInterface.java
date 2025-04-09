@@ -22,7 +22,7 @@ public class ContainerInterface {
 	public static BiFunction<String, Object[], String> TRANSFORMAT;
 	public UniInventory inventory;
 	public UserInterface ui;//client side only
-	public Object root;
+	public UniCon root;
 	public UIKey uiid;
 	public UniEntity player;
 	public JsonMap ui_map;
