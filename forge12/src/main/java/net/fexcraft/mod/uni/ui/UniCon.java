@@ -4,6 +4,8 @@ import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
+import net.fexcraft.mod.uni.inv.StackWrapper;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -137,6 +139,10 @@ public class UniCon extends Container {
 
 	public void addSlot(Slot slot){
 		addSlotToContainer(slot);
+	}
+
+	public StackWrapper getPickedStack(){
+		return UniStack.getStack(player.inventory.getItemStack());
 	}
 
 }
