@@ -1,13 +1,11 @@
 package net.fexcraft.mod.uni.ui;
 
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.opengl.GlStateManager;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fcl.util.ExternalTextures;
-import net.fexcraft.mod.fcl.util.FCLRenderTypes;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.inv.StackWrapper;
@@ -195,10 +193,10 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		//if(ui.background) renderTransparentBackground(matrix);
 		predraw(ticks, mx, my);
 		drawbackground(ticks, mx, my);
-		GlStateManager._clearColor(1.0F, 1.0F, 1.0F, 1.0F);
+		//TODO GlStateManager._clearColor(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager._enableBlend();
-		GlStateManager.glBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.value, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value, GlStateManager.SourceFactor.ONE.value, GlStateManager.DestFactor.ZERO.value);
-		GlStateManager._blendFunc(GlStateManager.SourceFactor.SRC_ALPHA.value, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value);
+		//TODO GlStateManager.glBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.value, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value, GlStateManager.SourceFactor.ONE.value, GlStateManager.DestFactor.ZERO.value);
+		//TODO GlStateManager._blendFunc(GlStateManager.SourceFactor.SRC_ALPHA.value, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value);
 		for(Iterator<UITab> it = ui.tabs.values().iterator(); it.hasNext();){
 			UITab tab = it.next();
 			if(!tab.visible()) continue;

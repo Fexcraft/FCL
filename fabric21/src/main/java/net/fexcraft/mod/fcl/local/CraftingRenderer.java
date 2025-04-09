@@ -11,6 +11,7 @@ import net.fexcraft.mod.uni.IDLManager;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class CraftingRenderer implements BlockEntityRenderer<CraftingEntity> {
 	private static CraftingModel MODEL = new CraftingModel();
 
 	@Override
-	public void render(CraftingEntity tile, float ticks, PoseStack pose, MultiBufferSource buffer, int light, int overlay){
+	public void render(CraftingEntity tile, float ticks, PoseStack pose, MultiBufferSource buffer, int light, int overlay, Vec3 pos){
 		Renderer120.pose = pose;
 		Renderer120.set(pose, buffer, light, overlay);
 		FCLRenderTypes.setCutout(TEXTURE);

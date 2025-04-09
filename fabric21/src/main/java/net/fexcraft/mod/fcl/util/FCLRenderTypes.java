@@ -4,8 +4,10 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.fexcraft.mod.uni.IDL;
 import net.minecraft.Util;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderType.CompositeState;
 import net.minecraft.util.TriState;
 
 import java.util.HashMap;
@@ -21,14 +23,12 @@ public class FCLRenderTypes {
 	protected static final HashMap<IDL, RenderType> CUTOUTS = new HashMap<>();
 
 	private static final Function<IDL, RenderType> CUTOUT = Util.memoize(idl -> {
-		RenderType.CompositeState state = RenderType.CompositeState.builder()
-			.setShaderState(RenderType.RENDERTYPE_ENTITY_CUTOUT_SHADER)
+		CompositeState state = CompositeState.builder()
 			.setTextureState(new RenderStateShard.TextureStateShard(idl.local(), TriState.DEFAULT, false))
-			.setTransparencyState(RenderType.NO_TRANSPARENCY)
 			.setLightmapState(RenderStateShard.LIGHTMAP)
 			.setOverlayState(RenderStateShard.OVERLAY)
 			.createCompositeState(true);
-		return RenderType.create("fcl:entity_cutout", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 256, true, false, state);
+		return RenderType.create("fcl:entity_cutout", 1536, true, false, RenderPipelines.ENTITY_CUTOUT, state);
 	});
 
 	public static void setCutout(IDL tex){

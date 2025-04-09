@@ -40,7 +40,7 @@ public class ExternalTextures {
 		File file = new File("./temp/fcl_download/" + tex.getPath());
 		if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
 		file.deleteOnExit();
-		Minecraft.getInstance().getTextureManager().register(tex, new DynamicTexture(NativeImage.read(arr)));
+		Minecraft.getInstance().getTextureManager().register(tex, new DynamicTexture(() -> s, NativeImage.read(arr)));
 		return tex;
 	}
 

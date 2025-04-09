@@ -25,32 +25,32 @@ public class TagLWI implements TagLW {
 
 	@Override
 	public String getString(int idx){
-		return list.getString(idx);
+		return list.getStringOr(idx, "");
 	}
 
 	@Override
 	public float getFloat(int idx){
-		return list.getFloat(idx);
+		return list.getFloatOr(idx, 0f);
 	}
 
 	@Override
 	public double getDouble(int idx){
-		return list.getDouble(idx);
+		return list.getDoubleOr(idx, 0d);
 	}
 
 	@Override
 	public int getInteger(int idx){
-		return list.getInt(idx);
+		return list.getIntOr(idx, 0);
 	}
 
 	@Override
 	public TagCW getCompound(int idx){
-		return new TagCWI(list.getCompound(idx));
+		return new TagCWI(list.getCompoundOrEmpty(idx));
 	}
 
 	@Override
 	public TagLW getList(int idx){
-		return new TagLWI(list.getList(idx));
+		return new TagLWI(list.getListOrEmpty(idx));
 	}
 
 	@Override

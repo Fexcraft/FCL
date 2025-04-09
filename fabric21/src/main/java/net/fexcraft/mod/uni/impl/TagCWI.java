@@ -26,53 +26,53 @@ public class TagCWI implements TagCW {
 
 	@Override
 	public String getString(String key){
-		return compound.getString(key);
+		return compound.getStringOr(key, "");
 	}
 
 	@Override
 	public float getFloat(String key){
-		return compound.getFloat(key);
+		return compound.getFloatOr(key, 0f);
 	}
 
 	@Override
 	public double getDouble(String key){
-		return compound.getDouble(key);
+		return compound.getDoubleOr(key, 0d);
 	}
 
 	@Override
 	public int getInteger(String key){
-		return compound.getInt(key);
+		return compound.getIntOr(key, 0);
 	}
 
 	@Override
 	public long getLong(String key){
-		return compound.getLong(key);
+		return compound.getLongOr(key, 0l);
 	}
 
 	@Override
 	public boolean getBoolean(String key){
-		return compound.getBoolean(key);
+		return compound.getBooleanOr(key, false);
 	}
 
 	@Override
 	public byte getByte(String key){
-		return compound.getByte(key);
+		return compound.getByteOr(key, (byte)0);
 	}
 
 	@Override
 	public TagCW getCompound(String key){
-		return new TagCWI(compound.getCompound(key));
+		return new TagCWI(compound.getCompoundOrEmpty(key));
 	}
 
 	@Override
 	public TagLW getList(String key){
-		return new TagLWI((ListTag)compound.get(key));
+		return new TagLWI(compound.getListOrEmpty(key));
 	}
 
 	@Override
 	public V3I getV3I(String key){
 		if(compound.get(key) instanceof LongTag){
-			BlockPos blk = BlockPos.of(compound.getLong(key));
+			BlockPos blk = BlockPos.of(compound.getLongOr(key, 0l));
 			return new V3I(blk.getX(), blk.getY(), blk.getZ());
 		}
 		else return new V3I(getIntArray(key), 0);
@@ -80,12 +80,12 @@ public class TagCWI implements TagCW {
 
 	@Override
 	public int[] getIntArray(String key){
-		return compound.getIntArray(key);
+		return compound.getIntArray(key).orElse(new int[0]);
 	}
 
 	@Override
 	public byte[] getByteArray(String key){
-		return compound.getByteArray(key);
+		return compound.getByteArray(key).orElse(new byte[0]);
 	}
 
 	@Override
@@ -171,7 +171,7 @@ public class TagCWI implements TagCW {
 
 	@Override
 	public Collection<String> keys(){
-		return compound.getAllKeys();
+		return compound.keySet();
 	}
 
 	@Override
