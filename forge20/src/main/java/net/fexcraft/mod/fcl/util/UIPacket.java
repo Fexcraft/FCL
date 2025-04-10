@@ -5,4 +5,4 @@ import net.minecraft.nbt.CompoundTag;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public record UIPacketF(CompoundTag com){}
+public record UIPacket(CompoundTag com){}
