@@ -14,8 +14,10 @@ import net.fexcraft.mod.uni.impl.SWI;
 import net.fexcraft.mod.uni.impl.WrapperHolderImpl;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniStack;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UniCon;
+import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.Registries;
@@ -61,6 +63,8 @@ import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 
 import static net.minecraft.network.chat.Component.literal;
 
@@ -82,6 +86,8 @@ public class FCL {
 			return null;
 		}
 	});
+	protected static final ConcurrentHashMap<String, BiConsumer<TagCW, EntityW>> LIS_SERVER = new ConcurrentHashMap<>();
+	protected static final ConcurrentHashMap<String, BiConsumer<TagCW, EntityW>> LIS_CLIENT = new ConcurrentHashMap<>();
 	public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder.named(new ResourceLocation("fcl", "channel"))
 		.clientAcceptedVersions(pro -> true)
 		.serverAcceptedVersions(pro -> true)
@@ -172,7 +178,7 @@ public class FCL {
 
 	private void commonSetup(FMLCommonSetupEvent event){
 		StackWrapper.EMPTY = SWI.parse(ItemStack.EMPTY);
-		CHANNEL.registerMessage(1, UIPacketF.class, (packet, buffer) -> buffer.writeNbt(packet.com()), buffer -> new UIPacketF(buffer.readNbt()), (packet, context) -> {
+		CHANNEL.registerMessage(1, UIPacket.class, (packet, buffer) -> buffer.writeNbt(packet.com()), buffer -> new UIPacket(buffer.readNbt()), (packet, context) -> {
 			context.get().enqueueWork(() -> {
 				if(context.get().getDirection().getOriginationSide().isClient()){
 					ServerPlayer player = context.get().getSender();
@@ -184,8 +190,28 @@ public class FCL {
 			});
 			context.get().setPacketHandled(true);
 		});
-		ContainerInterface.SEND_TO_CLIENT = (com, player) -> CHANNEL.send(PacketDistributor.PLAYER.with(() -> player.entity.local()), new UIPacketF(com.local()));
-		ContainerInterface.SEND_TO_SERVER = com -> CHANNEL.sendToServer(new UIPacketF(com.local()));
+		CHANNEL.registerMessage(2, TagPacket.class, (packet, buffer) -> {
+				buffer.writeInt(packet.key().length());
+				buffer.writeUtf(packet.key());
+				buffer.writeNbt(packet.com().local());
+			}, buffer -> new TagPacket(buffer.readUtf(buffer.readInt()), TagCW.wrap(buffer.readNbt())),
+			(packet, context) -> {
+				context.get().enqueueWork(() -> {
+					if(context.get().getDirection().getOriginationSide().isClient()){
+						ServerPlayer player = context.get().getSender();
+						var cons = LIS_SERVER.get(packet.key());
+						if(cons != null) cons.accept(packet.com(), UniEntity.getEntity(player));
+					}
+					else{
+						var cons = LIS_CLIENT.get(packet.key());
+						if(cons != null) cons.accept(packet.com(), UniEntity.getEntity(ClientPacketPlayer.get()));
+					}
+				}
+			);
+			context.get().setPacketHandled(true);
+		});
+		ContainerInterface.SEND_TO_CLIENT = (com, player) -> CHANNEL.send(PacketDistributor.PLAYER.with(() -> player.entity.local()), new UIPacket(com.local()));
+		ContainerInterface.SEND_TO_SERVER = com -> CHANNEL.sendToServer(new UIPacket(com.local()));
 		//
 		if(UniFCL.EXAMPLE_RECIPES){
 			FclRecipe.newBuilder("recipe.fcl.testing").add(new ItemStack(Blocks.COBBLESTONE, 4)).output(new ItemStack(Blocks.STONE_STAIRS, 5)).register();
@@ -235,6 +261,11 @@ public class FCL {
 				return 0;
 			})
 		);
+	}
+
+	public static void addListener(String key, boolean client, BiConsumer<TagCW, EntityW> cons){
+		if(client) LIS_CLIENT.put(key, cons);
+		else LIS_SERVER.put(key, cons);
 	}
 
 }
