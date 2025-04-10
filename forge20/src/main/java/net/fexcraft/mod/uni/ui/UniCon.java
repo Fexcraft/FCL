@@ -154,6 +154,6 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 	}
 
 	public StackWrapper getPickedStack(){
-		return UniStack.getStack(player.getInventory().getSelected());
+		return UniStack.getStack(getCarried());
 	}
 }
