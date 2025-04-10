@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.players.ServerOpListEntry;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -38,6 +39,13 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	protected boolean isSinglePlayer0(){
 		return ServerLifecycleHooks.getCurrentServer() != null && ServerLifecycleHooks.getCurrentServer().isSingleplayer();
+	}
+
+	@Override
+	protected boolean isOp0(EntityW entity, int lvl){
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		ServerOpListEntry entry = server.getPlayerList().getOps().get(((ServerPlayer)entity.direct()).getGameProfile());
+		return entry != null && entry.getLevel() >= lvl;
 	}
 
 	@Override
