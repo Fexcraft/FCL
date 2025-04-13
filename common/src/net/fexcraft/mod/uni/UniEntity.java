@@ -36,8 +36,13 @@ public class UniEntity {
 		return appended.get(id);
 	}
 
-	public static EntityW getEntity(Object playerent){
-		return GETTER.apply(playerent).entity;
+	public static EntityW getEntity(Object entity){
+		return GETTER.apply(entity).entity;
+	}
+
+	public static EntityW getEntityN(Object entity){
+		UniEntity ent = GETTER.apply(entity);
+		return ent == null ? null : ent.entity;
 	}
 
 	public static <C> C getCasted(Object playerent){
