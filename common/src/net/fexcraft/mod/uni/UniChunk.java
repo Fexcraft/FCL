@@ -41,6 +41,11 @@ public class UniChunk {
 		return GETTER.apply(chunk).chunk;
 	}
 
+	public static ChunkW getChunkN(Object chunk){
+		UniChunk uck = GETTER.apply(chunk);
+		return uck == null ? null : uck.chunk;
+	}
+
 	public static void register(Appendable<UniChunk> app){
 		appendables.add(app);
 	}
