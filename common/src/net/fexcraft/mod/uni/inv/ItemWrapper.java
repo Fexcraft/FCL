@@ -18,10 +18,6 @@ public abstract class ItemWrapper {
 		return wrapper;
 	}
 
-	public void linkContainer(){}
-
-	public void regToDict(){}
-
 	public abstract <LI> LI local();
 
 	public abstract Object direct();
