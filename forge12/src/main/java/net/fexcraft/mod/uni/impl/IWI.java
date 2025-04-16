@@ -15,16 +15,6 @@ public class IWI extends ItemWrapper {
 	}
 
 	@Override
-	public void linkContainer(){
-		//
-	}
-
-	@Override
-	public void regToDict(){
-		//
-	}
-
-	@Override
 	public Item local(){
 		return item;
 	}
