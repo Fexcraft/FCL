@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.players.ServerOpListEntry;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.LevelResource;
 
@@ -40,6 +41,13 @@ public class WrapperHolderImpl extends WrapperHolder {
 	protected boolean isSinglePlayer0(){
 		MinecraftServer server = FCL.SERVER.get();
 		return server != null && server.isSingleplayer();
+	}
+
+	@Override
+	protected boolean isOp0(EntityW entity, int lvl){
+		MinecraftServer server = FCL.SERVER.get();
+		ServerOpListEntry entry = server.getPlayerList().getOps().get(((ServerPlayer)entity.direct()).getGameProfile());
+		return entry != null && entry.getLevel() >= lvl;
 	}
 
 	@Override
