@@ -73,7 +73,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -276,6 +275,10 @@ public class FCL implements ModInitializer {
 		Block block = Blocks.register(key, factory, props);
 		Items.registerBlock(block);
 		return block;
+	}
+
+	public static void bindTex(IDL tex){
+		net.fexcraft.mod.fcl.util.FCLRenderTypes.setCutout(tex);
 	}
 
 }
