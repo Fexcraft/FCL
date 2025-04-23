@@ -2,6 +2,8 @@ package net.fexcraft.lib.frl;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import net.fexcraft.mod.fcl.FCL;
+import net.fexcraft.mod.uni.IDL;
 import org.lwjgl.opengl.GL11;
 
 import net.fexcraft.lib.common.math.RGB;
@@ -16,6 +18,7 @@ import net.fexcraft.lib.common.math.RGB;
 public class DefaultRenderer extends Renderer<GLO> {
 
 	private Material material;
+	private RGB conv = RGB.WHITE.copy();
 	
 	public void render(Polyhedron<GLO> poly){
 		if(poly.glObj.material != material){
@@ -140,6 +143,17 @@ public class DefaultRenderer extends Renderer<GLO> {
 	@Override
 	public void scale(double x, double y, double z){
 		GL11.glScaled(x, y, z);
+	}
+
+	@Override
+	public void bind(IDL tex){
+		FCL.bindTex(tex);
+	}
+
+	@Override
+	public void color(int rgb){
+		conv.packed = rgb;
+		conv.glColorApply();
 	}
 
 }
