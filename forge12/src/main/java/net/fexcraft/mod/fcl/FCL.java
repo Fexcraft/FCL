@@ -75,7 +75,7 @@ public class FCL {
 	private static FCL instance;
 	private static Side side;
 	public static UniFCL CONFIG;
-	
+
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) throws Exception {
 		EnvInfo.CLIENT = event.getSide().isClient();
@@ -207,6 +207,10 @@ public class FCL {
 
 	public static final String getMinecraftVersion(){
 		return mcv;
+	}
+
+	public static void bindTex(IDL tex){
+		net.minecraft.client.Minecraft.getMinecraft().getTextureManager().bindTexture(tex.local());
 	}
 	
 }
