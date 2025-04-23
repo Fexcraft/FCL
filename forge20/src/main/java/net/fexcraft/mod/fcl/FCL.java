@@ -6,10 +6,7 @@ import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.local.CraftingBlock;
 import net.fexcraft.mod.fcl.local.CraftingEntity;
 import net.fexcraft.mod.fcl.util.*;
-import net.fexcraft.mod.uni.FclRecipe;
-import net.fexcraft.mod.uni.UniChunk;
-import net.fexcraft.mod.uni.UniEntity;
-import net.fexcraft.mod.uni.UniReg;
+import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.impl.SWI;
 import net.fexcraft.mod.uni.impl.WrapperHolderImpl;
 import net.fexcraft.mod.uni.inv.StackWrapper;
@@ -174,6 +171,10 @@ public class FCL {
 		BLOCKENTS.register(bus);
 		CONTAINERS.register(bus);
 		bus.addListener(this::commonSetup);
+	}
+
+	public static void bindTex(IDL tex){
+		net.fexcraft.mod.fcl.util.FCLRenderTypes.setCutout(tex);
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event){
