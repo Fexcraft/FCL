@@ -17,8 +17,8 @@ import net.fexcraft.lib.common.math.RGB;
  */
 public class DefaultRenderer extends Renderer<GLO> {
 
+	public static RGB conv = RGB.WHITE.copy();
 	private Material material;
-	private RGB conv = RGB.WHITE.copy();
 	
 	public void render(Polyhedron<GLO> poly){
 		if(poly.glObj.material != material){
