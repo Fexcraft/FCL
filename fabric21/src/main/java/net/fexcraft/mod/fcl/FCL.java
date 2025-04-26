@@ -208,7 +208,7 @@ public class FCL implements ModInitializer {
 		TagLW.WRAPPER[0] = com -> new TagLWI((ListTag)com);
 		TagCW.SUPPLIER[0] = TagCWI::new;
 		TagLW.SUPPLIER[0] = TagLWI::new;
-		ItemWrapper.GETTER = id -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(id));
+		ItemWrapper.GETTER = id -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(id)).get().value();
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		UniInventory.IMPL = UniInventory21.class;
 		UniFluidTank.IMPL = UniFluidTank21.class;
@@ -275,6 +275,17 @@ public class FCL implements ModInitializer {
 		Block block = Blocks.register(key, factory, props);
 		Items.registerBlock(block);
 		return block;
+	}
+
+	public static Block registerBlock(String idl, Function<Block.Properties, Block> factory){
+		ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, ResourceLocation.parse(idl));
+		Block block = Blocks.register(key, factory, BlockBehaviour.Properties.of());
+		Items.registerBlock(block);
+		return block;
+	}
+
+	public static Item registerItem(String idl, Function<Item.Properties, Item> factory){
+		return Items.registerItem(ResourceKey.create(Registries.ITEM, ResourceLocation.parse(idl)), factory);
 	}
 
 	public static void bindTex(IDL tex){
