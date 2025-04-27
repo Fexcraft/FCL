@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -17,7 +18,7 @@ public class ServerMixin {
 
 	@Inject(at = @At("RETURN"), method = "Lnet/minecraft/server/MinecraftServer;spin(Ljava/util/function/Function;)Lnet/minecraft/server/MinecraftServer;")
 	private static void spin(Function<?, ?> func, CallbackInfoReturnable<MinecraftServer> info){
-		FCL.SERVER = () -> (MinecraftServer)info.getReturnValue();
+		FCL.SERVER = Optional.of(info.getReturnValue());
 	}
 
 }
