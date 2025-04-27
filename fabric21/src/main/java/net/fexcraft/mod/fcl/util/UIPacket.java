@@ -27,5 +27,4 @@ public record UIPacket(TagCW com) implements CustomPacketPayload {
 		return FCL.UI_PACKET_TYPE;
 	}
 
-
 }
