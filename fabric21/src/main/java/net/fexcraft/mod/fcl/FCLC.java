@@ -7,9 +7,11 @@ import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.fcl.local.CraftingRenderer;
 import net.fexcraft.mod.fcl.util.Axis3DL;
+import net.fexcraft.mod.fcl.util.ClientPacketPlayer;
 import net.fexcraft.mod.fcl.util.Renderer120;
 import net.fexcraft.mod.fcl.util.UIPacket;
 import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.ui.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -30,6 +32,12 @@ public class FCLC implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(UI_PACKET_TYPE, (packet, context) -> {
 			context.client().execute(() -> {
 				((UniCon)context.player().containerMenu).onPacket(packet.com().local(), true);
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(TAG_PACKET_TYPE, (packet, context) -> {
+			context.client().execute(() -> {
+				var cons = LIS_CLIENT.get(packet.key());
+				if(cons != null) cons.accept(packet.com(), UniEntity.getEntity(ClientPacketPlayer.get()));
 			});
 		});
 		//
