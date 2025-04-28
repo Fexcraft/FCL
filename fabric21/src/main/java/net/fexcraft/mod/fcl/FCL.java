@@ -77,7 +77,6 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static net.minecraft.commands.Commands.literal;
 
@@ -89,7 +88,7 @@ public class FCL implements ModInitializer {
 	public static final String MODID = "fcl";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 	public static File GAMEDIR;
-	public static Optional<MinecraftServer> SERVER = null;
+	public static Optional<MinecraftServer> SERVER = Optional.empty();
 	public static UniFCL CONFIG;
 	//
 	public static CallbackContainer INIT_COMPLETE = new CallbackContainer();
