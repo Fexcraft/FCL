@@ -39,8 +39,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	protected boolean isSinglePlayer0(){
-		MinecraftServer server = FCL.SERVER.get();
-		return server != null && server.isSingleplayer();
+		return FCL.SERVER.isPresent() && FCL.SERVER.get().isSingleplayer();
 	}
 
 	@Override
