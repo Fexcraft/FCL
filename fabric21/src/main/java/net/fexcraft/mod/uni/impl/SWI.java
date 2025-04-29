@@ -7,11 +7,13 @@ import net.fexcraft.mod.uni.inv.ItemWrapper;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
@@ -42,7 +44,8 @@ public class SWI extends StackWrapper {
 		if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
 		if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
 		if(obj instanceof TagCW){
-			Optional<ItemStack> opt = ItemStack.parse(FCL.SERVER.get().registryAccess(), (CompoundTag)((TagCW)obj).direct());
+			RegistryAccess acc = FCL.SERVER.isPresent() ? FCL.SERVER.get().registryAccess() : ((Level)WrapperHolderImpl.getClientWorld().direct()).registryAccess();
+			Optional<ItemStack> opt = ItemStack.parse(acc, (CompoundTag)((TagCW)obj).direct());
 			return new SWI(opt.isPresent() ? opt.get() : ItemStack.EMPTY);
 		}
 		return null;
