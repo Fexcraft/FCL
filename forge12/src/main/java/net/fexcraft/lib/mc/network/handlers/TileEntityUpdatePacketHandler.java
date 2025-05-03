@@ -1,8 +1,5 @@
 package net.fexcraft.lib.mc.network.handlers;
 
-import java.util.HashSet;
-
-import net.fexcraft.lib.mc.api.packet.IPacketListener;
 import net.fexcraft.lib.mc.api.packet.IPacketReceiver;
 import net.fexcraft.lib.mc.network.packet.PacketTileEntityUpdate;
 import net.fexcraft.lib.mc.utils.Static;
@@ -18,8 +15,6 @@ public class TileEntityUpdatePacketHandler{
 	
 	public static class Client implements IMessageHandler<PacketTileEntityUpdate, IMessage>{
 		
-		private static HashSet<IPacketListener<PacketTileEntityUpdate>> set = new HashSet<IPacketListener<PacketTileEntityUpdate>>();
-		
 		@Override
 		public IMessage onMessage(final PacketTileEntityUpdate packet, MessageContext ctx) {
 			IThreadListener ls = Minecraft.getMinecraft();
@@ -33,13 +28,6 @@ public class TileEntityUpdatePacketHandler{
 						if(te instanceof IPacketReceiver){
 							((IPacketReceiver<PacketTileEntityUpdate>)te).processClientPacket(packet);
 						}
-						if(packet.nbt.hasKey("target_listener")){
-							for(IPacketListener<PacketTileEntityUpdate> pktl : set){
-								if(pktl.getId().equals(packet.nbt.getString("target_listener"))){
-									pktl.process(packet, null);
-								}
-							}
-						}
 					}
 				}
 				
@@ -47,14 +35,9 @@ public class TileEntityUpdatePacketHandler{
 			return null;
 		}
 
-		public static void addListener(IPacketListener<PacketTileEntityUpdate> listener) {
-			set.add(listener);
-		}
 	}
 	
 	public static class Server implements IMessageHandler<PacketTileEntityUpdate, IMessage>{
-		
-		private static HashSet<IPacketListener<PacketTileEntityUpdate>> set = new HashSet<IPacketListener<PacketTileEntityUpdate>>();
 		
 		@Override
 		public IMessage onMessage(final PacketTileEntityUpdate packet, MessageContext ctx) {
@@ -69,13 +52,6 @@ public class TileEntityUpdatePacketHandler{
 						if(te instanceof IPacketReceiver){
 							((IPacketReceiver<PacketTileEntityUpdate>)te).processServerPacket(packet);
 						}
-						if(packet.nbt.hasKey("target_listener")){
-							for(IPacketListener<PacketTileEntityUpdate> pktl : set){
-								if(pktl.getId().equals(packet.nbt.getString("target_listener"))){
-									pktl.process(packet, null);
-								}
-							}
-						}
 					}
 				}
 				
@@ -83,9 +59,6 @@ public class TileEntityUpdatePacketHandler{
 			return null;
 		}
 
-		public static void addListener(IPacketListener<PacketTileEntityUpdate> listener) {
-			set.add(listener);
-		}
 	}
 	
 }
