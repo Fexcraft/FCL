@@ -49,6 +49,10 @@ public class UniEntity {
 		return (C)GETTER.apply(playerent).entity;
 	}
 
+	public static <T> T getCasted(Object playerent, Class<T> clazz){
+		return (T)GETTER.apply(playerent).entity;
+	}
+
 	public static void register(Appendable<UniEntity> app){
 		appendables.add(app);
 	}
