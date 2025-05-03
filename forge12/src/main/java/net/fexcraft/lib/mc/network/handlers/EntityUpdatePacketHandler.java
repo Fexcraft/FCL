@@ -1,8 +1,5 @@
 package net.fexcraft.lib.mc.network.handlers;
 
-import java.util.HashSet;
-
-import net.fexcraft.lib.mc.api.packet.IPacketListener;
 import net.fexcraft.lib.mc.api.packet.IPacketReceiver;
 import net.fexcraft.lib.mc.network.packet.PacketEntityUpdate;
 import net.fexcraft.lib.mc.utils.Static;
@@ -16,8 +13,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class EntityUpdatePacketHandler {
 	
 	public static class Client implements IMessageHandler<PacketEntityUpdate, IMessage> {
-		
-		private static HashSet<IPacketListener<PacketEntityUpdate>> set = new HashSet<IPacketListener<PacketEntityUpdate>>();
 		
 		@Override
 		public IMessage onMessage(final PacketEntityUpdate packet, MessageContext ctx) {
@@ -33,27 +28,15 @@ public class EntityUpdatePacketHandler {
 					if(entity != null && entity instanceof IPacketReceiver){
 						((IPacketReceiver<PacketEntityUpdate>)entity).processClientPacket(packet);
 					}
-					if(packet.nbt.hasKey("target_listener")){
-						for(IPacketListener<PacketEntityUpdate> pktl : set){
-							if(pktl.getId().equals(packet.nbt.getString("target_listener"))){
-								pktl.process(packet, null);
-							}
-						}
-					}
 				}
 				
 			});
 			return null;
 		}
 
-		public static void addListener(IPacketListener<PacketEntityUpdate> listener) {
-			set.add(listener);
-		}
 	}
 	
 	public static class Server implements IMessageHandler<PacketEntityUpdate, IMessage>{
-		
-		private static HashSet<IPacketListener<PacketEntityUpdate>> set = new HashSet<IPacketListener<PacketEntityUpdate>>();
 		
 		@Override
 		public IMessage onMessage(final PacketEntityUpdate packet, MessageContext ctx) {
@@ -66,22 +49,12 @@ public class EntityUpdatePacketHandler {
 					if(entity != null && entity instanceof IPacketReceiver){
 						((IPacketReceiver<PacketEntityUpdate>)entity).processServerPacket(packet);
 					}
-					if(packet.nbt.hasKey("target_listener")){
-						for(IPacketListener<PacketEntityUpdate> pktl : set){
-							if(pktl.getId().equals(packet.nbt.getString("target_listener"))){
-								pktl.process(packet, null);
-							}
-						}
-					}
 				}
 				
 			});
 			return null;
 		}
 
-		public static void addListener(IPacketListener<PacketEntityUpdate> listener) {
-			set.add(listener);
-		}
 	}
 	
 }
