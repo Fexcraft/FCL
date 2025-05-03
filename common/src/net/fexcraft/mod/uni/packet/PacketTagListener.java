@@ -9,7 +9,7 @@ import net.fexcraft.mod.uni.world.EntityW;
  * @author Ferdinand Calo' (FEX___96)
  */
 @FunctionalInterface
-public interface PacketListener {
+public interface PacketTagListener {
 
 	public void handle(TagCW packet, EntityW player);
 
