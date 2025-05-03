@@ -4,6 +4,7 @@ import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.inv.StackWrapper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -95,6 +96,12 @@ public class WorldWI extends WorldW {
 	@Override
 	public String dimkey(){
 		return dim() + (world.isRemote ? "c" : "s");
+	}
+
+	@Override
+	public EntityW getEntity(int id){
+		Entity ent = world.getEntityByID(id);
+		return ent == null ? null : UniEntity.getEntity(ent);
 	}
 
 }
