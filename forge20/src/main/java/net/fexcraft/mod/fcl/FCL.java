@@ -11,6 +11,7 @@ import net.fexcraft.mod.uni.impl.SWI;
 import net.fexcraft.mod.uni.impl.WrapperHolderImpl;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniStack;
+import net.fexcraft.mod.uni.packet.PacketFile;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UniCon;
@@ -59,6 +60,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -147,7 +149,7 @@ public class FCL {
 				e.printStackTrace();
 			}
 		};
-		UniFCL.registerUI(this);
+		UniFCL.registerFCLUI(this);
 		FclRecipe.VALIDATE = comp -> {
 			if(comp.tag){
 				if(comp.key == null) comp.key = ItemTags.create(new ResourceLocation(comp.id));
@@ -211,6 +213,41 @@ public class FCL {
 			);
 			context.get().setPacketHandled(true);
 		});
+		CHANNEL.registerMessage(3, PacketFile.class, PacketFile::encode, buffer -> {
+			PacketFile pkt = new PacketFile();
+			pkt.decode(buffer);
+			return pkt;
+		}, (packet, context) -> {
+			context.get().enqueueWork(() -> {
+				if(context.get().getDirection().getOriginationSide().isClient()){
+					try{
+						EntityW player = UniEntity.getEntity(context.get().getSender());
+						if(!packet.lis.equals("def")){
+							UniFCL.SFL_S.get(packet.lis).handle(packet.loc, null, player);
+							return;
+						}
+						byte[] tex = UniFCL.getServerFile(packet.loc);
+						FCL.sendServerFile(player, packet.lis, packet.loc, tex);
+					}
+					catch(Exception e){
+						throw new RuntimeException(e);
+					}
+				}
+				else{
+					try{
+						if(!packet.lis.equals("def")){
+							UniFCL.SFL_C.get(packet.lis).handle(packet.loc, packet.img, UniEntity.getEntity(ClientPacketPlayer.get()));
+							return;
+						}
+						ExternalTextures.get(packet.loc, packet.img);
+					}
+					catch(IOException e){
+						e.printStackTrace();
+					}
+				}
+			});
+			context.get().setPacketHandled(true);
+		});
 		ContainerInterface.SEND_TO_CLIENT = (com, player) -> CHANNEL.send(PacketDistributor.PLAYER.with(() -> player.entity.local()), new UIPacket(com.local()));
 		ContainerInterface.SEND_TO_SERVER = com -> CHANNEL.sendToServer(new UIPacket(com.local()));
 		//
@@ -267,6 +304,20 @@ public class FCL {
 	public static void addListener(String key, boolean client, BiConsumer<TagCW, EntityW> cons){
 		if(client) LIS_CLIENT.put(key, cons);
 		else LIS_SERVER.put(key, cons);
+	}
+
+	public static void sendServerFile(EntityW player, String lis, String loc, byte[] img){
+		if(player.isOnClient()){
+			CHANNEL.sendToServer(new PacketFile().fill(lis, loc));
+		}
+		else{
+			CHANNEL.send(PacketDistributor.PLAYER.with(() -> player.local()), new PacketFile().fill(lis, loc, img));
+		}
+	}
+
+	public static IDL requestServerFile(String lis, String loc){
+		CHANNEL.sendToServer(new PacketFile().fill(lis, loc));
+		return IDLManager.getIDLCached(loc);
 	}
 
 }
