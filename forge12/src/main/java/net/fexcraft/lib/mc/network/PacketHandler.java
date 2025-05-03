@@ -1,12 +1,9 @@
 package net.fexcraft.lib.mc.network;
 
 import net.fexcraft.lib.mc.api.packet.IPacketListener;
-import net.fexcraft.lib.mc.network.handlers.EntityUpdatePacketHandler;
-import net.fexcraft.lib.mc.network.handlers.ExamplePacketHandler;
-import net.fexcraft.lib.mc.network.handlers.JsonObjectPacketHandler;
-import net.fexcraft.lib.mc.network.handlers.KeyInputPacketHandler;
-import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
-import net.fexcraft.lib.mc.network.handlers.TileEntityUpdatePacketHandler;
+import net.fexcraft.lib.mc.network.handlers.*;
+import net.fexcraft.mod.uni.impl.PacketFileHandler;
+import net.fexcraft.mod.uni.impl.PacketFileHandler.I12_PacketImg;
 import net.fexcraft.lib.mc.network.packet.Packet;
 import net.fexcraft.lib.mc.network.packet.PacketEntityUpdate;
 import net.fexcraft.lib.mc.network.packet.PacketJsonObject;
@@ -37,6 +34,8 @@ public class PacketHandler {
 		instance.registerMessage(NBTTagCompoundPacketHandler.Client.class,    PacketNBTTagCompound.class,    9, Side.CLIENT);
 		instance.registerMessage(EntityUpdatePacketHandler.Server.class,      PacketEntityUpdate.class,     10, Side.SERVER);
 		instance.registerMessage(EntityUpdatePacketHandler.Client.class,      PacketEntityUpdate.class,     11, Side.CLIENT);
+		instance.registerMessage(PacketFileHandler.Client.class, I12_PacketImg.class, 12, Side.CLIENT);
+		instance.registerMessage(PacketFileHandler.Server.class, I12_PacketImg.class, 13, Side.SERVER);
 		Print.log("Done initialising Packet Handler.");
 	}
 	
@@ -89,7 +88,7 @@ public class PacketHandler {
 			}
 			default: break;
 		}
-		Print.log("[FCL] Registered new PacketListener with ID '" + listener.getId() + "' and type " + type.name() + " for Side:" + (side.isClient() ? "Client" : "Server") + ".");
+		Print.log("[FCL] Registered new PacketTagListener with ID '" + listener.getId() + "' and type " + type.name() + " for Side:" + (side.isClient() ? "Client" : "Server") + ".");
 	}
 	
 }
