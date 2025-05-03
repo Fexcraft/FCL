@@ -22,6 +22,7 @@ import net.fexcraft.mod.fcl.util.*;
 import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.impl.*;
 import net.fexcraft.mod.uni.inv.*;
+import net.fexcraft.mod.uni.packet.PacketFile;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.ui.*;
@@ -40,6 +41,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -107,6 +109,10 @@ public class FCL implements ModInitializer {
 	public static final CustomPacketPayload.Type<UISync> UI_SYNC_TYPE = new CustomPacketPayload.Type<>(UI_SYNC);
 	public static final StreamCodec<RegistryFriendlyByteBuf, UISync> UI_SYNC_CODEC = StreamCodec.of(UISync::encode, UISync::new);
 	//
+	public static final ResourceLocation IMG_PACKET = ResourceLocation.parse("fcl:img");
+	public static final CustomPacketPayload.Type<FilePacket> IMG_PACKET_TYPE = new CustomPacketPayload.Type<>(IMG_PACKET);
+	public static final StreamCodec<RegistryFriendlyByteBuf, FilePacket> IMG_PACKET_CODEC = StreamCodec.of(FilePacket::encode, FilePacket::new);
+	//
 	public static final Block CRAFTING_BLOCK = register("fcl:crafting", CraftingBlock::new, BlockBehaviour.Properties.of().noOcclusion().mapColor(MapColor.COLOR_LIGHT_GRAY));
 	public static final BlockEntityType<CraftingEntity> CRAFTING_ENTITY = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, "fcl:crafting",
 			FabricBlockEntityTypeBuilder.create(CraftingEntity::new, CRAFTING_BLOCK).build());
@@ -153,6 +159,24 @@ public class FCL implements ModInitializer {
 				if(cons != null) cons.accept(packet.com(), UniEntity.getEntity(player));
 			});
 		});
+		PayloadTypeRegistry.playS2C().register(IMG_PACKET_TYPE, IMG_PACKET_CODEC);
+		PayloadTypeRegistry.playC2S().register(IMG_PACKET_TYPE, IMG_PACKET_CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(IMG_PACKET_TYPE, (packet, context) -> {
+			context.server().execute(() -> {
+				try{
+					EntityW player = UniEntity.getEntity(context.player());
+					if(!packet.lis.equals("def")){
+						UniFCL.SFL_S.get(packet.lis).handle(packet.loc, null, player);
+						return;
+					}
+					byte[] tex = UniFCL.getServerFile(packet.loc);
+					FCL.sendServerFile(player, packet.lis, packet.loc, tex);
+				}
+				catch(Exception e){
+					throw new RuntimeException(e);
+				}
+			});
+		});
 		UNIVERSAL = Registry.register(BuiltInRegistries.MENU, "fcl:universal", new ExtendedScreenHandlerType<UniCon, UISync>(new ExtendedScreenHandlerType.ExtendedFactory<UniCon, UISync>() {
 			@Override
 			public UniCon create(int i, Inventory inventory, UISync sync){
@@ -187,7 +211,7 @@ public class FCL implements ModInitializer {
 		ContainerInterface.SEND_TO_CLIENT = (com, player) -> {
 			ServerPlayNetworking.getSender((ServerPlayer)player.entity.direct()).sendPacket(new UIPacket(com));
 		};
-		UniFCL.registerUI(this);
+		UniFCL.registerFCLUI(this);
 		FclRecipe.VALIDATE = comp -> {
 			if(comp.tag){
 				if(comp.key == null) comp.key = TagKey.create(Registries.ITEM, ResourceLocation.parse(comp.id));
@@ -312,6 +336,20 @@ public class FCL implements ModInitializer {
 	public static void addListener(String key, boolean client, BiConsumer<TagCW, EntityW> cons){
 		if(client) LIS_CLIENT.put(key, cons);
 		else LIS_SERVER.put(key, cons);
+	}
+
+	public static void sendServerFile(EntityW player, String lis, String loc, byte[] img){
+		if(player.isOnClient()){
+			FCLC.sendServerFile(lis, loc);
+		}
+		else{
+			ServerPlayNetworking.getSender((ServerPlayer)player.direct()).sendPacket((CustomPacketPayload)new PacketFile().fill(lis, loc, img));
+		}
+	}
+
+	public static IDL requestServerFile(String lis, String loc){
+		FCLC.sendServerFile(lis, loc);
+		return IDLManager.getIDLCached(loc);
 	}
 
 }
