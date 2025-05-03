@@ -49,6 +49,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
@@ -116,7 +117,7 @@ public class FCL {
 				return super.isItemValid(stack);
 			}
 		});
-		UniFCL.registerUI(instance);
+		UniFCL.registerFCLUI(instance);
 		FclRecipe.VALIDATE = comp -> {
 			if(comp.tag) return OreDictionary.doesOreNameExist(comp.id);
 			else return !comp.stack.empty();
@@ -211,6 +212,20 @@ public class FCL {
 
 	public static void bindTex(IDL tex){
 		net.minecraft.client.Minecraft.getMinecraft().getTextureManager().bindTexture(tex.local());
+	}
+
+	public static void sendServerFile(EntityW player, String lis, String loc, byte[] tex){
+		if(player.isOnClient()){
+			PacketHandler.getInstance().sendToServer((IMessage)new PacketFileHandler.I12_PacketImg().fill(lis, loc));
+		}
+		else{
+			PacketHandler.getInstance().sendTo((IMessage)new PacketFileHandler.I12_PacketImg().fill(lis, loc, tex), player.local());
+		}
+	}
+
+	public static IDL requestServerFile(String lis, String loc){
+		PacketHandler.getInstance().sendToServer((IMessage)new PacketFileHandler.I12_PacketImg().fill(lis, loc));
+		return IDLManager.getIDLCached(loc);
 	}
 	
 }
