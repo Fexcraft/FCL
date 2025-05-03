@@ -41,4 +41,6 @@ public abstract class WorldW {
 
 	public abstract String dimkey();
 
+	public abstract EntityW getEntity(int ent);
+	
 }
