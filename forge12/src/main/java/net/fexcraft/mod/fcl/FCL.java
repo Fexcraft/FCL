@@ -3,6 +3,7 @@ package net.fexcraft.mod.fcl;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.crafting.RecipeRegistry;
 import net.fexcraft.mod.uni.*;
@@ -13,7 +14,6 @@ import net.fexcraft.lib.mc.capabilities.sign.SignCapabilitySerializer;
 import net.fexcraft.lib.mc.gui.GuiHandler;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
-import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
 import net.fexcraft.lib.mc.registry.CreativeTab;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.render.FCLBlockModel;
@@ -48,6 +48,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
@@ -180,12 +181,11 @@ public class FCL {
 			ItemStack stack = (ItemStack)(stk instanceof StackWrapper ? ((StackWrapper)stk).direct() : stk);
 			return stack.getCapability(FCLCapabilities.STACK, null);
 		};
-		UIPacketListener.register();
-		SignCapabilitySerializer.addListener(net.fexcraft.lib.mc.capabilities.sign.ExampleListener.class);
-		//RecipeRegistry.importVanillaRecipes();
-		NBTTagCompoundPacketHandler.addListener(Side.SERVER, new net.fexcraft.lib.mc.gui.ServerReceiver());
+		UniFCL.regTagPacketListener("fcl:ui", false, new UIPacketListener.Server());
+		UniFCL.regTagPacketListener("fcl:gui", false, new net.fexcraft.lib.mc.gui.ServerReceiver());
 		if(event.getSide().isClient()){
-			NBTTagCompoundPacketHandler.addListener(Side.CLIENT, new net.fexcraft.lib.mc.gui.ClientReceiver());
+			UniFCL.regTagPacketListener("fcl:ui", true, new UIPacketListener.Client());
+			UniFCL.regTagPacketListener("fcl:gui", true, new net.fexcraft.lib.mc.gui.ClientReceiver());
 		}
 		Print.log("Loading complete.");
 	}
@@ -226,6 +226,20 @@ public class FCL {
 	public static IDL requestServerFile(String lis, String loc){
 		PacketHandler.getInstance().sendToServer((IMessage)new PacketFileHandler.I12_PacketImg().fill(lis, loc));
 		return IDLManager.getIDLCached(loc);
+	}
+
+	public static void writeTag(ByteBuf buffer, TagCW com){
+		ByteBufUtils.writeTag(buffer, com.local());
+	}
+
+	public static TagCW readTag(ByteBuf buffer){
+		try{
+			return TagCW.wrap(ByteBufUtils.readTag(buffer));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return TagCW.create();
+		}
 	}
 	
 }
