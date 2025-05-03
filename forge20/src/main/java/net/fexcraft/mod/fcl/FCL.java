@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fcl;
 
 import com.mojang.logging.LogUtils;
+import io.netty.buffer.ByteBuf;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.local.CraftingBlock;
@@ -19,6 +20,7 @@ import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -318,6 +320,14 @@ public class FCL {
 	public static IDL requestServerFile(String lis, String loc){
 		CHANNEL.sendToServer(new PacketFile().fill(lis, loc));
 		return IDLManager.getIDLCached(loc);
+	}
+
+	public static void writeTag(ByteBuf buffer, TagCW com){
+		((FriendlyByteBuf)buffer).writeNbt(com.local());
+	}
+
+	public static TagCW readTag(ByteBuf buffer){
+		return TagCW.wrap(((FriendlyByteBuf)buffer).readNbt());
 	}
 
 }
