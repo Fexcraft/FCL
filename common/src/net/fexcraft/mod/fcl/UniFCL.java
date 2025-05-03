@@ -7,6 +7,7 @@ import net.fexcraft.mod.uni.ConfigBase;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.packet.PacketFileListener;
+import net.fexcraft.mod.uni.packet.PacketTagListener;
 import net.fexcraft.mod.uni.ui.UIKey;
 import net.fexcraft.mod.uni.world.MessageSender;
 
@@ -32,6 +33,8 @@ public class UniFCL extends ConfigBase {
 	public static UUID NULL_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
 	public static boolean EXAMPLE_RECIPES;
 	public static boolean URL_TEXTURES;
+	public static final ConcurrentHashMap<String, PacketTagListener> TAG_C = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<String, PacketTagListener> TAG_S = new ConcurrentHashMap<>();
 	//
 	public static final ConcurrentHashMap<String, PacketFileListener> SFL_C = new ConcurrentHashMap<>();
 	public static final ConcurrentHashMap<String, PacketFileListener> SFL_S = new ConcurrentHashMap<>();
@@ -142,6 +145,10 @@ public class UniFCL extends ConfigBase {
 
 	public static void regServerFileListener(String id, boolean client, PacketFileListener lis){
 		(client ? SFL_C : SFL_S).put(id, lis);
+	}
+
+	public static void regTagPacketListener(String id, boolean client, PacketTagListener lis){
+		(client ? TAG_C : TAG_S).put(id, lis);
 	}
 
 }
