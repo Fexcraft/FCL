@@ -1,9 +1,11 @@
 package net.fexcraft.lib.mc.gui;
 
 import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.handlers.NBTTagCompoundPacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
+import net.fexcraft.mod.fcl.UniFCL;
+import net.fexcraft.mod.uni.UniEntity;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -73,7 +75,7 @@ public abstract class GenericContainer extends Container {
         compound.setString("task", "open_gui");
         compound.setInteger("gui", gui);
         if(xyz != null) compound.setIntArray("args", xyz);
-        NBTTagCompoundPacketHandler.getListener(listener, false).process(new PacketNBTTagCompound(compound), new Object[]{ player });
+		UniFCL.TAG_S.get(listener).handle(TagCW.wrap(compound), UniEntity.getEntity(player));
     }
 
     /** Server Side Method. */
@@ -85,7 +87,7 @@ public abstract class GenericContainer extends Container {
         compound.setInteger("gui", gui);
         compound.setTag("data", data);
         if(xyz != null) compound.setIntArray("args", xyz);
-        NBTTagCompoundPacketHandler.getListener(listener, false).process(new PacketNBTTagCompound(compound), new Object[]{ player });
+		UniFCL.TAG_S.get(listener).handle(TagCW.wrap(compound), UniEntity.getEntity(player));
     }
 
 }
