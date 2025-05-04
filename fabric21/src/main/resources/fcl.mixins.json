@@ -5,7 +5,7 @@
 	"mixins": [
 		"ServerMixin",
 		"StackMixin",
-		"PlayerMixin",
+		"EntityMixin",
 		"ChunkMixin"
 	],
 	"injectors": {
