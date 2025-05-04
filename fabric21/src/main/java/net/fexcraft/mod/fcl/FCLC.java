@@ -11,7 +11,6 @@ import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.packet.PacketFile;
 import net.fexcraft.mod.uni.ui.*;
-import net.fexcraft.mod.uni.world.EntityW;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.language.I18n;
@@ -38,8 +37,8 @@ public class FCLC implements ClientModInitializer {
 		});
 		ClientPlayNetworking.registerGlobalReceiver(TAG_PACKET_TYPE, (packet, context) -> {
 			context.client().execute(() -> {
-				var cons = LIS_CLIENT.get(packet.key());
-				if(cons != null) cons.accept(packet.com(), UniEntity.getEntity(ClientPacketPlayer.get()));
+				var cons = UniFCL.TAG_C.get(packet.lis);
+				if(cons != null) cons.handle(packet.com, UniEntity.getEntity(ClientPacketPlayer.get()));
 			});
 		});
 		ClientPlayNetworking.registerGlobalReceiver(IMG_PACKET_TYPE, (packet, context) -> {
