@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.packet.PacketTag;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -15,6 +16,12 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class PacketTagHandler {
 
     public static class I12_PacketTag extends PacketTag implements IMessage {
+
+        public I12_PacketTag(){}
+
+        public I12_PacketTag(String lis, TagCW com){
+            fill(lis, com);
+        }
 
         @Override
         public void fromBytes(ByteBuf buf){
