@@ -6,6 +6,9 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.local.CraftingBlock;
 import net.fexcraft.mod.fcl.local.CraftingEntity;
+import net.fexcraft.mod.fcl.mixint.CWProvider;
+import net.fexcraft.mod.fcl.mixint.EWProvider;
+import net.fexcraft.mod.fcl.mixint.SWProvider;
 import net.fexcraft.mod.fcl.util.*;
 import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.impl.SWI;
@@ -116,17 +119,10 @@ public class FCL {
 		WrapperHolder.INSTANCE = new WrapperHolderImpl();
 		UniStack.GETTER = obj -> {
 			ItemStack stack = (ItemStack)(obj instanceof StackWrapper ? ((StackWrapper)obj).direct() : obj);
-			var v = stack.getCapability(UniStackProvider.CAPABILITY).resolve();
-			return v.isPresent() ? v.get() : null;
+			return ((SWProvider)(Object)stack).fcl_wrapper();
 		};
-		UniEntity.GETTER = ent -> {
-			var v = ((Entity)ent).getCapability(UniEntityProvider.CAPABILITY).resolve();
-			return v.isPresent() ? v.get() : null;
-		};
-		UniChunk.GETTER = ck -> {
-			var v = ((LevelChunk)ck).getCapability(UniChunkProvider.CAPABILITY).resolve();
-			return v.isPresent() ? v.get() : null;
-		};
+		UniEntity.GETTER = ent -> ((EWProvider)ent).fcl_wrapper();
+		UniChunk.GETTER = ck -> ((CWProvider)ck).fcl_wrapper();
 		EntityUtil.UI_OPENER = (player, ui, pos) -> {
 			try{
 				NetworkHooks.openScreen((ServerPlayer)player, new MenuProvider() {
@@ -260,40 +256,6 @@ public class FCL {
 			FclRecipe.newBuilder("recipe.fcl.testing").add(new ItemStack(Blocks.COBBLESTONE, 4)).output(new ItemStack(Blocks.STONE_STAIRS, 5)).register();
 			FclRecipe.newBuilder("recipe.fcl.testing").add("minecraft:logs", 9).output(new ItemStack(Blocks.TRAPPED_CHEST, 1)).register();
 		}
-	}
-
-	@Mod.EventBusSubscriber(modid = "fcl", bus = Mod.EventBusSubscriber.Bus.FORGE)
-	public static class ForgeBusEvents {
-
-		@SubscribeEvent
-		public static void onAttachEntityCaps(AttachCapabilitiesEvent<Entity> event){
-			if(event.getObject() instanceof LivingEntity){
-				event.addCapability(new ResourceLocation("fcl:entity"), new UniEntityProvider(event.getObject()));
-			}
-		}
-
-		@SubscribeEvent
-		public static void onAttachStackCaps(AttachCapabilitiesEvent<ItemStack> event){
-			event.addCapability(new ResourceLocation("fcl:stack"), new UniStackProvider(event.getObject()));
-		}
-
-		@SubscribeEvent
-		public static void onAttachChunkCaps(AttachCapabilitiesEvent<LevelChunk> event){
-			event.addCapability(new ResourceLocation("fcl:chunk"), new UniChunkProvider(event.getObject()));
-		}
-
-	}
-
-	@Mod.EventBusSubscriber(modid = "fcl", bus = Mod.EventBusSubscriber.Bus.MOD)
-	public static class ModBusEvents {
-
-		@SubscribeEvent
-		public void registerCaps(RegisterCapabilitiesEvent event){
-			event.register(UniEntity.class);
-			event.register(UniStack.class);
-			event.register(UniChunk.class);
-		}
-
 	}
 
 	@SubscribeEvent
