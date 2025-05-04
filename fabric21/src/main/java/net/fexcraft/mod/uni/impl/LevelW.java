@@ -9,6 +9,7 @@ import net.fexcraft.mod.uni.world.StateWrapper;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -96,6 +97,12 @@ public class LevelW extends WorldW {
 	@Override
 	public String dimkey(){
 		return level.dimension().location() + (level.isClientSide ? "c" : "s");
+	}
+
+	@Override
+	public EntityW getEntity(int id){
+		Entity ent = level.getEntity(id);
+		return ent == null ? null : UniEntity.getEntity(ent);
 	}
 
 }
