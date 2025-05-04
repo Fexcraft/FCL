@@ -2,8 +2,8 @@ package net.fexcraft.mod.uni.ui;
 
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
+import net.fexcraft.mod.uni.impl.PacketTagHandler.I12_PacketTag;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniStack;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,18 +34,10 @@ public class UniCon extends Container {
 		this.player = player;
 		ui_type = key;
 		if(ContainerInterface.SEND_TO_CLIENT == null){
-			ContainerInterface.SEND_TO_CLIENT = (com, pass) -> {
-				com.set("target_listener", "fcl:ui");
-				PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(com.local()), pass.entity.local());
-				//Packets.sendTo(Packet_TagListener.class, (Passenger)pass, "ui", com);
-			};
+			ContainerInterface.SEND_TO_CLIENT = (com, pass) -> PacketHandler.getInstance().sendTo(new I12_PacketTag("fcl:ui", com), pass.entity.local());
 		}
 		if(ContainerInterface.SEND_TO_SERVER == null){
-			ContainerInterface.SEND_TO_SERVER = com -> {
-				com.set("target_listener", "fcl:ui");
-				PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(com.local()));
-				//Packets.send(Packet_TagListener.class, "ui", com);
-			};
+			ContainerInterface.SEND_TO_SERVER = com -> PacketHandler.getInstance().sendToServer(new I12_PacketTag("fcl:ui", com));
 		}
 		con.uiid = ui_type;
 		if(con.ui_map.has("slots")) initInv();
