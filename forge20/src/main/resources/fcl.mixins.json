@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "net.fexcraft.mod.fcl.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"refmap": "fcl.mixins.refmap.json",
+	"mixins": [
+		"ServerMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
