@@ -45,12 +45,14 @@ public class UniEntity {
 		return ent == null ? null : ent.entity;
 	}
 
-	public static <C> C getCasted(Object playerent){
-		return (C)GETTER.apply(playerent).entity;
+	public static <C> C getCasted(Object entity){
+		UniEntity ent = GETTER.apply(entity);
+		return ent == null ? null : (C)ent.entity;
 	}
 
-	public static <T> T getCasted(Object playerent, Class<T> clazz){
-		return (T)GETTER.apply(playerent).entity;
+	public static <T> T getCasted(Object entity, Class<T> clazz){
+		UniEntity ent = GETTER.apply(entity);
+		return ent == null ? null : (T)ent.entity;
 	}
 
 	public static void register(Appendable<UniEntity> app){
