@@ -38,6 +38,12 @@ public abstract class WrapperHolder {
 		return INSTANCE.isSinglePlayer0();
 	}
 
+	public static <S> S getServer(){
+		return INSTANCE.getServer0();
+	}
+
+	public abstract <S> S getServer0();
+
 	public static boolean isOp(EntityW entity){
 		return INSTANCE.isOp0(entity, 1);
 	}
