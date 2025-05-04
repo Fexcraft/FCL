@@ -1,5 +1,6 @@
 package net.fexcraft.mod.fcl;
 
+import io.netty.buffer.ByteBuf;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -75,8 +76,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import static net.minecraft.commands.Commands.literal;
@@ -93,16 +92,14 @@ public class FCL implements ModInitializer {
 	public static UniFCL CONFIG;
 	//
 	public static CallbackContainer INIT_COMPLETE = new CallbackContainer();
-	protected static final ConcurrentHashMap<String, BiConsumer<TagCW, EntityW>> LIS_SERVER = new ConcurrentHashMap<>();
-	protected static final ConcurrentHashMap<String, BiConsumer<TagCW, EntityW>> LIS_CLIENT = new ConcurrentHashMap<>();
 	//
 	public static final ResourceLocation UI_PACKET = ResourceLocation.parse("fcl:ui");
 	public static final CustomPacketPayload.Type<UIPacket> UI_PACKET_TYPE = new CustomPacketPayload.Type<>(UI_PACKET);
 	public static final StreamCodec<RegistryFriendlyByteBuf, UIPacket> UI_PACKET_CODEC = StreamCodec.of(UIPacket::encode, UIPacket::new);
 	//
 	public static final ResourceLocation TAG_PACKET = ResourceLocation.parse("fcl:tag");
-	public static final CustomPacketPayload.Type<TagPacket> TAG_PACKET_TYPE = new CustomPacketPayload.Type<>(TAG_PACKET);
-	public static final StreamCodec<RegistryFriendlyByteBuf, TagPacket> TAG_PACKET_CODEC = StreamCodec.of(TagPacket::encode, TagPacket::decode);
+	public static final CustomPacketPayload.Type<PacketTag21> TAG_PACKET_TYPE = new CustomPacketPayload.Type<>(TAG_PACKET);
+	public static final StreamCodec<RegistryFriendlyByteBuf, PacketTag21> TAG_PACKET_CODEC = StreamCodec.of(PacketTag21::encode, PacketTag21::decode);
 	//
 	public static final ResourceLocation UI_SYNC = ResourceLocation.parse("fcl:ui_sync");
 	public static final CustomPacketPayload.Type<UISync> UI_SYNC_TYPE = new CustomPacketPayload.Type<>(UI_SYNC);
@@ -154,8 +151,8 @@ public class FCL implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(TAG_PACKET_TYPE, (packet, context) -> {
 			context.server().execute(() -> {
 				ServerPlayer player = context.player();
-				var cons = LIS_SERVER.get(packet.key());
-				if(cons != null) cons.accept(packet.com(), UniEntity.getEntity(player));
+				var cons = UniFCL.TAG_S.get(packet.lis);
+				if(cons != null) cons.handle(packet.com, UniEntity.getEntity(player));
 			});
 		});
 		PayloadTypeRegistry.playS2C().register(IMG_PACKET_TYPE, IMG_PACKET_CODEC);
@@ -332,11 +329,6 @@ public class FCL implements ModInitializer {
 		net.fexcraft.mod.fcl.util.FCLRenderTypes.setCutout(tex);
 	}
 
-	public static void addListener(String key, boolean client, BiConsumer<TagCW, EntityW> cons){
-		if(client) LIS_CLIENT.put(key, cons);
-		else LIS_SERVER.put(key, cons);
-	}
-
 	public static void sendServerFile(EntityW player, String lis, String loc, byte[] img){
 		if(player.isOnClient()){
 			FCLC.sendServerFile(lis, loc);
@@ -349,6 +341,14 @@ public class FCL implements ModInitializer {
 	public static IDL requestServerFile(String lis, String loc){
 		FCLC.sendServerFile(lis, loc);
 		return IDLManager.getIDLCached(loc);
+	}
+
+	public static void writeTag(ByteBuf buffer, TagCW com){
+		((RegistryFriendlyByteBuf)buffer).writeNbt(com.local());
+	}
+
+	public static TagCW readTag(ByteBuf buffer){
+		return TagCW.wrap(((RegistryFriendlyByteBuf)buffer).readNbt());
 	}
 
 }
