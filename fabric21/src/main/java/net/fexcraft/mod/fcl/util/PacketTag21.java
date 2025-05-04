@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fcl.util;
 
 import net.fexcraft.mod.fcl.FCL;
+import net.fexcraft.mod.uni.packet.PacketTag;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -8,21 +9,27 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public record TagPacket(String key, TagCW com) implements CustomPacketPayload {
+public class PacketTag21 extends PacketTag implements CustomPacketPayload {
 
-	public static TagPacket decode(RegistryFriendlyByteBuf buf){
-		TagCW com = TagCW.wrap(buf.readNbt());
+	public PacketTag21(){}
+
+	public PacketTag21(String key, TagCW tag){
+		fill(key, tag);
+	}
+
+	public static PacketTag21 decode(RegistryFriendlyByteBuf buf){
 		String key = buf.readUtf(buf.readInt());
-		return new TagPacket(key, com);
+		TagCW com = TagCW.wrap(buf.readNbt());
+		return (PacketTag21)new PacketTag21().fill(key, com);
 	}
 
 	public void encode(RegistryFriendlyByteBuf buf){
+		buf.writeInt(lis.length());
+		buf.writeUtf(lis);
 		buf.writeNbt(com.local());
-		buf.writeInt(key.length());
-		buf.writeUtf(key);
 	}
 
-	public static void encode(RegistryFriendlyByteBuf buf, TagPacket packet){
+	public static void encode(RegistryFriendlyByteBuf buf, PacketTag21 packet){
 		packet.encode(buf);
 	}
 
