@@ -101,7 +101,7 @@ public class WorldWI extends WorldW {
 	@Override
 	public EntityW getEntity(int id){
 		Entity ent = world.getEntityByID(id);
-		return ent == null ? null : UniEntity.getEntity(ent);
+		return ent == null ? null : UniEntity.getEntityN(ent);
 	}
 
 }
