@@ -276,7 +276,9 @@ public class FCL {
 
 		@SubscribeEvent
 		public static void onAttachChunkCaps(AttachCapabilitiesEvent<LevelChunk> event){
-			event.addCapability(new ResourceLocation("fcl:chunk"), new UniChunkProvider(event.getObject()));
+			if(!event.getObject().getLevel().isClientSide){
+				event.addCapability(new ResourceLocation("fcl:chunk"), new UniChunkProvider(event.getObject()));
+			}
 		}
 
 	}
