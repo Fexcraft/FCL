@@ -1,8 +1,6 @@
 package net.fexcraft.lib.mc.gui;
 
 import net.fexcraft.mod.fcl.FCL;
-import net.fexcraft.lib.mc.api.packet.IPacketListener;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.mod.uni.packet.PacketTagListener;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
