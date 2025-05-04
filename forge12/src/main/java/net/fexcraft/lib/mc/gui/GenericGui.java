@@ -6,12 +6,13 @@ import java.util.TreeMap;
 
 import javax.annotation.Nullable;
 
+import net.fexcraft.mod.uni.impl.PacketTagHandler.I12_PacketTag;
+import net.fexcraft.mod.uni.tag.TagCW;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -82,22 +83,20 @@ public class GenericGui<CONTAINER extends GenericContainer> extends GuiContainer
 	/** Client Side Method. */
     public static void openGui(int gui, int[] xyz, String listener){
         NBTTagCompound compound = new NBTTagCompound();
-        compound.setString("target_listener", listener == null ? "fcl_gui" : listener);
         compound.setString("task", "open_gui");
         compound.setInteger("gui", gui);
         if(xyz != null) compound.setIntArray("args", xyz);
-        PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(compound));
+        PacketHandler.getInstance().sendToServer(new I12_PacketTag(listener == null ? "fcl:gui" : listener, TagCW.wrap(compound)));
     }
 
 	/** Client Side Method. */
     public static void openGui(int gui, int[] xyz, String listener, NBTTagCompound data){
         NBTTagCompound compound = new NBTTagCompound();
-        compound.setString("target_listener", listener == null ? "fcl_gui" : listener);
         compound.setString("task", "open_gui");
         compound.setInteger("gui", gui);
         compound.setTag("data", data);
         if(xyz != null) compound.setIntArray("args", xyz);
-        PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(compound));
+        PacketHandler.getInstance().sendToServer(new I12_PacketTag(listener == null ? "fcl:gui" : listener, TagCW.wrap(compound)));
     }
     
     protected void init(){}
