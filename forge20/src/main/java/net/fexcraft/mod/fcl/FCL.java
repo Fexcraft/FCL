@@ -87,8 +87,6 @@ public class FCL {
 			return null;
 		}
 	});
-	protected static final ConcurrentHashMap<String, BiConsumer<TagCW, EntityW>> LIS_SERVER = new ConcurrentHashMap<>();
-	protected static final ConcurrentHashMap<String, BiConsumer<TagCW, EntityW>> LIS_CLIENT = new ConcurrentHashMap<>();
 	public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder.named(new ResourceLocation("fcl", "channel"))
 		.clientAcceptedVersions(pro -> true)
 		.serverAcceptedVersions(pro -> true)
@@ -204,12 +202,12 @@ public class FCL {
 				context.get().enqueueWork(() -> {
 					if(context.get().getDirection().getOriginationSide().isClient()){
 						ServerPlayer player = context.get().getSender();
-						var cons = LIS_SERVER.get(packet.key());
-						if(cons != null) cons.accept(packet.com(), UniEntity.getEntity(player));
+						var cons = UniFCL.TAG_S.get(packet.key());
+						if(cons != null) cons.handle(packet.com(), UniEntity.getEntity(player));
 					}
 					else{
-						var cons = LIS_CLIENT.get(packet.key());
-						if(cons != null) cons.accept(packet.com(), UniEntity.getEntity(ClientPacketPlayer.get()));
+						var cons = UniFCL.TAG_C.get(packet.key());
+						if(cons != null) cons.handle(packet.com(), UniEntity.getEntity(ClientPacketPlayer.get()));
 					}
 				}
 			);
@@ -276,9 +274,7 @@ public class FCL {
 
 		@SubscribeEvent
 		public static void onAttachChunkCaps(AttachCapabilitiesEvent<LevelChunk> event){
-			if(!event.getObject().getLevel().isClientSide){
-				event.addCapability(new ResourceLocation("fcl:chunk"), new UniChunkProvider(event.getObject()));
-			}
+			event.addCapability(new ResourceLocation("fcl:chunk"), new UniChunkProvider(event.getObject()));
 		}
 
 	}
@@ -303,11 +299,6 @@ public class FCL {
 				return 0;
 			})
 		);
-	}
-
-	public static void addListener(String key, boolean client, BiConsumer<TagCW, EntityW> cons){
-		if(client) LIS_CLIENT.put(key, cons);
-		else LIS_SERVER.put(key, cons);
 	}
 
 	public static void sendServerFile(EntityW player, String lis, String loc, byte[] img){
