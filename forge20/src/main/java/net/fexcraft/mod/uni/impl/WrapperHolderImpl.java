@@ -2,6 +2,7 @@ package net.fexcraft.mod.uni.impl;
 
 import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.fcl.FCL20;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniEntity;
@@ -38,28 +39,29 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	protected boolean isSinglePlayer0(){
-		return ServerLifecycleHooks.getCurrentServer() != null && ServerLifecycleHooks.getCurrentServer().isSingleplayer();
+		return FCL.SERVER.isPresent() && FCL.SERVER.get().isSingleplayer();
 	}
 
 	@Override
 	protected boolean isOp0(EntityW entity, int lvl){
-		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		if(FCL.SERVER.isEmpty()) return false;
+		MinecraftServer server = FCL.SERVER.get();
 		ServerOpListEntry entry = server.getPlayerList().getOps().get(((ServerPlayer)entity.direct()).getGameProfile());
 		return entry != null && entry.getLevel() >= lvl;
 	}
 
 	@Override
 	protected EntityW getPlayer0(UUID uuid){
-		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-		Player player = server.getPlayerList().getPlayer(uuid);
+		if(FCL.SERVER.isEmpty()) return null;
+		Player player = FCL.SERVER.get().getPlayerList().getPlayer(uuid);
 		return player == null ? null : UniEntity.getEntity(player);
 	}
 
 	@Override
 	protected List<UniEntity> getPlayers0(){
-		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		if(FCL.SERVER.isEmpty()) return Collections.emptyList();
 		ArrayList<UniEntity> list = new ArrayList<>();
-		for(ServerPlayer player : server.getPlayerList().getPlayers()){
+		for(ServerPlayer player : FCL.SERVER.get().getPlayerList().getPlayers()){
 			UniEntity ent = UniEntity.get(player);
 			if(ent != null) list.add(ent);
 		}
@@ -78,7 +80,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 	public File getWorldFolder0(WorldW world, String name){
 		try{
 			LevelResource lr = LVLRES.computeIfAbsent(name, n -> new LevelResource(n));
-			File file = ServerLifecycleHooks.getCurrentServer().getWorldPath(lr).toFile();
+			File file = FCL.SERVER.get().getWorldPath(lr).toFile();
 			if(!file.exists()) file.mkdirs();
 			return file;
 		}
@@ -128,7 +130,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	public List<UUID> getOnlinePlayerIDs0(){
 		List<UUID> list = new ArrayList<>();
-		for(ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()){
+		for(ServerPlayer player : FCL.SERVER.get().getPlayerList().getPlayers()){
 			list.add(player.getGameProfile().getId());
 		}
 		return list;
@@ -136,19 +138,19 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	public UUID getUUIDFor0(String string){
-		Optional<GameProfile> gp = ServerLifecycleHooks.getCurrentServer().getProfileCache().get(string);
+		Optional<GameProfile> gp = FCL.SERVER.get().getProfileCache().get(string);
 		return gp.isPresent() ? gp.get().getId() : null;
 	}
 
 	@Override
 	public String getNameFor0(UUID uuid){
-		Optional<GameProfile> gp = ServerLifecycleHooks.getCurrentServer().getProfileCache().get(uuid);
+		Optional<GameProfile> gp = FCL.SERVER.get().getProfileCache().get(uuid);
 		return gp.isPresent() ? gp.get().getName() : "N/F";
 	}
 
 	@Override
 	public void schedule0(Runnable run){
-		ServerLifecycleHooks.getCurrentServer().execute(run);
+		FCL.SERVER.get().execute(run);
 	}
 
 	@Override
@@ -190,7 +192,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 
 	@Override
 	protected InputStream getDataResource0(IDL loc) throws IOException {
-		Optional<Resource> is = ServerLifecycleHooks.getCurrentServer().getResourceManager().getResource(loc.local());
+		Optional<Resource> is = FCL.SERVER.get().getResourceManager().getResource(loc.local());
 		return is.isPresent() ? is.get().open() : null;
 	}
 
