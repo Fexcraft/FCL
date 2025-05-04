@@ -43,6 +43,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 	}
 
 	@Override
+	public <S> S getServer0(){
+		return (S)FCL.SERVER.orElseGet(null);
+	}
+
+	@Override
 	protected boolean isOp0(EntityW entity, int lvl){
 		MinecraftServer server = FCL.SERVER.get();
 		ServerOpListEntry entry = server.getPlayerList().getOps().get(((ServerPlayer)entity.direct()).getGameProfile());
