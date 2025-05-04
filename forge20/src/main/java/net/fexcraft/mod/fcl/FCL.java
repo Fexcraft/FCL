@@ -13,6 +13,7 @@ import net.fexcraft.mod.uni.impl.WrapperHolderImpl;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.packet.PacketFile;
+import net.fexcraft.mod.uni.packet.PacketTag;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UniCon;
@@ -23,6 +24,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -45,6 +47,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -64,6 +67,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
@@ -101,6 +105,7 @@ public class FCL {
 	public static final RegistryObject<BlockEntityType<CraftingEntity>> CRAFTING_ENTITY = BLOCKENTS.register("crafting", () ->
 			BlockEntityType.Builder.of(CraftingEntity::new, CRAFTING_BLOCK.get()).build(null));
 	//
+	public static Optional<MinecraftServer> SERVER = Optional.empty();
 	public static UniFCL CONFIG;
 
 	public FCL(){
@@ -193,21 +198,21 @@ public class FCL {
 			});
 			context.get().setPacketHandled(true);
 		});
-		CHANNEL.registerMessage(2, TagPacket.class, (packet, buffer) -> {
-				buffer.writeInt(packet.key().length());
-				buffer.writeUtf(packet.key());
-				buffer.writeNbt(packet.com().local());
-			}, buffer -> new TagPacket(buffer.readUtf(buffer.readInt()), TagCW.wrap(buffer.readNbt())),
+		CHANNEL.registerMessage(2, PacketTag.class, (packet, buffer) -> {
+				buffer.writeInt(packet.lis.length());
+				buffer.writeUtf(packet.lis);
+				buffer.writeNbt(packet.com.local());
+			}, buffer -> new PacketTag().fill(buffer.readUtf(buffer.readInt()), TagCW.wrap(buffer.readNbt())),
 			(packet, context) -> {
 				context.get().enqueueWork(() -> {
 					if(context.get().getDirection().getOriginationSide().isClient()){
 						ServerPlayer player = context.get().getSender();
-						var cons = UniFCL.TAG_S.get(packet.key());
-						if(cons != null) cons.handle(packet.com(), UniEntity.getEntity(player));
+						var cons = UniFCL.TAG_S.get(packet.lis);
+						if(cons != null) cons.handle(packet.com, UniEntity.getEntity(player));
 					}
 					else{
-						var cons = UniFCL.TAG_C.get(packet.key());
-						if(cons != null) cons.handle(packet.com(), UniEntity.getEntity(ClientPacketPlayer.get()));
+						var cons = UniFCL.TAG_C.get(packet.lis);
+						if(cons != null) cons.handle(packet.com, UniEntity.getEntity(ClientPacketPlayer.get()));
 					}
 				}
 			);
@@ -289,6 +294,11 @@ public class FCL {
 			event.register(UniChunk.class);
 		}
 
+	}
+
+	@SubscribeEvent
+	public void onServerStopped(ServerStoppedEvent event){
+		FCL.SERVER = Optional.empty();
 	}
 
 	@SubscribeEvent
