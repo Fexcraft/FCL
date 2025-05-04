@@ -1,10 +1,10 @@
 package net.fexcraft.lib.mc.gui;
 
 import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.UniEntity;
+import net.fexcraft.mod.uni.impl.PacketTagHandler.I12_PacketTag;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,15 +28,15 @@ public abstract class GenericContainer extends Container {
 	}
 	
 	public void send(Side target, NBTTagCompound packet){
-        packet.setString("target_listener", "fcl_gui");
-        packet.setString("task", "packet_gui");
+		TagCW com = TagCW.wrap(packet);
+        com.set("task", "packet_gui");
         //Print.debug(target, packet);
         try{
         	if(target == Side.SERVER){
-        		PacketHandler.getInstance().sendToServer(new PacketNBTTagCompound(packet));
+        		PacketHandler.getInstance().sendToServer(new I12_PacketTag("fcl:gui", com));
         	}
         	else{
-        		PacketHandler.getInstance().sendTo(new PacketNBTTagCompound(packet), (EntityPlayerMP)player);
+        		PacketHandler.getInstance().sendTo(new I12_PacketTag("fcl:gui", com), (EntityPlayerMP)player);
         	}
         }
         catch(Exception e){
