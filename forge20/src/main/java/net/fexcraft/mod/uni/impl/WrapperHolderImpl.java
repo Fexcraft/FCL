@@ -43,6 +43,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 	}
 
 	@Override
+	public <S> S getServer0(){
+		return (S)FCL.SERVER.orElseGet(null);
+	}
+
+	@Override
 	protected boolean isOp0(EntityW entity, int lvl){
 		if(FCL.SERVER.isEmpty()) return false;
 		MinecraftServer server = FCL.SERVER.get();
