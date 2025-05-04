@@ -41,6 +41,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 	}
 
 	@Override
+	public <S> S getServer0(){
+		return (S)FMLCommonHandler.instance().getMinecraftServerInstance();
+	}
+
+	@Override
 	protected boolean isOp0(EntityW player, int lvl){
 		UserListOpsEntry entry = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getEntry(((EntityPlayerMP)player.direct()).getGameProfile());
 		return entry != null && entry.getPermissionLevel() >= lvl;
