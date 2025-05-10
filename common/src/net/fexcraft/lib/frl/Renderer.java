@@ -38,4 +38,6 @@ public abstract class Renderer<GL extends GLO> {
 
 	public abstract void color(int rgb);
 
+	public abstract void light(V3D pos);
+
 }
