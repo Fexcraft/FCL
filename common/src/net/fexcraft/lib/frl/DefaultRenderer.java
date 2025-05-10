@@ -2,6 +2,7 @@ package net.fexcraft.lib.frl;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.IDL;
 import org.lwjgl.opengl.GL11;
@@ -154,6 +155,11 @@ public class DefaultRenderer extends Renderer<GLO> {
 	public void color(int rgb){
 		conv.packed = rgb;
 		conv.glColorApply();
+	}
+
+	@Override
+	public void light(V3D pos){
+		//
 	}
 
 }
