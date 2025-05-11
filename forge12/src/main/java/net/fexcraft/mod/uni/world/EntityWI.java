@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
@@ -23,6 +24,9 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -288,6 +292,17 @@ public class EntityWI implements EntityW {
 	@Override
 	public void setOnGround(boolean bool){
 		entity.onGround = bool;
+	}
+
+	@Override
+	public List<StackWrapper> copyInventory(){
+		if(!isPlayer()) return Collections.emptyList();
+		ArrayList<StackWrapper> stacks = new ArrayList<>();
+		for(ItemStack stack : ((EntityPlayer)entity).inventory.mainInventory){
+			if(stack.isEmpty()) continue;
+			stacks.add(UniStack.createStack(stack));
+		}
+		return stacks;
 	}
 
 }
