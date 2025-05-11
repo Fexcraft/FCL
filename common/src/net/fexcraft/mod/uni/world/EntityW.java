@@ -6,6 +6,8 @@ import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.UIKey;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -92,5 +94,7 @@ public interface EntityW extends MessageSender {
 	public void onPacket(EntityW player, TagCW packet);
 
 	public void setOnGround(boolean bool);
+
+	public List<StackWrapper> copyInventory();
 
 }
