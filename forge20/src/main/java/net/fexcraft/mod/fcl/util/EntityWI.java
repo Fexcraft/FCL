@@ -18,7 +18,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -267,6 +271,17 @@ public class EntityWI implements EntityW {
 	@Override
 	public void setOnGround(boolean bool){
 		entity.setOnGround(bool);
+	}
+
+	@Override
+	public List<StackWrapper> copyInventory(){
+		if(!isPlayer()) return Collections.emptyList();
+		ArrayList<StackWrapper> stacks = new ArrayList<>();
+		for(ItemStack stack : ((Player)entity).getInventory().items){
+			if(stack.isEmpty()) continue;
+			stacks.add(UniStack.createStack(stack.copy()));
+		}
+		return stacks;
 	}
 
 }
