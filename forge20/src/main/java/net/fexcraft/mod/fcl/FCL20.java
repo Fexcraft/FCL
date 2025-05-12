@@ -5,10 +5,7 @@ import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fcl.util.Axis3DL;
 import net.fexcraft.mod.fcl.util.ChunkWI;
 import net.fexcraft.mod.fcl.util.EntityUtil;
-import net.fexcraft.mod.uni.EnvInfo;
-import net.fexcraft.mod.uni.UniChunk;
-import net.fexcraft.mod.uni.UniEntity;
-import net.fexcraft.mod.uni.UniReg;
+import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.impl.*;
 import net.fexcraft.mod.uni.inv.ItemWrapper;
 import net.fexcraft.mod.uni.inv.StackWrapper;
@@ -29,12 +26,15 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.LeadItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -46,9 +46,12 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -56,6 +59,7 @@ import java.util.Optional;
 public class FCL20 {
 
 	public static File MAINDIR;
+	private static ConcurrentHashMap<String, TagKey<Item>> tagkeys = new ConcurrentHashMap<>();
 
 	public static void init(boolean dev, boolean client){
 		EnvInfo.CLIENT = client;
@@ -115,6 +119,17 @@ public class FCL20 {
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_LEAD, item -> item instanceof LeadItem);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_FOOD, item -> ((Item)item).isEdible());
 		UniStack.STACK_GETTER = obj -> SWI.parse(obj);
+		UniStack.TAG_GETTER = key -> {
+			ArrayList<StackWrapper> list = new ArrayList<>();
+			if(!tagkeys.containsKey(key)){
+				tagkeys.put(key, ItemTags.create(new ResourceLocation(key)));
+			}
+			var tags = ForgeRegistries.ITEMS.tags().getTag(tagkeys.get(key));
+			for(Item item : tags){
+				list.add(UniStack.createStack(new ItemStack(item)));
+			}
+			return list;
+		};
 		UniEntity.ENTITY_GETTER = ent -> EntityUtil.wrap((Entity)ent);
 		UniChunk.CHUNK_GETTER = ck -> new ChunkWI((LevelChunk)ck);
 		WrapperHolderImpl.LEVEL_PROVIDER = lvl -> new WorldWI((Level)lvl);
