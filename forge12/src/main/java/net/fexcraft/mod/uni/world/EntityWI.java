@@ -300,7 +300,7 @@ public class EntityWI implements EntityW {
 		ArrayList<StackWrapper> stacks = new ArrayList<>();
 		for(ItemStack stack : ((EntityPlayer)entity).inventory.mainInventory){
 			if(stack.isEmpty()) continue;
-			stacks.add(UniStack.createStack(stack));
+			stacks.add(UniStack.createStack(stack.copy()));
 		}
 		return stacks;
 	}
