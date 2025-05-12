@@ -90,6 +90,14 @@ public class FCL {
 		UniEntity.ENTITY_GETTER = ent -> new EntityWI((Entity)ent);
 		UniChunk.CHUNK_GETTER = ck -> new ChunkWI((Chunk)ck);
 		UniStack.STACK_GETTER = obj -> SWI.parse(obj);
+		UniStack.TAG_GETTER = (key) -> {
+			ArrayList<StackWrapper> list = new ArrayList<>();
+			NonNullList<ItemStack> stacks = OreDictionary.getOres(key);
+			for(ItemStack stack : stacks){
+				list.add(UniStack.getStack(stack.copy()));
+			}
+			return list;
+		};
 		WrapperHolder.INSTANCE = new WrapperHolderImpl();
 		WrapperHolder.LEVEL_PROVIDER = lvl -> new WorldWI((World)lvl);
 		ItemWrapper.GETTER = id -> Item.REGISTRY.getObject(new ResourceLocation(id));
