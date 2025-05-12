@@ -47,6 +47,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -76,6 +77,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import static net.minecraft.commands.Commands.literal;
@@ -116,6 +118,7 @@ public class FCL implements ModInitializer {
 	public static final DataComponentType<CustomData> FCLTAG = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, ResourceLocation.parse("fcl:data"),
 		DataComponentType.<CustomData>builder().persistent(CustomData.CODEC).build());
  	//
+	private static ConcurrentHashMap<String, TagKey<Item>> tagkeys = new ConcurrentHashMap<>();
 	public static ExtendedScreenHandlerType<UniCon, UISync> UNIVERSAL;
 	private static boolean recipereg;
 
@@ -285,6 +288,17 @@ public class FCL implements ModInitializer {
 			else return StateWrapper.DEFAULT;
 		};
 		UniStack.STACK_GETTER = obj -> SWI.parse(obj);
+		UniStack.TAG_GETTER = key -> {
+			ArrayList<StackWrapper> list = new ArrayList<>();
+			if(!tagkeys.containsKey(key)){
+				tagkeys.put(key, TagKey.create(Registries.ITEM, ResourceLocation.parse(key)));
+			}
+			var tags = BuiltInRegistries.ITEM.getTagOrEmpty(tagkeys.get(key));
+			for(Holder<Item> item : tags){
+				list.add(UniStack.createStack(new ItemStack(item)));
+			}
+			return list;
+		};
 		UniEntity.ENTITY_GETTER = ent -> EntityUtil.wrap((Entity)ent);
 		UniChunk.CHUNK_GETTER = ck -> new ChunkWI((LevelChunk)ck);
 		StackWrapper.EMPTY = SWI.parse(ItemStack.EMPTY);
