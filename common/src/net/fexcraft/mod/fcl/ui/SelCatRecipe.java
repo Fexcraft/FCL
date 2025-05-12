@@ -77,7 +77,7 @@ public class SelCatRecipe extends UserInterface {
 		for(int i = 0; i < 12; i++){
 			int j = scroll + i;
 			if(j < categories.size() && buttons.get("entry_" + i).hovered()){
-				list.add(PARAGRAPH_SIGN + "9" + categories.get(j));
+				list.add(PARAGRAPH_SIGN + "9" + TRANSLATOR.apply(categories.get(j)));
 			}
 		}
 	}
