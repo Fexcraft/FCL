@@ -2,8 +2,10 @@ package net.fexcraft.mod.uni.inv;
 
 import net.fexcraft.mod.uni.Appendable;
 import net.fexcraft.mod.uni.Appended;
+import net.fexcraft.mod.uni.IDL;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -13,6 +15,7 @@ public class UniStack {
 
 	public static Function<Object, UniStack> GETTER = obj -> null;
 	public static Function<Object, StackWrapper> STACK_GETTER = null;
+	public static Function<String, List<StackWrapper>> TAG_GETTER = null;
 	private static ArrayList<Appendable<UniStack>> appendables = new ArrayList<>();
 	public final Appended<UniStack> appended = new Appended(this);
 	public StackWrapper stack;
@@ -56,6 +59,10 @@ public class UniStack {
 		UniStack uni = GETTER.apply(stack);
 		if(uni == null) return STACK_GETTER.apply(stack);//happens on init before capabilities are functional
 		return GETTER.apply(stack).stack;
+	}
+
+	public static List<StackWrapper> getTagAsList(String idl){
+		return TAG_GETTER.apply(idl);
 	}
 
 	public static void register(Appendable<UniStack> app){
