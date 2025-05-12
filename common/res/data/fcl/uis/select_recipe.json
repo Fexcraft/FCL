@@ -51,10 +51,11 @@
 			"uv": [ 7, 19 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"entry_1": {
@@ -63,10 +64,11 @@
 			"uv": [ 7, 31 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"entry_2": {
@@ -75,10 +77,11 @@
 			"uv": [ 7, 43 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"entry_3": {
@@ -87,10 +90,11 @@
 			"uv": [ 7, 55 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"entry_4": {
@@ -99,10 +103,11 @@
 			"uv": [ 7, 67 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"entry_5": {
@@ -111,10 +116,11 @@
 			"uv": [ 7, 79 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"entry_6": {
@@ -123,10 +129,11 @@
 			"uv": [ 7, 91 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"entry_7": {
@@ -135,10 +142,11 @@
 			"uv": [ 7, 103 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"entry_8": {
@@ -147,10 +155,11 @@
 			"uv": [ 7, 115 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"entry_9": {
@@ -159,10 +168,11 @@
 			"uv": [ 7, 127 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"entry_10": {
@@ -171,10 +181,11 @@
 			"uv": [ 7, 139 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"entry_11": {
@@ -183,10 +194,11 @@
 			"uv": [ 7, 151 ],
 			"text": {
 				"size": [ 148, 8 ],
+				"pos": [ 2, 1 ],
 				"autoscale": true,
 				"color": "242424",
 				"hover": "c7c7c7",
-				"centered": true
+				"#centered": true
 			}
 		},
 		"up": {
