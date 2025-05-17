@@ -159,14 +159,14 @@ public class V3D {
 	public V3D normalize(V3D dest){
 		double len = length();
 		if(dest == null) return len < 0.00001 ? NULL : new V3D(x / len, y / len, z / len);
-		return  len < 0.00001 ? dest.set(0, 0, 0) : dest.set(x / len, y / len, z / len);
+		return len < 0.00001 ? dest.set(0, 0, 0) : dest.set(x / len, y / len, z / len);
 	}
 
 	public V3D normalize(){
 		return normalize(null);
 	}
 
-	private V3D set(double dx, double dy, double dz){
+	public V3D set(double dx, double dy, double dz){
 		x = dx; y = dy; z = dz;
 		return this;
 	}
