@@ -148,8 +148,8 @@ public class V3D {
     	return new V3D(vec.x / l, vec.y / l, vec.z / l);
     }
 
-	public V3D cross(V3D other){
-		return new V3D(y * other.z - z * other.y, other.x * z - other.z * x, x * other.y - y * other.x);
+	public V3D cross(V3D vec){
+		return new V3D(y * vec.z - z * vec.y, z * vec.x - x * vec.z, x * vec.y - y * vec.x);
 	}
 
 	public double dot(V3D other){
@@ -158,7 +158,8 @@ public class V3D {
 
 	public V3D normalize(V3D dest){
 		double len = length();
-		return dest == null ? new V3D(x / len, y / len, z / len) : dest.set(x / len, y / len, z / len);
+		if(dest == null) return len < 0.00001 ? NULL : new V3D(x / len, y / len, z / len);
+		return  len < 0.00001 ? dest.set(0, 0, 0) : dest.set(x / len, y / len, z / len);
 	}
 
 	public V3D normalize(){
