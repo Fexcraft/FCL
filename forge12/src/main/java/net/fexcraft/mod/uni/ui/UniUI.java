@@ -47,7 +47,7 @@ public class UniUI extends GuiContainer {
 		ui.drawer = new UserInterface.Drawer() {
 			@Override
 			public void draw(float x, float y, int u, int v, int w, int h){
-				drawTexturedModalRect(x, y, u, v, w, h);
+				drawTexturedModalRect((int)x, (int)y, u, v, w, h);
 			}
 
 			@Override
