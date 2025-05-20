@@ -97,4 +97,6 @@ public interface EntityW extends MessageSender {
 
 	public List<StackWrapper> copyInventory();
 
+	public void dismount(V3D pos);
+
 }
