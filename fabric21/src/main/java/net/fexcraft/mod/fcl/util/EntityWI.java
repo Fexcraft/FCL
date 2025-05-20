@@ -2,6 +2,7 @@ package net.fexcraft.mod.fcl.util;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -233,8 +234,9 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
-	public void dismount(){
+	public void dismount(V3D pos){
 		entity.unRide();
+		entity.teleportTo(pos.x, pos.y, pos.z);
 	}
 
 	@Override
