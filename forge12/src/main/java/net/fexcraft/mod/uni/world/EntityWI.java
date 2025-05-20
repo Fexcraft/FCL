@@ -248,8 +248,9 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
-	public void dismount(){
+	public void dismount(V3D pos){
 		entity.dismountRidingEntity();
+		entity.setPositionAndUpdate(pos.x, pos.y, pos.z);
 	}
 
 	@Override
