@@ -114,11 +114,6 @@ public class UniFCL extends ConfigBase {
 		}
 
 		@Override
-		public void dismount(){
-			//
-		}
-
-		@Override
 		public String getName(){
 			return "LOG";
 		}
