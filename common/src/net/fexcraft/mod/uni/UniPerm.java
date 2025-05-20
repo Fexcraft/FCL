@@ -41,7 +41,7 @@ public abstract class UniPerm {
 		@Override
 		protected boolean has0(EntityW ent, String perm){
 			int lvl = PERMS.getOrDefault(perm, 4);
-			return lvl == 0 || WrapperHolder.isOp(ent, lvl);
+			return lvl == 0 || WrapperHolder.isSinglePlayer() || WrapperHolder.isOp(ent, lvl);
 		}
 
 	}
