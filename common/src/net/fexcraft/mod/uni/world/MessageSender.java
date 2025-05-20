@@ -19,8 +19,6 @@ public interface MessageSender {
 
 	public void bar(String str, Object... args);
 
-	public void dismount();
-
 	public String getName();
 
 	/** May return null. */
