@@ -54,13 +54,6 @@ public class MessageSenderI implements MessageSender {
 	}
 
 	@Override
-	public void dismount(){
-		if(sender.getCommandSenderEntity() != null){
-			sender.getCommandSenderEntity().dismountRidingEntity();
-		}
-	}
-
-	@Override
 	public String getName(){
 		return sender.getName();
 	}
