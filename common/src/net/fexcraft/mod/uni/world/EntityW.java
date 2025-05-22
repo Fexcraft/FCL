@@ -99,4 +99,10 @@ public interface EntityW extends MessageSender {
 
 	public void dismount(V3D pos);
 
+	public boolean inSimRange();
+
+	public int getTicks();
+
+	public int pushTicks();
+
 }
