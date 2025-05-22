@@ -12,6 +12,7 @@ import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -237,6 +238,22 @@ public class EntityWI implements EntityW {
 	public void dismount(V3D pos){
 		entity.unRide();
 		entity.teleportTo(pos.x, pos.y, pos.z);
+	}
+
+	@Override
+	public boolean inSimRange(){
+		if(entity.level().isClientSide) return true;
+		return ((ServerChunkCache)entity.level().getChunkSource()).chunkMap.getDistanceManager().inEntityTickingRange(entity.chunkPosition().toLong());
+	}
+
+	@Override
+	public int getTicks(){
+		return entity.tickCount;
+	}
+
+	@Override
+	public int pushTicks(){
+		return entity.tickCount++;
 	}
 
 	@Override
