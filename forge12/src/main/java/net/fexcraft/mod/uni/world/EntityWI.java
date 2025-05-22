@@ -21,6 +21,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -251,6 +252,21 @@ public class EntityWI implements EntityW {
 	public void dismount(V3D pos){
 		entity.dismountRidingEntity();
 		entity.setPositionAndUpdate(pos.x, pos.y, pos.z);
+	}
+
+	@Override
+	public boolean inSimRange(){
+		return true;
+	}
+
+	@Override
+	public int getTicks(){
+		return entity.ticksExisted;
+	}
+
+	@Override
+	public int pushTicks(){
+		return entity.ticksExisted++;
 	}
 
 	@Override
