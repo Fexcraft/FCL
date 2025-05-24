@@ -121,6 +121,10 @@ public abstract class ConfigBase {
 		return null;
 	}
 
+	public File getFile(){
+		return file;
+	}
+
 	public static class ConfigEntry {
 
 		private ConfigBase base;
