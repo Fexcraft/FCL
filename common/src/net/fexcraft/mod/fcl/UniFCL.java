@@ -127,7 +127,7 @@ public class UniFCL extends ConfigBase {
 
 	public static byte[] getServerFile(String loc) throws IOException{
 		if(SF_FOLDER == null){
-			SF_FOLDER = new File(FCL.CONFIG.file.getParentFile().getParentFile(), SF_PATH);
+			SF_FOLDER = new File(FCL.CONFIG.getFile().getParentFile().getParentFile(), SF_PATH);
 			if(!SF_FOLDER.exists()) SF_FOLDER.mkdirs();
 		}
 		File file = new File(SF_FOLDER, loc.split(":")[1]);
