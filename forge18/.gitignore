@@ -16,20 +16,10 @@ out
 # gradle
 build
 .gradle
-*/gradle/*
-gradlew.bat
-
 
 # other
 eclipse
 run
-.nb*
-*.jar
-!gradle-wrapper.jar
-localrepos
-
 
 # Files from Forge MDK
 forge*changelog.txt
-forge18/.gitattributes
-forge18/gradlew
