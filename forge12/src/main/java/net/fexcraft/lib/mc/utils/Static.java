@@ -54,14 +54,6 @@ public class Static extends net.fexcraft.lib.common.Static {
 		return side().isClient() ? "Client" : "Server";
 	}
 
-	public static final boolean isOp(String name){
-		return getServer().getPlayerList().getOppedPlayers().getGameProfileFromName(name) != null;
-	}
-
-	public static boolean isOp(EntityPlayer player){
-		return getServer().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null;
-	}
-
 	public static final String getPlayerNameByUUID(@Nullable UUID uuid){
 		if(uuid == null){
 			return "<null-uuid>";
