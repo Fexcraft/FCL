@@ -105,4 +105,9 @@ public class LevelW extends WorldW {
 		return ent == null ? null : UniEntity.getEntity(ent);
 	}
 
+	@Override
+	public long getDayTime(){
+		return level.getDayTime();
+	}
+
 }
