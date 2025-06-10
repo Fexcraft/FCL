@@ -104,4 +104,9 @@ public class WorldWI extends WorldW {
 		return ent == null ? null : UniEntity.getEntityN(ent);
 	}
 
+	@Override
+	public long getDayTime(){
+		return world.getWorldTime();
+	}
+
 }
