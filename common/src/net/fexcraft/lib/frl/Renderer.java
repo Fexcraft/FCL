@@ -32,6 +32,8 @@ public abstract class Renderer<GL extends GLO> {
 
 	public abstract void rotate(float deg, int x, int y, int z);
 
+	public abstract void rotate(double deg, int x, int y, int z);
+
 	public abstract void scale(double x, double y, double z);
 
 	public abstract void bind(IDL tex);
