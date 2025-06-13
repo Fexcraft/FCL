@@ -138,6 +138,11 @@ public class DefaultRenderer extends Renderer<GLO> {
 
 	@Override
 	public void rotate(float deg, int x, int y, int z){
+		GL11.glRotatef(deg, x, y, z);
+	}
+
+	@Override
+	public void rotate(double deg, int x, int y, int z){
 		GL11.glRotated(deg, x, y, z);
 	}
 
