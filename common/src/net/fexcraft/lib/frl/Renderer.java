@@ -40,6 +40,10 @@ public abstract class Renderer<GL extends GLO> {
 
 	public abstract void color(int rgb);
 
+	public void clear_color(){
+		color(0xffffffff);
+	}
+
 	public abstract void light(V3D pos);
 
 }
