@@ -7,11 +7,13 @@ import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -113,6 +115,18 @@ public class WorldWI extends WorldW {
 	@Override
 	public long getDayTime(){
 		return world.getWorldTime();
+	}
+
+	@Override
+	public List<EntityW> getEntities(V3D pos, double range){
+		List<EntityW> list = new ArrayList<>();
+		AxisAlignedBB aabb = new AxisAlignedBB(pos.x - range, pos.y - range, pos.z - range, pos.x + range, pos.y + range, pos.z + range);
+		for(Entity entity : world.loadedEntityList){
+			if(entity.getEntityBoundingBox().intersects(aabb)){
+				list.add(UniEntity.getEntityN(entity));
+			}
+		}
+		return list;
 	}
 
 }
