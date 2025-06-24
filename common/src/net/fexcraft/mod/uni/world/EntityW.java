@@ -108,4 +108,6 @@ public interface EntityW extends MessageSender {
 
 	public EntityW getVehicle();
 
+	public Object getVehicleDirect();
+
 }
