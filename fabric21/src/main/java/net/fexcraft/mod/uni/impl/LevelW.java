@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,8 +107,22 @@ public class LevelW extends WorldW {
 	}
 
 	@Override
+	public UniEntity getUniEntity(int id){
+		Entity ent = level.getEntity(id);
+		return ent == null ? null : UniEntity.get(ent);
+	}
+
+	@Override
 	public long getDayTime(){
 		return level.getDayTime();
+	}
+
+	@Override
+	public List<EntityW> getEntities(V3D pos, double range){
+		List<EntityW> list = new ArrayList<>();
+		AABB aabb = new AABB(pos.x - range, pos.y - range, pos.z - range, pos.x + range, pos.y + range, pos.z + range);
+		for(Entity entity : level.getEntities(null, aabb)) list.add(UniEntity.getEntity(entity));
+		return List.of();
 	}
 
 }
