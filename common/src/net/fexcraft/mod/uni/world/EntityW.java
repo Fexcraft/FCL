@@ -2,6 +2,7 @@ package net.fexcraft.mod.uni.world;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.UIKey;
@@ -104,5 +105,7 @@ public interface EntityW extends MessageSender {
 	public int getTicks();
 
 	public int pushTicks();
+
+	public EntityW getVehicle();
 
 }
