@@ -19,9 +19,9 @@ public class CapabilityEvents {
 
 	@SubscribeEvent
 	public void onAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event){
-		if(event.getObject() instanceof EntityLivingBase){
+		//if(event.getObject() instanceof EntityLivingBase){
 			event.addCapability(ENT_CAP, new UniPlayerSerializer(event.getObject()));
-		}
+		//}
 	}
 
 	@SubscribeEvent
