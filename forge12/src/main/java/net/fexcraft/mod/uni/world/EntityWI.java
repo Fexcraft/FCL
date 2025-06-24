@@ -249,6 +249,11 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
+	public void mount(EntityW veh){
+		entity.startRiding(veh.local(), true);
+	}
+
+	@Override
 	public void dismount(V3D pos){
 		entity.dismountRidingEntity();
 		entity.setPositionAndUpdate(pos.x, pos.y, pos.z);
@@ -277,6 +282,25 @@ public class EntityWI implements EntityW {
 	@Override
 	public Object getVehicleDirect(){
 		return entity.getRidingEntity();
+	}
+
+	@Override
+	public void setLeash(EntityW player, boolean attach){
+		if(!isLiving()) return;
+		EntityLiving ent = (EntityLiving)entity;
+		if(attach){
+			ent.setLeashHolder(player.local(), true);
+		}
+		else{
+			ent.clearLeashed(true, !player.isCreative());
+		}
+	}
+
+	@Override
+	public EntityW getLeash(){
+		if(!isLiving()) return null;
+		EntityLiving ent = (EntityLiving)entity;
+		return UniEntity.getEntityN(ent.getLeashHolder());
 	}
 
 	@Override
