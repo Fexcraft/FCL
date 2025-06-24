@@ -38,12 +38,12 @@ public class UniEntity {
 	}
 
 	public static <A> A getApp(Object ent, Class<A> clazz){
-		UniEntity ue = get(ent);
+		UniEntity ue = get(ent instanceof EntityW ? ((EntityW)ent).direct() : ent);
 		return ue == null ? null : ue.getApp(clazz);
 	}
 
 	public static <A> A getApp(Object ent, String id){
-		UniEntity ue = get(ent);
+		UniEntity ue = get(ent instanceof EntityW ? ((EntityW)ent).direct() : ent);
 		return ue == null ? null : ue.getApp(id);
 	}
 
