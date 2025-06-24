@@ -98,6 +98,13 @@ public interface EntityW extends MessageSender {
 
 	public List<StackWrapper> copyInventory();
 
+	public void mount(EntityW veh);
+
+	public default void mount(int id){
+		EntityW ent = getWorld().getEntity(id);
+		if(ent != null) mount(ent);
+	}
+
 	public void dismount(V3D pos);
 
 	public boolean inSimRange();
@@ -109,5 +116,9 @@ public interface EntityW extends MessageSender {
 	public EntityW getVehicle();
 
 	public Object getVehicleDirect();
+
+	public void setLeash(EntityW player, boolean attach);
+
+	public EntityW getLeash();
 
 }
