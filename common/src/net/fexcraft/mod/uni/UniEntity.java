@@ -3,6 +3,7 @@ package net.fexcraft.mod.uni;
 import net.fexcraft.mod.uni.world.EntityW;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -36,6 +37,34 @@ public class UniEntity {
 		return appended.get(id);
 	}
 
+	public static <A> A getApp(Object ent, Class<A> clazz){
+		UniEntity ue = get(ent);
+		return ue == null ? null : ue.getApp(clazz);
+	}
+
+	public static <A> A getApp(Object ent, String id){
+		UniEntity ue = get(ent);
+		return ue == null ? null : ue.getApp(id);
+	}
+
+	public <A> boolean runIfPresent(Class<A> clazz, Consumer<A> cons){
+		A app = getApp(clazz);
+		if(app != null){
+			cons.accept(app);
+			return true;
+		}
+		return false;
+	}
+
+	public <A> boolean runIfPresent(String id, Consumer<A> cons){
+		A app = getApp(id);
+		if(app != null){
+			cons.accept(app);
+			return true;
+		}
+		return false;
+	}
+
 	public static EntityW getEntity(Object entity){
 		return GETTER.apply(entity).entity;
 	}
@@ -43,16 +72,6 @@ public class UniEntity {
 	public static EntityW getEntityN(Object entity){
 		UniEntity ent = GETTER.apply(entity);
 		return ent == null ? null : ent.entity;
-	}
-
-	public static <C> C getCasted(Object entity){
-		UniEntity ent = GETTER.apply(entity);
-		return ent == null ? null : (C)ent.entity;
-	}
-
-	public static <T> T getCasted(Object entity, Class<T> clazz){
-		UniEntity ent = GETTER.apply(entity);
-		return ent == null ? null : (T)ent.entity;
 	}
 
 	public static void register(Appendable<UniEntity> app){
