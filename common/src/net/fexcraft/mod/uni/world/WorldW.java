@@ -48,4 +48,6 @@ public abstract class WorldW {
 
 	public abstract long getDayTime();
 
+	public abstract List<EntityW> getEntities(V3D pos, double range);
+
 }
