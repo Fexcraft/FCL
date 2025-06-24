@@ -2,6 +2,7 @@ package net.fexcraft.mod.uni.world;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 
 import java.util.List;
@@ -42,6 +43,8 @@ public abstract class WorldW {
 	public abstract String dimkey();
 
 	public abstract EntityW getEntity(int ent);
+
+	public abstract UniEntity getUniEntity(int ent);
 
 	public abstract long getDayTime();
 
