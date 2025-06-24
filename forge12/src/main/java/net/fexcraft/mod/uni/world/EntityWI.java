@@ -5,6 +5,7 @@ import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.mc.utils.LinkOpener;
 import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniStack;
@@ -267,6 +268,11 @@ public class EntityWI implements EntityW {
 	@Override
 	public int pushTicks(){
 		return entity.ticksExisted++;
+	}
+
+	@Override
+	public EntityW getVehicle(){
+		return UniEntity.getEntity(entity.getRidingEntity());
 	}
 
 	@Override
