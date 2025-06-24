@@ -70,6 +70,7 @@ public class UniEntity {
 	}
 
 	public static EntityW getEntityN(Object entity){
+		if(entity == null) return null;
 		UniEntity ent = GETTER.apply(entity);
 		return ent == null ? null : ent.entity;
 	}
