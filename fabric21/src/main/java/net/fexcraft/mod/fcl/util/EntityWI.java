@@ -3,6 +3,7 @@ package net.fexcraft.mod.fcl.util;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -257,6 +258,35 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
+	public EntityW getVehicle(){
+		return UniEntity.getEntityN(entity.getVehicle());
+	}
+
+	@Override
+	public Object getVehicleDirect(){
+		return entity.getVehicle();
+	}
+
+	@Override
+	public void setLeash(EntityW player, boolean attach){
+		if(entity instanceof Mob == false) return;
+		Mob ent = (Mob)entity;
+		if(attach){
+			ent.setLeashedTo(player.local(), true);
+		}
+		else{
+			ent.dropLeash();
+		}
+	}
+
+	@Override
+	public EntityW getLeash(){
+		if(entity instanceof Mob == false) return null;
+		Mob ent = (Mob)entity;
+		return UniEntity.getEntityN(ent.getLeashHolder());
+	}
+
+	@Override
 	public V3D getEyeVec(){
 		return new V3D(entity.getEyePosition().x, entity.getEyePosition().y, entity.getEyePosition().z);
 	}
@@ -305,6 +335,11 @@ public class EntityWI implements EntityW {
 			stacks.add(UniStack.createStack(stack.copy()));
 		}
 		return stacks;
+	}
+
+	@Override
+	public void mount(EntityW veh){
+		entity.startRiding(veh.local(), true);
 	}
 
 }
