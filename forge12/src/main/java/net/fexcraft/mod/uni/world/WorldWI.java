@@ -129,4 +129,9 @@ public class WorldWI extends WorldW {
 		return list;
 	}
 
+	@Override
+	public boolean isRainingAt(double x, double y, double z){
+		return world.isRainingAt(mpos.setPos(x, y, z));
+	}
+
 }
