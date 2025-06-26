@@ -50,4 +50,6 @@ public abstract class WorldW {
 
 	public abstract List<EntityW> getEntities(V3D pos, double range);
 
+	public abstract boolean isRainingAt(double x, double y, double z);
+
 }
