@@ -52,4 +52,8 @@ public abstract class WorldW {
 
 	public abstract boolean isRainingAt(double x, double y, double z);
 
+	public boolean isRainingAt(V3D pos){
+		return isRainingAt(pos.x, pos.y, pos.z);
+	}
+
 }
