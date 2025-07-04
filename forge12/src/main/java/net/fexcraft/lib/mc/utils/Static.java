@@ -129,14 +129,6 @@ public class Static extends net.fexcraft.lib.common.Static {
 		}
 	}
 
-	public static double clamp(double val, double min, double max){
-		return val < min ? min : val > max ? max : val;
-	}
-
-	public static float clamp(float val, float min, float max){
-		return val < min ? min : val > max ? max : val;
-	}
-
 	public static final RGB fromDyeColor(EnumDyeColor e){
 		return new RGB(get(e));
 	}
