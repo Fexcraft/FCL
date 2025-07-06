@@ -13,6 +13,7 @@ import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.UIKey;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -301,6 +302,11 @@ public class EntityWI implements EntityW {
 		if(!isLiving()) return null;
 		EntityLiving ent = (EntityLiving)entity;
 		return UniEntity.getEntityN(ent.getLeashHolder());
+	}
+
+	@Override
+	public void move(V3D move){
+		entity.move(MoverType.SELF, move.x, move.y, move.z);
 	}
 
 	@Override
