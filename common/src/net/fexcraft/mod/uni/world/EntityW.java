@@ -121,4 +121,6 @@ public interface EntityW extends MessageSender {
 
 	public EntityW getLeash();
 
+	public void move(V3D move);
+
 }
