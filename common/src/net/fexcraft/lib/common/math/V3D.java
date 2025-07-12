@@ -219,4 +219,18 @@ public class V3D {
 		return dest;
 	}
 
+	public static V3D mul(V3D vec, V3D dest){
+		dest.x *= vec.x;
+		dest.y *= vec.y;
+		dest.z *= vec.z;
+		return dest;
+	}
+
+	public static V3D mul(double x, double y, double z, V3D dest){
+		dest.x *= x;
+		dest.y *= y;
+		dest.z *= z;
+		return dest;
+	}
+
 }
