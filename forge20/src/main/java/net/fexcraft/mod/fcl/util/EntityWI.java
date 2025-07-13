@@ -18,9 +18,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -279,6 +281,11 @@ public class EntityWI implements EntityW {
 		if(entity instanceof Mob == false) return null;
 		Mob ent = (Mob)entity;
 		return UniEntity.getEntityN(ent.getLeashHolder());
+	}
+
+	@Override
+	public void move(V3D move){
+		entity.move(MoverType.SELF, new Vec3(move.x, move.y, move.z));
 	}
 
 	@Override
