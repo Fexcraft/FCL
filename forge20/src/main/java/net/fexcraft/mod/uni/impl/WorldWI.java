@@ -126,4 +126,9 @@ public class WorldWI extends WorldW {
 		return List.of();
 	}
 
+	@Override
+	public boolean isRainingAt(double x, double y, double z){
+		return level.isRainingAt(mpos.set(x, y, z));
+	}
+
 }
