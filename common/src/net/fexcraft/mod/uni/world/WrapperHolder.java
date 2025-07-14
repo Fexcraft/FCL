@@ -30,10 +30,6 @@ public abstract class WrapperHolder {
 		return WORLDS.get(obj);
 	}
 
-	public static <W extends WorldW> W getClientWorld(){
-		return INSTANCE.getClientWorld0();
-	}
-
 	public static boolean isSinglePlayer(){
 		return INSTANCE.isSinglePlayer0();
 	}
@@ -67,7 +63,17 @@ public abstract class WrapperHolder {
 
 	protected abstract boolean isSinglePlayer0();
 
+	public static <W extends WorldW> W getClientWorld(){
+		return INSTANCE.getClientWorld0();
+	}
+
 	public abstract <W extends WorldW> W getClientWorld0();
+
+	public static EntityW getClientPlayer(){
+		return INSTANCE.getClientPlayer0();
+	}
+
+	public abstract EntityW getClientPlayer0();
 
 	public static File getWorldFolder(WorldW world, String name){
 		return INSTANCE.getWorldFolder0(world, name);
