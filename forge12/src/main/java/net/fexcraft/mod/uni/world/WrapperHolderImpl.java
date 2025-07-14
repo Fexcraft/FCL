@@ -41,6 +41,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 	}
 
 	@Override
+	public EntityW getClientPlayer0(){
+		return UniEntity.getEntity(net.minecraft.client.Minecraft.getMinecraft().player);
+	}
+
+	@Override
 	public <S> S getServer0(){
 		return (S)FMLCommonHandler.instance().getMinecraftServerInstance();
 	}
