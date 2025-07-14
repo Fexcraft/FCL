@@ -18,7 +18,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.players.ServerOpListEntry;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.storage.LevelResource;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,6 +77,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 			client = getWorld(net.minecraft.client.Minecraft.getInstance().level);
 		}
 		return (W)client;
+	}
+
+	@Override
+	public EntityW getClientPlayer0(){
+		return UniEntity.getEntity(net.minecraft.client.Minecraft.getInstance().player);
 	}
 
 	@Override
