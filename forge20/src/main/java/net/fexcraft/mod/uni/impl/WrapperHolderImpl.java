@@ -82,6 +82,11 @@ public class WrapperHolderImpl extends WrapperHolder {
 	}
 
 	@Override
+	public EntityW getClientPlayer0(){
+		return UniEntity.getEntity(net.minecraft.client.Minecraft.getInstance().player);
+	}
+
+	@Override
 	public File getWorldFolder0(WorldW world, String name){
 		try{
 			LevelResource lr = LVLRES.computeIfAbsent(name, n -> new LevelResource(n));
