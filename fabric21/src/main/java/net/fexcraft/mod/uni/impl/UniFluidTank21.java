@@ -13,6 +13,7 @@ import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniFluidTank;
 import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
+import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.RegistryOps;
@@ -20,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
@@ -61,7 +63,13 @@ public class UniFluidTank21 extends UniFluidTank {
 	@Override
 	public void load(TagCW com){
 		if(com.has("var")){
-			storage.variant = FluidVariant.CODEC.decode(RegistryOps.create(NbtOps.INSTANCE, FCL.SERVER.get().registryAccess()), com.getCompound("var").local()).getOrThrow().getFirst();
+			try{
+				var ra = FCL.SERVER.isPresent() ? FCL.SERVER.get().registryAccess() : ((Level)WrapperHolder.getClientWorld().local()).registryAccess();
+				storage.variant = FluidVariant.CODEC.decode(RegistryOps.create(NbtOps.INSTANCE, ra), com.getCompound("var").local()).getOrThrow().getFirst();
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		storage.amount = com.getLong("am");
 	}
