@@ -1,18 +1,16 @@
 package net.fexcraft.mod.fcl.ui;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.mod.uni.FclRecipe;
-import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UserInterface;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import static net.fexcraft.lib.common.utils.Formatter.PARAGRAPH_SIGN;
+import static net.fexcraft.mod.fcl.ui.SelRecipeCon.reskeys;
+import static net.fexcraft.mod.fcl.ui.SelRecipeCon.results;
 import static net.fexcraft.mod.uni.ui.ContainerInterface.SEND_TO_SERVER;
 import static net.fexcraft.mod.uni.ui.ContainerInterface.translate;
 
@@ -21,20 +19,21 @@ import static net.fexcraft.mod.uni.ui.ContainerInterface.translate;
  */
 public class SelResRecipe extends UserInterface {
 
-	private LinkedHashMap<IDL, ArrayList<FclRecipe>> results;
-	private IDL[] keyset;
 	private String category;
 	private int scroll;
 
 	public SelResRecipe(JsonMap map, ContainerInterface container) throws Exception{
 		super(map, container);
-		category = FclRecipe.getCategoryIdAt(container.pos.x);
-		results = FclRecipe.getCategoryAt(container.pos.x);
-		keyset = results.keySet().toArray(new IDL[0]);
+		category = SelRecipeCon.categories.get(container.pos.x);
 	}
 
 	@Override
 	public void init(){
+		results.clear();
+		TagCW req = TagCW.create();
+		req.set("sync_res", true);
+		req.set("c", category);
+		SEND_TO_SERVER.accept(req);
 		texts.get("title").value("ui.fcl.recipe.results");
 		texts.get("title").translate(translate(category));
 	}
@@ -44,8 +43,7 @@ public class SelResRecipe extends UserInterface {
 		for(int i = 0; i < 12; i++){
 			int j = scroll + i;
 			if(j >= results.size()) buttons.get("entry_" + i).text.value("");
-			else if(results.get(keyset[j]).isEmpty()) buttons.get("entry_" + i).text.value("empty");
-			else buttons.get("entry_" + i).text.value(results.get(keyset[j]).get(0).output.getName());
+			else buttons.get("entry_" + i).text.value(results.get(j).getName());
 		}
 	}
 
@@ -66,7 +64,7 @@ public class SelResRecipe extends UserInterface {
 			if(idx < 0 || idx >= results.size()) return true;
 			TagCW com = TagCW.create();
 			com.set("cat", category);
-			com.set("res", keyset[idx].colon());
+			com.set("res", reskeys.get(idx));
 			SEND_TO_SERVER.accept(com);
 			return true;
 		}
@@ -85,7 +83,7 @@ public class SelResRecipe extends UserInterface {
 		for(int i = 0; i < 12; i++){
 			int j = scroll + i;
 			if(j < results.size() && buttons.get("entry_" + i).hovered()){
-				list.add(PARAGRAPH_SIGN + "9" + results.get(keyset[j]).get(0).output.getName());
+				list.add(PARAGRAPH_SIGN + "9" + results.get(j).getName());
 			}
 		}
 	}
