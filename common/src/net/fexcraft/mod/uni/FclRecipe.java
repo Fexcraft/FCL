@@ -115,10 +115,12 @@ public class FclRecipe {
 		Builder builder = new Builder("parsed").output(UniStack.createStack(res.getCompound("out")));
 		for(TagCW com : res.getList("coms")){
 			if(com.has("fcl-rec-tag")){
-				builder.add(com.getString("fcl-rec-tag"), com.getInteger("am"));
+				builder.add(com.getString("fcl-rec-tag"), com.getInteger("fcl-rec-am"));
 			}
 			else{
-				builder.add(UniStack.createStack(com));
+				StackWrapper stack = UniStack.createStack(com);
+				stack.count(com.getInteger("fcl-rec-am"));
+				builder.add(stack);
 			}
 		}
 		return builder.buildOnly();
@@ -134,11 +136,11 @@ public class FclRecipe {
 			TagCW com = TagCW.create();
 			if(comp.tag){
 				com.set("fcl-rec-tag", comp.id);
-				com.set("am", comp.amount);
 			}
 			else{
 				comp.stack.save(com);
 			}
+			com.set("fcl-rec-am", comp.amount);
 			coms.add(com);
 		}
 		tag.set("coms", coms);
