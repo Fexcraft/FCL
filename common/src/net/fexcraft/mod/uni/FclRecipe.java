@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniStack;
+import net.fexcraft.mod.uni.tag.TagCW;
+import net.fexcraft.mod.uni.tag.TagLW;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,25 +73,25 @@ public class FclRecipe {
 		return -1;
 	}
 
-	public static LinkedHashMap<IDL, ArrayList<FclRecipe>> getCategoryAt(int cat){
+	/*public static LinkedHashMap<IDL, ArrayList<FclRecipe>> getCategoryAt(int cat){
 		int idx = 0;
 		for(String key : RECIPES.keySet()) {
 			if(idx == cat) return RECIPES.get(key);
 			idx++;
 		}
 		return null;
-	}
+	}*/
 
-	public static String getCategoryIdAt(int cat){
+	/*public static String getCategoryIdAt(int cat){
 		int idx = 0;
 		for(String key : RECIPES.keySet()) {
 			if(idx == cat) return key;
 			idx++;
 		}
 		return null;
-	}
+	}*/
 
-	public static IDL getResultKey(String category, int kid){
+	/*public static IDL getResultKey(String category, int kid){
 		LinkedHashMap<IDL, ArrayList<FclRecipe>> results = RECIPES.get(category);
 		int idx = 0;
 		for(IDL key : results.keySet()){
@@ -97,7 +99,7 @@ public class FclRecipe {
 			idx++;
 		}
 		return null;
-	}
+	}*/
 
 	public static int getResultIdx(String category, String res){
 		LinkedHashMap<IDL, ArrayList<FclRecipe>> results = RECIPES.get(category);
@@ -107,6 +109,40 @@ public class FclRecipe {
 			idx++;
 		}
 		return -1;
+	}
+
+	public static FclRecipe fromTag(TagCW res){
+		Builder builder = new Builder("parsed").output(UniStack.createStack(res.getCompound("out")));
+		for(TagCW com : res.getList("coms")){
+			if(com.has("fcl-rec-tag")){
+				builder.add(com.getString("fcl-rec-tag"), com.getInteger("am"));
+			}
+			else{
+				builder.add(UniStack.createStack(com));
+			}
+		}
+		return builder.buildOnly();
+	}
+
+	public TagCW toTag(){
+		TagCW tag = TagCW.create();
+		TagCW out = TagCW.create();
+		output.save(out);
+		tag.set("out", out);
+		TagLW coms = TagLW.create();
+		for(Component comp : components){
+			TagCW com = TagCW.create();
+			if(comp.tag){
+				com.set("fcl-rec-tag", comp.id);
+				com.set("am", comp.amount);
+			}
+			else{
+				comp.stack.save(com);
+			}
+			coms.add(com);
+		}
+		tag.set("coms", coms);
+		return tag;
 	}
 
 	public static Builder newBuilder(String cat){
@@ -133,6 +169,11 @@ public class FclRecipe {
 			return this;
 		}
 
+		public Builder add(StackWrapper stack){
+			comps.add(new Component(stack));
+			return this;
+		}
+
 		public Builder add(Object stack){
 			comps.add(new Component(stack));
 			return this;
@@ -150,6 +191,10 @@ public class FclRecipe {
 
 		public void register(){
 			FclRecipe.register(category, new FclRecipe(stack, comps.toArray(new Component[0])));
+		}
+
+		public FclRecipe buildOnly(){
+			return new FclRecipe(stack, comps.toArray(new Component[0]));
 		}
 
 	}
