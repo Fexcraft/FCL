@@ -168,8 +168,8 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			getFocused().charTyped(c, code);
 			return true;
 		}
-		boolean keytyped = super.charTyped(c, code);
-		if(code == 1 || (inv && !keytyped)){
+		boolean keytyped = super.charTyped(c, code) || ui.keytyped(c, code);
+		if(!keytyped && (code == 1 || inv)){
 			if(ui.returnto != null){
 				TagCW com = TagCW.create();
 				com.set("return", true);
