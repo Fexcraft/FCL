@@ -6,14 +6,18 @@ import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
+import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
 public class CraftRecipeCon extends ContainerInterface {
+
+	protected static ArrayList<FclRecipe> results = new ArrayList<>();
 
 	public CraftRecipeCon(JsonMap map, UniEntity ply, V3I pos){
 		super(map, ply, pos);
@@ -26,6 +30,24 @@ public class CraftRecipeCon extends ContainerInterface {
 
 	@Override
 	public void packet(TagCW com, boolean client){
+		if(com.has("sync_rec")){
+			if(client){
+				results.clear();
+				for(TagCW rec : com.getList("rec")){
+					results.add(FclRecipe.fromTag(rec));
+				}
+			}
+			else{
+				TagLW list = TagLW.create();
+				LinkedHashMap<IDL, ArrayList<FclRecipe>> res = FclRecipe.RECIPES.get(com.getString("c"));
+				ArrayList<FclRecipe> rec = res.get(IDLManager.getIDLCached(com.getString("r")));
+				for(FclRecipe recipe : rec){
+					list.add(recipe.toTag());
+				}
+				com.set("rec", list);
+				SEND_TO_CLIENT.accept(com, player);
+			}
+		}
 		if(com.has("ret")){
 			int catidx = FclRecipe.indexOfCategory(com.getString("ret"));
 			player.entity.openUI(UniFCL.SELECT_RECIPE_RESULT, catidx, 0, 0);
