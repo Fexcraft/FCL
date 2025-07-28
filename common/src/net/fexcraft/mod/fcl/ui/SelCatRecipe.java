@@ -19,16 +19,19 @@ import static net.fexcraft.mod.uni.ui.ContainerInterface.*;
  */
 public class SelCatRecipe extends UserInterface {
 
-	private ArrayList<String> categories;
+	private SelRecipeCon con;
 	private int scroll;
 
 	public SelCatRecipe(JsonMap map, ContainerInterface container) throws Exception{
 		super(map, container);
-		categories = new ArrayList<>(FclRecipe.RECIPES.keySet());
+		con = (SelRecipeCon)container;
 	}
 
 	@Override
 	public void init(){
+		TagCW req = TagCW.create();
+		req.set("sync_cat", true);
+		SEND_TO_SERVER.accept(req);
 		texts.get("title").value("ui.fcl.recipe.categories");
 		texts.get("title").translate();
 	}
@@ -37,8 +40,8 @@ public class SelCatRecipe extends UserInterface {
 	public void predraw(float ticks, int mx, int my){
 		for(int i = 0; i < 12; i++){
 			int j = scroll + i;
-			if(j >= categories.size()) buttons.get("entry_" + i).text.value("");
-			else buttons.get("entry_" + i).text.value(translate(categories.get(j)));
+			if(j >= con.categories.size()) buttons.get("entry_" + i).text.value("");
+			else buttons.get("entry_" + i).text.value(translate(con.categories.get(j)));
 		}
 	}
 
@@ -56,9 +59,9 @@ public class SelCatRecipe extends UserInterface {
 		else if(id.startsWith("entry_")){
 			int idx = Integer.parseInt(id.substring(6));
 			idx += scroll;
-			if(idx < 0 || idx >= categories.size()) return true;
+			if(idx < 0 || idx >= con.categories.size()) return true;
 			TagCW com = TagCW.create();
-			com.set("cat", categories.get(idx));
+			com.set("cat", con.categories.get(idx));
 			SEND_TO_SERVER.accept(com);
 			return true;
 		}
@@ -76,8 +79,8 @@ public class SelCatRecipe extends UserInterface {
 	public void getTooltip(int mx, int my, List<String> list){
 		for(int i = 0; i < 12; i++){
 			int j = scroll + i;
-			if(j < categories.size() && buttons.get("entry_" + i).hovered()){
-				list.add(PARAGRAPH_SIGN + "9" + TRANSLATOR.apply(categories.get(j)));
+			if(j < con.categories.size() && buttons.get("entry_" + i).hovered()){
+				list.add(PARAGRAPH_SIGN + "9" + TRANSLATOR.apply(con.categories.get(j)));
 			}
 		}
 	}
