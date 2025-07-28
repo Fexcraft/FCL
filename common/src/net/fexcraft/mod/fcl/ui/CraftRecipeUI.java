@@ -3,14 +3,17 @@ package net.fexcraft.mod.fcl.ui;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.uni.FclRecipe;
 import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UserInterface;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import static net.fexcraft.mod.fcl.ui.CraftRecipeCon.results;
+import static net.fexcraft.mod.fcl.ui.SelRecipeCon.categories;
+import static net.fexcraft.mod.fcl.ui.SelRecipeCon.reskeys;
 import static net.fexcraft.mod.uni.ui.ContainerInterface.SEND_TO_SERVER;
 import static net.fexcraft.mod.uni.ui.ContainerInterface.transformat;
 
@@ -19,7 +22,6 @@ import static net.fexcraft.mod.uni.ui.ContainerInterface.transformat;
  */
 public class CraftRecipeUI extends UserInterface {
 
-	private ArrayList<FclRecipe> results;
 	private FclRecipe.Component comp;
 	private String category;
 	private IDL key;
@@ -31,17 +33,21 @@ public class CraftRecipeUI extends UserInterface {
 
 	public CraftRecipeUI(JsonMap map, ContainerInterface container) throws Exception{
 		super(map, container);
-		category = FclRecipe.getCategoryIdAt(container.pos.x);
-		key = FclRecipe.getResultKey(category, container.pos.y);
-		results = FclRecipe.getCategoryAt(container.pos.x).get(key);
+		category = categories.get(container.pos.x);
+		key = IDLManager.getIDL(reskeys.get(container.pos.y));
 	}
 
 	@Override
 	public void init(){
-		updateText();
+		TagCW req = TagCW.create();
+		req.set("sync_rec", true);
+		req.set("c", category);
+		req.set("r", key.colon());
+		SEND_TO_SERVER.accept(req);
 	}
 
 	private void updateText(){
+		if(results.isEmpty()) return;
 		texts.get("recipe").value(results.get(selrec).output.getName());
 		texts.get("selected").value(transformat("ui.fcl.recipe.selected", selrec + 1, results.size()));
 		texts.get("amount").value(transformat("ui.fcl.recipe.amount", amount));
@@ -54,10 +60,12 @@ public class CraftRecipeUI extends UserInterface {
 			ticker = 0;
 			current++;
 		}
+		updateText();
 	}
 
 	@Override
 	public void postdraw(float ticks, int mx, int my){
+		if(results.isEmpty()) return;
 		FclRecipe rec = results.get(selrec);
 		drawer.draw(gLeft + 7, gTop + 10, rec.output, true);
 		for(int x = 0; x < 12; x++){
@@ -130,6 +138,7 @@ public class CraftRecipeUI extends UserInterface {
 
 	@Override
 	public void getTooltip(int mx, int my, List<String> list){
+		if(results.isEmpty()) return;
 		if(mx >= gLeft + 7 && mx <= gLeft + 23 && my >= gTop + 10 && my <= gTop + 26){
 			list.add(results.get(selrec).output.getName());//TODO full tooltip later on
 		}
