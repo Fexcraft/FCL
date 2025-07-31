@@ -5,7 +5,7 @@ import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.fcl.util.CraftingModel;
 import net.fexcraft.mod.fcl.util.FCLRenderTypes;
-import net.fexcraft.mod.fcl.util.Renderer120;
+import net.fexcraft.mod.fcl.util.Renderer21;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,8 +17,8 @@ import org.joml.Quaternionf;
 import java.util.ArrayList;
 
 import static net.fexcraft.mod.fcl.local.CraftingBlock.FACING;
-import static net.fexcraft.mod.fcl.util.Renderer120.AY;
-import static net.fexcraft.mod.fcl.util.Renderer120.AZ;
+import static net.fexcraft.mod.fcl.util.Renderer21.AY;
+import static net.fexcraft.mod.fcl.util.Renderer21.AZ;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -30,8 +30,8 @@ public class CraftingRenderer implements BlockEntityRenderer<CraftingEntity> {
 
 	@Override
 	public void render(CraftingEntity tile, float ticks, PoseStack pose, MultiBufferSource buffer, int light, int overlay, Vec3 pos){
-		Renderer120.pose = pose;
-		Renderer120.set(pose, buffer, light, overlay);
+		Renderer21.pose = pose;
+		Renderer21.set(pose, buffer, light, overlay);
 		FCLRenderTypes.setCutout(TEXTURE);
 		pose.pushPose();
 		pose.translate(0.5, 0, 0.5);
