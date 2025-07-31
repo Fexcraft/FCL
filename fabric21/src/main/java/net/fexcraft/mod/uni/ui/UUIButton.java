@@ -6,6 +6,7 @@ import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UIElement;
 import net.fexcraft.mod.uni.ui.UniUI;
 import net.fexcraft.mod.uni.ui.UserInterface;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
@@ -38,7 +39,7 @@ public class UUIButton extends UIButton {
 					int d = absolute ? y < 0 ? ui.screen_height + y : y : gt + y;
 					rgb = palette[row][col];
 					ui.drawer.apply(rgb);
-					uui.matrix.blit(RenderType::guiOpaqueTexturedBackground, resloc, c + a, d + b, u, v, palsize[0], palsize[1], 256, 256, uui.packed);
+					uui.matrix.blit(RenderPipelines.GUI_OPAQUE_TEXTURED_BACKGROUND, resloc, c + a, d + b, u, v, palsize[0], palsize[1], 256, 256, uui.packed);
 				}
 			}
 			ui.drawer.applyWhite();
@@ -48,10 +49,10 @@ public class UUIButton extends UIButton {
 		ui.drawer.applyWhite();
 		ui.drawer.apply(rgb);
 		if(absolute){
-			uui.matrix.blit(RenderType::guiTextured, (texture == null) ? uui.actex.local() : texture.local(), x < 0 ? ui.screen_width + x : x, y < 0 ? ui.screen_height + y : y, u, v, width, height, 256, 256, uui.packed);
+			uui.matrix.blit(RenderPipelines.GUI_TEXTURED, (texture == null) ? uui.actex.local() : texture.local(), x < 0 ? ui.screen_width + x : x, y < 0 ? ui.screen_height + y : y, u, v, width, height, 256, 256, uui.packed);
 		}
 		else{
-			uui.matrix.blit(RenderType::guiTextured, (texture == null) ? uui.actex.local() : texture.local(), gl + x, gt + y, u, v, width, height, 256, 256, uui.packed);
+			uui.matrix.blit(RenderPipelines.GUI_TEXTURED, (texture == null) ? uui.actex.local() : texture.local(), gl + x, gt + y, u, v, width, height, 256, 256, uui.packed);
 		}
 		ui.drawer.applyWhite();
 	}
