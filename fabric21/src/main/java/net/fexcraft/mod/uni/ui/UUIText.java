@@ -3,6 +3,7 @@ package net.fexcraft.mod.uni.ui;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.uni.ui.UniUI;
 import net.fexcraft.mod.uni.ui.*;
+import net.minecraft.util.ARGB;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -45,16 +46,18 @@ public class UUIText extends UIText {
 			xx = absolute ? x < 0 ? ui.screen_width + x : x : gl + x;
 			yy = absolute ? y < 0 ? ui.screen_height + y : y : gt + y;
 		}
+		float[] ca = (hovered ? hover : color).toFloatArray();
+		int col = ARGB.colorFromFloat(1f, ca[0], ca[1], ca[2]);
 		if(scale == 0.0F || (scale < 0.0F && textwidth < width)){
-			uui.matrix.drawString(uui.getMinecraft().font, value, xx, yy, hovered ? hover.packed : color.packed, shadow);
+			uui.matrix.drawString(uui.getMinecraft().font, value, xx, yy, col, shadow);
 		}
 		else{
 			float scale = this.scale < 0.0F ? width / (float)textwidth : this.scale;
-			uui.matrix.pose().pushPose();
-			uui.matrix.pose().translate(xx, yy, 0.0F);
-			uui.matrix.pose().scale(scale, scale, scale);
-			uui.matrix.drawString(uui.getMinecraft().font, value, 0, 0, hovered ? hover.packed : color.packed, shadow);
-			uui.matrix.pose().popPose();
+			uui.matrix.pose().pushMatrix();
+			uui.matrix.pose().translate(xx, yy, uui.matrix.pose());
+			uui.matrix.pose().scale(scale, scale, uui.matrix.pose());
+			uui.matrix.drawString(uui.getMinecraft().font, value, 0, 0, col, shadow);
+			uui.matrix.pose().popMatrix();
 		}
 	}
 
