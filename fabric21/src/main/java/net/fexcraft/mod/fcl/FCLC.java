@@ -56,7 +56,7 @@ public class FCLC implements ClientModInitializer {
 			});
 		});
 		//
-		ModelRendererTurbo.RENDERER = new Renderer120();
+		ModelRendererTurbo.RENDERER = new Renderer21();
 		AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
 		UITab.IMPLEMENTATION = UUITab.class;
 		UIText.IMPLEMENTATION = UUIText.class;
