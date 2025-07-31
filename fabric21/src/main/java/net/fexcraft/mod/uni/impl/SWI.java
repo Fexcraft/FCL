@@ -1,5 +1,6 @@
 package net.fexcraft.mod.uni.impl;
 
+import com.mojang.serialization.DataResult;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
@@ -10,10 +11,18 @@ import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.Optional;
 
@@ -45,8 +54,8 @@ public class SWI extends StackWrapper {
 		if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
 		if(obj instanceof TagCW){
 			RegistryAccess acc = FCL.SERVER.isPresent() ? FCL.SERVER.get().registryAccess() : ((Level)WrapperHolderImpl.getClientWorld().direct()).registryAccess();
-			Optional<ItemStack> opt = ItemStack.parse(acc, (CompoundTag)((TagCW)obj).direct());
-			return new SWI(opt.isPresent() ? opt.get() : ItemStack.EMPTY);
+			DataResult<ItemStack> opt = ItemStack.CODEC.parse(NbtOps.INSTANCE, (CompoundTag)((TagCW)obj).direct());
+			return new SWI(opt.isSuccess() ? opt.getOrThrow() : ItemStack.EMPTY);
 		}
 		return null;
 	}
@@ -128,7 +137,8 @@ public class SWI extends StackWrapper {
 
 	@Override
 	public void save(TagCW com){
-		stack.save(FCL.SERVER.get().registryAccess(), com.local());
+		CompoundTag ct = com.local();
+		ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack).ifSuccess(tag -> ct.merge((CompoundTag)tag));
 		com.set("id", getID());
 	}
 
