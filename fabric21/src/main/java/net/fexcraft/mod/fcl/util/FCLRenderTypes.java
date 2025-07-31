@@ -1,7 +1,5 @@
 package net.fexcraft.mod.fcl.util;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.fexcraft.mod.uni.IDL;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -24,7 +22,7 @@ public class FCLRenderTypes {
 
 	private static final Function<IDL, RenderType> CUTOUT = Util.memoize(idl -> {
 		CompositeState state = CompositeState.builder()
-			.setTextureState(new RenderStateShard.TextureStateShard(idl.local(), TriState.DEFAULT, false))
+			.setTextureState(new RenderStateShard.TextureStateShard(idl.local(), false))
 			.setLightmapState(RenderStateShard.LIGHTMAP)
 			.setOverlayState(RenderStateShard.OVERLAY)
 			.createCompositeState(true);
@@ -34,24 +32,24 @@ public class FCLRenderTypes {
 	public static void setCutout(IDL tex){
 		RenderType type = CUTOUTS.get(tex);
 		if(type != null){
-			Renderer120.rentype = type;
+			Renderer21.rentype = type;
 			return;
 		}
 		type = CUTOUT.apply(tex);
 		CUTOUTS.put(tex, type);
-		Renderer120.rentype = type;
+		Renderer21.rentype = type;
 	}
 
 	public static void setLines(){
-		Renderer120.rentype = RenderType.lines();
+		Renderer21.rentype = RenderType.lines();
 	}
 
 	public static void setLineStrip(){
-		Renderer120.rentype = RenderType.lineStrip();
+		Renderer21.rentype = RenderType.lineStrip();
 	}
 
 	public static void setDef(RenderType type){
-		Renderer120.rentype = type;
+		Renderer21.rentype = type;
 	}
 
 }
