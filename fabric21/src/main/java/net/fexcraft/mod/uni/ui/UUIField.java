@@ -42,7 +42,7 @@ public class UUIField extends UIField {
 			}
 		};
 		field.setBordered(background);
-		field.setTextColor(color);
+		field.setTextColor(UniUI.convCol(color));
 		field.setValue(value);
 		field.active = enabled;
 		field.setVisible(visible);
