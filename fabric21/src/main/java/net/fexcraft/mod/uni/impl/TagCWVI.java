@@ -84,7 +84,7 @@ public class TagCWVI implements TagCW {
 
 	@Override
 	public boolean has(String key){
-		return in.child(key).isPresent();
+		return true;
 	}
 
 	@Override
