@@ -46,17 +46,15 @@ public class UUIText extends UIText {
 			xx = absolute ? x < 0 ? ui.screen_width + x : x : gl + x;
 			yy = absolute ? y < 0 ? ui.screen_height + y : y : gt + y;
 		}
-		float[] ca = (hovered ? hover : color).toFloatArray();
-		int col = ARGB.colorFromFloat(1f, ca[0], ca[1], ca[2]);
 		if(scale == 0.0F || (scale < 0.0F && textwidth < width)){
-			uui.matrix.drawString(uui.getMinecraft().font, value, xx, yy, col, shadow);
+			uui.matrix.drawString(uui.getMinecraft().font, value, xx, yy, UniUI.convCol(hovered ? hover : color), shadow);
 		}
 		else{
 			float scale = this.scale < 0.0F ? width / (float)textwidth : this.scale;
 			uui.matrix.pose().pushMatrix();
 			uui.matrix.pose().translate(xx, yy, uui.matrix.pose());
 			uui.matrix.pose().scale(scale, scale, uui.matrix.pose());
-			uui.matrix.drawString(uui.getMinecraft().font, value, 0, 0, col, shadow);
+			uui.matrix.drawString(uui.getMinecraft().font, value, 0, 0, UniUI.convCol(hovered ? hover : color), shadow);
 			uui.matrix.pose().popMatrix();
 		}
 	}
