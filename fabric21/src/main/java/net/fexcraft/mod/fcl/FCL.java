@@ -68,6 +68,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -244,7 +246,11 @@ public class FCL implements ModInitializer {
 		EnvInfo.CLIENT = false;
 		EnvInfo.DEV = dev;
 		UniReg.LOADER_VERSION = "1.21";
-		TagCW.WRAPPER[0] = com -> new TagCWI((CompoundTag)com);
+		TagCW.WRAPPER[0] = com -> {
+			if(com instanceof ValueInput) return new TagCWVI((ValueInput)com);
+			if(com instanceof ValueOutput) return new TagCWVO((ValueOutput)com);
+			return new TagCWI((CompoundTag)com);
+		};
 		TagLW.WRAPPER[0] = com -> new TagLWI((ListTag)com);
 		TagCW.SUPPLIER[0] = TagCWI::new;
 		TagLW.SUPPLIER[0] = TagLWI::new;
