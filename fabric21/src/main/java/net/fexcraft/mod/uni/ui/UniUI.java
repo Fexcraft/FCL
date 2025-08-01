@@ -17,7 +17,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
@@ -322,6 +321,16 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+
+	public static int convCol(int rgb){
+		float[] ca = new RGB(rgb).toFloatArray();
+		return ARGB.colorFromFloat(1, ca[0], ca[1], ca[2]);
+	}
+
+	public static int convCol(RGB rgb){
+		float[] ca = rgb.toFloatArray();
+		return ARGB.colorFromFloat(1, ca[0], ca[1], ca[2]);
 	}
 
 }
