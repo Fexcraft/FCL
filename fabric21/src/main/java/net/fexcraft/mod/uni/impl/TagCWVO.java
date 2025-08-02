@@ -83,7 +83,7 @@ public class TagCWVO implements TagCW {
 
 	@Override
 	public boolean has(String key){
-		return !out.child(key).isEmpty();
+		return true;
 	}
 
 	@Override
