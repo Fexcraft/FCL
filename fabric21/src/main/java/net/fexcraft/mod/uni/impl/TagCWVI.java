@@ -1,6 +1,8 @@
 package net.fexcraft.mod.uni.impl;
 
+import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fcl.util.FclCodecs;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.tag.TagType;
@@ -65,6 +67,12 @@ public class TagCWVI implements TagCW {
 	@Override
 	public TagLW getList(String key){
 		return null;
+	}
+
+	@Override
+	public V3D getV3D(String key){
+		var vec = in.read(key, FclCodecs.V3D);
+		return vec.isPresent() ? vec.get() : new V3D();
 	}
 
 	@Override
