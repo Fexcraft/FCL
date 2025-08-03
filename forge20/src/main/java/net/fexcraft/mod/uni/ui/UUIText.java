@@ -43,6 +43,7 @@ public class UUIText extends UIText {
 			hovered(gl, gt, mx, my);
 			xx = absolute ? x < 0 ? ui.screen_width + x : x : gl + x;
 			yy = absolute ? y < 0 ? ui.screen_height + y : y : gt + y;
+			if(centered) xx += (width - textwidth) / 2;
 		}
 		if(scale == 0.0F || (scale < 0.0F && textwidth < width)){
 			uui.matrix.drawString(uui.getMinecraft().font, value, xx, yy, hovered ? hover.packed : color.packed, shadow);
