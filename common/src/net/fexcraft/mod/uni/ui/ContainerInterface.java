@@ -61,4 +61,16 @@ public class ContainerInterface {
 		return TRANSLATOR.apply(str);
 	}
 
+	public static void sendToServer(Consumer<TagCW> cons){
+		TagCW com = TagCW.create();
+		cons.accept(com);
+		SEND_TO_SERVER.accept(com);
+	}
+
+	public static void sendToClient(UniEntity player, Consumer<TagCW> cons){
+		TagCW com = TagCW.create();
+		cons.accept(com);
+		SEND_TO_CLIENT.accept(com, player);
+	}
+
 }
