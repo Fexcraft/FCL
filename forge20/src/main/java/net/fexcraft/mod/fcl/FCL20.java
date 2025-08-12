@@ -106,7 +106,7 @@ public class FCL20 {
 				if(item instanceof BlockItem){
 					Block block = ((BlockItem)item).getBlock();
 					BlockPos pos = new BlockPos(ctx.pos.x, ctx.pos.y, ctx.pos.z);
-					BlockHitResult res = new BlockHitResult(new Vec3(ctx.pos.x, ctx.pos.y, ctx.pos.z), Direction.UP, pos, true);
+					BlockHitResult res = new BlockHitResult(new Vec3(ctx.pos.x + ctx.off.x, ctx.pos.y + ctx.off.y, ctx.pos.z + ctx.off.z), Direction.UP, pos, true);
 					BlockPlaceContext btx = new BlockPlaceContext(ctx.world.local(), ctx.placer.local(), ctx.main ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND, stack.local(), res);
 					return StateWrapper.of(block.getStateForPlacement(btx));
 				}
