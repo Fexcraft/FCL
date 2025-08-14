@@ -82,6 +82,7 @@ public class V3I {
 		return div == 0f ? this : new V3I(x / div, y / div, z / div);
 	}
 
+	@Override
     public boolean equals(Object obj){
         if(this == obj) return true;
         else if(obj instanceof V3I){
