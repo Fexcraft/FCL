@@ -2,6 +2,9 @@ package net.fexcraft.mod.fcl;
 
 import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.mod.fcl.mixint.CWProvider;
+import net.fexcraft.mod.fcl.mixint.EWProvider;
+import net.fexcraft.mod.fcl.mixint.SWProvider;
 import net.fexcraft.mod.fcl.util.Axis3DL;
 import net.fexcraft.mod.fcl.util.ChunkWI;
 import net.fexcraft.mod.fcl.util.EntityUtil;
@@ -19,6 +22,7 @@ import net.fexcraft.mod.uni.ui.UUIField;
 import net.fexcraft.mod.uni.ui.UUITab;
 import net.fexcraft.mod.uni.ui.UUIText;
 import net.fexcraft.mod.uni.world.StateWrapper;
+import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,7 +30,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -40,18 +43,14 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -59,15 +58,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class FCL20 {
 
 	public static File MAINDIR;
-	private static ConcurrentHashMap<String, TagKey<Item>> tagkeys = new ConcurrentHashMap<>();
 
-	public static void init(boolean dev, boolean client){
-		EnvInfo.CLIENT = client;
+	public static void init(boolean dev){
+		EnvInfo.CLIENT = false;
 		EnvInfo.DEV = dev;
 		UniReg.LOADER_VERSION = "1.20";
-		if(client){
-			AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
-		}
+		WrapperHolder.INSTANCE = new WrapperHolderImpl();
+		UniStack.GETTER = obj -> {
+			ItemStack stack = (ItemStack)(obj instanceof StackWrapper ? ((StackWrapper)obj).direct() : obj);
+			return ((SWProvider)(Object)stack).fcl_wrapper();
+		};
+		UniEntity.GETTER = ent -> ((EWProvider)ent).fcl_wrapper();
+		UniChunk.GETTER = ck -> ((CWProvider)ck).fcl_wrapper();
 		TagCW.WRAPPER[0] = com -> new TagCWI((CompoundTag)com);
 		TagLW.WRAPPER[0] = com -> new TagLWI((ListTag)com);
 		TagCW.SUPPLIER[0] = () -> new TagCWI();
@@ -119,29 +121,21 @@ public class FCL20 {
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_LEAD, item -> item instanceof LeadItem);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_FOOD, item -> ((Item)item).isEdible());
 		UniStack.STACK_GETTER = obj -> SWI.parse(obj);
-		UniStack.TAG_GETTER = key -> {
-			ArrayList<StackWrapper> list = new ArrayList<>();
-			if(!tagkeys.containsKey(key)){
-				tagkeys.put(key, ItemTags.create(new ResourceLocation(key)));
-			}
-			var tags = ForgeRegistries.ITEMS.tags().getTag(tagkeys.get(key));
-			for(Item item : tags){
-				list.add(UniStack.createStack(new ItemStack(item)));
-			}
-			return list;
-		};
 		UniEntity.ENTITY_GETTER = ent -> EntityUtil.wrap((Entity)ent);
 		UniChunk.CHUNK_GETTER = ck -> new ChunkWI((LevelChunk)ck);
 		WrapperHolderImpl.LEVEL_PROVIDER = lvl -> new WorldWI((Level)lvl);
 		UISlot.GETTERS.put("default", args -> new Slot((Container)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]));
-		if(EnvInfo.CLIENT){
-			UITab.IMPLEMENTATION = UUITab.class;
-			UIText.IMPLEMENTATION = UUIText.class;
-			UIField.IMPLEMENTATION = UUIField.class;
-			UIButton.IMPLEMENTATION = UUIButton.class;
-			ContainerInterface.TRANSLATOR = str -> Formatter.format(I18n.get(str));
-			ContainerInterface.TRANSFORMAT = (str, objs) -> Formatter.format(I18n.get(str, objs));
-		}
+	}
+
+	public static void initClient(){
+		EnvInfo.CLIENT = true;
+		AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
+		UITab.IMPLEMENTATION = UUITab.class;
+		UIText.IMPLEMENTATION = UUIText.class;
+		UIField.IMPLEMENTATION = UUIField.class;
+		UIButton.IMPLEMENTATION = UUIButton.class;
+		ContainerInterface.TRANSLATOR = str -> Formatter.format(I18n.get(str));
+		ContainerInterface.TRANSFORMAT = (str, objs) -> Formatter.format(I18n.get(str, objs));
 	}
 
 	private static Property<?> getProperty(BlockState state, String str){

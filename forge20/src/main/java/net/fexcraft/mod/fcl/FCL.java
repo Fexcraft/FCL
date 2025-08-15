@@ -108,21 +108,27 @@ public class FCL {
 	public static final RegistryObject<BlockEntityType<CraftingEntity>> CRAFTING_ENTITY = BLOCKENTS.register("crafting", () ->
 			BlockEntityType.Builder.of(CraftingEntity::new, CRAFTING_BLOCK.get()).build(null));
 	//
+	private static ConcurrentHashMap<String, TagKey<Item>> tagkeys = new ConcurrentHashMap<>();
 	public static Optional<MinecraftServer> SERVER = Optional.empty();
 	public static UniFCL CONFIG;
 
 	public FCL(){
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FCL20.MAINDIR = FMLPaths.GAMEDIR.get().toFile();
-		FCL20.init(!FMLEnvironment.production, FMLLoader.getDist().isClient());
+		FCL20.init(!FMLEnvironment.production);
+		if(FMLLoader.getDist().isClient()) FCL20.initClient();
 		CONFIG = new UniFCL(FMLPaths.CONFIGDIR.get().toFile());
-		WrapperHolder.INSTANCE = new WrapperHolderImpl();
-		UniStack.GETTER = obj -> {
-			ItemStack stack = (ItemStack)(obj instanceof StackWrapper ? ((StackWrapper)obj).direct() : obj);
-			return ((SWProvider)(Object)stack).fcl_wrapper();
+		UniStack.TAG_GETTER = key -> {
+			ArrayList<StackWrapper> list = new ArrayList<>();
+			if(!tagkeys.containsKey(key)){
+				tagkeys.put(key, ItemTags.create(new ResourceLocation(key)));
+			}
+			var tags = ForgeRegistries.ITEMS.tags().getTag(tagkeys.get(key));
+			for(Item item : tags){
+				list.add(UniStack.createStack(new ItemStack(item)));
+			}
+			return list;
 		};
-		UniEntity.GETTER = ent -> ((EWProvider)ent).fcl_wrapper();
-		UniChunk.GETTER = ck -> ((CWProvider)ck).fcl_wrapper();
 		EntityUtil.UI_OPENER = (player, ui, pos) -> {
 			try{
 				NetworkHooks.openScreen((ServerPlayer)player, new MenuProvider() {

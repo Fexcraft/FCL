@@ -15,11 +15,13 @@ sourceSets {
         java {
             srcDirs += 'src/main/java'
             srcDirs += new File(file('..'), "/common/src")
+            srcDirs += new File(file('..'), "/common20/src")
             srcDirs += new File(file('../..'), "/Json/src")
         }
         resources {
             srcDirs += 'src/main/resources'
             srcDirs += new File(file('..'), "/common/res")
+            srcDirs += new File(file('..'), "/common20/res")
         }
     }
 }
@@ -79,13 +81,13 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', mod_id
         }
 
-        data {
+        /*data {
             // example of overriding the workingDirectory set in configureEach above
             workingDirectory project.file('run-data')
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-        }
+        }*/
     }
 }
 

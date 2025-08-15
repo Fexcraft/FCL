@@ -25,10 +25,6 @@ import net.minecraft.world.item.TooltipFlag;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.util.*;
 import java.util.List;
 
@@ -148,7 +144,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			getFocused().keyPressed(key, code, mod);
 			return true;
 		}
-		boolean inv = minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(key, code));
+		boolean inv = minecraft.options.keyInventory.matches(key, code);
 		return inv ? true : super.keyPressed(key, code, mod);
 	}
 
@@ -163,7 +159,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 
 	@Override
 	public boolean charTyped(char c, int code){
-		boolean inv = minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(c, code));
+		boolean inv = minecraft.options.keyInventory.matches(c, code);
 		if(getFocused() instanceof EditBox){
 			getFocused().charTyped(c, code);
 			return true;
@@ -208,7 +204,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 				button.draw(this, null, ticks, leftPos, topPos, mx, my);
 			});
 			tab.buttons.forEach((key, button) -> {
-				if(button.text != null) button.text.draw(this, (UIElement)button, ticks, leftPos, topPos, mx, my);
+				if(button.text != null) button.text.draw(this, button, ticks, leftPos, topPos, mx, my);
 			});
 			tab.texts.forEach((key, text) -> text.draw(this, null, ticks, leftPos, topPos, mx, my));
 			tab.fields.forEach((key, field) -> field.draw(this, null, ticks, leftPos, topPos, mx, my));
@@ -229,9 +225,8 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			for(String str : tooltip) comtip.add(Component.literal(str));
 			matrix.renderTooltip(minecraft.font, comtip, Optional.empty(), mx, my);
 		}
-		Slot slot = getSlotUnderMouse();
-		if(slot != null && !slot.getItem().isEmpty()){
-			List<Component> list = slot.getItem().getTooltipLines(menu.player, TooltipFlag.ADVANCED);
+		if(hoveredSlot != null && !hoveredSlot.getItem().isEmpty()){
+			List<Component> list = hoveredSlot.getItem().getTooltipLines(menu.player, TooltipFlag.ADVANCED);
 			matrix.renderTooltip(minecraft.font, list, Optional.empty(), mx, my);
 		}
 	}
@@ -259,7 +254,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	}
 
 	public void bindTexture(IDL texture){
-		minecraft.textureManager.bindForSetup((ResourceLocation)texture);
+		minecraft.getTextureManager().bindForSetup((ResourceLocation)texture);
 	}
 
 	@Override
