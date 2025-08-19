@@ -25,7 +25,7 @@ public class UUIButton extends UIButton {
 	public void draw(Object gui, UIElement root, float ticks, int gl, int gt, int mx, int my){
 		if(!visible) return;
 		UniUI uui = (UniUI)gui;
-		if(texture != null) uui.bindTexture(texture);
+		if(texture != null) ui.drawer.bind(texture);
 		int u = enabled ? (hovered ? htx : tx) : dtx;
 		int v = enabled ? (hovered ? hty : ty) : dty;
 		ui.drawer.applyWhite();
