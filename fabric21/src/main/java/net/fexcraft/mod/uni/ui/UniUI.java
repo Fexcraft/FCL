@@ -16,6 +16,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
@@ -80,7 +81,6 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			@Override
 			public void bind(IDL texture){
 				actex = texture;
-				bindTexture(texture);
 			}
 
 			@Override
@@ -200,7 +200,6 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			UITab tab = it.next();
 			if(!tab.visible()) continue;
 			actex = tab.texture;
-			bindTexture(tab.texture);
 			tab.buttons.forEach((key, button) -> {
 				button.hovered(leftPos, topPos, mx, my);
 				button.draw(this, null, ticks, leftPos, topPos, mx, my);
@@ -225,12 +224,13 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		if(tooltip.size() > 0){
 			comtip.clear();
 			for(String str : tooltip) comtip.add(Component.literal(str));
-			//TODO matrix.renderTooltip(minecraft.font, comtip, Optional.empty(), mx, my);
+			matrix.setTooltipForNextFrame(minecraft.font, comtip, Optional.empty(), mx, my);
 		}
+		CreativeModeInventoryScreen e;
 		Slot slot = hoveredSlot;
 		if(slot != null && !slot.getItem().isEmpty()){
 			List<Component> list = slot.getItem().getTooltipLines(Item.TooltipContext.EMPTY, menu.player, TooltipFlag.ADVANCED);
-			//TODO matrix.renderTooltip(minecraft.font, list, Optional.empty(), mx, my);
+			matrix.setTooltipForNextFrame(minecraft.font, list, Optional.empty(), mx, my);
 		}
 	}
 
@@ -254,10 +254,6 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 
 	protected void postdraw(float ticks, int mx, int my){
 		this.ui.postdraw(ticks, mx, my);
-	}
-
-	public void bindTexture(IDL texture){
-		//TODO RenderType.guiTextured(texture.local());
 	}
 
 	@Override
