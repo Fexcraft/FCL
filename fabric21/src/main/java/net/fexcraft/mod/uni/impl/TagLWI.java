@@ -84,6 +84,12 @@ public class TagLWI implements TagLW {
 	}
 
 	@Override
+	public void remove(int index){
+		if(index < 0 || index >= list.size()) return;
+		list.remove(index);
+	}
+
+	@Override
 	public int size(){
 		return list.size();
 	}
