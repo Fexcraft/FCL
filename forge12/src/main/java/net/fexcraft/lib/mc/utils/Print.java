@@ -11,6 +11,7 @@ import net.fexcraft.mod.fcl.FCL;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -56,26 +57,26 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 	
 	public static void chat(ICommandSender sender, Object obj){
 		if(sender == null) log("SENDERNULL||" + obj.toString());
-		else sender.sendMessage(new TextComponentString("[DEBUG]: " + obj.toString()));
+		else sender.sendMessage(new TextComponentTranslation("[DEBUG]: " + obj.toString()));
 	}
 	
 	public static void chat(ICommandSender sender, Throwable obj){
 		if(sender == null) log("SENDERNULL||" + obj.toString());
-		else sender.sendMessage(new TextComponentString(ExceptionUtils.getStackTrace(obj)));
+		else sender.sendMessage(new TextComponentTranslation(ExceptionUtils.getStackTrace(obj)));
 	}
 	
 	public static void chat(ICommandSender sender, String string){
 		if(sender == null) log("SENDERNULL||" + string);
-		else sender.sendMessage(new TextComponentString(Formatter.format(string)));
+		else sender.sendMessage(new TextComponentTranslation(Formatter.format(string)));
 	}
 	
 	public static void chatnn(ICommandSender sender, String string){
 		if(sender == null) return;
-		sender.sendMessage(new TextComponentString(Formatter.format(string)));
+		sender.sendMessage(new TextComponentTranslation(Formatter.format(string)));
 	}
 	
 	public static void bar(EntityPlayer sender, String string){
-		sender.sendStatusMessage(new TextComponentString(Formatter.format(string)), true);
+		sender.sendStatusMessage(new TextComponentTranslation(Formatter.format(string)), true);
 	}
 	
 	public static void link(ICommandSender sender, String string, String link){
