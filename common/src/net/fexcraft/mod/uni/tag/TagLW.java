@@ -57,4 +57,11 @@ public interface TagLW extends Iterable<TagCW> {
 	public abstract boolean empty();
 
 	public TagType getType(int idx);
+
+	public default String[] toStringArray(){
+		String[] arr = new String[size()];
+		for(int i = 0; i < arr.length; i++) arr[i] = getString(i);
+		return arr;
+	}
+
 }
