@@ -2,7 +2,6 @@ package net.fexcraft.mod.fcl.util;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniStack;
@@ -12,6 +11,7 @@ import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
@@ -27,6 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -225,6 +226,13 @@ public class EntityWI implements EntityW {
 	public void send(String str, Object... args){
 		if(entity instanceof ServerPlayer == false) return;
 		((ServerPlayer)entity).sendSystemMessage(Component.translatable(str, args));
+	}
+
+	@Override
+	public void sendLink(Object root, String str){
+		if(entity instanceof ServerPlayer == false) return;
+		((ServerPlayer)entity).sendSystemMessage(Component.literal(str)
+			.withStyle(style -> style.withClickEvent(new ClickEvent.OpenUrl(URI.create(str))).withUnderlined(true)));
 	}
 
 	@Override
