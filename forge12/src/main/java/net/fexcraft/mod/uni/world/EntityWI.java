@@ -21,7 +21,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -228,9 +230,9 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public void sendLink(Object root, String url){
-		if(EnvInfo.CLIENT){
-			LinkOpener.open(root, url);
-		}
+		TextComponentString text = new TextComponentString(url);
+		text.setStyle(new Style().setUnderlined(true).setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
+		entity.sendMessage(text);
 	}
 
 	@Override
