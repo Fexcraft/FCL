@@ -11,8 +11,10 @@ import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -220,6 +222,13 @@ public class EntityWI implements EntityW {
 	@Override
 	public void send(String str, Object... args){
 		entity.sendSystemMessage(Component.translatable(str, args));
+	}
+
+	@Override
+	public void sendLink(Object root, String str){
+		if(entity instanceof ServerPlayer == false) return;
+		entity.sendSystemMessage(Component.literal(str)
+			.withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, str)).withUnderlined(true)));
 	}
 
 	@Override
