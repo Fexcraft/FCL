@@ -1,6 +1,7 @@
 package net.fexcraft.lib.frl.gen;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.GLO;
@@ -90,7 +91,7 @@ public class Generator<GL extends GLO> {
 		
 	}
 
-	protected static boolean[] intToBoolArray(ArrayList<Integer> array, int size){
+	protected static boolean[] intToBoolArray(List<Integer> array, int size){
 		boolean[] bool = new boolean[size];
 		if(array == null || array.size() == 0) return bool;
 		for(int i = 0; i < array.size(); i++){
