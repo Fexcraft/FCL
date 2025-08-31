@@ -1,6 +1,6 @@
 package net.fexcraft.lib.frl.gen;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.GLO;
@@ -25,7 +25,7 @@ public class Generator_Cuboid {
 		boolean centered = map.getValue("centered", false);
 		boolean[] rems = Generator.intToBoolArray(map.getArray("rem_poly"), 6);
 		boolean[] deuv = Generator.intToBoolArray(map.getArray("detached_uv"), 6);
-		ArrayList<float[]> uv = map.getArray("uv", 6, null);
+		List<float[]> uv = map.getArray("uv", 6, null);
 		float texw = map.getValue("texture_width");
 		float texh = map.getValue("texture_height");
 		if(centered){
@@ -34,7 +34,7 @@ public class Generator_Cuboid {
 			z -= d * 0.5f;
 		}
 		if(shaped){
-			ArrayList<Vec3f> array = map.getArray("corners", 8, null);
+			List<Vec3f> array = map.getArray("corners", 8, null);
 			Vec3f c0 = array.get(0) == null ? Generator.NULL_VEC : array.get(0);
 			Vec3f c1 = array.get(1) == null ? Generator.NULL_VEC : array.get(1);
 			Vec3f c2 = array.get(2) == null ? Generator.NULL_VEC : array.get(2);
