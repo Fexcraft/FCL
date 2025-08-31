@@ -2,6 +2,7 @@ package net.fexcraft.lib.frl.gen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 
@@ -18,21 +19,21 @@ public class ValueMap extends HashMap<String, Object> {
 		put(key, new ArrayList<T>());
 	}
 
-	public <T> ArrayList<T> getArray(String key, int size, T def){
+	public <T> List<T> getArray(String key, int size, T def){
 		if(!containsKey(key)){
-			ArrayList<T> list = new ArrayList<>();
+			List<T> list = new ArrayList<>();
 			for(int i = 0; i < size; i++) list.add(def);
 			put(key, list);
 		}
-		return (ArrayList<T>)get(key);
+		return (List<T>)get(key);
 	}
 
-	public <T> ArrayList<T> getArray(String key){
-		return (ArrayList<T>)get(key);
+	public <T> List<T> getArray(String key){
+		return (List<T>)get(key);
 	}
 
-	public <T> ArrayList<T> getArray(String key, Class<T> clazz){
-		return (ArrayList<T>)get(key);
+	public <T> List<T> getArray(String key, Class<T> clazz){
+		return (List<T>)get(key);
 	}
 	
 	public <T> T getValue(String key){
