@@ -4,6 +4,7 @@ import static net.fexcraft.lib.frl.gen.Generator.detached;
 import static net.fexcraft.lib.frl.gen.Generator.intToBoolArray;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.AxisRotator;
@@ -43,7 +44,7 @@ public class Generator_Cylinder {
 		boolean[] rems = intToBoolArray(map.getArray("rem_poly"), 6);
 		if(radius2 == 0f) rems[3] = true;
 		boolean[] deuv = intToBoolArray(map.getArray("detached_uv"), 6);
-		ArrayList<float[]> uv = map.getArray("uv", 6, null);
+		List<float[]> uv = map.getArray("uv", 6, null);
 		float texw = map.getValue("texture_width", 1f);
 		float texh = map.getValue("texture_height", 1f);
 		//boolean noinner = radius2 == 0f;
