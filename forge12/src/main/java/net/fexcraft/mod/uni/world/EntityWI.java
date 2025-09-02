@@ -3,8 +3,6 @@ package net.fexcraft.mod.uni.world;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.common.utils.Formatter;
-import net.fexcraft.lib.mc.utils.LinkOpener;
-import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.inv.StackWrapper;
@@ -229,7 +227,7 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
-	public void sendLink(Object root, String url){
+	public void sendLink(String url){
 		TextComponentString text = new TextComponentString(url);
 		text.setStyle(new Style().setUnderlined(true).setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
 		entity.sendMessage(text);
