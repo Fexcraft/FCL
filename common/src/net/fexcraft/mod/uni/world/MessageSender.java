@@ -11,7 +11,7 @@ public interface MessageSender {
 
 	public void send(String str, Object... args);
 
-	public default void sendLink(Object root, String url){
+	public default void sendLink(String url){
 		send(url);
 	}
 
