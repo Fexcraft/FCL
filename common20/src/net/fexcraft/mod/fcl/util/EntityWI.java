@@ -225,7 +225,7 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
-	public void sendLink(Object root, String str){
+	public void sendLink(String str){
 		if(entity instanceof ServerPlayer == false) return;
 		entity.sendSystemMessage(Component.literal(str)
 			.withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, str)).withUnderlined(true)));
