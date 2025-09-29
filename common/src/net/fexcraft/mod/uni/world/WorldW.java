@@ -22,6 +22,8 @@ public abstract class WorldW {
 
     public abstract Object direct();
 
+	public abstract WorldType type();
+
     public void setBlockState(V3I pos, StateWrapper state){
 		setBlockState(pos, state, 3);
 	}
@@ -30,8 +32,6 @@ public abstract class WorldW {
 
     public abstract void spawnBlockSeat(V3D add, EntityW player);
 
-	public abstract int dim();
-
 	public abstract void drop(StackWrapper stack, V3D vec);
 
 	public abstract StateWrapper getStateAt(V3I pos);
@@ -39,8 +39,6 @@ public abstract class WorldW {
 	public abstract List<EntityW> getPlayers();
 
 	public abstract boolean isPositionLoaded(V3I pos);
-
-	public abstract String dimkey();
 
 	public abstract EntityW getEntity(int ent);
 
