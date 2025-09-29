@@ -13,7 +13,6 @@ import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,10 +21,12 @@ import java.util.List;
 public class WorldWI extends WorldW {
 
 	protected MutableBlockPos mpos = new MutableBlockPos();
+	protected WorldType type;
 	protected World world;
 
 	public WorldWI(World level){
 		world = level;
+		type = new WorldType(world.provider.getDimension(), level.isRemote);
 	}
 
 	@Override
@@ -54,6 +55,11 @@ public class WorldWI extends WorldW {
 	}
 
 	@Override
+	public WorldType type(){
+		return type;
+	}
+
+	@Override
 	public void setBlockState(V3I pos, StateWrapper state, int flag) {
 		world.setBlockState(new BlockPos(pos.x, pos.y, pos.z), state.local(), flag);
 	}
@@ -61,11 +67,6 @@ public class WorldWI extends WorldW {
 	@Override
 	public void spawnBlockSeat(V3D vec, EntityW player){
 		//
-	}
-
-	@Override
-	public int dim(){
-		return world.provider.getDimension();
 	}
 
 	@Override
@@ -93,11 +94,6 @@ public class WorldWI extends WorldW {
 	@Override
 	public boolean isPositionLoaded(V3I pos){
 		return world.isBlockLoaded(mpos.setPos(pos.x, pos.y, pos.z));
-	}
-
-	@Override
-	public String dimkey(){
-		return dim() + (world.isRemote ? "c" : "s");
 	}
 
 	@Override
