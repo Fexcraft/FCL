@@ -85,7 +85,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 	@Override
 	public File getWorldFolder0(WorldW wr, String name){
 		World world = wr.local();
-		File wf = new File(world.getSaveHandler().getWorldDirectory(), (wr.dim() == 0 ? "" : world.provider.getSaveFolder()));
+		File wf = new File(world.getSaveHandler().getWorldDirectory(), (wr.type().int_key() == 0 ? "" : world.provider.getSaveFolder()));
 		wf = new File(wf, name);
 		if(!wf.exists()) wf.mkdirs();
 		return wf;
