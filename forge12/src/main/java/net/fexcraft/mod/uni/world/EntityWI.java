@@ -58,6 +58,9 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public WorldW getWorld(){
+		if(entity.world != world.direct()){
+			world = WrapperHolder.getWorld(entity.world);
+		}
 		return world;
 	}
 
