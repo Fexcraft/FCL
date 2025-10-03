@@ -9,19 +9,22 @@ public class WorldType {
 
 	protected final Object key;
 	protected final String skey;
+	protected final String okey;
 	protected final boolean client;
 
 	public WorldType(Object lkey, boolean remote){
 		key = lkey;
 		client = remote;
-		skey = key + (client ? "c" : "s");
+		skey = key + (client ? "-c" : "-s");
+		okey = key + (client ? "-s" : "-c");
 	}
 
-	public WorldType(String skey){
-		String rkey = skey.substring(0, skey.length() - 1);
+	public WorldType(String sidekey){
+		String rkey = sidekey.substring(0, sidekey.length() - 2);
 		key = EnvInfo.is112() ? Integer.parseInt(rkey) : rkey;
-		client = skey.endsWith("c");
-		this.skey = skey;
+		client = sidekey.endsWith("-c");
+		skey = sidekey;
+		okey = key + (client ? "-s" : "-c");
 	}
 
 	public Object key(){
@@ -32,8 +35,14 @@ public class WorldType {
 		return (int)key;
 	}
 
+	/** Local side key. */
 	public String side_key(){
 		return skey;
+	}
+
+	/** Receiver side key. */
+	public String rec_key(){
+		return okey;
 	}
 
 	public boolean client(){
