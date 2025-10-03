@@ -148,16 +148,6 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
-	public String dimid(){
-		return entity.dimension + "";
-	}
-
-	@Override
-	public int dim12(){
-		return entity.dimension;
-	}
-
-	@Override
 	public int getInventorySize(){
 		if(!isPlayer()) return 0;
 		return ((EntityPlayer)entity).inventory.mainInventory.size();
