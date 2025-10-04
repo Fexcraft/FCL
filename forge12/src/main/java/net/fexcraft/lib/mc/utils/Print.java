@@ -4,10 +4,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.zip.Deflater;
 
-import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.lib.common.utils.Formatter;
-import net.fexcraft.mod.fcl.FCL;
+import net.fexcraft.mod.uni.EnvInfo;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
@@ -102,19 +101,19 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 	}
 
 	public static void debug(Object obj){
-		if(Static.dev()){
+		if(EnvInfo.DEV){
 			log(obj);
 		}
 	}
 	
 	public static <T> T debugR(Object obj){
-		if(Static.dev()){ log(obj); }
+		if(EnvInfo.DEV){ log(obj); }
 		return (T)obj;
 	}
 
 	@SafeVarargs
 	public static <T> void debug(T... objs){
-		if(Static.dev()){
+		if(EnvInfo.DEV){
 			String str = "[\n";
 			for(int i = 0; i < objs.length; i++){
 				str += "\t" + (objs[i] == null ? ":null:" : String.valueOf(objs[i]) + (i == objs.length - 1 ? "" : ", ")) + "\n";
@@ -125,7 +124,7 @@ public class Print extends net.fexcraft.lib.common.utils.Print {
 	
 	@SideOnly(Side.CLIENT)
 	public static void debugChat(String string){
-		if(Static.dev()){
+		if(EnvInfo.DEV){
 			net.minecraft.client.Minecraft.getMinecraft().player.sendMessage(new TextComponentString(string));
 		}
 	}
