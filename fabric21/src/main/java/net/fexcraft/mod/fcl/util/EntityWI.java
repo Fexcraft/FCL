@@ -39,11 +39,13 @@ import java.util.UUID;
 public class EntityWI implements EntityW {
 
 	protected Entity entity;
+	protected WorldW world;
 	protected V3D prev = new V3D();
 	protected V3D pos = new V3D();
 
 	public EntityWI(Entity iah){
 		entity = iah;
+		world = WrapperHolder.getWorld(entity.level());
 	}
 
 	@Override
@@ -58,7 +60,10 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public WorldW getWorld(){
-		return WrapperHolder.getWorld(entity.level());
+		if(entity.level() != world.direct()){
+			world = WrapperHolder.getWorld(entity.level());
+		}
+		return world;
 	}
 
 	@Override
@@ -189,16 +194,6 @@ public class EntityWI implements EntityW {
 	@Override
 	public void closeUI(){
 		((ServerPlayer)entity).closeContainer();
-	}
-
-	@Override
-	public String dimid(){
-		return entity.level().dimension().location().toString();
-	}
-
-	@Override
-	public int dim12(){
-		return 0;
 	}
 
 	@Override
