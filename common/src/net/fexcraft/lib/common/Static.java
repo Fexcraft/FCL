@@ -1,5 +1,7 @@
 package net.fexcraft.lib.common;
 
+import net.fexcraft.mod.uni.EnvInfo;
+
 import java.io.InputStream;
 import java.util.Random;
 
@@ -9,9 +11,6 @@ import java.util.Random;
  *         General Class with (mostly) Static content.
  */
 public class Static {
-
-	private static boolean devmode = false;
-	private static boolean server = false;
 
 	public static final float PI = 3.14159265358979323846f;
 	public static final float PI2 = PI + PI;
@@ -48,14 +47,6 @@ public class Static {
 		return buff.toString();
 	}
 
-	public static final boolean setDevMode(boolean bool){
-		return devmode = bool;
-	}
-
-	public static final boolean setIsServer(boolean bool){
-		return server = bool;
-	}
-
 	public static final void halt(){
 		halt(1);
 	}
@@ -65,20 +56,8 @@ public class Static {
 	}
 
 	public static final void stop(){
-		if(devmode) halt(1);
+		if(EnvInfo.DEV) halt(1);
 		return;
-	}
-
-	public static final boolean dev(){
-		return devmode;
-	}
-
-	public static boolean isServer(){
-		return server;
-	}
-
-	public static boolean isClient(){
-		return !server;
 	}
 
 	public static InputStream getResource(String str){
@@ -106,7 +85,7 @@ public class Static {
 	}
 
     public static void sleep(long time){
-		if(!dev()) return;
+		if(!EnvInfo.DEV) return;
 		try {
 			Thread.sleep(time);
 		}
