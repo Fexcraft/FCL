@@ -6,6 +6,7 @@ import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.StateWrapper;
+import net.fexcraft.mod.uni.world.WorldType;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -24,11 +25,13 @@ import java.util.List;
 public class LevelW extends WorldW {
 
 	protected MutableBlockPos mpos = new MutableBlockPos();
+	protected WorldType type;
 	protected Level level;
 
 	public LevelW(Level world){
 		super();
 		level = world;
+		type = new WorldType(level.dimension().location(), level.isClientSide);
 	}
 
 	@Override
@@ -57,6 +60,11 @@ public class LevelW extends WorldW {
 	}
 
 	@Override
+	public WorldType type(){
+		return type;
+	}
+
+	@Override
 	public void setBlockState(V3I pos, StateWrapper state, int flag){
 		level.setBlock(new BlockPos(pos.x, pos.y, pos.z), state.local(), flag);
 	}
@@ -64,11 +72,6 @@ public class LevelW extends WorldW {
 	@Override
 	public void spawnBlockSeat(V3D add, EntityW player){
 		//
-	}
-
-	@Override
-	public int dim(){
-		return 0;
 	}
 
 	@Override
@@ -93,11 +96,6 @@ public class LevelW extends WorldW {
 	@Override
 	public boolean isPositionLoaded(V3I pos){
 		return level.isLoaded(mpos.set(pos.x, pos.y, pos.z));
-	}
-
-	@Override
-	public String dimkey(){
-		return level.dimension().location() + (level.isClientSide ? "c" : "s");
 	}
 
 	@Override
