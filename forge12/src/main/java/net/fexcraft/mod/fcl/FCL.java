@@ -19,7 +19,6 @@ import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.render.FCLBlockModel;
 import net.fexcraft.lib.mc.utils.CapabilityEvents;
 import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.uni.impl.*;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
@@ -43,11 +42,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -75,7 +76,6 @@ public class FCL {
 	public static final Logger LOGGER = LogManager.getLogger("FCL");
 	@Mod.Instance("fcl")
 	private static FCL instance;
-	private static Side side;
 	public static UniFCL CONFIG;
 
 	@Mod.EventHandler
@@ -106,8 +106,6 @@ public class FCL {
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_FOOD, item -> item instanceof ItemFood);
 		UniInventory.IMPL = UniInventory12.class;
 		UniFluidTank.IMPL = UniFluidTank12.class;
-		Static.setDevMode(EnvInfo.DEV);
-		Static.setIsServer((side = event.getSide()).isServer());
 		if(EnvInfo.CLIENT){
 			UITab.IMPLEMENTATION = UUITab.class;
 			UIButton.IMPLEMENTATION = UUIButton.class;
@@ -142,6 +140,7 @@ public class FCL {
 			return list;
 		};
 		FCLRegistry.prepare(event.getSide(), event.getAsmData());
+		MinecraftForge.EVENT_BUS.register(new OnPlayerClone());
 		if(event.getSide().isClient()){
 			net.fexcraft.lib.mc.render.LoaderReg.ister();
 			net.fexcraft.lib.common.math.AxisRotator.DefHolder.DEF_IMPL = net.fexcraft.lib.mc.utils.Axis3DL.class;
@@ -200,10 +199,6 @@ public class FCL {
 	
 	public static FCL getInstance(){
 		return instance;
-	}
-	
-	public static Side getSide(){
-		return side;
 	}
 	
 	/*public File getConfigDirectory(){
