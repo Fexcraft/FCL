@@ -23,6 +23,7 @@ import net.fexcraft.lib.mc.api.registry.fItem;
 import net.fexcraft.lib.mc.api.registry.fModel;
 import net.fexcraft.lib.mc.api.registry.fTESR;
 import net.fexcraft.lib.mc.utils.Print;
+import net.fexcraft.mod.uni.EnvInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -122,7 +123,7 @@ public class FCLRegistry {
 					if(mBlock instanceof ITileEntityProvider){
 						try{ GameRegistry.registerTileEntity(block.tileentity(), mBlock.getRegistryName()); }
 						catch(IllegalArgumentException e){
-							if(Static.dev()){
+							if(EnvInfo.DEV){
 								e.printStackTrace();
 								if(e.getMessage() == null || !e.getMessage().equals("value already present: class net.minecraft.tileentity.TileEntity")){
 									Static.halt();
@@ -203,7 +204,7 @@ public class FCLRegistry {
 		}
 		
 		private final void registerModelLoc(Item item){
-			if(FCL.getSide().isServer()) return;
+			if(!EnvInfo.CLIENT) return;
 			if(this.meta.get(item.getRegistryName()) != null){
 				int meta = this.meta.get(item.getRegistryName());
 				if(this.arr.get(item.getRegistryName()) == null){
@@ -363,7 +364,7 @@ public class FCLRegistry {
 
 	@SuppressWarnings({ "rawtypes" })
 	public static void registerTESRs(){
-		if(FCL.getSide().isServer()) return;
+		if(!EnvInfo.CLIENT) return;
 		Set<ASMData> data = table.getAll(tesr);
 		for(ASMData entry : data){
 			try{
