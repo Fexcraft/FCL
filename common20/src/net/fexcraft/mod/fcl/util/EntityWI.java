@@ -24,6 +24,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -37,11 +38,13 @@ import java.util.UUID;
 public class EntityWI implements EntityW {
 
 	protected Entity entity;
+	protected WorldW world;
 	protected V3D prev = new V3D();
 	protected V3D pos = new V3D();
 
 	public EntityWI(Entity iah){
 		entity = iah;
+		world = WrapperHolder.getWorld(entity.level());
 	}
 
 	@Override
@@ -56,7 +59,10 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public WorldW getWorld(){
-		return WrapperHolder.getWorld(entity.level());
+		if(entity.level() != world.direct()){
+			world = WrapperHolder.getWorld(entity.level());
+		}
+		return world;
 	}
 
 	@Override
@@ -187,16 +193,6 @@ public class EntityWI implements EntityW {
 	@Override
 	public void closeUI(){
 		((Player)entity).closeContainer();
-	}
-
-	@Override
-	public String dimid(){
-		return entity.level().dimension().location().toString();
-	}
-
-	@Override
-	public int dim12(){
-		return 0;
 	}
 
 	@Override
