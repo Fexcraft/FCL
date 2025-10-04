@@ -1,11 +1,10 @@
 package net.fexcraft.mod.uni.util;
 
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber
 public class OnPlayerClone {
 
 	@SubscribeEvent
