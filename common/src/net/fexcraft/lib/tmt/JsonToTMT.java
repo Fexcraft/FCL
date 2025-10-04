@@ -3,9 +3,9 @@ package net.fexcraft.lib.tmt;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.common.json.JsonUtil;
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.common.utils.Print;
+import net.fexcraft.mod.uni.EnvInfo;
 
 /**
 * Tool to parse `ModelRendererTurbo` objects from JSON.
@@ -132,7 +132,7 @@ public class JsonToTMT {
 
 	public final static ModelRendererTurbo[] parse(Object base, String string, JsonMap map, int tx, int ty){
 		if(base == null){
-			if(Static.dev()){
+			if(EnvInfo.DEV){
 				Static.halt();
 			}
 			else{
