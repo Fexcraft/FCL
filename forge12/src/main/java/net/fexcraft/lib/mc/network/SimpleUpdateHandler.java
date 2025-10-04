@@ -9,6 +9,7 @@ import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.mod.uni.EnvInfo;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
@@ -132,7 +133,7 @@ public class SimpleUpdateHandler{
 					for(String modid : mods_to_update){
 						String string = update_message_queue.get(modid);
 						if(string == null || string.length() < 4) continue;
-						if(Static.dev()){
+						if(EnvInfo.DEV){
 							Print.log(Formatter.format(update_message_queue.get(modid)));
 						}
 						else{
