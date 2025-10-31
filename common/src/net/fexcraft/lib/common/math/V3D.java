@@ -5,7 +5,13 @@ package net.fexcraft.lib.common.math;
 */
 public class V3D {
 
-	public static final V3D NULL = new V3D();
+	public static final V3D NULL = new V3D(){
+		@Override
+		public V3D set(double x, double y, double z){
+			x = y = z = 0;
+			return this;
+		}
+	};
 	public double x, y, z;
 
     public V3D(){
@@ -164,6 +170,10 @@ public class V3D {
 
 	public V3D normalize(){
 		return normalize(null);
+	}
+
+	public V3D norm(){
+		return normalize(this);
 	}
 
 	public V3D set(double dx, double dy, double dz){
