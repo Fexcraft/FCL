@@ -1,5 +1,6 @@
 package net.fexcraft.lib.frl;
 
+import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.Vec3f;
 
 /**
@@ -39,6 +40,20 @@ public class Vertex {
 
 	public Vertex(Vertex vertex){
 		this(vertex.vector.x, vertex.vector.y, vertex.vector.z);
+	}
+
+	public Vertex(double x, double y, double z){
+		this.vector = new Vec3f(x, y, z);
+	}
+
+	public Vertex(V3D vec){
+		this.vector = new Vec3f(vec.x, vec.y, vec.z);
+	}
+
+	public Vertex(V3D vec, float u, float v){
+		this(vec);
+		this.u = u;
+		this.v = v;
 	}
 
 	public void pos(float x, float y, float z){
