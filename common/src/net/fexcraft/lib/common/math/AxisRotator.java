@@ -1,5 +1,6 @@
 package net.fexcraft.lib.common.math;
 
+@Deprecated
 public interface AxisRotator {
 
 	public void setAngles(float x, float y, float z);
