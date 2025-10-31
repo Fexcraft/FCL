@@ -1,6 +1,8 @@
 package net.fexcraft.lib.common.math;
 
 /**
+ * "Mutable" V3D, most methods do change the instance directly instead of returning a new vector.
+ *
  * @author Ferdinand Calo' (FEX___96)
 */
 public class MV3D extends V3D {
