@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.Vec3f;
 
 /**
@@ -13,25 +14,25 @@ import net.fexcraft.lib.common.math.Vec3f;
  */
 public class Path {
 	
-	public Vec3f start, end;
-	public Vec3f[] rootpath;
-	public Vec3f[] vecpath;
-	public float length;
+	public V3D start, end;
+	public V3D[] rootpath;
+	public V3D[] vecpath;
+	public double length;
 	public int segmentator = 4;
 	
-	public Path(Vec3f[] vec316fs, Vec3f vector){
+	public Path(V3D[] vec316fs, V3D vector){
 		start = vec316fs[0];
 		end = vector;
-		rootpath = new Vec3f[vec316fs.length + 1];
+		rootpath = new V3D[vec316fs.length + 1];
 		for(int i = 0; i < rootpath.length - 1; i++) rootpath[i] = vec316fs[i].copy();
 		rootpath[rootpath.length - 1] = vector.copy();
 		construct();
 	}
 
-	public Path(Vec3f[] vec316fs){
+	public Path(V3D[] vec316fs){
 		start = vec316fs[0];
 		end = vec316fs[vec316fs.length - 1];
-		rootpath = new Vec3f[vec316fs.length];
+		rootpath = new V3D[vec316fs.length];
 		for(int i = 0; i < rootpath.length; i++) rootpath[i] = vec316fs[i].copy();
 		construct();
 	}
@@ -39,7 +40,7 @@ public class Path {
 	public Path(){}
 	
 	protected void construct(){
-		vecpath = new Vec3f[rootpath.length];
+		vecpath = new V3D[rootpath.length];
 		if(vecpath.length == 2){
 			vecpath[0] = rootpath[0]; vecpath[1] = rootpath[rootpath.length - 1];
 			this.length = vecpath[0].dis(vecpath[1]);
@@ -49,13 +50,13 @@ public class Path {
 				vecpath[i] = rootpath[i];
 			}
 			//
-			Vec3f[] vecs = curve(vecpath);
-			vecpath = new Vec3f[vecs.length + 2];
-			vecpath[0] = new Vec3f(start);
+			V3D[] vecs = curve(vecpath);
+			vecpath = new V3D[vecs.length + 2];
+			vecpath[0] = new V3D(start);
 			for(int i = 0; i < vecs.length; i++){
 				vecpath[i + 1] = vecs[i];
 			}
-			vecpath[vecpath.length - 1] = new Vec3f(end);
+			vecpath[vecpath.length - 1] = new V3D(end);
 			this.length = this.calcLength();
 		}
 	}
@@ -65,14 +66,14 @@ public class Path {
 	 * @param vecpoints
 	 * @return
 	 */
-	private Vec3f[] curve(Vec3f[] vecpoints){
-		ArrayList<Vec3f> vecs = new ArrayList<Vec3f>();
-		float length = getLength(vecpoints);
-		float increment = 1 / length / segmentator;
+	private V3D[] curve(V3D[] vecpoints){
+		ArrayList<V3D> vecs = new ArrayList<>();
+		double length = getLength(vecpoints);
+		double increment = 1 / length / segmentator;
 		double d = 0; while(d < 1){
-			Vec3f[] moved = vecpoints;
+			V3D[] moved = vecpoints;
 			while(moved.length > 2){
-				Vec3f[] arr = new Vec3f[moved.length - 1];
+				V3D[] arr = new V3D[moved.length - 1];
 				for(int i = 0; i < moved.length - 1; i++){
 					arr[i] = move(moved[i], moved[i + 1], moved[i].dis(moved[i + 1]) * d);
 				}
@@ -81,14 +82,14 @@ public class Path {
 			d += increment;//0.0625//0.05;
 			vecs.add(move(moved[0], moved[1], moved[0].dis(moved[1]) * d));
 		}
-		return vecs.toArray(new Vec3f[0]);
+		return vecs.toArray(new V3D[0]);
 	}
 
-	public static Vec3f move(Vec3f vec0, Vec3f vec1, double dis){
+	public static V3D move(V3D vec0, V3D vec1, double dis){
 		double[] dest = newVector(vec1), beg = newVector(vec0);
     	dest = direction(dest[0] - beg[0], dest[1] - beg[1], dest[2] - beg[2]);
     	dest = newVector(beg[0] + (dest[0] * dis), beg[1] + (dest[1] * dis), beg[2] + (dest[2] * dis));
-		return new Vec3f(dest[0], dest[1], dest[2]);
+		return new V3D(dest[0], dest[1], dest[2]);
 	}
 	
 	public static double[] newVector(double x, double y, double z){
@@ -108,34 +109,34 @@ public class Path {
     	double l = length(arr[0], arr[1], arr[2]); return new double[]{ arr[0] / l, arr[1] / l, arr[2] / l };
     }
 
-	public static double[] newVector(Vec3f vec){
+	public static double[] newVector(V3D vec){
 		return new double[]{ vec.x, vec.y, vec.z };
 	}
 	
-	public float getLength(Vec3f[] vecs){
+	public double getLength(V3D[] vecs){
 		vecs = vecs == null ? vecpath : vecs;
-		float temp = 0;
+		double temp = 0;
 		for(int i = 0; i < vecs.length - 1; i++){
 			temp += vecs[i].dis(vecs[i + 1]);
 		}
 		return temp;
 	}
 	
-	protected float calcLength(){
+	protected double calcLength(){
 		return getLength(null);
 	}
 	
 	public Path read(JsonMap map){
 		JsonArray arr = map.getArray("start");
-		start = new Vec3f(arr.get(0).float_value(), arr.get(1).float_value(), arr.get(2).float_value());
+		start = new V3D(arr.get(0).float_value(), arr.get(1).float_value(), arr.get(2).float_value());
 		arr = map.getArray("end");
-		end = new Vec3f(arr.get(0).float_value(), arr.get(1).float_value(), arr.get(2).float_value());
+		end = new V3D(arr.get(0).float_value(), arr.get(1).float_value(), arr.get(2).float_value());
 		arr = map.getArray("vectors");
-		rootpath = new Vec3f[arr.value.size()];
+		rootpath = new V3D[arr.value.size()];
 		int[] idx = { 0 };
 		arr.value.forEach(entry -> {
 			JsonArray array = entry.asArray();
-			rootpath[idx[0]++] = new Vec3f(array.get(0).float_value(), array.get(1).float_value(), array.get(2).float_value());
+			rootpath[idx[0]++] = new V3D(array.get(0).float_value(), array.get(1).float_value(), array.get(2).float_value());
 		});
 		construct();
 		this.length = map.has("length") ? map.getFloat("length", 0) : calcLength();
@@ -154,7 +155,7 @@ public class Path {
 		arr.add(end.z);
 		map.add("end", arr);
 		JsonArray array = new JsonArray();
-		for(Vec3f vec : rootpath){
+		for(V3D vec : rootpath){
 			arr = new JsonArray();
 			arr.add(vec.x);
 			arr.add(vec.y);
@@ -166,59 +167,40 @@ public class Path {
 		return map;
 	}
 	
-	public Vec3f getFirstVector(){
+	public V3D getFirstVector(){
 		return vecpath.length == 0 ? null : vecpath[0];
 	}
 	
-	public Vec3f getLastVector(){
+	public V3D getLastVector(){
 		return vecpath.length == 0 ? null : vecpath[vecpath.length - 1];
 	}
 	
 	public <T extends Path> T createOpposite(T instance){
 		instance.start = end;
 		instance.end = start;
-		instance.rootpath = new Vec3f[rootpath.length]; int j = rootpath.length - 1;
+		instance.rootpath = new V3D[rootpath.length]; int j = rootpath.length - 1;
 		for(int i = 0; i < instance.rootpath.length; i++){ instance.rootpath[i] = rootpath[j--].copy(); }
 		instance.construct(); instance.length = instance.calcLength();
 		return instance;
 	}
 	
-	public float[] getPosition(float distance){
+	public V3D getVectorPosition(double distance, boolean reverse){
+		if(reverse) distance = this.oppositePassed(distance);
 		if(distance >= this.length){
-			if(distance == this.length) vecpath[vecpath.length - 1].toFloatArray();
-			return new float[]{ distance - length };
+			return new V3D(vecpath[vecpath.length - 1]);
 		}
-		float traveled = 0, temp, multi;
+		double traveled = 0, temp, multi;
 		for(int i = 0; i < vecpath.length - 1; i++){
 			temp = traveled + (multi = vecpath[i].dis(vecpath[i + 1]));
 			if(temp >= distance){
-				if(temp == distance) return vecpath[i + 1].toFloatArray();
-				return vecpath[i + 1].distance(vecpath[i], temp - distance).toFloatArray();
-			}
-			else{
-				traveled += multi;
-			}
-		}
-		return vecpath[0].toFloatArray();
-	}
-	
-	public Vec3f getVectorPosition(float distance, boolean reverse){
-		if(reverse) distance = (float)this.oppositePassed(distance);
-		if(distance >= this.length){
-			return new Vec3f(vecpath[vecpath.length - 1]);
-		}
-		float traveled = 0, temp, multi;
-		for(int i = 0; i < vecpath.length - 1; i++){
-			temp = traveled + (multi = vecpath[i].dis(vecpath[i + 1]));
-			if(temp >= distance){
-				if(temp == distance) return new Vec3f(vecpath[i + 1]);
+				if(temp == distance) return new V3D(vecpath[i + 1]);
 				return vecpath[i + 1].distance(vecpath[i], temp - distance);
 			}
 			else{
 				traveled += multi;
 			}
 		}
-		return new Vec3f(vecpath[0]);
+		return new V3D(vecpath[0]);
 	}
 	
 	@Override
@@ -226,7 +208,7 @@ public class Path {
 		return String.format("Path[%s-%s, %s]", start, end, vecpath.length);
 	}
 
-	public float oppositePassed(float sec){
+	public double oppositePassed(double sec){
 		return sec >= length ? 0 : sec <= 0 ? length : this.length - sec;
 	}
 
