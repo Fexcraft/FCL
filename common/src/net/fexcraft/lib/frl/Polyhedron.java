@@ -118,6 +118,20 @@ public class Polyhedron<GL extends GLO> {
 		return this;
 	}
 
+	public Polyhedron<GL> pos(double x, double y, double z){
+		posX = (float)x;
+		posY = (float)y;
+		posZ = (float)z;
+		return this;
+	}
+
+	public Polyhedron<GL> rot(double x, double y, double z){
+		rotX = (float)x;
+		rotY = (float)y;
+		rotZ = (float)z;
+		return this;
+	}
+
 	public Generator<GL> newGen(){
 		return new Generator<GL>(this);
 	}
