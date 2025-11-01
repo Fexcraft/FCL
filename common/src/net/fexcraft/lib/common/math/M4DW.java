@@ -69,7 +69,7 @@ public abstract class M4DW {
 
 	/** Sets the matrix rotation values and updates/normalizes the matrix.  */
 	public void setRadians(double y, double p, double r){
-		reset(0, 0, 0);
+		reset(1, 0, 0);
 		yaw = y;
 		pit = p;
 		rol = r;
@@ -84,7 +84,7 @@ public abstract class M4DW {
 
 	/** Adds to the matrix rotation values and updates/normalizes the matrix.  */
 	public void addRadians(double y, double p, double r){
-		reset(0, 0, 0);
+		reset(1, 0, 0);
 		yaw += y;
 		pit += p;
 		rol += r;
@@ -120,7 +120,7 @@ public abstract class M4DW {
 		yaw = (float)Math.atan2(dz, dx);
 		pit = (float)-Math.atan2(dy, dxz);
 		rol = 0;
-		reset(0, 0, 0);
+		reset(1, 0, 0);
 		rotateYPR();
 		norm();
 	}
