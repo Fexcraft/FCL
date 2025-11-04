@@ -20,6 +20,12 @@ plugins {
 
 apply plugin: 'forge'
 
+repositories {
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -46,7 +52,34 @@ minecraft {
 }
 
 dependencies {
-    //
+    implementation("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:$project.unimixinsVersion:dev")
+}
+
+runClient {
+    args("--tweakClass", "org.spongepowered.asm.launch.MixinTweaker")
+}
+
+runServer {
+    args("--tweakClass", "org.spongepowered.asm.launch.MixinTweaker")
+}
+
+def outSrgFile = "${tasks.compileJava.temporaryDir}/outSrg.srg"
+def outRefMapFile = "${tasks.compileJava.temporaryDir}/mixins.${project.modid}.refmap.json"
+
+jar {
+    manifest {
+        attributes (
+                'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+                'MixinConfigs': "${project.modid}.mixins.json",
+        )
+    }
+    from outRefMapFile;
+}
+
+tasks.compileJava.options.compilerArgs += ["-AreobfSrgFile=${tasks.reobf.srg}", "-AoutSrgFile=${outSrgFile}", "-AoutRefMapFile=${outRefMapFile}"];
+
+reobf {
+    addExtraSrgFile outSrgFile
 }
 
 processResources {
@@ -66,24 +99,6 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
-// This task creates a .jar file containing the source code of this mod.
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = "sources"
-    from sourceSets.main.allSource
-}
-
-// This task creates a .jar file containing a deobfuscated version of this mod, for other developers to use in a development environment.
-task devJar(type: Jar) {
-    classifier = "dev"
-    from sourceSets.main.output
-}
-
-// Creates the listed artifacts on building the mod.
-artifacts {
-    archives sourcesJar
-    archives devJar
-}
-
 // This block configures any maven publications you want to make.
 publishing {
     publications {
@@ -91,12 +106,6 @@ publishing {
         // Add any other artifacts here that you would like to publish!
             artifact(jar) {
                 builtBy build
-            }
-            artifact(sourcesJar) {
-                builtBy sourcesJar
-            }
-            artifact(devJar) {
-                builtBy devJar
             }
         }
     }
