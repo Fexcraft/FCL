@@ -14,10 +14,12 @@ public interface TagLW extends Iterable<TagCW> {
 
 	public double getDouble(int idx);
 
+	@Deprecated
 	public int getInteger(int idx);
 
 	public TagCW getCompound(int idx);
 
+	@Deprecated
 	public TagLW getList(int idx);
 
 	public void add(String value);
@@ -26,10 +28,12 @@ public interface TagLW extends Iterable<TagCW> {
 
 	public void add(double value);
 
+	@Deprecated
 	public void add(int value);
 
 	public void add(TagCW value);
 
+	@Deprecated
 	public void add(TagLW value);
 
 	public void remove(int index);
