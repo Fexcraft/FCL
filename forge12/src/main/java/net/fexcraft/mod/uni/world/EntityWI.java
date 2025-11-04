@@ -21,6 +21,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -211,12 +212,12 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public void send(String s){
-		entity.sendMessage(new TextComponentString(Formatter.format(I18n.translateToLocal(s))));
+		entity.sendMessage(new TextComponentTranslation(s));
 	}
 
 	@Override
 	public void send(String str, Object... args){
-		entity.sendMessage(new TextComponentString(Formatter.format(I18n.translateToLocalFormatted(str, args))));
+		entity.sendMessage(new TextComponentTranslation(str, args));
 	}
 
 	@Override
@@ -229,17 +230,17 @@ public class EntityWI implements EntityW {
 	@Override
 	public void bar(String s){
 		if(entity instanceof EntityPlayer){
-			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(I18n.translateToLocal(s))), true);
+			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentTranslation(s), true);
 		}
-		else entity.sendMessage(new TextComponentString(Formatter.format(s)));
+		else entity.sendMessage(new TextComponentTranslation(s));
 	}
 
 	@Override
 	public void bar(String s, Object... objs){
 		if(entity instanceof EntityPlayer){
-			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(I18n.translateToLocalFormatted(s, objs))), true);
+			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentTranslation(s, objs), true);
 		}
-		else entity.sendMessage(new TextComponentString(Formatter.format(s)));
+		else entity.sendMessage(new TextComponentTranslation(s));
 	}
 
 	@Override
