@@ -39,8 +39,12 @@ public class PacketFile implements PacketBase<PacketFile> {
 
     @Override
     public void decode(ByteBuf buffer){
-        lis = buffer.readCharSequence(buffer.readInt(), StandardCharsets.UTF_8).toString();
-        loc = buffer.readCharSequence(buffer.readInt(), StandardCharsets.UTF_8).toString();
+		byte[] dest = new byte[buffer.readInt()];
+		buffer.readBytes(dest);
+        lis = new String(dest, StandardCharsets.UTF_8);
+		dest = new byte[buffer.readInt()];
+		buffer.readBytes(dest);
+        loc = new String(dest, StandardCharsets.UTF_8);
         int length = buffer.readInt();
         if(length == 0) return;
         buffer.readBytes(img = new byte[length]);
