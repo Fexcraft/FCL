@@ -1,5 +1,7 @@
 package net.fexcraft.mod.uni;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import net.fexcraft.app.json.FJson;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
@@ -60,7 +62,9 @@ public class Pos {
 	public com.google.gson.JsonElement toJson(boolean asarray){
 		if(asarray){
 			com.google.gson.JsonArray array = new com.google.gson.JsonArray();
-			array.add(x); array.add(y); array.add(z);
+			array.add(new JsonPrimitive(x));
+			array.add(new JsonPrimitive(y));
+			array.add(new JsonPrimitive(z));
 			return array;
 		}
 		else{
