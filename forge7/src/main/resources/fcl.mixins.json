@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "net.fexcraft.mod.fcl.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "fcl.mixins.refmap.json",
+	"mixins": [
+		"ChunkMixin",
+		"StackMixin",
+		"EntityMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
