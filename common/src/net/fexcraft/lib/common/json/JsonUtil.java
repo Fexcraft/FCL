@@ -25,7 +25,7 @@ import net.fexcraft.lib.common.utils.Print;
  * @comment Main class for Json processing.
  */
 @Deprecated
-public class JsonUtil{
+public class JsonUtil {
 	
 	private static final JsonUtil instance = new JsonUtil();
 	private static final JsonParser parser = new JsonParser();
@@ -570,35 +570,35 @@ public class JsonUtil{
 	}
 
 	public static JsonArray toJsonArray(float[] numbers){
-		JsonArray array = new JsonArray(); for(float number : numbers) array.add(number); return array;
+		JsonArray array = new JsonArray(); for(float number : numbers) array.add(new JsonPrimitive(number)); return array;
 	}
 
 	public static JsonArray toJsonArray(double[] numbers){
-		JsonArray array = new JsonArray(); for(double number : numbers) array.add(number); return array;
+		JsonArray array = new JsonArray(); for(double number : numbers) array.add(new JsonPrimitive(number)); return array;
 	}
 
 	public static JsonArray toJsonArray(int[] numbers){
-		JsonArray array = new JsonArray(); for(int number : numbers) array.add(number); return array;
+		JsonArray array = new JsonArray(); for(int number : numbers) array.add(new JsonPrimitive(number)); return array;
 	}
 
 	public static JsonArray toJsonArray(byte[] numbers){
-		JsonArray array = new JsonArray(); for(byte number : numbers) array.add(number); return array;
+		JsonArray array = new JsonArray(); for(byte number : numbers) array.add(new JsonPrimitive(number)); return array;
 	}
 
 	public static JsonArray toJsonArray(short[] numbers){
-		JsonArray array = new JsonArray(); for(short number : numbers) array.add(number); return array;
+		JsonArray array = new JsonArray(); for(short number : numbers) array.add(new JsonPrimitive(number)); return array;
 	}
 
 	public static JsonArray toJsonArray(char[] numbers){
-		JsonArray array = new JsonArray(); for(char number : numbers) array.add(number); return array;
+		JsonArray array = new JsonArray(); for(char number : numbers) array.add(new JsonPrimitive(number)); return array;
 	}
 
 	public static JsonArray toJsonArray(long[] numbers){
-		JsonArray array = new JsonArray(); for(long number : numbers) array.add(number); return array;
+		JsonArray array = new JsonArray(); for(long number : numbers) array.add(new JsonPrimitive(number)); return array;
 	}
 
 	public static JsonArray toJsonArray(Number[] numbers){
-		JsonArray array = new JsonArray(); for(Number number : numbers) array.add(number); return array;
+		JsonArray array = new JsonArray(); for(Number number : numbers) array.add(new JsonPrimitive(number)); return array;
 	}
 
 	public static float[] getFloatArray(JsonArray array){
