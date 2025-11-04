@@ -31,7 +31,9 @@ public class PacketTag implements PacketBase<PacketTag> {
 
     @Override
     public void decode(ByteBuf buffer){
-        lis = buffer.readCharSequence(buffer.readInt(), StandardCharsets.UTF_8).toString();
+		byte[] dest = new byte[buffer.readInt()];
+		buffer.readBytes(dest);
+        lis = new String(dest, StandardCharsets.UTF_8);
         com = FCL.readTag(buffer);
     }
 
