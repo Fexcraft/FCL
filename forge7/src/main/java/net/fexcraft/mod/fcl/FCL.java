@@ -7,9 +7,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.uni.*;
-import net.fexcraft.mod.uni.impl.EntityWI;
-import net.fexcraft.mod.uni.impl.TagCWI;
-import net.fexcraft.mod.uni.impl.TagLWI;
+import net.fexcraft.mod.uni.impl.*;
 import net.fexcraft.mod.uni.inv.*;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
@@ -19,6 +17,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemLead;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Logger;
 
@@ -45,8 +44,8 @@ public class FCL {
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
 		TagLW.WRAPPER[0] = obj -> new TagLWI(obj);
 		UniEntity.ENTITY_GETTER = ent -> new EntityWI((Entity)ent);
-		/*UniChunk.CHUNK_GETTER = ck -> new ChunkWI((Chunk)ck);
-		UniStack.STACK_GETTER = obj -> SWI.parse(obj);*/
+		UniChunk.CHUNK_GETTER = ck -> new ChunkWI((Chunk)ck);
+		UniStack.STACK_GETTER = obj -> SWI.parse(obj);
 		UniStack.TAG_GETTER = (key) -> {
 			ArrayList<StackWrapper> list = new ArrayList<>();
 			ArrayList<ItemStack> stacks = OreDictionary.getOres(key);
