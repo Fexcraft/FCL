@@ -7,12 +7,6 @@ public interface ChunkW {
 
 	public boolean isOnClient();
 
-	@Deprecated
-	public int getX();
-
-	@Deprecated
-	public int getZ();
-
 	public int x();
 
 	public int z();
