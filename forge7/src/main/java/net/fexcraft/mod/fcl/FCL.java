@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.registry.GameRegistry;
 import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fcl.mixint.CWProvider;
@@ -17,6 +18,7 @@ import net.fexcraft.mod.fcl.mixint.EWProvider;
 import net.fexcraft.mod.fcl.mixint.SWProvider;
 import net.fexcraft.mod.fcl.packet.PacketFileHandler;
 import net.fexcraft.mod.fcl.packet.PacketHandler;
+import net.fexcraft.mod.fcl.util.CraftingTable;
 import net.fexcraft.mod.fcl.util.FclCmd;
 import net.fexcraft.mod.fcl.util.OnPlayerClone;
 import net.fexcraft.mod.uni.*;
@@ -126,6 +128,8 @@ public class FCL {
 			return list;
 		};
 		MinecraftForge.EVENT_BUS.register(new OnPlayerClone());
+		//
+		GameRegistry.registerBlock(new CraftingTable(), "crafting");
     }
 
 	@Mod.EventHandler
