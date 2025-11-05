@@ -12,11 +12,14 @@ import net.fexcraft.mod.uni.inv.*;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.ui.*;
+import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemLead;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Logger;
@@ -54,10 +57,10 @@ public class FCL {
 			}
 			return list;
 		};
-		/*WrapperHolder.INSTANCE = new WrapperHolderImpl();
+		WrapperHolder.INSTANCE = new WrapperHolderImpl();
 		WrapperHolder.LEVEL_PROVIDER = lvl -> new WorldWI((World)lvl);
-		ItemWrapper.GETTER = id -> Item.REGISTRY.getObject(new ResourceLocation(id));
-		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);*/
+		ItemWrapper.GETTER = Item.itemRegistry::getObject;
+		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_LEAD, item -> item instanceof ItemLead);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_FOOD, item -> item instanceof ItemFood);
 		/*UniInventory.IMPL = UniInventory12.class;
