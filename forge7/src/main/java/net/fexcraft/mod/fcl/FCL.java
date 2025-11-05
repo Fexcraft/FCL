@@ -7,13 +7,17 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fcl.mixint.CWProvider;
 import net.fexcraft.mod.fcl.mixint.EWProvider;
 import net.fexcraft.mod.fcl.mixint.SWProvider;
+import net.fexcraft.mod.fcl.packet.PacketFileHandler;
 import net.fexcraft.mod.fcl.packet.PacketHandler;
+import net.fexcraft.mod.fcl.util.FclCmd;
 import net.fexcraft.mod.fcl.util.OnPlayerClone;
 import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.impl.*;
@@ -80,13 +84,19 @@ public class FCL {
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_LEAD, item -> item instanceof ItemLead);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_FOOD, item -> item instanceof ItemFood);
+		UniEntity.GETTER = ent -> ((EWProvider)ent).fcl_wrapper();
+		UniChunk.GETTER = ck -> ((CWProvider)ck).fcl_wrapper();
+		UniStack.GETTER = stk -> {
+			ItemStack stack = (ItemStack)(stk instanceof StackWrapper ? ((StackWrapper)stk).direct() : stk);
+			return ((SWProvider)(Object)stack).fcl_wrapper();
+		};
 		UniInventory.IMPL = UniInventory7.class;
 		UniFluidTank.IMPL = UniFluidTank7.class;
 		if(EnvInfo.CLIENT){
-			/*UITab.IMPLEMENTATION = UUITab.class;
+			UITab.IMPLEMENTATION = UUITab.class;
 			UIButton.IMPLEMENTATION = UUIButton.class;
 			UIText.IMPLEMENTATION = UUIText.class;
-			UIField.IMPLEMENTATION = UUIField.class;*/
+			UIField.IMPLEMENTATION = UUIField.class;
 			ContainerInterface.TRANSLATOR = str -> Formatter.format(net.minecraft.client.resources.I18n.format(str));
 			ContainerInterface.TRANSFORMAT = (str, objs) -> Formatter.format(net.minecraft.client.resources.I18n.format(str, objs));
 		}
@@ -120,7 +130,7 @@ public class FCL {
 
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) throws Exception{
-		StackWrapper.EMPTY = new SWI(new ItemStack(Blocks.air));
+		StackWrapper.EMPTY = null;//TODO
 		NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
 		if(UniFCL.EXAMPLE_RECIPES){
 			FclRecipe.newBuilder("recipe.fcl.testing").add(new ItemStack(Blocks.cobblestone, 4)).output(new ItemStack(Blocks.stone_stairs, 5)).register();
@@ -131,19 +141,13 @@ public class FCL {
 
 	@Mod.EventHandler
 	public void init(FMLServerStartingEvent event){
-		//TODO register FCL command
+		event.registerServerCommand(new FclCmd());
 	}
 
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 		PacketHandler.init();
 		//
-		UniEntity.GETTER = ent -> ((EWProvider)ent).fcl_wrapper();
-		UniChunk.GETTER = ck -> ((CWProvider)ck).fcl_wrapper();
-		UniStack.GETTER = stk -> {
-			ItemStack stack = (ItemStack)(stk instanceof StackWrapper ? ((StackWrapper)stk).direct() : stk);
-			return ((SWProvider)(Object)stack).fcl_wrapper();
-		};
 		UniFCL.regTagPacketListener("fcl:ui", false, new UIPacketListener.Server());
 		if(event.getSide().isClient()){
 			UniFCL.regTagPacketListener("fcl:ui", true, new UIPacketListener.Client());
@@ -155,19 +159,31 @@ public class FCL {
 	}
 
 	public static IDL requestServerFile(String lis, String loc){
-		return null;
+		PacketHandler.getInstance().sendToServer((IMessage)new PacketFileHandler.I12_PacketImg().fill(lis, loc));
+		return IDLManager.getIDLCached(loc);
 	}
 
 	public static void sendServerFile(EntityW player, String lis, String loc, byte[] tex){
-
+		if(player.isOnClient()){
+			PacketHandler.getInstance().sendToServer((IMessage)new PacketFileHandler.I12_PacketImg().fill(lis, loc));
+		}
+		else{
+			PacketHandler.getInstance().sendTo((IMessage)new PacketFileHandler.I12_PacketImg().fill(lis, loc, tex), player.local());
+		}
 	}
 
 	public static void writeTag(ByteBuf buffer, TagCW com){
-
+		ByteBufUtils.writeTag(buffer, com.local());
 	}
 
 	public static TagCW readTag(ByteBuf buffer){
-		return null;
+		try{
+			return TagCW.wrap(ByteBufUtils.readTag(buffer));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return TagCW.create();
+		}
 	}
 
 }
