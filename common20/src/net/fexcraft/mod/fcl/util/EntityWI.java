@@ -324,11 +324,6 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
-	public void onPacket(EntityW player, TagCW packet){
-		//
-	}
-
-	@Override
 	public void setOnGround(boolean bool){
 		entity.setOnGround(bool);
 	}
