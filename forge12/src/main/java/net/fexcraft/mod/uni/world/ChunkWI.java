@@ -21,16 +21,6 @@ public class ChunkWI implements ChunkW {
 	}
 
 	@Override
-	public int getX(){
-		return chunk.x;
-	}
-
-	@Override
-	public int getZ(){
-		return chunk.z;
-	}
-
-	@Override
 	public int x(){
 		return chunk.x;
 	}
