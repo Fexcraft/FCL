@@ -2,20 +2,25 @@ package net.fexcraft.mod.uni.impl;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.inv.StackWrapper;
-import net.fexcraft.mod.uni.tag.TagCW;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.ui.UIKey;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.Vec3;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -186,121 +191,135 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public StackWrapper getHeldItem(boolean main){
-		return null;
+		return entity instanceof EntityPlayer ? UniStack.getStack(((EntityPlayer)entity).getHeldItem()) : StackWrapper.EMPTY;
 	}
 
 	@Override
 	public void closeUI(){
-
+		((EntityPlayer)entity).closeScreen();
 	}
 
 	@Override
 	public int getInventorySize(){
-		return 0;
+		if(!isPlayer()) return 0;
+		return ((EntityPlayer)entity).inventory.mainInventory.length;
 	}
 
 	@Override
 	public StackWrapper getStackAt(int idx){
-		return null;
+		return UniStack.getStack(((EntityPlayer)entity).inventory.mainInventory[idx]);
 	}
 
 	@Override
 	public void addStack(StackWrapper stack){
-
+		((EntityPlayer)entity).inventory.addItemStackToInventory(stack.local());
 	}
 
 	@Override
 	public V3D getEyeVec(){
-		return null;
+		return new V3D();
 	}
 
 	@Override
 	public V3D getLookVec(){
-		return null;
+		Vec3 vec = Minecraft.getMinecraft().thePlayer.getLookVec();
+		return new V3D(vec.xCoord, vec.yCoord, vec.zCoord);
 	}
 
 	@Override
 	public boolean isShiftDown(){
-		return false;
+		return entity.isSneaking();
 	}
 
 	@Override
 	public void playSound(Object event, float volume, float pitch){
-
+		entity.playSound(event.toString(), volume, pitch);
 	}
 
 	@Override
 	public void remove(){
-
+		entity.setDead();
 	}
 
 	@Override
 	public boolean isRemoved(){
-		return false;
-	}
-
-	@Override
-	public void onPacket(EntityW player, TagCW packet){
-
+		return entity.isDead;
 	}
 
 	@Override
 	public void setOnGround(boolean bool){
-
+		entity.onGround = bool;
 	}
 
 	@Override
 	public List<StackWrapper> copyInventory(){
-		return Collections.emptyList();
+		if(!isPlayer()) return Collections.emptyList();
+		ArrayList<StackWrapper> stacks = new ArrayList<>();
+		for(ItemStack stack : ((EntityPlayer)entity).inventory.mainInventory){
+			if(stack == null || stack.stackSize < 1) continue;
+			stacks.add(UniStack.createStack(stack.copy()));
+		}
+		return stacks;
 	}
 
 	@Override
 	public void mount(EntityW veh){
-
+		entity.mountEntity(veh.local());
 	}
 
 	@Override
 	public void dismount(V3D pos){
-
+		entity.mountEntity(null);
+		entity.setPosition(pos.x, pos.y, pos.z);
 	}
 
 	@Override
 	public boolean inSimRange(){
-		return false;
+		return true;
 	}
 
 	@Override
 	public int getTicks(){
-		return 0;
+		return entity.ticksExisted;
 	}
 
 	@Override
 	public int pushTicks(){
-		return 0;
+		return entity.ticksExisted++;
 	}
 
 	@Override
 	public EntityW getVehicle(){
-		return null;
+		return UniEntity.getEntityN(entity.ridingEntity);
 	}
 
 	@Override
 	public Object getVehicleDirect(){
-		return null;
+		return entity.ridingEntity;
 	}
 
 	@Override
 	public void setLeash(EntityW player, boolean attach){
-
+		if(!isLiving()) return;
+		EntityLiving ent = (EntityLiving)entity;
+		if(attach){
+			ent.setLeashedToEntity(player.local(), true);
+		}
+		else{
+			ent.clearLeashed(true, !player.isCreative());
+		}
 	}
 
 	@Override
 	public EntityW getLeash(){
-		return null;
+		if(!isLiving()) return null;
+		EntityLiving ent = (EntityLiving)entity;
+		return UniEntity.getEntityN(ent.getLeashedToEntity());
 	}
 
 	@Override
 	public void move(V3D move){
-
+		entity.moveEntity(move.x, move.y, move.z);
 	}
+
 }
