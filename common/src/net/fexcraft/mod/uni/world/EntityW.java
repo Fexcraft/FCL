@@ -88,8 +88,6 @@ public interface EntityW extends MessageSender {
 
 	public boolean isRemoved();
 
-	public void onPacket(EntityW player, TagCW packet);
-
 	public void setOnGround(boolean bool);
 
 	public List<StackWrapper> copyInventory();
