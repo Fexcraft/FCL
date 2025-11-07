@@ -53,7 +53,7 @@ public class TagLWI implements TagLW {
 
 	@Override
 	public TagLW getList(int idx){
-		return new TagLWI((NBTTagList)list.get(idx));
+		return new TagLWI(list.get(idx));
 	}
 
 	@Override
