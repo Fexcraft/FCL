@@ -1,7 +1,5 @@
 package net.fexcraft.lib.common.math;
 
-import net.fexcraft.mod.uni.tag.TagLW;
-
 /**
  * @author Ferdinand Calo' (FEX___96)
 */
@@ -48,11 +46,11 @@ public class V3I {
 		z = array.length >= index ? array[index] : 0;
 	}
 
-	public V3I(TagLW list){
+	/*public V3I(TagLW list){
 		x = list.size() > 0 ? list.getInteger(0) : 0;
 		y = list.size() > 1 ? list.getInteger(1) : 0;
 		z = list.size() > 2 ? list.getInteger(2) : 0;
-	}
+	}*/
 
 	public V3I sub(V3I vec){
         return sub(vec.x, vec.y, vec.z);
@@ -172,14 +170,6 @@ public class V3I {
 
 	public static V3I fromString(String str){
 		return new V3I(str.split(";"), 0);
-	}
-
-	public TagLW toLW(){
-		TagLW list = TagLW.create();
-		list.add(x);
-		list.add(y);
-		list.add(z);
-		return list;
 	}
 
 }
