@@ -2,6 +2,7 @@ package net.fexcraft.mod.uni.world;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.inv.StackWrapper;
@@ -13,14 +14,17 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -209,12 +213,12 @@ public class EntityWI implements EntityW {
 
 	@Override
 	public void send(String s){
-		entity.sendMessage(new TextComponentTranslation(s));
+		entity.sendMessage(new TextComponentString(Formatter.format(I18n.translateToLocal(s))));
 	}
 
 	@Override
 	public void send(String str, Object... args){
-		entity.sendMessage(new TextComponentTranslation(str, args));
+		entity.sendMessage(new TextComponentString(Formatter.format(I18n.translateToLocalFormatted(str, args))));
 	}
 
 	@Override
@@ -227,15 +231,15 @@ public class EntityWI implements EntityW {
 	@Override
 	public void bar(String s){
 		if(entity instanceof EntityPlayer){
-			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentTranslation(s), true);
+			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(I18n.translateToLocal(s))), true);
 		}
-		else entity.sendMessage(new TextComponentTranslation(s));
+		else entity.sendMessage(new TextComponentString(Formatter.format(s)));
 	}
 
 	@Override
 	public void bar(String s, Object... objs){
 		if(entity instanceof EntityPlayer){
-			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentTranslation(s, objs), true);
+			((EntityPlayer)entity.getCommandSenderEntity()).sendStatusMessage(new TextComponentString(Formatter.format(I18n.translateToLocalFormatted(s, objs))), true);
 		}
 		else entity.sendMessage(new TextComponentTranslation(s));
 	}
@@ -298,6 +302,12 @@ public class EntityWI implements EntityW {
 	@Override
 	public void move(V3D move){
 		entity.move(MoverType.SELF, move.x, move.y, move.z);
+	}
+
+	@Override
+	public void breakBlockAt(V3D pos){
+		if(entity.world.isRemote || !isPlayer()) return;
+		((EntityPlayerMP)entity).interactionManager.tryHarvestBlock(new BlockPos(pos.x, pos.y, pos.z));
 	}
 
 	@Override
