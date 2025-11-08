@@ -117,4 +117,6 @@ public interface EntityW extends MessageSender {
 
 	public void move(V3D move);
 
+	public void breakBlockAt(V3D pos);
+
 }
