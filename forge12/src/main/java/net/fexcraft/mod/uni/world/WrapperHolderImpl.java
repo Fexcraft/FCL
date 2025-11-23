@@ -166,6 +166,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 			return TagCW.wrap(CompressedStreamTools.read(file));
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			return TagCW.create();
 		}
 	}
