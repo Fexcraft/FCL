@@ -244,7 +244,7 @@ public class FCL implements ModInitializer {
 
 	private void init(boolean dev){
 		EnvInfo.CLIENT = false;
-		EnvInfo.DEV = dev;
+		EnvInfo.DEV = dev || EnvInfo.DEV;
 		UniReg.LOADER_VERSION = "1.21";
 		TagCW.WRAPPER[0] = com -> {
 			if(com instanceof ValueInput) return new TagCWVI((ValueInput)com);
