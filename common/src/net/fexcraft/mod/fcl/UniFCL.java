@@ -76,7 +76,7 @@ public class UniFCL extends ConfigBase {
 			.req(false, true)
 		);
 		entries.add(new ConfigEntry(this, "testing", "dev-mode", false)
-			.cons((entry, map) -> EnvInfo.DEV = entry.getBoolean(map))
+			.cons((entry, map) -> EnvInfo.DEV = entry.getBoolean(map) || EnvInfo.DEV)
 			.info("If FCL DEV mode is true, related mods may print more information into the logs or specific features may work differently.",
 				"Do not change this setting unless you know what you're doing.")
 			.req(false, false)
