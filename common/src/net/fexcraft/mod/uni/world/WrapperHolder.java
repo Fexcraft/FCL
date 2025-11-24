@@ -1,6 +1,7 @@
 package net.fexcraft.mod.uni.world;
 
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -132,6 +133,10 @@ public abstract class WrapperHolder {
 	public abstract void reset();
 	
 	public static TagCW read(File file){
+		if(!file.exists()){
+			FCL.LOGGER.info("Returning empty tag compound, file does not exists: " + file.getAbsolutePath());
+			return TagCW.create();
+		}
 		return INSTANCE.read0(file);
 	}
 	
