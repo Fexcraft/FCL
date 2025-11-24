@@ -60,7 +60,7 @@ public class FCL20 {
 
 	public static void init(boolean dev){
 		EnvInfo.CLIENT = false;
-		EnvInfo.DEV = dev;
+		EnvInfo.DEV = dev || EnvInfo.DEV;
 		UniReg.LOADER_VERSION = "1.20";
 		WrapperHolder.INSTANCE = new WrapperHolderImpl();
 		UniStack.GETTER = obj -> {
