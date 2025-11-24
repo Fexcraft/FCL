@@ -4,6 +4,7 @@ import com.google.common.io.Files;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.fcl.ui.*;
 import net.fexcraft.mod.uni.ConfigBase;
+import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.packet.PacketFileListener;
@@ -74,6 +75,12 @@ public class UniFCL extends ConfigBase {
 			.info("Should FCL testing/example recipes in the Crafting block be enabled?")
 			.req(false, true)
 		);
+		entries.add(new ConfigEntry(this, "testing", "dev-mode", false)
+			.cons((entry, map) -> EnvInfo.DEV = entry.getBoolean(map))
+			.info("If FCL DEV mode is true, related mods may print more information into the logs or specific features may work differently.",
+				"Do not change this setting unless you know what you're doing.")
+			.req(false, false)
+		);
 		entries.add(new ConfigEntry(this, "general", "url-textures", true)
 			.cons((entry, map) -> URL_TEXTURES = entry.getBoolean(map))
 			.info("Should URL (http/online) textures be enabled in dependent mods?")
@@ -81,7 +88,8 @@ public class UniFCL extends ConfigBase {
 		);
 		entries.add(new ConfigEntry(this, "general", "shared-files", "/fcl/shared-files/")
 			.cons((entry, map) -> SF_PATH = entry.getString(map))
-			.info("Location of the 'shared-files' folder relative to server root, if you have mods using the FCL Server Hosted Files Feature.")
+			.info("Location of the 'shared-files' folder relative to server root,",
+				"if you have mods using the FCL Server Hosted Files Feature.")
 			.req(true, true)
 		);
 	}
