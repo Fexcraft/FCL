@@ -7,6 +7,7 @@ import net.fexcraft.lib.common.math.RGB;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -20,6 +21,7 @@ public abstract class ConfigBase {
 	public static final LinkedHashMap<String, ConfigBase> CONFIGS = new LinkedHashMap<>();
 	protected final File file;
 	protected LinkedHashMap<String, ArrayList<ConfigEntry>> categories = new LinkedHashMap<>();
+	protected LinkedHashMap<String, ArrayList<String>> cat_entry_keys = new LinkedHashMap<>();
 	protected ArrayList<ConfigEntry> entries = new ArrayList<>();
 	protected ArrayList<Runnable> listeners = new ArrayList<>();
 	protected boolean changes = false;
@@ -56,6 +58,15 @@ public abstract class ConfigBase {
 		createCategories();
 		for(ConfigEntry entry : entries) if(entry.consumer != null) entry.consumer.accept(entry, map);
 		onReload(map);
+		boolean[] bool = { false, false };
+		for(Map.Entry<String, ArrayList<String>> cat : cat_entry_keys.entrySet()){
+			map.getMap(cat.getKey()).entries().removeIf(entry -> {
+				bool[1] = !cat.getValue().contains(entry.getKey());
+				if(!bool[1]) bool[0] = true;
+				return bool[1];
+			});
+			if(bool[0]) changes = true;
+		}
 		if(changes) JsonHandler.print(file, map, PrintOption.SPACED);
 		for(Runnable run : listeners) run.run();
 	}
@@ -65,6 +76,8 @@ public abstract class ConfigBase {
 		for(ConfigEntry entry : entries){
 			if(!categories.containsKey(entry.cat)) categories.put(entry.cat, new ArrayList<>());
 			categories.get(entry.cat).add(entry);
+			if(!cat_entry_keys.containsKey(entry.cat)) cat_entry_keys.put(entry.cat, new ArrayList<>());
+			cat_entry_keys.get(entry.cat).add(entry.key);
 		}
 	}
 
@@ -130,7 +143,7 @@ public abstract class ConfigBase {
 		private ConfigBase base;
 		public final String key;
 		public final String cat;
-		private String info;
+		private List<String> info = new ArrayList<>();
 		private JsonValue defval;
 		private JsonValue value;
 		private BiConsumer<ConfigEntry, JsonMap> consumer;
@@ -162,8 +175,8 @@ public abstract class ConfigBase {
 			this(base, cat, key, new JsonValue(def));
 		}
 
-		public ConfigEntry info(String str){
-			info = str;
+		public ConfigEntry info(String... str){
+			for(String s : str) info.add(s);
 			return this;
 		}
 
@@ -187,6 +200,7 @@ public abstract class ConfigBase {
 		public String getString(JsonMap map){
 			map = checkCat(map);
 			if(!map.has(key)) fill(map);
+			else updateInfo(map.getMap(key));
 			value = map.getMap(key).get("value");
 			return value.string_value();
 		}
@@ -194,6 +208,7 @@ public abstract class ConfigBase {
 		public boolean getBoolean(JsonMap map){
 			map = checkCat(map);
 			if(!map.has(key)) fill(map);
+			else updateInfo(map.getMap(key));
 			value = map.getMap(key).get("value");
 			return value.bool();
 		}
@@ -201,6 +216,7 @@ public abstract class ConfigBase {
 		public int getInteger(JsonMap map){
 			map = checkCat(map);
 			if(!map.has(key)) fill(map);
+			else updateInfo(map.getMap(key));
 			int i = map.getMap(key).get("value").integer_value();
 			i = i > max ? (int)max : i < min ? (int)min : i;
 			value = new JsonValue(i);
@@ -210,6 +226,7 @@ public abstract class ConfigBase {
 		public float getFloat(JsonMap map){
 			map = checkCat(map);
 			if(!map.has(key)) fill(map);
+			else updateInfo(map.getMap(key));
 			float f = map.getMap(key).get("value").float_value();
 			f = f > max ? max : f < min ? min : f;
 			value = new JsonValue(f);
@@ -219,6 +236,7 @@ public abstract class ConfigBase {
 		public FJson getJson(JsonMap map){
 			map = checkCat(map);
 			if(!map.has(key)) fill(map);
+			else updateInfo(map.getMap(key));
 			return value = map.getMap(key).get("value");
 		}
 
@@ -227,16 +245,48 @@ public abstract class ConfigBase {
 			return map.getMap(cat);
 		}
 
+		private void updateInfo(JsonMap map){
+			if(info.isEmpty()){
+				map.rem("info");
+				base.changes = true;
+				return;
+			}
+			boolean upd = false;
+			if(!map.has("info") || !map.get("info").isArray()){
+				upd = true;
+			}
+			else {
+				JsonArray arr = map.getArray("info");
+				if(info.size() != arr.size()){
+					upd = true;
+				}
+				for(int i = 0; i < info.size(); i++){
+					if(!info.get(i).equals(arr.get(i).string_value())){
+						upd = true;
+						break;
+					}
+				}
+			}
+			if(upd){
+				addInfo(map);
+				base.changes = true;
+			}
+		}
+
 		private void fill(JsonMap map){
 			JsonMap con = new JsonMap();
-			if(info != null) con.add("info", info);
-			if(min != 0 || max != 0) con.add("range", RGB.df.format(min) + " ~ " + RGB.df.format(max));
+			if(info.size() > 0) addInfo(con);
 			con.add("value", defval);
 			map.add(key, con);
 			base.changes = true;
 		}
 
-		public String info(){
+		private void addInfo(JsonMap con){
+			con.add("info", new JsonArray(info.toArray()));
+			if(min != 0 || max != 0) con.add("range", RGB.df.format(min) + " ~ " + RGB.df.format(max));
+		}
+
+		public List<String> info(){
 			return info;
 		}
 
