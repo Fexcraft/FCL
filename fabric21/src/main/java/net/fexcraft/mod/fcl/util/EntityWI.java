@@ -297,6 +297,12 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
+	public void breakBlockAt(V3D pos){
+		if(entity.level().isClientSide || !isPlayer()) return;
+		//TODO
+	}
+
+	@Override
 	public V3D getEyeVec(){
 		return new V3D(entity.getEyePosition().x, entity.getEyePosition().y, entity.getEyePosition().z);
 	}
@@ -324,11 +330,6 @@ public class EntityWI implements EntityW {
 	@Override
 	public boolean isRemoved(){
 		return entity.isRemoved();
-	}
-
-	@Override
-	public void onPacket(EntityW player, TagCW packet){
-		//
 	}
 
 	@Override
