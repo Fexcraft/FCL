@@ -175,6 +175,12 @@ public abstract class ConfigBase {
 			this(base, cat, key, new JsonValue(def));
 		}
 
+
+		public ConfigEntry info(String str){
+			info.add(str);
+			return this;
+		}
+
 		public ConfigEntry info(String... str){
 			for(String s : str) info.add(s);
 			return this;
