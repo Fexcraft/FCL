@@ -1,10 +1,10 @@
 package net.fexcraft.mod.fcl;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
-import scala.actors.threadpool.Arrays;
 import zone.rong.mixinbooter.IEarlyMixinLoader;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
