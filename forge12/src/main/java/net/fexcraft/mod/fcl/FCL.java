@@ -37,6 +37,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -104,6 +105,8 @@ public class FCL {
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_LEAD, item -> item instanceof ItemLead);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_FOOD, item -> item instanceof ItemFood);
+		AABB.SUPPLIER = () -> new AABBI();
+		AABB.WRAPPER = obj -> new AABBI((AxisAlignedBB)obj);
 		UniInventory.IMPL = UniInventory12.class;
 		UniFluidTank.IMPL = UniFluidTank12.class;
 		if(EnvInfo.CLIENT){
