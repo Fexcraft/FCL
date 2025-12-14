@@ -27,6 +27,7 @@ import net.fexcraft.mod.uni.packet.PacketFile;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.ui.*;
+import net.fexcraft.mod.uni.world.AABB;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.StateWrapper;
 import net.fexcraft.mod.uni.world.WrapperHolder;
@@ -256,6 +257,8 @@ public class FCL implements ModInitializer {
 		TagLW.SUPPLIER[0] = TagLWI::new;
 		ItemWrapper.GETTER = id -> BuiltInRegistries.ITEM.get(ResourceLocation.parse(id)).get().value();
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
+		AABB.SUPPLIER = () -> new AABBI();
+		AABB.WRAPPER = obj -> new AABBI((net.minecraft.world.phys.AABB)obj);
 		UniInventory.IMPL = UniInventory21.class;
 		UniFluidTank.IMPL = UniFluidTank21.class;
 		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.defaultBlockState());
