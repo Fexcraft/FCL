@@ -311,6 +311,16 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
+	public void setBB(AABB bb){
+		entity.setEntityBoundingBox(bb.local());
+	}
+
+	@Override
+	public AABB getBB(){
+		return AABB.wrap(entity.getEntityBoundingBox());
+	}
+
+	@Override
 	public V3D getEyeVec(){
 		Vec3d vec = net.minecraft.client.Minecraft.getMinecraft().getRenderViewEntity().getPositionEyes(net.minecraft.client.Minecraft.getMinecraft().getRenderPartialTicks());
 		return new V3D(vec.x, vec.y, vec.z);
