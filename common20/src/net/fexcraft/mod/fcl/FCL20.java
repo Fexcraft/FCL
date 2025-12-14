@@ -21,6 +21,7 @@ import net.fexcraft.mod.uni.ui.UUIButton;
 import net.fexcraft.mod.uni.ui.UUIField;
 import net.fexcraft.mod.uni.ui.UUITab;
 import net.fexcraft.mod.uni.ui.UUIText;
+import net.fexcraft.mod.uni.world.AABB;
 import net.fexcraft.mod.uni.world.StateWrapper;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.client.resources.language.I18n;
@@ -75,6 +76,8 @@ public class FCL20 {
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
 		ItemWrapper.GETTER = id -> BuiltInRegistries.ITEM.get(new ResourceLocation(id));
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
+		AABB.SUPPLIER = () -> new AABBI();
+		AABB.WRAPPER = obj -> new AABBI((net.minecraft.world.phys.AABB)obj);
 		UniInventory.IMPL = UniInventory20.class;
 		UniFluidTank20.IMPL = UniFluidTank20.class;
 		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.defaultBlockState());
