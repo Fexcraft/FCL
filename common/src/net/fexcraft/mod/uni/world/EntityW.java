@@ -119,4 +119,8 @@ public interface EntityW extends MessageSender {
 
 	public void breakBlockAt(V3D pos);
 
+	public void setBB(AABB bb);
+
+	public AABB getBB();
+
 }
