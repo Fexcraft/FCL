@@ -7,6 +7,7 @@ import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.UIKey;
+import net.fexcraft.mod.uni.world.AABB;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
@@ -297,6 +298,16 @@ public class EntityWI implements EntityW {
 	public void breakBlockAt(V3D pos){
 		if(entity.level().isClientSide || !isPlayer()) return;
 		//TODO
+	}
+
+	@Override
+	public void setBB(AABB bb){
+		entity.setBoundingBox(bb.local());
+	}
+
+	@Override
+	public AABB getBB(){
+		return AABB.wrap(entity.getBoundingBox());
 	}
 
 	@Override
