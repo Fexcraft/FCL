@@ -57,6 +57,21 @@ public abstract class M4DW {
 	/** Fills the vector with the current matrix position state. */
 	protected abstract V3D fill(V3D vec);
 
+	/** Returns the 2nd vector filled with the rotation result. */
+	public Vec3f rotate(Vec3f vec, Vec3f des){
+		reset(vec.x, vec.y, vec.z);
+		rotateYPR();
+		return fill(des);
+	}
+
+	/** Returns a new vector with the rotation result. */
+	public Vec3f rotate(Vec3f vec){
+		return rotate(vec, new Vec3f());
+	}
+
+	/** Fills the vector with the current matrix position state. */
+	protected abstract Vec3f fill(Vec3f vec);
+
 	/** Rotates the matrix in radians on the given axe index. */
 	public abstract void rotate(double am, int axe);
 
