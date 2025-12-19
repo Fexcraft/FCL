@@ -82,7 +82,6 @@ public class FCL {
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) throws Exception {
 		EnvInfo.CLIENT = event.getSide().isClient();
-		EnvInfo.DEV = (Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment");
 		UniReg.LOADER_VERSION = "1.12";
 		TagCW.SUPPLIER[0] = () -> new TagCWI();
 		TagCW.WRAPPER[0] = obj -> new TagCWI(obj);
