@@ -167,7 +167,7 @@ public class Vec3f {
 		return normalize(null);
 	}
 
-	private Vec3f set(float x, float y, float z){
+	public Vec3f set(float x, float y, float z){
 		this.x = x; this.y = y; this.z = z;
 		return this;
 	}
