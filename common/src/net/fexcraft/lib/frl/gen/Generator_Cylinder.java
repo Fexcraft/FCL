@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.common.math.AxisRotator;
+import net.fexcraft.lib.common.math.M4DW;
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.GLO;
 import net.fexcraft.lib.frl.Polygon;
@@ -39,7 +39,7 @@ public class Generator_Cylinder {
 		float seg_width = map.getValue("seg_width", 1f);
 		float seg_height = map.getValue("seg_height", 1f);
 		Vec3f topoff = map.getValue("top_offset", null);
-		AxisRotator toprot = map.getValue("top_rot", null);
+		M4DW toprot = map.getValue("top_rot", null);
 		float x = map.getValue("x", 0f), y = map.getValue("y", 0f), z = map.getValue("z", 0f);
 		boolean[] rems = intToBoolArray(map.getArray("rem_poly"), 6);
 		if(radius2 == 0f) rems[3] = true;
@@ -163,8 +163,8 @@ public class Generator_Cylinder {
 				for(int i = 0; i < verts0.size(); i++){
 					if(i >= (verts0.size() - 1) || i >= seglimit){
 						if(repeat != 0 && toprot != null){
-							verts0.get(i).vector = toprot.getRelativeVector(verts0.get(i).vector);
-							verts1.get(i).vector = toprot.getRelativeVector(verts1.get(i).vector);
+							verts0.get(i).vector = toprot.rotate(verts0.get(i).vector);
+							verts1.get(i).vector = toprot.rotate(verts1.get(i).vector);
 						}
 						break;
 					}
@@ -194,10 +194,10 @@ public class Generator_Cylinder {
 						arr[3] = verts0.get(i + 1).nauv(uvs[repeat][0] + ((i + 1) * seg_width) * scale_u, uvs[repeat][1]);
 					}
 					if(repeat != 0 && toprot != null){
-						arr[0].vector = verts0.get(i).vector = toprot.getRelativeVector(arr[0].vector);
-						arr[1].vector = verts1.get(i).vector = toprot.getRelativeVector(arr[1].vector);
-						arr[2].vector = /*verts1.get(i + 1).vector =*/ toprot.getRelativeVector(arr[2].vector);
-						arr[3].vector = /*verts0.get(i + 1).vector =*/ toprot.getRelativeVector(arr[3].vector);
+						arr[0].vector = verts0.get(i).vector = toprot.rotate(arr[0].vector);
+						arr[1].vector = verts1.get(i).vector = toprot.rotate(arr[1].vector);
+						arr[2].vector = /*verts1.get(i + 1).vector =*/ toprot.rotate(arr[2].vector);
+						arr[3].vector = /*verts0.get(i + 1).vector =*/ toprot.rotate(arr[3].vector);
 					}
 					polis.add(new Polygon(arr));
 					if(bool) polis.get(polis.size() - 1).flip();
