@@ -2,6 +2,7 @@ package net.fexcraft.lib.frl.gen;
 
 import static net.fexcraft.lib.frl.gen.Generator.detached;
 import static net.fexcraft.lib.frl.gen.Generator.intToBoolArray;
+import static net.fexcraft.lib.frl.gen.Generator.Values.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,29 +25,29 @@ public class Generator_Cylinder {
     public static final int FRONT = 0, BACK = 1, LEFT = 2, RIGHT = 3, TOP = 4, BOTTOM = 5;
 
 	public static <GL extends GLO> void make(Polyhedron<GL> poly, ValueMap map){
-		float radius = map.getValue("radius", 1f);
-		float radius2 = map.getValue("radius2", 0f);
-		float radius3 = map.getValue("radius3", radius);
-		float radius4 = map.getValue("radius4", radius2);
-		float length = map.getValue("length", 1f);
-		AxisDir dir = map.getValue("axis_dir", AxisDir.X_POSITIVE);
-		int segments = map.getValue("segments", 4);
-		int seglimit = map.getValue("seg_limit", 0);
-		float seg_off = Static.toRadians(map.getValue("seg_off", 0f));
-		float top_scale = map.getValue("top_scale", 1f);
-		float base_scale = map.getValue("base_scale", 1f);
-		boolean radial = map.getValue("radial", false);
-		float seg_width = map.getValue("seg_width", 1f);
-		float seg_height = map.getValue("seg_height", 1f);
-		Vec3f topoff = map.getValue("top_offset", null);
-		M4DW toprot = map.getValue("top_rot", null);
-		float x = map.getValue("x", 0f), y = map.getValue("y", 0f), z = map.getValue("z", 0f);
-		boolean[] rems = intToBoolArray(map.getArray("rem_poly"), 6);
+		float radius = map.getValue(RADIUS1, 1f);
+		float radius2 = map.getValue(RADIUS2, 0f);
+		float radius3 = map.getValue(RADIUS3, radius);
+		float radius4 = map.getValue(RADIUS4, radius2);
+		float length = map.getValue(LENGTH, 1f);
+		AxisDir dir = map.getValue(AXIS_DIR, AxisDir.X_POSITIVE);
+		int segments = map.getValue(SEGMENTS, 4);
+		int seglimit = map.getValue(SEG_LIMIT, 0);
+		float seg_off = Static.toRadians(map.getValue(SEG_OFFSET, 0f));
+		float top_scale = map.getValue(TOP_SCALE, 1f);
+		float base_scale = map.getValue(BASE_SCALE, 1f);
+		boolean radial = map.getValue(RADIAL, false);
+		float seg_width = map.getValue(SEG_WIDTH, 1f);
+		float seg_height = map.getValue(SEG_HEIGHT, 1f);
+		Vec3f topoff = map.getValue(TOP_OFFSET, null);
+		M4DW toprot = map.getValue(TOP_ROTATION, null);
+		float x = map.getValue(OFF_X, 0f), y = map.getValue(OFF_Y, 0f), z = map.getValue(OFF_Z, 0f);
+		boolean[] rems = intToBoolArray(map.getArray(REMOVE_POLYGONS), 6);
 		if(radius2 == 0f) rems[3] = true;
-		boolean[] deuv = intToBoolArray(map.getArray("detached_uv"), 6);
-		List<float[]> uv = map.getArray("uv", 6, null);
-		float texw = map.getValue("texture_width", 1f);
-		float texh = map.getValue("texture_height", 1f);
+		boolean[] deuv = intToBoolArray(map.getArray(DETACHED_UV), 6);
+		List<float[]> uv = map.getArray(UV, 6, null);
+		float texw = map.getValue(TEXTURE_WIDTH, 1f);
+		float texh = map.getValue(TEXTURE_HEIGHT, 1f);
 		//boolean noinner = radius2 == 0f;
 		float diameter = (int)Math.floor(radius * 2F);
 		float texheight = (int)Math.floor(length);
@@ -117,7 +118,7 @@ public class Generator_Cylinder {
 		ArrayList<Vertex> verts2 = new ArrayList<>();
 		ArrayList<Vertex> verts3 = new ArrayList<>();
 		//
-		if(map.getValue("exp", false)){
+		if(map.getValue(EXPANSION, false)){
 			seg_off += segpi;
 			radius += radius - Math.cos(segpi) * radius;
 			radius2 += radius2 - Math.cos(segpi) * radius2;
@@ -206,7 +207,7 @@ public class Generator_Cylinder {
 			verts0.clear(); verts1.clear(); c_x = e_x; c_y = e_y; c_z = e_z; c_s = top_scale;
 		}
 		int halfv2 = verts2.size() / 2;
-		if(map.getValue("ordered", false)){
+		if(map.getValue(ORDERED, false)){
 			for(int i = 0; i < halfv2; i++){
 				if(i >= (halfv2 - 1)) break;
 				if(i >= seglimit && segl) break;
@@ -302,7 +303,7 @@ public class Generator_Cylinder {
 				}
 			}
 		}
-		float scale = map.getValue("scale", 1f);
+		float scale = map.getValue(SCALE, 1f);
 		if(scale != 1f) for(Polygon gon : polis) for(Vertex vert : gon.vertices) vert.vector = vert.vector.scale(scale);
         for(Polygon gon : polis) poly.polygons.add(gon);
 	}
