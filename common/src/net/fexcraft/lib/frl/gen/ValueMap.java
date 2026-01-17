@@ -9,17 +9,17 @@ import java.util.List;
  * @author Ferdinand Calo' (FEX___96)
  *
  */
-public class ValueMap extends HashMap<String, Object> {
+public class ValueMap extends HashMap<Enum<?>, Object> {
 
-	public boolean has(String key){
+	public boolean has(Enum<?> key){
 		return containsKey(key);
 	}
 
-	public <T> void addArray(String key, Class<T> clazz){
+	public <T> void addArray(Enum<?> key, Class<T> clazz){
 		put(key, new ArrayList<T>());
 	}
 
-	public <T> List<T> getArray(String key, int size, T def){
+	public <T> List<T> getArray(Enum<?> key, int size, T def){
 		if(!containsKey(key)){
 			List<T> list = new ArrayList<>();
 			for(int i = 0; i < size; i++) list.add(def);
@@ -28,19 +28,19 @@ public class ValueMap extends HashMap<String, Object> {
 		return (List<T>)get(key);
 	}
 
-	public <T> List<T> getArray(String key){
+	public <T> List<T> getArray(Enum<?> key){
 		return (List<T>)get(key);
 	}
 
-	public <T> List<T> getArray(String key, Class<T> clazz){
+	public <T> List<T> getArray(Enum<?> key, Class<T> clazz){
 		return (List<T>)get(key);
 	}
 	
-	public <T> T getValue(String key){
+	public <T> T getValue(Enum<?> key){
 		return (T)get(key);
 	}
 	
-	public <T> T getValue(String key, T def){
+	public <T> T getValue(Enum<?> key, T def){
 		return containsKey(key) ? (T)get(key) : def;
 	}
 
