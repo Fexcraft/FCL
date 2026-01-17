@@ -1,11 +1,12 @@
 package net.fexcraft.lib.frl.gen;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.GLO;
 import net.fexcraft.lib.frl.Polyhedron;
+
+import static net.fexcraft.lib.frl.gen.Generator.Values.*;
 
 /**
  * 
@@ -27,13 +28,13 @@ public class Generator<GL extends GLO> {
 	
 	public Generator(Polyhedron<GL> poli, float texW, float texH){
 		this(poli);
-		map.put("texture_width", texW);
-		map.put("texture_height", texH);
+		map.put(TEXTURE_WIDTH, texW);
+		map.put(TEXTURE_HEIGHT, texH);
 	}
 	
 	public Generator(Polyhedron<GL> poli, float texW, float texH, Type type){
 		this(poli, texW, texH);
-		map.put("type", type);
+		map.put(TYPE, type);
 	}
 	
 	public Generator(Polyhedron<GL> poli, Type type){
@@ -45,7 +46,7 @@ public class Generator<GL extends GLO> {
 	}
 	
 	public Polyhedron<GL> make(){
-		Type type = map.getValue("type", Type.NONE);
+		Type type = map.getValue(TYPE, Type.NONE);
 		switch(type){
 			case CYLINDER:{
 				Generator_Cylinder.make(poly, map);
@@ -60,19 +61,19 @@ public class Generator<GL extends GLO> {
 		return poly;
 	}
 	
-	public Generator<GL> setValue(String key, Object value){
+	public Generator<GL> setValue(Enum<?> key, Object value){
 		map.put(key, value);
 		return this;
 	}
 	
-	public Generator<GL> set(String key, Object value){
+	public Generator<GL> set(Enum<?> key, Object value){
 		map.put(key, value);
 		return this;
 	}
 	
 	public Generator<GL> removePolygon(int index){
-		if(!map.has("rem_poly")) map.addArray("rem_poly", int.class);
-		map.getArray("rem_poly").add(index);
+		if(!map.has(REMOVE_POLYGONS)) map.addArray(REMOVE_POLYGONS, int.class);
+		map.getArray(REMOVE_POLYGONS).add(index);
 		return this;
 	}
 	
@@ -103,6 +104,19 @@ public class Generator<GL extends GLO> {
 
 	protected static boolean detached(boolean[] rems, boolean[] deuv, int i){
 		return rems[i] || deuv[i];
+	}
+
+	public static enum Values {
+		OFF_X, OFF_Y, OFF_Z, TYPE,
+		REMOVE_POLYGONS, DETACHED_UV, UV,
+		TEXTURE_WIDTH, TEXTURE_HEIGHT,
+		EXPANSION, SCALE, ORDERED,
+
+		WIDTH, HEIGHT, DEPTH, CENTERED, CORNERS,
+
+		LENGTH, RADIUS1, RADIUS2, RADIUS3, RADIUS4,
+		AXIS_DIR, SEGMENTS, SEG_LIMIT, SEG_OFFSET, TOP_SCALE, BASE_SCALE,
+		RADIAL, SEG_WIDTH, SEG_HEIGHT, TOP_OFFSET, TOP_ROTATION,
 	}
 
 }
