@@ -3,6 +3,7 @@ package net.fexcraft.lib.frl;
 import static org.lwjgl.opengl.GL11.*;
 
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.IDL;
 import org.lwjgl.opengl.GL11;
@@ -53,6 +54,8 @@ public class DefaultRenderer extends Renderer<GLO> {
 		poly.glId = glGenLists(1);
 		glNewList(poly.glId, GL_COMPILE);
 		for(Polygon gon : poly.polygons){
+			if(gon.vertices.length < 1) continue;
+			if(gon.vertices[0].norm == null) genNorm(gon);
 			if(gon.lines){
 				glBegin(GL_LINE_STRIP);
 			}
@@ -85,6 +88,15 @@ public class DefaultRenderer extends Renderer<GLO> {
 		}
 		glEndList();
 		poly.recompile = false;
+	}
+
+	private static void genNorm(Polygon gon){
+		for(int i = 0; i < gon.vertices.length; i++){
+			boolean uz = i < 2;
+			Vec3f v0 = gon.vertices[uz ? 1 : i - 1].vector.sub(gon.vertices[uz ? 0 : i - 2].vector);
+			Vec3f v1 = gon.vertices[uz ? 1 : i - 1].vector.sub(gon.vertices[uz ? 2 : i].vector);
+			gon.vertices[i].norm(v1.cross(v0).normalize());
+		}
 	}
 
 	private static void quadAsTriangleCol(Polygon poly, int x, int y, int z, int o){
