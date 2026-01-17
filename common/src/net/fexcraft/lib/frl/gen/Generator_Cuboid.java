@@ -8,6 +8,8 @@ import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.frl.Vertex;
 
+import static net.fexcraft.lib.frl.gen.Generator.Values.*;
+
 /**
  * 
  * @author Ferdinand Calo' (FEX___96)
@@ -16,25 +18,25 @@ import net.fexcraft.lib.frl.Vertex;
 public class Generator_Cuboid {
 
 	public static <GL extends GLO> void make(Polyhedron<GL> poly, ValueMap map){
-		boolean shaped = map.has("corners");
-		boolean anyrem = map.has("rem_poly");
+		boolean shaped = map.has(CORNERS);
+		boolean anyrem = map.has(REMOVE_POLYGONS);
 		float[] v0, v1, v2, v3, v4, v5, v6, v7;
-		float x = map.getValue("x"), y = map.getValue("y"), z = map.getValue("z");
-		float w = map.getValue("width"), h = map.getValue("height"), d = map.getValue("depth");
-		float exp = map.getValue("exp", 0);
-		boolean centered = map.getValue("centered", false);
-		boolean[] rems = Generator.intToBoolArray(map.getArray("rem_poly"), 6);
-		boolean[] deuv = Generator.intToBoolArray(map.getArray("detached_uv"), 6);
-		List<float[]> uv = map.getArray("uv", 6, null);
-		float texw = map.getValue("texture_width");
-		float texh = map.getValue("texture_height");
+		float x = map.getValue(OFF_X, 0), y = map.getValue(OFF_Y, 0), z = map.getValue(OFF_Z, 0);
+		float w = map.getValue(WIDTH, 1), h = map.getValue(HEIGHT, 1), d = map.getValue(DEPTH, 1);
+		float exp = map.getValue(EXPANSION, 0);
+		boolean centered = map.getValue(CENTERED, false);
+		boolean[] rems = Generator.intToBoolArray(map.getArray(REMOVE_POLYGONS), 6);
+		boolean[] deuv = Generator.intToBoolArray(map.getArray(DETACHED_UV), 6);
+		List<float[]> uv = map.getArray(UV, 6, null);
+		float texw = map.getValue(TEXTURE_WIDTH, 256);
+		float texh = map.getValue(TEXTURE_HEIGHT, 256);
 		if(centered){
 			x -= w * 0.5f;
 			y -= h * 0.5f;
 			z -= d * 0.5f;
 		}
 		if(shaped){
-			List<Vec3f> array = map.getArray("corners", 8, null);
+			List<Vec3f> array = map.getArray(CORNERS, 8, null);
 			Vec3f c0 = array.get(0) == null ? Generator.NULL_VEC : array.get(0);
 			Vec3f c1 = array.get(1) == null ? Generator.NULL_VEC : array.get(1);
 			Vec3f c2 = array.get(2) == null ? Generator.NULL_VEC : array.get(2);
@@ -117,7 +119,7 @@ public class Generator_Cuboid {
         	}
         	polys = polygons;
         }
-		float scale = map.getValue("scale", 1f);
+		float scale = map.getValue(SCALE, 1f);
 		if(scale != 1f) for(Polygon gon : polys) for(Vertex vert : gon.vertices) vert.vector = vert.vector.scale(scale);
         for(Polygon gon : polys) poly.polygons.add(gon);
 	}
