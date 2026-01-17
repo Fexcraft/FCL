@@ -21,15 +21,15 @@ public class Generator_Cuboid {
 		boolean shaped = map.has(CORNERS);
 		boolean anyrem = map.has(REMOVE_POLYGONS);
 		float[] v0, v1, v2, v3, v4, v5, v6, v7;
-		float x = map.getValue(OFF_X, 0), y = map.getValue(OFF_Y, 0), z = map.getValue(OFF_Z, 0);
-		float w = map.getValue(WIDTH, 1), h = map.getValue(HEIGHT, 1), d = map.getValue(DEPTH, 1);
-		float exp = map.getValue(EXPANSION, 0);
+		float x = map.getValue(OFF_X, 0f), y = map.getValue(OFF_Y, 0f), z = map.getValue(OFF_Z, 0f);
+		float w = map.getValue(WIDTH, 1f), h = map.getValue(HEIGHT, 1f), d = map.getValue(DEPTH, 1f);
+		float exp = map.getValue(EXPANSION, 0f);
 		boolean centered = map.getValue(CENTERED, false);
 		boolean[] rems = Generator.intToBoolArray(map.getArray(REMOVE_POLYGONS), 6);
 		boolean[] deuv = Generator.intToBoolArray(map.getArray(DETACHED_UV), 6);
 		List<float[]> uv = map.getArray(UV, 6, null);
-		float texw = map.getValue(TEXTURE_WIDTH, 256);
-		float texh = map.getValue(TEXTURE_HEIGHT, 256);
+		float texw = map.getValue(TEXTURE_WIDTH, 256f);
+		float texh = map.getValue(TEXTURE_HEIGHT, 256f);
 		if(centered){
 			x -= w * 0.5f;
 			y -= h * 0.5f;
