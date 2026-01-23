@@ -2,12 +2,16 @@ package net.fexcraft.mod.fcl;
 
 import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.lib.frl.GLO;
+import net.fexcraft.lib.frl.GLObject;
+import net.fexcraft.lib.frl.Renderer;
 import net.fexcraft.mod.fcl.mixint.CWProvider;
 import net.fexcraft.mod.fcl.mixint.EWProvider;
 import net.fexcraft.mod.fcl.mixint.SWProvider;
 import net.fexcraft.mod.fcl.util.Axis3DL;
 import net.fexcraft.mod.fcl.util.ChunkWI;
 import net.fexcraft.mod.fcl.util.EntityUtil;
+import net.fexcraft.mod.fcl.util.Renderer20;
 import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.impl.*;
 import net.fexcraft.mod.uni.inv.ItemWrapper;
@@ -131,6 +135,8 @@ public class FCL20 {
 
 	public static void initClient(){
 		EnvInfo.CLIENT = true;
+		Renderer.RENDERER = new Renderer20();
+		GLO.SUPPLIER = (() -> new GLObject());
 		AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
 		UITab.IMPLEMENTATION = UUITab.class;
 		UIText.IMPLEMENTATION = UUIText.class;
