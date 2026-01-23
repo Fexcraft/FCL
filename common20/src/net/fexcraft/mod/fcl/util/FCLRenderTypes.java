@@ -34,19 +34,13 @@ public class FCLRenderTypes {
 		RenderType type = CUTOUTS.get(tex);
 		if(type != null){
 			Renderer120.rentype = type;
+			Renderer20.rentype = type;
 			return;
 		}
 		type = CUTOUT.apply(tex);
 		CUTOUTS.put(tex, type);
 		Renderer120.rentype = type;
-	}
-
-	public static void setLines(){
-		Renderer120.rentype = RenderType.lines();
-	}
-
-	public static void setLineStrip(){
-		Renderer120.rentype = RenderType.lineStrip();
+		Renderer20.rentype = type;
 	}
 
 	public static void setDef(RenderType type){
