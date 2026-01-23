@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderType.CompositeState;
-import net.minecraft.util.TriState;
 
 import java.util.HashMap;
 import java.util.function.Function;
@@ -32,24 +31,18 @@ public class FCLRenderTypes {
 	public static void setCutout(IDL tex){
 		RenderType type = CUTOUTS.get(tex);
 		if(type != null){
+			Renderer21MRT.rentype = type;
 			Renderer21.rentype = type;
 			return;
 		}
 		type = CUTOUT.apply(tex);
 		CUTOUTS.put(tex, type);
+		Renderer21MRT.rentype = type;
 		Renderer21.rentype = type;
-	}
-
-	public static void setLines(){
-		Renderer21.rentype = RenderType.lines();
-	}
-
-	public static void setLineStrip(){
-		Renderer21.rentype = RenderType.lineStrip();
 	}
 
 	public static void setDef(RenderType type){
-		Renderer21.rentype = type;
+		Renderer21MRT.rentype = type;
 	}
 
 }
