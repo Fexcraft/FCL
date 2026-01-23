@@ -4,6 +4,9 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.lib.frl.GLO;
+import net.fexcraft.lib.frl.GLObject;
+import net.fexcraft.lib.frl.Renderer;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.fcl.local.CraftingRenderer;
 import net.fexcraft.mod.fcl.util.*;
@@ -56,7 +59,9 @@ public class FCLC implements ClientModInitializer {
 			});
 		});
 		//
-		ModelRendererTurbo.RENDERER = new Renderer21();
+		ModelRendererTurbo.RENDERER = new Renderer21MRT();
+		Renderer.RENDERER = new net.fexcraft.mod.fcl.util.Renderer21();
+		GLO.SUPPLIER = (() -> new GLObject());
 		AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
 		UITab.IMPLEMENTATION = UUITab.class;
 		UIText.IMPLEMENTATION = UUIText.class;
