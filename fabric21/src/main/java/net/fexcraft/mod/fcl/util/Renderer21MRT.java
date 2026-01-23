@@ -19,7 +19,7 @@ import org.joml.*;
  *
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Renderer21 extends ModelRendererTurbo.Renderer {
+public class Renderer21MRT extends ModelRendererTurbo.Renderer {
 
 	public static final Vector3f AY = new Vector3f(0, 1, 0);
 	public static final Vector3f AX = new Vector3f(1, 0, 0);
