@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.*;
 import net.fexcraft.mod.uni.IDL;
 import net.minecraft.client.Minecraft;
@@ -27,14 +26,13 @@ public class Renderer21 extends Renderer<GLObject> {
 	public static final Vector3f AZ = new Vector3f(0, 0, 1);
 	public static final Vector3f NULLVEC = new Vector3f(0, 0, 0);
 	//
-	public static final Vec3f DEFCOLOR = new Vec3f(1, 1, 1);
 	private static int color = 0xffffffff;
 	//
 	private static BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 	public static PoseStack pose;
 	private static MultiBufferSource buffer;
 	private static VertexConsumer cons;
-	protected static RenderType rentype;
+	public static RenderType rentype;
 	public static int overlay = OverlayTexture.NO_OVERLAY;
 	public static int light;
 
