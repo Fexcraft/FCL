@@ -116,6 +116,13 @@ public class RGB {
 		return new float[]{(packed >> 16 & 255) / 255.0F, (packed >> 8 & 255) / 255.0F, (packed & 255) / 255.0F, alpha};
 	}
 
+	public void cpToArray(float[] arr){
+		arr[0] = (packed >> 16 & 255) / 255.0F;
+		arr[1] = (packed >> 8 & 255) / 255.0F;
+		arr[2] = (packed & 255) / 255.0F;
+		if(arr.length > 3) arr[3] = alpha;
+	}
+
 	public byte[] toByteArray(){
 		return new byte[]{(byte)(((packed >> 16) & 255) - 128), (byte)(((packed >> 8) & 255) - 128), (byte)((packed & 255) - 128)};
 	}
