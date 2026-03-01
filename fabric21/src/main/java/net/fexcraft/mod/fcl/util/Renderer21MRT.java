@@ -21,12 +21,10 @@ import org.joml.*;
  */
 public class Renderer21MRT extends ModelRendererTurbo.Renderer {
 
-	public static final Vector3f AY = new Vector3f(0, 1, 0);
-	public static final Vector3f AX = new Vector3f(1, 0, 0);
-	public static final Vector3f AZ = new Vector3f(0, 0, 1);
-	public static final Vector3f NULLVEC = new Vector3f(0, 0, 0);
+	public static final Vector3f AY = Renderer21.AY;
+	public static final Vector3f AX = Renderer21.AX;
+	public static final Vector3f AZ = Renderer21.AZ;
 	//
-	public static final Vec3f DEFCOLOR = new Vec3f(1, 1, 1);
 	private static int color = 0xffffffff;
 	//
 	public static PoseStack pose;
@@ -38,10 +36,6 @@ public class Renderer21MRT extends ModelRendererTurbo.Renderer {
 
 	public static void setColor(RGB col){
 		color = col.packed;
-	}
-
-	public static void setColor(Vec3f col){
-		//TODO color.copy(col);
 	}
 
 	public static void resetColor(){
