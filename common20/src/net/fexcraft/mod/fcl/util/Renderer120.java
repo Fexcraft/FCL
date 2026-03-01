@@ -21,14 +21,11 @@ import org.joml.*;
  */
 public class Renderer120 extends ModelRendererTurbo.Renderer {
 
-	public static final Vector3f AY = new Vector3f(0, 1, 0);
-	public static final Vector3f AX = new Vector3f(1, 0, 0);
-	public static final Vector3f AZ = new Vector3f(0, 0, 1);
-	public static final Vector3f NULLVEC = new Vector3f(0, 0, 0);
+	public static final Vector3f AY = Renderer20.AY;
+	public static final Vector3f AX = Renderer20.AX;
+	public static final Vector3f AZ = Renderer20.AZ;
 	//
-	public static final Vec3f DEFCOLOR = new Vec3f(1, 1, 1);
 	private static Vec3f color = new Vec3f(1, 1, 1);
-	//
 	public static PoseStack pose;
 	private static MultiBufferSource buffer;
 	private static VertexConsumer cons;
