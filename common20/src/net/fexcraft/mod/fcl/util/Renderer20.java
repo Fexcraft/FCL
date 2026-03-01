@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.*;
 import net.fexcraft.mod.uni.IDL;
 import net.minecraft.client.Minecraft;
@@ -31,8 +30,7 @@ public class Renderer20 extends Renderer<GLObject> {
 	public static final Vector3f AZ = new Vector3f(0, 0, 1);
 	public static final Vector3f NULLVEC = new Vector3f(0, 0, 0);
 	//
-	public static final Vec3f DEFCOLOR = new Vec3f(1, 1, 1);
-	private static Vec3f color = new Vec3f();
+	private static float[] color = new float[3];
 	private static RGB conv = RGB.WHITE.copy();
 	private static float alpha;
 	//
@@ -45,11 +43,7 @@ public class Renderer20 extends Renderer<GLObject> {
 	public static int light;
 
 	public static void setColor(RGB col){
-		float[] arr = col.toFloatArray();
-		color.x = arr[0];
-		color.y = arr[1];
-		color.z = arr[2];
-		alpha = col.alpha;
+		col.cpToArray(color);
 	}
 
 	public static void setColor(RGB col, float al){
@@ -57,17 +51,19 @@ public class Renderer20 extends Renderer<GLObject> {
 		alpha = al;
 	}
 
+	public static void setColor(float[] col){
+		color[0] = col[0];
+		color[1] = col[1];
+		color[2] = col[2];
+	}
+
 	public static void setColor(int col){
 		conv.packed = col;
 		setColor(conv);
 	}
 
-	public static void setColor(Vec3f col){
-		color.copy(col);
-	}
-
 	public static void resetColor(){
-		color.x = color.y = color.z = 1;
+		color[0] = color[1] = color[2] = 1;
 	}
 
 	public static void rotateDeg(float by, Vector3f axe){
@@ -147,7 +143,7 @@ public class Renderer20 extends Renderer<GLObject> {
 	private void fillVert(Matrix4f verma, Matrix3f norma, Vertex vert){
 		Vector4f vec = verma.transform(new Vector4f(vert.vector.x, vert.vector.y, vert.vector.z, 1.0F));
 		Vector3f norm = norma.transform(vert.norm == null ? NULLVEC : new Vector3f(vert.norm.x, vert.norm.y, vert.norm.z));
-		cons.vertex(vec.x, vec.y, vec.z, color.x, color.y, color.z, alpha, vert.u, vert.v, overlay, light, norm.x, norm.y, norm.z);
+		cons.vertex(vec.x, vec.y, vec.z, color[0], color[1], color[2], alpha, vert.u, vert.v, overlay, light, norm.x, norm.y, norm.z);
 	}
 
 	public void delete(Polyhedron<GLObject> poly){
