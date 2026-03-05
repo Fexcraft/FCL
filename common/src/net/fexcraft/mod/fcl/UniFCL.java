@@ -96,7 +96,10 @@ public class UniFCL extends ConfigBase {
 
 	@Override
 	protected void onReload(JsonMap map){
-		SF_FOLDER = null;
+		if(SF_FOLDER == null){
+			SF_FOLDER = new File(file.getParentFile().getParentFile(), SF_PATH);
+			if(!SF_FOLDER.exists()) SF_FOLDER.mkdirs();
+		}
 	}
 
 	public static final MessageSender LOG = new MessageSender(){
