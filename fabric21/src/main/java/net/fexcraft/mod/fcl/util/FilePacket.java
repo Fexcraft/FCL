@@ -7,6 +7,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public class FilePacket extends PacketFile implements CustomPacketPayload {
 
+	public FilePacket(){}
+
 	public FilePacket(RegistryFriendlyByteBuf buf){
 		decode(buf);
 	}
