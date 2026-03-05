@@ -357,7 +357,7 @@ public class FCL implements ModInitializer {
 			FCLC.sendServerFile(lis, loc);
 		}
 		else{
-			ServerPlayNetworking.getSender((ServerPlayer)player.direct()).sendPacket((CustomPacketPayload)new PacketFile().fill(lis, loc, img));
+			ServerPlayNetworking.getSender((ServerPlayer)player.direct()).sendPacket((CustomPacketPayload)new FilePacket().fill(lis, loc, img));
 		}
 	}
 
