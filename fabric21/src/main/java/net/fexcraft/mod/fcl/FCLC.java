@@ -73,7 +73,7 @@ public class FCLC implements ClientModInitializer {
 	}
 
 	public static void sendServerFile(String lis, String loc){
-		ClientPlayNetworking.send((CustomPacketPayload)new PacketFile().fill(lis, loc));
+		ClientPlayNetworking.send((CustomPacketPayload)new FilePacket().fill(lis, loc));
 	}
 
 }
