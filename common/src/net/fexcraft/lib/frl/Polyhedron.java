@@ -96,6 +96,9 @@ public class Polyhedron<GL extends GLO> {
 	
 	public void clear(){
 		polygons.clear();
+	}
+
+	public void delete(){
 		RENDERER.delete(this);
 	}
 	
