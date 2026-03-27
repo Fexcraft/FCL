@@ -1,0 +1,331 @@
+package net.fexcraft.mod.uni.ui;
+
+
+import com.mojang.blaze3d.opengl.GlStateManager;
+import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.math.RGB;
+import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.mod.fcl.util.ExternalTextures;
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.UniReg;
+import net.fexcraft.mod.uni.inv.StackWrapper;
+import net.fexcraft.mod.uni.tag.TagCW;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.TooltipFlag;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.*;
+
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
+public class UniUI extends AbstractContainerScreen<UniCon> {
+
+	public static UniUI INST;
+	//protected LinkedHashMap<String, UITab> tabs = new LinkedHashMap<>();
+	protected ArrayList<Component> comtip = new ArrayList<>();
+	protected ArrayList<String> tooltip = new ArrayList<>();
+	protected UserInterface ui;
+	protected GuiGraphicsExtractor matrix;
+	protected UITab deftab;
+	protected IDL actex;
+	protected int packed = ARGB.colorFromFloat(1, 1, 1, 1);
+
+	public UniUI(UniCon con, Inventory inventory, Component component){
+		super(con, inventory, component);
+		menu.setup(this);
+		try{
+			ui = UniReg.GUI.get(menu.ui_type).getConstructor(JsonMap.class, ContainerInterface.class).newInstance(menu.con.ui_map, menu.con);
+			ui.root = this;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		for(UIField field : ui.fields.values()){
+			initField(field);
+		}
+		deftab = (UITab)ui.tabs.values().toArray()[0];
+		ui.drawer = new UserInterface.Drawer() {
+			private float[] colarr;
+			@Override
+			public void draw(float x, float y, int u, int v, int w, int h){
+				matrix.blit(RenderPipelines.GUI_TEXTURED, actex.local(), (int)x, (int)y, u, v, w, h, w, h, 256, 256, packed);
+			}
+
+			@Override
+			public void drawFull(float x, float y, int w, int h){
+				matrix.innerBlit(RenderPipelines.GUI_TEXTURED, actex.local(),
+					(int)x, (int)x + w, (int)y, (int)y + h, 0, 1, 0, 1, packed
+				);
+			}
+
+			@Override
+			public void draw(int x, int y, StackWrapper stack, boolean text){
+				matrix.item(stack.local(), x, y);
+				if(text) matrix.itemDecorations(font, stack.local(), x, y);
+			}
+
+			@Override
+			public void bind(IDL texture){
+				actex = texture;
+			}
+
+			@Override
+			public void apply(RGB color){
+				colarr = color.toFloatArray();
+				packed = ARGB.colorFromFloat(1f, colarr[0], colarr[1], colarr[2]);
+			}
+
+			@Override
+			public String translate(String str, Object... args){
+				return Formatter.format(I18n.get(str, args));
+			}
+
+			@Override
+			public IDL loadExternal(String urltex){
+				return ExternalTextures.get("fcl", urltex);
+			}
+
+			@Override
+			public void drawLine(double sx, double sy, double ex, double ey, float[] color){
+
+			}
+		};
+		imageWidth = ui.width;
+		imageHeight = ui.height;
+		INST = this;
+	}
+
+	public void initField(UIField field){
+		((UUIField)field).init();
+		addWidget(((UUIField)field).field);
+		field.visible(field.visible);
+	}
+
+	@Override
+	protected void init(){
+		super.init();
+		ui.screen_width = width;
+		ui.screen_height = height;
+		ui.gLeft = leftPos;
+		ui.gTop = topPos;
+		for(UITab tab : ui.tabs.values()){
+			for(UIField field : tab.fields.values()){
+				if(((UUIField)field).field == null) continue;
+				setFocused(((UUIField)field).field);
+			}
+		}
+		ui.init();
+	}
+
+	@Override
+	public boolean keyPressed(KeyEvent event){
+		if(event.key() == 256){
+			if(ui.returnto != null){
+				TagCW com = TagCW.create();
+				com.set("return", true);
+				menu.con.SEND_TO_SERVER.accept(com);
+			}
+			else minecraft.player.closeContainer();
+			return true;
+		}
+		if(getFocused() instanceof EditBox){
+			getFocused().keyPressed(event);
+			return true;
+		}
+		boolean inv = minecraft.options.keyInventory.matches(event);
+		return inv ? true : super.keyPressed(event);
+	}
+
+	@Override
+	public boolean keyReleased(KeyEvent event){
+		if(getFocused() instanceof EditBox){
+			getFocused().keyReleased(event);
+			return true;
+		}
+		return super.keyReleased(event);
+	}
+
+	@Override
+	public boolean charTyped(CharacterEvent event){
+		boolean inv = minecraft.options.keyInventory.isDown();//TODO
+		if(getFocused() instanceof EditBox){
+			getFocused().charTyped(event);
+			return true;
+		}
+		boolean keytyped = super.charTyped(event) || ui.keytyped(event.codepointAsString().charAt(0), event.codepoint());
+		if(!keytyped && (event.codepoint() == 1 || inv)){
+			if(ui.returnto != null){
+				TagCW com = TagCW.create();
+				com.set("return", true);
+				ContainerInterface.SEND_TO_SERVER.accept(com);
+			}
+			else minecraft.player.closeContainer();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean mouseClicked(MouseButtonEvent event, boolean dk){
+		if(!dk && ui.onClick((int)event.x(), (int)event.y(), event.button())) return true;
+		return super.mouseClicked(event, dk);
+	}
+
+	@Override
+	public void extractBackground(GuiGraphicsExtractor matrix, int mx, int my, float ticks){
+		this.matrix = matrix;
+		actex = deftab.texture;
+		predraw(ticks, mx, my);
+		drawbackground(ticks, mx, my);
+		GlStateManager._enableBlend();
+		for(Iterator<UITab> it = ui.tabs.values().iterator(); it.hasNext();){
+			UITab tab = it.next();
+			if(!tab.visible()) continue;
+			actex = tab.texture;
+			tab.buttons.forEach((key, button) -> {
+				button.hovered(leftPos, topPos, mx, my);
+				button.draw(this, null, ticks, leftPos, topPos, mx, my);
+			});
+			tab.buttons.forEach((key, button) -> {
+				if(button.text != null) button.text.draw(this, button, ticks, leftPos, topPos, mx, my);
+			});
+			tab.texts.forEach((key, text) -> text.draw(this, null, ticks, leftPos, topPos, mx, my));
+			tab.fields.forEach((key, field) -> field.draw(this, null, ticks, leftPos, topPos, mx, my));
+		}
+		for(GuiEventListener w : children()){
+			if(w instanceof AbstractWidget) ((AbstractWidget)w).extractRenderState(matrix, mx, my, ticks);
+		}
+		postdraw(ticks, mx, my);
+		tooltip.clear();
+		for(UIButton button : ui.buttons.values()){
+			if(button.visible() && button.tooltip != null && button.hovered(leftPos, topPos, mx, my)){
+				tooltip.add(Formatter.format(I18n.get(button.tooltip)));
+			}
+		}
+		ui.getTooltip(mx, my, tooltip);
+		if(tooltip.size() > 0){
+			comtip.clear();
+			for(String str : tooltip) comtip.add(Component.literal(str));
+			matrix.setTooltipForNextFrame(minecraft.font, comtip, Optional.empty(), mx, my);
+		}
+		CreativeModeInventoryScreen e;
+		Slot slot = hoveredSlot;
+		if(slot != null && !slot.getItem().isEmpty()){
+			List<Component> list = slot.getItem().getTooltipLines(Item.TooltipContext.EMPTY, menu.player, TooltipFlag.ADVANCED);
+			matrix.setTooltipForNextFrame(minecraft.font, list, Optional.empty(), mx, my);
+		}
+	}
+
+	@Override
+	public void extractTransparentBackground(GuiGraphicsExtractor graphics){
+		if(ui.background) super.extractTransparentBackground(graphics);
+	}
+
+	@Override
+	protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym){
+		//
+	}
+
+	protected void predraw(float ticks, int mx, int my){
+		ui.predraw(ticks, mx, my);
+	}
+
+	public void drawbackground(float ticks, int mx, int my){
+		for(UITab tab : ui.tabs.values()){
+			if(!tab.visible()) continue;
+			int tx = tab.enabled() ? (tab.hovered() ? tab.htx : tab.tx) : tab.dtx;
+			int ty = tab.enabled() ? (tab.hovered() ? tab.hty : tab.ty) : tab.dty;
+			if(tab.absolute){
+				matrix.blit(RenderPipelines.GUI_TEXTURED, tab.texture.local(), (tab.x < 0) ? (width + tab.x) : tab.x, (tab.y < 0) ? (height + tab.y) : tab.y, tx, ty, tab.width, tab.height, 256, 256, packed);
+				continue;
+			}
+			matrix.blit(RenderPipelines.GUI_TEXTURED, tab.texture.local(), leftPos + tab.x, topPos + tab.y, tx, ty, tab.width, tab.height, 256, 256, packed);
+		}
+		ui.drawbackground(ticks, mx, my);
+	}
+
+	protected void postdraw(float ticks, int mx, int my){
+		this.ui.postdraw(ticks, mx, my);
+	}
+
+	@Override
+	public boolean mouseScrolled(double mx, double my, double sx, double sy){
+		boolean exit = false;
+		int x = (int)mx, y = (int)my, am = (sy > 0d) ? -1 : 1;
+		for(UITab tab : ui.tabs.values()){
+			if(!tab.visible()) continue;
+			for(Map.Entry<String, UIButton> entry : tab.buttons.entrySet()){
+				if(exit) break;
+				if(entry.getValue().hovered(leftPos, topPos, x, y)){
+					exit = (entry.getValue().onscroll(leftPos, topPos, x, y, am) || this.ui.onScroll(entry.getValue(), entry.getKey(), x, y, am));
+				}
+			}
+			for(UIText text : tab.texts.values()){
+				if(exit) break;
+				if(text.hovered(leftPos, topPos, x, y)) exit = text.onscroll(leftPos, topPos, x, y, am);
+			}
+		}
+		if(!exit) scrollwheel(am, x, y);
+		return exit;
+	}
+
+	public void scrollwheel(int am, int x, int y){
+		ui.scrollwheel(am, x, y);
+	}
+
+	public Minecraft getMinecraft(){
+		return minecraft;
+	}
+
+	public GuiGraphicsExtractor matrix(){
+		return matrix;
+	}
+
+	public String getClipboard(){
+		try{
+			String str = GLFW.glfwGetClipboardString(minecraft.getWindow().handle());
+			return str == null ? "" : str;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public void setClipboard(String str){
+		try{
+			GLFW.glfwSetClipboardString(minecraft.getWindow().handle(), str);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	public static int convCol(int rgb){
+		float[] ca = new RGB(rgb).toFloatArray();
+		return ARGB.colorFromFloat(1, ca[0], ca[1], ca[2]);
+	}
+
+	public static int convCol(RGB rgb){
+		float[] ca = rgb.toFloatArray();
+		return ARGB.colorFromFloat(1, ca[0], ca[1], ca[2]);
+	}
+
+}

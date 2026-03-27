@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "fcl",
+	"version": "${version}",
+	"name": "Fexcraft Common Library",
+	"description": "General Library Mod for Fexcraft Mods.",
+	"authors": [
+		"FEX___96"
+	],
+	"contact": {
+		"homepage": "https://fexcraft.net/",
+		"sources": "https://github.com/Fexcraft/FCL"
+	},
+	"license": "ARR",
+	"icon": "assets/fcl/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.fexcraft.mod.fcl.FCL"
+		],
+		"client": [
+			"net.fexcraft.mod.fcl.FCLC"
+		]
+	},
+	"mixins": [
+		"fcl.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.18.5",
+		"minecraft": "~26.1",
+		"java": ">=25",
+		"fabric-api": "*"
+	},
+	"accessWidener" : "fcl.accesswidener"
+}

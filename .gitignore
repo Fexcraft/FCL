@@ -33,3 +33,4 @@ localrepos
 forge*changelog.txt
 forge18/.gitattributes
 forge18/gradlew
+fabric26/gradlew
