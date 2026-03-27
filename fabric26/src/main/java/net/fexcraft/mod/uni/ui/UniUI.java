@@ -184,7 +184,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 
 	@Override
 	public boolean mouseClicked(MouseButtonEvent event, boolean dk){
-		if(!dk && ui.onClick((int)event.x(), (int)event.y(), event.button())) return true;
+		if(ui.onClick((int)event.x(), (int)event.y(), event.button())) return true;
 		return super.mouseClicked(event, dk);
 	}
 
