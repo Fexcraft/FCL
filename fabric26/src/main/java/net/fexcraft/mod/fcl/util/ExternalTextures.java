@@ -4,13 +4,13 @@ import com.mojang.blaze3d.platform.NativeImage;
 import net.fexcraft.mod.uni.impl.ResLoc;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.texture.SkinTextureDownloader;
 import net.minecraft.resources.Identifier;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -26,7 +26,15 @@ public class ExternalTextures {
 		File file = new File("./temp/fcl_download/" + texture.path());
 		if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
 		file.deleteOnExit();
-		//TODO SkinTextureDownloader.downloadAndRegisterSkin(texture.local(), file.toPath(), url, false);
+		var var = Minecraft.getInstance().getSkinManager().skinTextureDownloader.downloadAndRegisterSkin(texture.local(), file.toPath(), url, false);
+		var.defaultExecutor().execute(() -> {
+			try{
+				var.get();
+			}
+			catch(InterruptedException | ExecutionException e){
+				throw new RuntimeException(e);
+			}
+		});
 		return texture;
 	}
 
