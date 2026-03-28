@@ -9,3 +9,4 @@ mutable field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageHeight I
 mutable field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageHeight I
 accessible field net/minecraft/client/renderer/blockentity/state/BlockEntityRenderState blockState Lnet/minecraft/world/level/block/state/BlockState;
+accessible field net/minecraft/client/resources/SkinManager skinTextureDownloader Lnet/minecraft/client/renderer/texture/SkinTextureDownloader;
