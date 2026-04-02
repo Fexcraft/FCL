@@ -25,6 +25,7 @@ public class Renderer21 extends Renderer<GLObject> {
 	public static final Vector3f AX = new Vector3f(1, 0, 0);
 	public static final Vector3f AZ = new Vector3f(0, 0, 1);
 	public static final Vector3f NULLVEC = new Vector3f(0, 0, 0);
+	public static Renderer21 REN_IN = new Renderer21();
 	//
 	private static int color = 0xffffffff;
 	//
@@ -32,9 +33,9 @@ public class Renderer21 extends Renderer<GLObject> {
 	public static PoseStack pose;
 	private static MultiBufferSource buffer;
 	private static VertexConsumer cons;
-	public static RenderType rentype;
 	public static int overlay = OverlayTexture.NO_OVERLAY;
 	public static int light;
+	public RenderType type;
 
 	public static void setColor(RGB col){
 		color = col.packed + 0xff000000;
@@ -76,15 +77,13 @@ public class Renderer21 extends Renderer<GLObject> {
 		pose.popPose();
 	}
 
-	public static RenderType rentype(){
-		return rentype;
-	}
-
 	public static MultiBufferSource buffer(){
 		return buffer;
 	}
 
-	public void render(Polyhedron<GLObject> poly){
+	public void render(Polyhedron<GLObject> poly){}
+
+	public void transform(Polyhedron<?> poly){
 		if(!poly.visible) return;
 		pose.pushPose();
 		pose.translate(poly.posX, poly.posY, poly.posZ);
@@ -95,11 +94,17 @@ public class Renderer21 extends Renderer<GLObject> {
 				.rotateAxis(Static.toRadians(poly.rotZ), AZ)
 			);
 		}
-		if(buffer != null) cons = buffer.getBuffer(rentype);
-		Matrix4f verma = pose.last().pose();
-		Matrix3f norma = pose.last().normal();
+	}
+
+	public void render(Polyhedron<?> poly, PoseStack.Pose pose, RenderType rtype, VertexConsumer vcon, int li){
+		if(!poly.visible) return;
+		type = rtype;
+		light = li;
+		cons = vcon;
+		Matrix4f verma = pose.pose();
+		Matrix3f norma = pose.normal();
 		for(Polygon poli : poly.polygons){
-			if(rentype.mode() == VertexFormat.Mode.QUADS){
+			if(type.mode() == VertexFormat.Mode.QUADS){
 				for(Vertex vert : poli.vertices){
 					fillVert(verma, norma, vert);
 				}
@@ -123,7 +128,6 @@ public class Renderer21 extends Renderer<GLObject> {
 				}
 			}
 		}
-		pose.popPose();
 	}
 
 	private void fillVert(Matrix4f verma, Matrix3f norma, Vertex vert){
