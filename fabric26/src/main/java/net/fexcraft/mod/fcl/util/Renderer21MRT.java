@@ -98,7 +98,6 @@ public class Renderer21MRT extends ModelRendererTurbo.Renderer {
 		}
 	}
 
-
 	public void transform(ModelRendererTurbo turbo, float scale){
 		if(!turbo.showModel) return;
 		pose.pushPose();
