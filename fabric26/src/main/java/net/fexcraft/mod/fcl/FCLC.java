@@ -60,7 +60,7 @@ public class FCLC implements ClientModInitializer {
 		});
 		//
 		ModelRendererTurbo.RENDERER = Renderer21MRT.REN_IN;
-		Renderer.RENDERER = new net.fexcraft.mod.fcl.util.Renderer21();
+		Renderer.RENDERER = Renderer21.REN_IN;
 		GLO.SUPPLIER = (() -> new GLObject());
 		AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
 		UITab.IMPLEMENTATION = UUITab.class;
