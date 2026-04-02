@@ -28,12 +28,10 @@ public class FCLRenderTypes {
 	public static RenderType setCutout(IDL tex){
 		RenderType type = CUTOUTS.get(tex);
 		if(type != null){
-			Renderer21.rentype = type;
 			return type;
 		}
 		type = CUTOUT.apply(tex);
 		CUTOUTS.put(tex, type);
-		Renderer21.rentype = type;
 		return type;
 	}
 
