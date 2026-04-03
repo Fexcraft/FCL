@@ -12,7 +12,6 @@ import net.fexcraft.mod.fcl.local.CraftingRenderer;
 import net.fexcraft.mod.fcl.util.*;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniEntity;
-import net.fexcraft.mod.uni.packet.PacketFile;
 import net.fexcraft.mod.uni.ui.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -60,7 +59,7 @@ public class FCLC implements ClientModInitializer {
 		});
 		//
 		ModelRendererTurbo.RENDERER = Renderer21MRT.REN_IN;
-		Renderer.RENDERER = Renderer21.REN_IN;
+		Renderer.RENDERER = new Renderer26();
 		GLO.SUPPLIER = (() -> new GLObject());
 		AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
 		UITab.IMPLEMENTATION = UUITab.class;

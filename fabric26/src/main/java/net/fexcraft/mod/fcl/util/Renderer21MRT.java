@@ -19,9 +19,9 @@ import org.joml.*;
  */
 public class Renderer21MRT extends ModelRendererTurbo.Renderer {
 
-	public static final Vector3f AY = Renderer21.AY;
-	public static final Vector3f AX = Renderer21.AX;
-	public static final Vector3f AZ = Renderer21.AZ;
+	public static final Vector3f AY = Renderer26.AY;
+	public static final Vector3f AX = Renderer26.AX;
+	public static final Vector3f AZ = Renderer26.AZ;
 	public static Renderer21MRT REN_IN = new Renderer21MRT();
 	//
 	private static int color = 0xffffffff;

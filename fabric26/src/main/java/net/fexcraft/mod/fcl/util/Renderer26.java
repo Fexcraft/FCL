@@ -10,7 +10,6 @@ import net.fexcraft.lib.frl.*;
 import net.fexcraft.mod.uni.IDL;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
@@ -19,13 +18,12 @@ import org.joml.*;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Renderer21 extends Renderer<GLObject> {
+public class Renderer26 extends Renderer<GLObject> {
 
 	public static final Vector3f AY = new Vector3f(0, 1, 0);
 	public static final Vector3f AX = new Vector3f(1, 0, 0);
 	public static final Vector3f AZ = new Vector3f(0, 0, 1);
 	public static final Vector3f NULLVEC = new Vector3f(0, 0, 0);
-	public static Renderer21 REN_IN = new Renderer21();
 	//
 	private static int color = 0xffffffff;
 	//
