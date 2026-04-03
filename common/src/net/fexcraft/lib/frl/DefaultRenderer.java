@@ -1,5 +1,6 @@
 package net.fexcraft.lib.frl;
 
+import static net.fexcraft.lib.common.Static.toDegrees;
 import static org.lwjgl.opengl.GL11.*;
 
 import net.fexcraft.lib.common.math.V3D;
@@ -156,6 +157,16 @@ public class DefaultRenderer extends Renderer<GLO> {
 	@Override
 	public void rotate(double deg, int x, int y, int z){
 		GL11.glRotated(deg, x, y, z);
+	}
+
+	@Override
+	public void rotateRad(float rad, int x, int y, int z){
+		GL11.glRotatef(toDegrees(rad), x, y, z);
+	}
+
+	@Override
+	public void rotateRad(double rad, int x, int y, int z){
+		GL11.glRotated(toDegrees(rad), x, y, z);
 	}
 
 	@Override
