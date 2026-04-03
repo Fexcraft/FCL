@@ -4,7 +4,6 @@ import net.fexcraft.mod.uni.IDL;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Util;
 
 import java.util.HashMap;
@@ -25,7 +24,7 @@ public class FCLRenderTypes {
 		return RenderType.create("fcl:entity_cutout", setup);
 	});
 
-	public static RenderType setCutout(IDL tex){
+	public static RenderType getCutout(IDL tex){
 		RenderType type = CUTOUTS.get(tex);
 		if(type != null){
 			return type;
