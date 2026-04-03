@@ -10,6 +10,7 @@ import net.fexcraft.lib.frl.*;
 import net.fexcraft.mod.uni.IDL;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
@@ -34,7 +35,7 @@ public class Renderer21 extends Renderer<GLObject> {
 	public static PoseStack stack;
 	public static int overlay = OverlayTexture.NO_OVERLAY;
 	public static int light;
-	public RenderType type;
+	public static RenderType type;
 
 	public static void setColor(RGB col){
 		color = col.packed + 0xff000000;
@@ -113,7 +114,7 @@ public class Renderer21 extends Renderer<GLObject> {
 
 	@Override
 	public void translate(double x, double y, double z){
-		pose.translate((float)x, (float)y, (float)z);
+		stack.translate((float)x, (float)y, (float)z);
 	}
 
 	@Override
@@ -143,7 +144,7 @@ public class Renderer21 extends Renderer<GLObject> {
 
 	@Override
 	public void bind(IDL tex){
-		FCLRenderTypes.setCutout(tex);
+		type = FCLRenderTypes.getCutout(tex);
 	}
 
 	@Override
