@@ -10,7 +10,6 @@ import net.fexcraft.lib.frl.*;
 import net.fexcraft.mod.uni.IDL;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
@@ -30,9 +29,9 @@ public class Renderer21 extends Renderer<GLObject> {
 	private static int color = 0xffffffff;
 	//
 	private static BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-	public static PoseStack pose;
-	private static MultiBufferSource buffer;
-	private static VertexConsumer cons;
+	public static PoseStack.Pose pose;
+	public static VertexConsumer cons;
+	public static PoseStack stack;
 	public static int overlay = OverlayTexture.NO_OVERLAY;
 	public static int light;
 	public RenderType type;
@@ -53,54 +52,16 @@ public class Renderer21 extends Renderer<GLObject> {
 		color = 0xffffffff;
 	}
 
-	public static void rotateDeg(float by, Vector3f axe){
-		pose.mulPose(new Quaternionf().rotateAxis(Static.toRadians(by), axe));
-	}
-
-	public static void rotateRad(float by, Vector3f axe){
-		pose.mulPose(new Quaternionf().rotateAxis(by, axe));
-	}
-
-	public static void rotateDeg(PoseStack pose, float by, Vector3f axe){
-		pose.mulPose(new Quaternionf().rotateAxis(Static.toRadians(by), axe));
-	}
-
-	public static void rotateRad(PoseStack pose, float by, Vector3f axe){
-		pose.mulPose(new Quaternionf().rotateAxis(by, axe));
-	}
-
-	public static void pushPose(){
-		pose.pushPose();
-	}
-
-	public static void popPose(){
-		pose.popPose();
-	}
-
-	public static MultiBufferSource buffer(){
-		return buffer;
-	}
-
-	public void render(Polyhedron<GLObject> poly){}
-
-	public void transform(Polyhedron<?> poly){
+	public void render(Polyhedron<GLObject> poly){
 		if(!poly.visible) return;
-		pose.pushPose();
 		pose.translate(poly.posX, poly.posY, poly.posZ);
 		if(poly.rotX != 0.0F || poly.rotY != 0.0F || poly.rotZ != 0.0F){
-			pose.mulPose(new Quaternionf()
-				.rotateAxis(Static.toRadians(poly.rotY), AY)
-				.rotateAxis(Static.toRadians(poly.rotX), AX)
-				.rotateAxis(Static.toRadians(poly.rotZ), AZ)
+			pose.mulPose(new Matrix4f().identity()
+				.rotate(Static.toRadians(poly.rotY), 0, 1, 0)
+				.rotate(Static.toRadians(poly.rotX), 1, 0, 0)
+				.rotate(Static.toRadians(poly.rotZ), 0, 0, 1)
 			);
 		}
-	}
-
-	public void render(Polyhedron<?> poly, PoseStack.Pose pose, RenderType rtype, VertexConsumer vcon, int li){
-		if(!poly.visible) return;
-		type = rtype;
-		light = li;
-		cons = vcon;
 		Matrix4f verma = pose.pose();
 		Matrix3f norma = pose.normal();
 		for(Polygon poli : poly.polygons){
@@ -142,32 +103,42 @@ public class Renderer21 extends Renderer<GLObject> {
 
 	@Override
 	public void push(){
-		pose.pushPose();
+		stack.pushPose();
 	}
 
 	@Override
 	public void pop(){
-		pose.popPose();
+		stack.popPose();
 	}
 
 	@Override
 	public void translate(double x, double y, double z){
-		pose.translate(x, y, z);
+		pose.translate((float)x, (float)y, (float)z);
 	}
 
 	@Override
 	public void rotate(float deg, int x, int y, int z){
-		pose.mulPose(new Matrix4f().rotate(deg * Static.rad1, x, y, z));
+		stack.mulPose(new Matrix4f().rotate(deg * Static.rad1, x, y, z));
 	}
 
 	@Override
 	public void rotate(double deg, int x, int y, int z){
-		pose.mulPose(new Matrix4f().rotate((float)deg * Static.rad1, x, y, z));
+		stack.mulPose(new Matrix4f().rotate((float)deg * Static.rad1, x, y, z));
+	}
+
+	@Override
+	public void rotateRad(float rad, int x, int y, int z){
+		stack.mulPose(new Matrix4f().rotate(rad, x, y, z));
+	}
+
+	@Override
+	public void rotateRad(double rad, int x, int y, int z){
+		stack.mulPose(new Matrix4f().rotate((float)rad, x, y, z));
 	}
 
 	@Override
 	public void scale(double x, double y, double z){
-		pose.scale((float)x, (float)y, (float)z);
+		stack.scale((float)x, (float)y, (float)z);
 	}
 
 	@Override
@@ -183,38 +154,6 @@ public class Renderer21 extends Renderer<GLObject> {
 	@Override
 	public void light(V3D vec){
 		light = LevelRenderer.getLightCoords(Minecraft.getInstance().level, pos.set(vec.x, vec.y, vec.z));
-	}
-
-	public static void set(PoseStack ps, MultiBufferSource mbs, int lgt, int ol){
-		pose = ps;
-		buffer = mbs;
-		cons = null;
-		light = lgt;
-		overlay = ol;
-	}
-
-	public static void set(PoseStack ps, MultiBufferSource mbs, int lgt){
-		pose = ps;
-		buffer = mbs;
-		cons = null;
-		light = lgt;
-		overlay = OverlayTexture.NO_OVERLAY;
-	}
-
-	public static void set(PoseStack ps, VertexConsumer con, int lgt, int ol){
-		pose = ps;
-		buffer = null;
-		cons = con;
-		light = lgt;
-		overlay = ol;
-	}
-
-	public static void set(PoseStack ps, VertexConsumer con, int lgt){
-		pose = ps;
-		buffer = null;
-		cons = con;
-		light = lgt;
-		overlay = OverlayTexture.NO_OVERLAY;
 	}
 
 }
