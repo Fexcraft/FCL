@@ -347,7 +347,7 @@ public class FCL implements ModInitializer {
 	}
 
 	public static void bindTex(IDL tex){
-		net.fexcraft.mod.fcl.util.FCLRenderTypes.setCutout(tex);
+		//TODO net.fexcraft.mod.fcl.util.FCLRenderTypes.getCutout(tex);
 	}
 
 	public static void sendServerFile(EntityW player, String lis, String loc, byte[] img){
