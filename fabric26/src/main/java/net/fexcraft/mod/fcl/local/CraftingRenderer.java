@@ -42,7 +42,7 @@ public class CraftingRenderer implements BlockEntityRenderer<CraftingEntity, Blo
 		Direction dir = state.blockState.getValue(FACING);
 		pose.mulPose(new Quaternionf().rotateAxis(Static.toRadians(dir.getAxis() == Direction.Axis.Z ? dir.toYRot() : dir.toYRot() - 180), AY));
 		pose.mulPose(new Quaternionf().rotateAxis(Static.rad180, AZ));
-		RenderType type = FCLRenderTypes.setCutout(TEXTURE);
+		RenderType type = FCLRenderTypes.getCutout(TEXTURE);
 		Renderer21MRT.pose = pose;
 		for(ArrayList<ModelRendererTurbo> group : MODEL.groups){
 			for(ModelRendererTurbo turbo : group){
