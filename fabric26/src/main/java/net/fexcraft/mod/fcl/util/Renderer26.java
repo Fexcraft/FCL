@@ -25,7 +25,7 @@ public class Renderer26 extends Renderer<GLObject> {
 	public static final Vector3f AZ = new Vector3f(0, 0, 1);
 	public static final Vector3f NULLVEC = new Vector3f(0, 0, 0);
 	//
-	private static int color = 0xffffffff;
+	public static int color = 0xffffffff;
 	//
 	private static BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 	public static PoseStack.Pose pose;
