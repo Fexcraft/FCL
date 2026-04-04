@@ -34,6 +34,7 @@ public class Renderer26 extends Renderer<GLObject> {
 	public static int overlay = OverlayTexture.NO_OVERLAY;
 	public static int light;
 	public static RenderType type;
+	private Matrix4f matrix = new Matrix4f();
 
 	public static void setColor(RGB col){
 		color = col.packed + 0xff000000;
@@ -53,15 +54,15 @@ public class Renderer26 extends Renderer<GLObject> {
 
 	public void render(Polyhedron<GLObject> poly){
 		if(!poly.visible) return;
-		pose.translate(poly.posX, poly.posY, poly.posZ);
+		Matrix4f verma = matrix.set(pose.pose());
+		verma = verma.translate(poly.posX, poly.posY, poly.posZ);
 		if(poly.rotX != 0.0F || poly.rotY != 0.0F || poly.rotZ != 0.0F){
-			pose.mulPose(new Matrix4f().identity()
+			verma.mul(new Matrix4f().identity()
 				.rotate(Static.toRadians(poly.rotY), 0, 1, 0)
 				.rotate(Static.toRadians(poly.rotX), 1, 0, 0)
 				.rotate(Static.toRadians(poly.rotZ), 0, 0, 1)
 			);
 		}
-		Matrix4f verma = pose.pose();
 		Matrix3f norma = pose.normal();
 		for(Polygon poli : poly.polygons){
 			if(type.mode() == VertexFormat.Mode.QUADS){
