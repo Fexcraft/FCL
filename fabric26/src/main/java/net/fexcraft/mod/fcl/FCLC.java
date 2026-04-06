@@ -3,6 +3,7 @@ package net.fexcraft.mod.fcl;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fexcraft.lib.common.math.AxisRotator;
+import net.fexcraft.lib.common.utils.CallbackContainer;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.frl.GLO;
 import net.fexcraft.lib.frl.GLObject;
@@ -26,6 +27,8 @@ import static net.fexcraft.mod.fcl.FCL.*;
  * @author Ferdinand Calo' (FEX___96)
  */
 public class FCLC implements ClientModInitializer {
+
+	public static CallbackContainer INIT_COMPLETE = new CallbackContainer();
 
 	@Override
 	public void onInitializeClient(){
@@ -58,7 +61,7 @@ public class FCLC implements ClientModInitializer {
 			});
 		});
 		//
-		ModelRendererTurbo.RENDERER = Renderer21MRT.REN_IN;
+		ModelRendererTurbo.RENDERER = new Renderer26MRT();
 		Renderer.RENDERER = new Renderer26();
 		GLO.SUPPLIER = (() -> new GLObject());
 		AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
@@ -69,6 +72,7 @@ public class FCLC implements ClientModInitializer {
 		ContainerInterface.TRANSLATOR = str -> Formatter.format(I18n.get(str));
 		ContainerInterface.TRANSFORMAT = (str, objs) -> Formatter.format(I18n.get(str, objs));
 		ContainerInterface.SEND_TO_SERVER = com -> ClientPlayNetworking.send(new UIPacket(com));
+		INIT_COMPLETE.complete();
 	}
 
 	public static void sendServerFile(String lis, String loc){
