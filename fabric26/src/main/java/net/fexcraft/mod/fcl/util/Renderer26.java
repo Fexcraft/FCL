@@ -10,6 +10,7 @@ import net.fexcraft.lib.frl.*;
 import net.fexcraft.mod.uni.IDL;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,7 @@ public class Renderer26 extends Renderer<GLObject> {
 	public static int color = 0xffffffff;
 	//
 	private static BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+	public static SubmitNodeCollector noco;
 	public static PoseStack.Pose pose;
 	public static VertexConsumer cons;
 	public static PoseStack stack;
