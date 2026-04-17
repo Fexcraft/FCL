@@ -177,12 +177,8 @@ public class FCL implements ModInitializer {
 				}
 			});
 		});
-		UNIVERSAL = Registry.register(BuiltInRegistries.MENU, "fcl:universal", new ExtendedMenuType<UniCon, UISync>(new ExtendedMenuType.ExtendedFactory<UniCon, UISync>() {
-			@Override
-			public UniCon create(int i, Inventory inventory, UISync sync){
-				return new UniCon(i, inventory, sync.key(), sync.pos(), sync.map());
-			}
-		}, UI_SYNC_CODEC));
+		UNIVERSAL = Registry.register(BuiltInRegistries.MENU, "fcl:universal", new ExtendedMenuType<>((i, inventory, sync) ->
+			new UniCon(i, inventory, sync.key(), sync.pos(), sync.map()), UI_SYNC_CODEC));
 		//
 		EntityUtil.UI_OPENER = (player, ui, pos) -> {
 			try{
