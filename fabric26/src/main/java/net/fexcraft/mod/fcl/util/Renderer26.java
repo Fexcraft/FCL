@@ -19,7 +19,7 @@ import org.joml.*;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Renderer26 extends Renderer<GLObject> {
+public class Renderer26 extends Renderer {
 
 	public static final Vector3f AY = new Vector3f(0, 1, 0);
 	public static final Vector3f AX = new Vector3f(1, 0, 0);
@@ -54,7 +54,7 @@ public class Renderer26 extends Renderer<GLObject> {
 		color = 0xffffffff;
 	}
 
-	public void render(Polyhedron<GLObject> poly){
+	public void render(Polyhedron poly){
 		if(!poly.visible) return;
 		Matrix4f verma = matrix.set(pose.pose());
 		verma = verma.translate(poly.posX, poly.posY, poly.posZ);
@@ -99,7 +99,7 @@ public class Renderer26 extends Renderer<GLObject> {
 		cons.addVertex(vec.x, vec.y, vec.z, color, vert.u, vert.v, overlay, light, norm.x, norm.y, norm.z);
 	}
 
-	public void delete(Polyhedron<GLObject> poly){
+	public void delete(Polyhedron poly){
 		//
 	}
 
