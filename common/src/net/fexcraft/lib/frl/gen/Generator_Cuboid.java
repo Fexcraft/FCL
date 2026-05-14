@@ -3,7 +3,6 @@ package net.fexcraft.lib.frl.gen;
 import java.util.List;
 
 import net.fexcraft.lib.common.math.Vec3f;
-import net.fexcraft.lib.frl.GLO;
 import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.frl.Vertex;
@@ -17,7 +16,7 @@ import static net.fexcraft.lib.frl.gen.Generator.Values.*;
  */
 public class Generator_Cuboid {
 
-	public static <GL extends GLO> void make(Polyhedron<GL> poly, ValueMap map){
+	public static void make(Polyhedron poly, ValueMap map){
 		boolean shaped = map.has(CORNERS);
 		boolean anyrem = map.has(REMOVE_POLYGONS);
 		float[] v0, v1, v2, v3, v4, v5, v6, v7;
