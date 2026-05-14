@@ -18,12 +18,12 @@ import net.fexcraft.lib.common.math.RGB;
  * @author Ferdinand Calo' (FEX___96)
  *
  */
-public class DefaultRenderer extends Renderer<GLO> {
+public class DefaultRenderer extends Renderer {
 
 	public static RGB conv = RGB.WHITE.copy();
 	private Material material;
 	
-	public void render(Polyhedron<GLO> poly){
+	public void render(Polyhedron poly){
 		if(poly.glObj.material != material){
 			material = poly.glObj.material;
 			material.applyTexture();
@@ -36,22 +36,22 @@ public class DefaultRenderer extends Renderer<GLO> {
 			glTranslatef(poly.posX, poly.posY, poly.posZ);
 			poly.rotOrder.rotate(poly);
 			glCallList(poly.glId);
-			if(poly.sub != null) for(Polyhedron<GLO> p : poly.sub) render(p);
+			if(poly.sub != null) for(Polyhedron p : poly.sub) render(p);
 			glPopMatrix();
 		}
 		else if(poly.posX != 0 || poly.posY != 0f || poly.posZ != 0){
 			glTranslatef(poly.posX, poly.posY, poly.posZ);
 			glCallList(poly.glId);
-			if(poly.sub != null) for(Polyhedron<GLO> p : poly.sub) render(p);
+			if(poly.sub != null) for(Polyhedron p : poly.sub) render(p);
 			glTranslatef(-poly.posX, -poly.posY, -poly.posZ);
 		}
 		else{
 			glCallList(poly.glId);
-			if(poly.sub != null) for(Polyhedron<GLO> p : poly.sub) render(p);
+			if(poly.sub != null) for(Polyhedron p : poly.sub) render(p);
 		}
 	}
 
-	private static void compile(Polyhedron<GLO> poly){
+	private static void compile(Polyhedron poly){
 		poly.glId = glGenLists(1);
 		glNewList(poly.glId, GL_COMPILE);
 		for(Polygon gon : poly.polygons){
@@ -129,7 +129,7 @@ public class DefaultRenderer extends Renderer<GLO> {
 	}
 
 	@Override
-	public void delete(Polyhedron<GLO> poly){
+	public void delete(Polyhedron poly){
 		if(poly.glId == null) return;
 		GL11.glDeleteLists(poly.glId, 1);
 	}
