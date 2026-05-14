@@ -12,40 +12,39 @@ import static net.fexcraft.lib.frl.gen.Generator.Values.*;
  * 
  * @author Ferdinand Calo' (FEX___96)
  *
- * @param <GL>
  */
-public class Generator<GL extends GLO> {
+public class Generator {
 
 	protected static final Vec3f NULL_VEC = new Vec3f(0, 0, 0);
 	
-	protected Polyhedron<GL> poly;
+	protected Polyhedron poly;
 	protected ValueMap map = new ValueMap();
 	
-	public Generator(Polyhedron<GL> poli){
+	public Generator(Polyhedron poli){
 		if(poli != null) poly = poli;
-		else poly = new Polyhedron<>();
+		else poly = new Polyhedron();
 	}
 	
-	public Generator(Polyhedron<GL> poli, float texW, float texH){
+	public Generator(Polyhedron poli, float texW, float texH){
 		this(poli);
 		map.put(TEXTURE_WIDTH, texW);
 		map.put(TEXTURE_HEIGHT, texH);
 	}
 	
-	public Generator(Polyhedron<GL> poli, float texW, float texH, Type type){
+	public Generator(Polyhedron poli, float texW, float texH, Type type){
 		this(poli, texW, texH);
 		map.put(TYPE, type);
 	}
 	
-	public Generator(Polyhedron<GL> poli, Type type){
+	public Generator(Polyhedron poli, Type type){
 		this(poli, 0, 0, type);
 	}
 
-	public Polyhedron<GL> get(){
+	public Polyhedron get(){
 		return poly;
 	}
 	
-	public Polyhedron<GL> make(){
+	public Polyhedron make(){
 		Type type = map.getValue(TYPE, Type.NONE);
 		switch(type){
 			case CYLINDER:{
@@ -61,23 +60,23 @@ public class Generator<GL extends GLO> {
 		return poly;
 	}
 	
-	public Generator<GL> setValue(Enum<?> key, Object value){
+	public Generator setValue(Enum<?> key, Object value){
 		map.put(key, value);
 		return this;
 	}
 	
-	public Generator<GL> set(Enum<?> key, Object value){
+	public Generator set(Enum<?> key, Object value){
 		map.put(key, value);
 		return this;
 	}
 	
-	public Generator<GL> removePolygon(int index){
+	public Generator removePolygon(int index){
 		if(!map.has(REMOVE_POLYGONS)) map.addArray(REMOVE_POLYGONS, int.class);
 		map.getArray(REMOVE_POLYGONS).add(index);
 		return this;
 	}
 	
-	public Generator<GL> removePolygon(int... idxs){
+	public Generator removePolygon(int... idxs){
 		for(int i : idxs) removePolygon(i);
 		return this;
 	}
