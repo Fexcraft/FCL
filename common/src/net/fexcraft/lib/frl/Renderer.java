@@ -15,9 +15,9 @@ public abstract class Renderer<GL extends GLO> {
 	
 	public static boolean TRIANGULATED_QUADS = true;
 
-	public abstract void render(Polyhedron<GL> poly);
+	public abstract void render(Polyhedron poly);
 
-	public abstract void delete(Polyhedron<GL> poly);
+	public abstract void delete(Polyhedron poly);
 
 	public abstract void push();
 
