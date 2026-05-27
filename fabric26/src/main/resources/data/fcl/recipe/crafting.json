@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "fcl",
+  "category": "misc",
+  "pattern": [
+    "###",
+    ";:;"
+  ],
+  "key": {
+    "#": "minecraft:iron_ingot",
+    ";": "#minecraft:logs",
+    ":": "minecraft:crafting_table"
+  },
+  "result": {
+    "id": "fcl:crafting"
+  },
+  "show_notification": true
+}
