@@ -63,7 +63,7 @@ import org.apache.logging.log4j.Logger;
 public class FCL {
 	
 	public static final String prefix = TextFormatting.BLACK + "[" + TextFormatting.DARK_AQUA + "FCL" + TextFormatting.BLACK + "]" + TextFormatting.GRAY + " ";
-	public static final String version = "12.xx";
+	public static final String version = "12.xxx";
 	public static final String mcv = "1.12.2";
 	public static final UUID[] authors = new UUID[]{ UUID.fromString("01e4af9b-2a30-471e-addf-f6338ffce04b") };
 	public static final Logger LOGGER = LogManager.getLogger("FCL");
