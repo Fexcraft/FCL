@@ -3,8 +3,8 @@
 	  "modid": "fcl",
 	  "name": "Fexcraft Common Library",
 	  "description": "A Library and API needed for most Fexcraft mods to run.",
-	  "version": "${version}",
-	  "mcversion": "${mcversion}",
+	  "version": "12.xxx",
+	  "mcversion": "1.12.2",
 	  "url": "http://fexcraft.net",
 	  "updateUrl": "http://fexcraft.net",
 	  "authorList": [ "FEX___96" ],
@@ -12,35 +12,5 @@
 	  "logoFile": "",
 	  "screenshots": [],
 	  "dependencies": []
-	},
-	{
-	  "modid": "tmt",
-	  "name": "(Fex's) Turbo Model Thingy",
-	  "description": "FEX___96's branch of TMT, includes various old things fixed, compability with a few other TMT branches and new things.",
-	  "version": "${version}",
-	  "mcversion": "${mcversion}",
-	  "url": "http://fexcraft.net",
-	  "updateUrl": "http://fexcraft.net",
-	  "authorList": [ "GaryCXJk", "FEX___96" ],
-	  "credits": "Thanks to all who didn't give up on TMT yet! And: EternalBlueFlame, Manus, jamioflan / TheFlansmodTeam",
-	  "logoFile": "",
-	  "screenshots": [],
-	  "dependencies": [],
-	  "parent": "fcl"
-	},
-	{
-	  "modid": "frl",
-	  "name": "Fex's Rendering Library",
-	  "description": "A new rendering library.",
-	  "version": "${version}",
-	  "mcversion": "${mcversion}",
-	  "url": "http://fexcraft.net",
-	  "updateUrl": "http://fexcraft.net",
-	  "authorList": [ "FEX___96" ],
-	  "credits": "",
-	  "logoFile": "",
-	  "screenshots": [],
-	  "dependencies": [],
-	  "parent": "fcl"
 	}
 ]
