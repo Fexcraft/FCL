@@ -14,7 +14,6 @@ import net.fexcraft.mod.uni.inv.*;
 import net.fexcraft.mod.uni.util.*;
 import net.fexcraft.lib.mc.gui.GuiHandler;
 import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.SimpleUpdateHandler;
 import net.fexcraft.lib.mc.registry.CreativeTab;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.render.FCLBlockModel;
@@ -34,7 +33,6 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemLead;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -42,30 +40,24 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * Fexcraft Common Library
+ * A Common Library used in Fexcraft Mods.
  * 
  * @author Ferdinand Calo' (FEX___96)
- * 
- * @description This Library is usually delivered as a separate jar,
- * if you got it from anywhere else then Fexcraft.net or another <i>official</i> download site,
- * consider deleting it instantly for security reasons!
- * 
+ *
  */
 @Mod(modid = "fcl", name = "Fexcraft Common Library", version = FCL.version, acceptableRemoteVersions = "*", acceptedMinecraftVersions = "*", updateJSON = "http://fexcraft.net/minecraft/fcl/request?mode=getForgeUpdateJson&modid=fcl")
 public class FCL {
@@ -153,7 +145,6 @@ public class FCL {
 	@Mod.EventHandler
     public void init(FMLInitializationEvent event) throws Exception{
 		StackWrapper.EMPTY = new SWI(ItemStack.EMPTY);
-		//MinecraftForge.EVENT_BUS.register(new SimpleUpdateHandler.EventHandler());
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		if(UniFCL.EXAMPLE_RECIPES){
 			FclRecipe.newBuilder("recipe.fcl.testing").add(new ItemStack(Blocks.COBBLESTONE, 4)).output(new ItemStack(Blocks.STONE_STAIRS, 5)).register();
@@ -170,10 +161,7 @@ public class FCL {
 	}
 	
 	@Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event) throws Exception{
-		SimpleUpdateHandler.register("fcl", 1, version);
-		SimpleUpdateHandler.setUpdateMessage("fcl", prefix + "Update available! (" + SimpleUpdateHandler.getLatestVersionOf("fcl") + ")");
-		SimpleUpdateHandler.postInit();
+    public void postInit(FMLPostInitializationEvent event){
 		FCLRegistry.clear(event);
 		PacketHandler.init();
 		CreativeTab.getIcons();
@@ -196,17 +184,9 @@ public class FCL {
 	public static FCL getInstance(){
 		return instance;
 	}
-	
-	/*public File getConfigDirectory(){
-		return configdir;
-	}*/
 
 	public static final String getVersion(){
 		return version;
-	}
-
-	public static final String getMinecraftVersion(){
-		return mcv;
 	}
 
 	public static void bindTex(IDL tex){
