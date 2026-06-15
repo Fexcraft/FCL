@@ -29,7 +29,6 @@ public class Renderer26 extends Renderer {
 	public static int color = 0xffffffff;
 	//
 	private static BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-	public static SubmitNodeCollector noco;
 	public static PoseStack.Pose pose;
 	public static VertexConsumer cons;
 	public static PoseStack stack;
