@@ -19,6 +19,8 @@ public abstract class StateWrapper {
     public static BiFunction<Object, String, StateWrapper> COMMAND_WRAPPER = null;
     public static BiFunction<StackWrapper, PlacingContext, StateWrapper> STACK_WRAPPER = null;
     public static ConcurrentHashMap<Object, StateWrapper> WRAPPERS = new ConcurrentHashMap<>();
+    //
+    public static ConcurrentHashMap<String, Object> PROP_REGISTRY = new ConcurrentHashMap<>();
 
     public static StateWrapper of(Object state){
         StateWrapper wrapper = WRAPPERS.get(state);
@@ -62,7 +64,13 @@ public abstract class StateWrapper {
 
     public abstract Object direct();
 
+    public abstract Object getProperty(String key);
+
     public abstract <V> V getValue(Object prop);
+
+    public abstract <V> V getValue(String fvtm_key);
+
+    public abstract <V> V getValue(String fvtm_key, Class<V> type);
 
     public abstract IDL getIDL();
 
