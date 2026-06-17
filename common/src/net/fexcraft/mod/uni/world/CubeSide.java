@@ -23,6 +23,10 @@ public enum CubeSide {
 		return fromIndex(idx, null);
 	}
 
+	public static CubeSide parse(String arg){
+		return valueOf(arg.toUpperCase());
+	}
+
 	public boolean negative(){
 		return ordinal() % 2 == 0;
 	}
