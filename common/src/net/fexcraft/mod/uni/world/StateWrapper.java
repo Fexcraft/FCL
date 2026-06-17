@@ -2,6 +2,8 @@ package net.fexcraft.mod.uni.world;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fcl.mixint.BSWProvider;
+import net.fexcraft.mod.fcl.mixint.CWProvider;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.inv.StackWrapper;
 
@@ -18,15 +20,17 @@ public abstract class StateWrapper {
     public static Function<Object, StateWrapper> STATE_WRAPPER = null;
     public static BiFunction<Object, String, StateWrapper> COMMAND_WRAPPER = null;
     public static BiFunction<StackWrapper, PlacingContext, StateWrapper> STACK_WRAPPER = null;
-    public static ConcurrentHashMap<Object, StateWrapper> WRAPPERS = new ConcurrentHashMap<>();
     //
     public static ConcurrentHashMap<String, Object> PROP_REGISTRY = new ConcurrentHashMap<>();
 
     public static StateWrapper of(Object state){
-        StateWrapper wrapper = WRAPPERS.get(state);
-        if(wrapper == null) WRAPPERS.put(state, wrapper = STATE_WRAPPER.apply(state));
-        return wrapper;
+        return ((BSWProvider)state).fcl_wrapper();
     }
+
+    public static StateWrapper create(Object state){
+        return STATE_WRAPPER.apply(state);
+    }
+
     public static StateWrapper from(StackWrapper stack, PlacingContext ctx){
         return STACK_WRAPPER.apply(stack, ctx);
     }
