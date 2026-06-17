@@ -6,7 +6,8 @@
 	"mixins": [
 		"ChunkMixin",
 		"StackMixin",
-		"EntityMixin"
+		"EntityMixin",
+		"BlockStateMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
