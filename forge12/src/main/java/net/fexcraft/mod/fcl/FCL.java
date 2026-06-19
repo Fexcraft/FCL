@@ -23,15 +23,15 @@ import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.ui.*;
 import net.fexcraft.mod.uni.world.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.command.CommandBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemLead;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -96,6 +96,31 @@ public class FCL {
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_LEAD, item -> item instanceof ItemLead);
 		StackWrapper.ITEM_TYPES.put(StackWrapper.IT_FOOD, item -> item instanceof ItemFood);
+		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.getDefaultState());
+		StateWrapper.STATE_WRAPPER = state -> new StateWrapperI((IBlockState)state);
+		StateWrapper.COMMAND_WRAPPER = (block, arg) -> {
+			try{
+				if(block == null){
+					String split[] = arg.split(" ");
+					arg = split[1];
+					block = Block.REGISTRY.getObject(new ResourceLocation(split[0]));
+				}
+				return new StateWrapperI(CommandBase.convertArgToBlockState((Block)block, arg));
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				return StateWrapper.DEFAULT;
+			}
+		};
+		StateWrapper.STACK_WRAPPER = (stack, ctx) ->{
+			Item item = stack.getItem().local();
+			if(item instanceof ItemBlock){
+				net.minecraft.block.Block block = ((ItemBlock)item).getBlock();
+				net.minecraft.util.math.BlockPos pos = new net.minecraft.util.math.BlockPos(ctx.pos.x, ctx.pos.y, ctx.pos.z);
+				return StateWrapper.of(block.getStateForPlacement(ctx.world.local(), pos, ctx.side == null ? null : ctx.side.local(), (float)ctx.off.x, (float)ctx.off.y, (float)ctx.off.z, stack.damage(), ctx.placer.local()));
+			}
+			else return StateWrapper.DEFAULT;
+		};
 		AABB.SUPPLIER = () -> new AABBI();
 		AABB.WRAPPER = obj -> new AABBI((AxisAlignedBB)obj);
 		UniInventory.IMPL = UniInventory12.class;
