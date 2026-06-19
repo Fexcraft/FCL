@@ -56,15 +56,13 @@ public class StateWrapperI extends StateWrapper {
     }
 
     @Override
-    public <V> V getValue(String fvtm_key){
-        if(!PROP_REGISTRY.containsKey(fvtm_key)) return null;
-        return (V)state.getValue((Property<?>)PROP_REGISTRY.get(fvtm_key));
+    public <V> V getValue(String key){
+        return (V)state.getValue((Property<?>)getProperty(key));
     }
 
     @Override
-    public <V> V getValue(String fvtm_key, Class<V> type){
-        if(!PROP_REGISTRY.containsKey(fvtm_key)) return null;
-        return (V)state.getValue((Property<?>)PROP_REGISTRY.get(fvtm_key));
+    public <V> V getValue(String key, Class<V> type){
+        return (V)state.getValue((Property<?>)getProperty(key));
     }
 
     @Override
