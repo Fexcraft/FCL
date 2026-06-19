@@ -20,8 +20,6 @@ public abstract class StateWrapper {
     public static Function<Object, StateWrapper> STATE_WRAPPER = null;
     public static BiFunction<Object, String, StateWrapper> COMMAND_WRAPPER = null;
     public static BiFunction<StackWrapper, PlacingContext, StateWrapper> STACK_WRAPPER = null;
-    //
-    public static ConcurrentHashMap<String, Object> PROP_REGISTRY = new ConcurrentHashMap<>();
 
     public static StateWrapper of(Object state){
         return ((BSWProvider)state).fcl_wrapper();
@@ -72,9 +70,9 @@ public abstract class StateWrapper {
 
     public abstract <V> V getValue(Object prop);
 
-    public abstract <V> V getValue(String fvtm_key);
+    public abstract <V> V getValue(String key);
 
-    public abstract <V> V getValue(String fvtm_key, Class<V> type);
+    public abstract <V> V getValue(String key, Class<V> type);
 
     public abstract IDL getIDL();
 
