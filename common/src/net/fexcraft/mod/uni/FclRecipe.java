@@ -46,11 +46,13 @@ public class FclRecipe {
 			FCL.LOGGER.info("Failed to register recipe for '" + category + "': no output");
 			return;
 		}
+		recipe.output.updateTag(recipe.output.directTag());
 		for(Component comp : recipe.components){
 			if(!VALIDATE.apply(comp)){
 				FCL.LOGGER.info("Failed to register recipe for '" + category + "': invalid component / " + (comp.tag ? comp.id : "empty"));
 				return;
 			}
+			if(comp.stack != null) comp.stack.updateTag(comp.stack.directTag());
 		}
 		IDL idl = recipe.output.getIDL();
 		if(!RECIPES.containsKey(category)) RECIPES.put(category, new LinkedHashMap<>());
@@ -233,6 +235,7 @@ public class FclRecipe {
 
 		public void refreshList(){
 			list = GET_TAG_AS_LIST.apply(this);
+			for(StackWrapper stack : list) stack.updateTag(stack.directTag());
 		}
 
 	}
