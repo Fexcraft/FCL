@@ -2,6 +2,7 @@ package net.fexcraft.mod.fcl.ui;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.uni.*;
 import net.fexcraft.mod.uni.inv.StackWrapper;
@@ -72,7 +73,10 @@ public class CraftRecipeCon extends ContainerInterface {
 		ArrayList<StackWrapper> copy = new ArrayList<>();
 		for(int idx = 0; idx < player.entity.getInventorySize(); idx++){
 			StackWrapper wrp = player.entity.getStackAt(idx);
-			if(!wrp.empty()) copy.add(wrp.copy());
+			if(!wrp.empty()){
+				StackWrapper cp = wrp.copy();
+				copy.add(cp.updateTag(cp.directTag()));
+			}
 		}
 		for(FclRecipe.Component comp : rec.components){
 			if(comp.tag){
@@ -125,7 +129,7 @@ public class CraftRecipeCon extends ContainerInterface {
 		ArrayList<StackWrapper> copy = new ArrayList<>();
 		for(int idx = 0; idx < player.entity.getInventorySize(); idx++){
 			StackWrapper wrp = player.entity.getStackAt(idx);
-			if(!wrp.empty()) copy.add(wrp);
+			if(!wrp.empty()) copy.add(wrp.updateTag(wrp.directTag()));
 		}
 		for(FclRecipe.Component comp : rec.components){
 			if(comp.tag){
