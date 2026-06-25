@@ -12,8 +12,7 @@ public class AABBI extends net.fexcraft.mod.uni.world.AABB {
 
 	private AABB aabb;
 
-	public AABBI(){
-	}
+	public AABBI(){}
 
 	public AABBI(AABB albb){
 		aabb = albb;
