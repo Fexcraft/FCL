@@ -34,7 +34,6 @@ import java.util.List;
 public class UniUI extends AbstractContainerScreen<UniCon> {
 
 	public static UniUI INST;
-	//protected LinkedHashMap<String, UITab> tabs = new LinkedHashMap<>();
 	protected ArrayList<Component> comtip = new ArrayList<>();
 	protected ArrayList<String> tooltip = new ArrayList<>();
 	protected ArrayList<UITab> tabs = new ArrayList<>();
