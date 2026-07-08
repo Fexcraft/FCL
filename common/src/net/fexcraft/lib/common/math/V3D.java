@@ -89,6 +89,11 @@ public class V3D {
         double x = ox - this.x, y = oy - this.y, z = oz - this.z;
         return Math.sqrt(x * x + y * y + z * z);
     }
+
+	public double dis(V3I vec){
+		double x = vec.x - this.x, y = vec.y - this.y, z = vec.z - this.z;
+		return Math.sqrt(x * x + y * y + z * z);
+	}
     
     public double sqdis(V3D vec){
         double x = vec.x - this.x, y = vec.y - this.y, z = vec.z - this.z;
