@@ -172,4 +172,19 @@ public class V3I {
 		return new V3I(str.split(";"), 0);
 	}
 
+	public double dis(V3I vec){
+		double x = vec.x - this.x, y = vec.y - this.y, z = vec.z - this.z;
+		return Math.sqrt(x * x + y * y + z * z);
+	}
+
+	public double dis(V3D vec){
+		double x = vec.x - this.x, y = vec.y - this.y, z = vec.z - this.z;
+		return Math.sqrt(x * x + y * y + z * z);
+	}
+
+	public double dis(double ox, double oy, double oz){
+		double x = ox - this.x, y = oy - this.y, z = oz - this.z;
+		return Math.sqrt(x * x + y * y + z * z);
+	}
+
 }
