@@ -33,6 +33,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import static net.fexcraft.lib.common.Static.toDegrees;
+
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
@@ -147,6 +149,11 @@ public class EntityWI implements EntityW {
 	@Override
 	public void setYawPitch(float oyaw, float opitch, float yaw, float pitch){
 		//
+	}
+
+	@Override
+	public float getYaw(){
+		return entity.getYRot();
 	}
 
 	@Override

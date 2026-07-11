@@ -112,6 +112,11 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
+	public float getYaw(){
+		return entity.rotationYaw;
+	}
+
+	@Override
 	public void openUI(String id, V3I pos){
 		openUI(UIKey.find(id), pos);
 	}

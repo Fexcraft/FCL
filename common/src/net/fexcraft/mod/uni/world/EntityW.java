@@ -52,6 +52,8 @@ public interface EntityW extends MessageSender {
 
 	public void setYawPitch(float oyaw, float opitch, float yaw, float pitch);
 
+	public float getYaw();
+
 	public void openUI(String id, V3I pos);
 
 	public void openUI(UIKey key, V3I pos);

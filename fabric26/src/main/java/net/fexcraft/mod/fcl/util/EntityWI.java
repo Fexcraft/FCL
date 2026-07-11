@@ -151,6 +151,11 @@ public class EntityWI implements EntityW {
 	}
 
 	@Override
+	public float getYaw(){
+		return entity.getYRot();
+	}
+
+	@Override
 	public void openUI(String id, V3I pos){
 		EntityUtil.UI_OPENER.open((Player)entity, id, pos);
 	}
