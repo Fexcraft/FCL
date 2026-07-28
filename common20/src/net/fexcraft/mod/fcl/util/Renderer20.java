@@ -161,6 +161,11 @@ public class Renderer20 extends Renderer {
 	}
 
 	@Override
+	public void translate(float x, float y, float z){
+		pose.translate(x, y, z);
+	}
+
+	@Override
 	public void translate(double x, double y, double z){
 		pose.translate(x, y, z);
 	}
