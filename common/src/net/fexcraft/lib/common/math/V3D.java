@@ -202,6 +202,18 @@ public class V3D {
 		return x == 0f && y == 0f && z == 0f;
 	}
 
+	public boolean notNull(){
+		return x != 0f || y != 0f || z != 0f;
+	}
+
+	public boolean isOne(){
+		return x == 1f && y == 1f && z == 1f;
+	}
+
+	public boolean notOne(){
+		return x != 1f || y != 1f || z != 1f;
+	}
+
 	public V3D copy(){
 		return new V3D(x, y, z);
 	}
