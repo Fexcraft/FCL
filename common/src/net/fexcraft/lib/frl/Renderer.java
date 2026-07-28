@@ -27,6 +27,8 @@ public abstract class Renderer<GL extends GLO> {
 		translate(vec.x, vec.y, vec.z);
 	}
 
+	public abstract void translate(float x, float y, float z);
+
 	public abstract void translate(double x, double y, double z);
 
 	public abstract void rotate(float deg, int x, int y, int z);
