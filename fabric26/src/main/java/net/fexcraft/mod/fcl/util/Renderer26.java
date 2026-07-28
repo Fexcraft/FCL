@@ -113,6 +113,11 @@ public class Renderer26 extends Renderer {
 	}
 
 	@Override
+	public void translate(float x, float y, float z){
+		stack.translate(x, y, z);
+	}
+
+	@Override
 	public void translate(double x, double y, double z){
 		stack.translate((float)x, (float)y, (float)z);
 	}
