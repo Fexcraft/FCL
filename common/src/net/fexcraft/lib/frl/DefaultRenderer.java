@@ -145,6 +145,11 @@ public class DefaultRenderer extends Renderer {
 	}
 
 	@Override
+	public void translate(float x, float y, float z){
+		GL11.glTranslatef(x, y, z);
+	}
+
+	@Override
 	public void translate(double x, double y, double z){
 		GL11.glTranslated(x, y, z);
 	}
