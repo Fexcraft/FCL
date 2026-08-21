@@ -102,9 +102,10 @@ public class UniUI extends GuiContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks){
-		super.drawScreen(mouseX, mouseY, partialTicks);
-		this.renderHoveredToolTip(mouseX, mouseY);
+	public void drawScreen(int mx, int my, float ticks){
+		super.drawScreen(mx, my, ticks);
+		this.renderHoveredToolTip(mx, my);
+		drawtooltip(mx, my, ticks);
 	}
 
 	@Override
@@ -168,6 +169,9 @@ public class UniUI extends GuiContainer {
 
 	protected void postdraw(float ticks, int mx, int my){
 		ui.postdraw(ticks, mx, my);
+	}
+
+	protected void drawtooltip(int mx, int my, float ticks){
 		tooltip.clear();
 		ui.getTooltip(mx, my, tooltip);
 		for(UITab tab : ui.tabs.values()){
