@@ -7,6 +7,8 @@ import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.fcl.util.UIPacketReceiver;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
+import net.fexcraft.mod.uni.inv.StackWrapper;
+import net.fexcraft.mod.uni.inv.UniStack;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
@@ -142,6 +144,10 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 			return;
 		}
 		con.packet(TagCW.wrap(com), client);
+	}
+
+	public StackWrapper getPickedStack(){
+		return UniStack.getStack(getCarried());
 	}
 
 }
