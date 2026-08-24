@@ -7,6 +7,7 @@ import net.fexcraft.mod.uni.inv.StackWrapper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
@@ -128,6 +129,12 @@ public class WorldWI extends WorldW {
 	@Override
 	public boolean isRainingAt(double x, double y, double z){
 		return world.isRainingAt(mpos.setPos(x, y, z));
+	}
+
+	@Override
+	public void markChanged(V3I pos){
+		TileEntity ent = (TileEntity)getBlockEntity(pos);
+		if(ent != null) ent.markDirty();
 	}
 
 }
