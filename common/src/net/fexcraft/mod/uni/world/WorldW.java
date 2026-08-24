@@ -54,4 +54,6 @@ public abstract class WorldW {
 		return isRainingAt(pos.x, pos.y, pos.z);
 	}
 
+	public abstract void markChanged(V3I pos);
+
 }
