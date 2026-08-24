@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 
 import java.util.ArrayList;
@@ -126,6 +127,12 @@ public class LevelW extends WorldW {
 	@Override
 	public boolean isRainingAt(double x, double y, double z){
 		return level.isRainingAt(mpos.set(x, y, z));
+	}
+
+	@Override
+	public void markChanged(V3I pos){
+		BlockEntity ent = (BlockEntity)getBlockEntity(pos);
+		if(ent != null) ent.setChanged();
 	}
 
 }
