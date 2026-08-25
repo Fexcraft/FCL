@@ -129,7 +129,7 @@ public class SWI extends StackWrapper {
 			return equals(((StackWrapper)o).direct());
 		}
 		else if(o instanceof ItemStack){
-			return ItemStack.isSameItemSameTags(stack, (ItemStack)o);
+			return ItemStack.isSameItem(stack, (ItemStack)o);
 		}
 		else return super.equals(o);
 	}
