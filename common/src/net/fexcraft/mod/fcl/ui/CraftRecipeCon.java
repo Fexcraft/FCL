@@ -73,10 +73,7 @@ public class CraftRecipeCon extends ContainerInterface {
 		ArrayList<StackWrapper> copy = new ArrayList<>();
 		for(int idx = 0; idx < player.entity.getInventorySize(); idx++){
 			StackWrapper wrp = player.entity.getStackAt(idx);
-			if(!wrp.empty()){
-				StackWrapper cp = wrp.copy();
-				copy.add(cp.updateTag(cp.directTag()));
-			}
+			if(!wrp.empty()) copy.add(wrp.copy());
 		}
 		for(FclRecipe.Component comp : rec.components){
 			if(comp.tag){
@@ -129,7 +126,7 @@ public class CraftRecipeCon extends ContainerInterface {
 		ArrayList<StackWrapper> copy = new ArrayList<>();
 		for(int idx = 0; idx < player.entity.getInventorySize(); idx++){
 			StackWrapper wrp = player.entity.getStackAt(idx);
-			if(!wrp.empty()) copy.add(wrp.updateTag(wrp.directTag()));
+			if(!wrp.empty()) copy.add(wrp);
 		}
 		for(FclRecipe.Component comp : rec.components){
 			if(comp.tag){
