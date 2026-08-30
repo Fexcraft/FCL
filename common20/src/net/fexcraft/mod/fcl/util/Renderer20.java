@@ -10,6 +10,7 @@ import net.fexcraft.lib.frl.*;
 import net.fexcraft.mod.uni.IDL;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -30,6 +31,7 @@ public class Renderer20 extends Renderer {
 	public static final Vector3f AZ = new Vector3f(0, 0, 1);
 	public static final Vector3f NULLVEC = new Vector3f(0, 0, 0);
 	//
+	public static final int LIGHT_FULL = LightTexture.pack(15, 15);
 	private static float[] color = new float[3];
 	private static RGB conv = RGB.WHITE.copy();
 	private static float alpha;
