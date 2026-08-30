@@ -73,4 +73,9 @@ public class StateWrapperI extends StateWrapper {
         return state.getBlock().getMetaFromState(state);
     }
 
+    @Override
+    public String toString(){
+        return getIDL() + "[" + getStateString() + "]";
+    }
+
 }
