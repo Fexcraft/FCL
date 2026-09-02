@@ -3,7 +3,6 @@ package net.fexcraft.mod.uni.impl;
 import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
-import net.fexcraft.mod.fcl.FCL20;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -20,7 +19,6 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.players.ServerOpListEntry;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.LevelResource;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,7 +94,7 @@ public class WrapperHolderImpl extends WrapperHolder {
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			return FCL20.MAINDIR;
+			return FCL.MAINDIR;
 		}
 	}
 
