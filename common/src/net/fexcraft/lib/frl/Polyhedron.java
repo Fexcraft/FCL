@@ -4,9 +4,7 @@ import static net.fexcraft.lib.frl.Renderer.RENDERER;
 
 import java.util.ArrayList;
 
-import net.fexcraft.lib.common.math.RGB;
-import net.fexcraft.lib.common.math.TexturedPolygon;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.*;
 import net.fexcraft.lib.frl.gen.Generator;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 
@@ -140,6 +138,20 @@ public class Polyhedron {
 		rotX = (float)x;
 		rotY = (float)y;
 		rotZ = (float)z;
+		return this;
+	}
+
+	public Polyhedron pos(V3I vec){
+		posX = vec.x;
+		posY = vec.y;
+		posZ = vec.z;
+		return this;
+	}
+
+	public Polyhedron pos(V3D vec){
+		posX = (float)vec.x;
+		posY = (float)vec.y;
+		posZ = (float)vec.z;
 		return this;
 	}
 
