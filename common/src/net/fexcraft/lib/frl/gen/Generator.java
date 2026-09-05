@@ -2,8 +2,7 @@ package net.fexcraft.lib.frl.gen;
 
 import java.util.List;
 
-import net.fexcraft.lib.common.math.Vec3f;
-import net.fexcraft.lib.frl.GLO;
+import net.fexcraft.lib.common.math.V3F;
 import net.fexcraft.lib.frl.Polyhedron;
 
 import static net.fexcraft.lib.frl.gen.Generator.Values.*;
@@ -14,8 +13,6 @@ import static net.fexcraft.lib.frl.gen.Generator.Values.*;
  *
  */
 public class Generator {
-
-	protected static final Vec3f NULL_VEC = new Vec3f(0, 0, 0);
 	
 	protected Polyhedron poly;
 	protected ValueMap map = new ValueMap();

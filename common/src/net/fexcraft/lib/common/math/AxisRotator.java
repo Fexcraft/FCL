@@ -5,7 +5,7 @@ public interface AxisRotator {
 
 	public void setAngles(float x, float y, float z);
 
-	public Vec3f getRelativeVector(Vec3f vector);
+	public V3F getRelativeVector(V3F vector);
 
 	public static AxisRotator newDefInstance(){
 		try{

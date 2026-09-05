@@ -6,7 +6,7 @@ import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 
 /**
  * Cylinder Builder Tool, to prevent the need of XYZ amount of chained methods.
@@ -18,7 +18,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 	private float x, y, z, radius, radius2, radius3, radius4, length;
 	private float base_scale = 1, top_scale = 1, segoff;
 	private int segments, seglimit, direction;
-	private Vec3f topoff = new Vec3f();
+	private V3F topoff = new V3F();
 	private boolean[] invisible = new boolean[6];
 	private float[][] uv = new float[6][];
 	private boolean[] detached = new boolean[6];
@@ -54,10 +54,10 @@ public class CylinderBuilder implements CustomUVBuilder {
 	}
 	
 	public CylinderBuilder setTopOffset(float x, float y, float z){
-		topoff = new Vec3f(x, y, z); return this;
+		topoff = new V3F(x, y, z); return this;
 	}
 	
-	public CylinderBuilder setTopOffset(Vec3f vec){
+	public CylinderBuilder setTopOffset(V3F vec){
 		topoff = vec; return this;
 	}
 	
@@ -176,7 +176,7 @@ public class CylinderBuilder implements CustomUVBuilder {
 		(toprot = AxisRotator.newDefInstance()).setAngles(x, y, z); return this;
 	}
 
-	public CylinderBuilder setTopRotation(Vec3f vec){
+	public CylinderBuilder setTopRotation(V3F vec){
 		return setTopRotation(vec.x, vec.y, vec.z);
 	}
 	

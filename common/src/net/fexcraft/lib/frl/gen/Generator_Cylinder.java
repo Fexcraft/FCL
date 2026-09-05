@@ -9,7 +9,7 @@ import java.util.List;
 
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.M4DW;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.frl.Vertex;
@@ -36,7 +36,7 @@ public class Generator_Cylinder {
 		boolean radial = map.getValue(RADIAL, false);
 		float seg_width = map.getValue(SEG_WIDTH, 1f);
 		float seg_height = map.getValue(SEG_HEIGHT, 1f);
-		Vec3f topoff = map.getValue(TOP_OFFSET, null);
+		V3F topoff = map.getValue(TOP_OFFSET, null);
 		M4DW toprot = map.getValue(TOP_ROTATION, null);
 		float x = map.getValue(OFF_X, 0f), y = map.getValue(OFF_Y, 0f), z = map.getValue(OFF_Z, 0f);
 		boolean[] rems = intToBoolArray(map.getArray(REMOVE_POLYGONS), 6);

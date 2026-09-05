@@ -13,7 +13,7 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.utils.Axis3DL;
 import net.fexcraft.lib.mc.utils.Static;
@@ -213,7 +213,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 		private FCLBlockModel model;
 		private Model root;
 		//
-		private Vec3f translate;
+		private V3F translate;
 		private float scale = Static.sixteenth;
 		private Axis3DL axis, axis1, axis2;
 
@@ -234,7 +234,7 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			axis = new Axis3DL();
 			axis1 = new Axis3DL();
 			axis2 = null;
-			translate = new Vec3f();
+			translate = new V3F();
 			if(root.customdata != null && !root.customdata.isEmpty()){
 				float x = root.customdata.containsKey("x") ? Float.parseFloat(root.customdata.get("x")) : 0;
 				float y = root.customdata.containsKey("y") ? Float.parseFloat(root.customdata.get("y")) : 0;
@@ -261,9 +261,9 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 					axis.setAngles(-mrt.rotationAngleY, -mrt.rotationAngleZ, -mrt.rotationAngleX);
 					for(TexturedPolygon polygon : mrt.getFaces()){
 						if(polygon.getVertices().length != 4) continue;
-						Vec3f vec0 = new Vec3f(polygon.getVertices()[1].vector.sub(polygon.getVertices()[0].vector));
-						Vec3f vec1 = new Vec3f(polygon.getVertices()[1].vector.sub(polygon.getVertices()[2].vector));
-						Vec3f vec2 = vec1.cross(vec0).normalize();
+						V3F vec0 = new V3F(polygon.getVertices()[1].vector.sub(polygon.getVertices()[0].vector));
+						V3F vec1 = new V3F(polygon.getVertices()[1].vector.sub(polygon.getVertices()[2].vector));
+						V3F vec2 = vec1.cross(vec0).normalize();
 						vec2 = axis1.getRelativeVector(axis.getRelativeVector(vec2));
 						if(axis2 != null) vec2 = axis2.getRelativeVector(vec2);
 						UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
@@ -315,11 +315,11 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			return root.textures.get(tempres.get(texName));
 		}
 
-		private final void putVertexData(Builder builder, ModelRendererTurbo mrt, TexturedVertex vert, Vec3f normal, TextureCoordinate textureinate, TextureAtlasSprite texture){
+		private final void putVertexData(Builder builder, ModelRendererTurbo mrt, TexturedVertex vert, V3F normal, TextureCoordinate textureinate, TextureAtlasSprite texture){
 			for(int e = 0; e < format.getElementCount(); e++){
 				switch(format.getElement(e).getUsage()){
 					case POSITION:
-						Vec3f vec = axis.getRelativeVector(vert.vector);
+						V3F vec = axis.getRelativeVector(vert.vector);
 						vec = axis1.getRelativeVector(vec.add(mrt.rotationPointX, mrt.rotationPointY, mrt.rotationPointZ));
 						if(axis2 != null) vec = axis2.getRelativeVector(vec);
 						builder.put(e, vec.x * scale + translate.x, vec.y * scale + translate.y, vec.z * scale + translate.z, 1);

@@ -2,7 +2,7 @@ package net.fexcraft.lib.tmt;
 
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 
 /**
  * Box Builder, initially intended to be part of FMR, but as things stand it will be part of TMT for now.
@@ -15,8 +15,8 @@ public class BoxBuilder implements CustomUVBuilder {
 	private boolean[] invisible = new boolean[6];
 	private float[][] uv = new float[6][];
 	private boolean[] detached = new boolean[6];
-	private Vec3f[] corners = new Vec3f[8];
-	private static final Vec3f NULLVEC = new Vec3f(0, 0, 0);
+	private V3F[] corners = new V3F[8];
+	private static final V3F NULLVEC = new V3F(0, 0, 0);
 	
 	public BoxBuilder(){
 		this(null);
@@ -100,7 +100,7 @@ public class BoxBuilder implements CustomUVBuilder {
 		return this;
 	}
 
-	public BoxBuilder setCorner(int index, Vec3f corner){
+	public BoxBuilder setCorner(int index, V3F corner){
 		if(index < 0 || index > 7) return this;
 		corners[index] = corner;
 		return this;
@@ -108,11 +108,11 @@ public class BoxBuilder implements CustomUVBuilder {
 
 	public BoxBuilder setCorner(int index, float x, float y, float z){
 		if(index < 0 || index > 7) return this;
-		corners[index] = new Vec3f(x, y, z);
+		corners[index] = new V3F(x, y, z);
 		return this;
 	}
 
-	public BoxBuilder setCorners(Vec3f cor0, Vec3f cor1, Vec3f cor2, Vec3f cor3, Vec3f cor4, Vec3f cor5, Vec3f cor6, Vec3f cor7){
+	public BoxBuilder setCorners(V3F cor0, V3F cor1, V3F cor2, V3F cor3, V3F cor4, V3F cor5, V3F cor6, V3F cor7){
 		corners[0] = cor0;
 		corners[1] = cor1;
 		corners[2] = cor2;
@@ -125,20 +125,20 @@ public class BoxBuilder implements CustomUVBuilder {
 	}
 	
 	public BoxBuilder setCorners(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float x5, float y5, float z5, float x6, float y6, float z6, float x7, float y7, float z7){
-		corners[0] = new Vec3f(x0, y0, z0);
-		corners[1] = new Vec3f(x1, y1, z1);
-		corners[2] = new Vec3f(x2, y2, z2);
-		corners[3] = new Vec3f(x3, y3, z3);
-		corners[4] = new Vec3f(x4, y4, z4);
-		corners[5] = new Vec3f(x5, y5, z5);
-		corners[6] = new Vec3f(x6, y6, z6);
-		corners[7] = new Vec3f(x7, y7, z7);
+		corners[0] = new V3F(x0, y0, z0);
+		corners[1] = new V3F(x1, y1, z1);
+		corners[2] = new V3F(x2, y2, z2);
+		corners[3] = new V3F(x3, y3, z3);
+		corners[4] = new V3F(x4, y4, z4);
+		corners[5] = new V3F(x5, y5, z5);
+		corners[6] = new V3F(x6, y6, z6);
+		corners[7] = new V3F(x7, y7, z7);
 		return this;
 	}
 	
 	public ModelRendererTurbo build(){
 		boolean isshapebox = false;
-		for(Vec3f corner : corners){
+		for(V3F corner : corners){
 			if(corner != null){
 				isshapebox = true;
 				break;
@@ -153,14 +153,14 @@ public class BoxBuilder implements CustomUVBuilder {
 		}
 		float[] v0, v1, v2, v3, v4, v5, v6, v7;
 		if(isshapebox){
-			Vec3f c0 = corners[0] == null ? NULLVEC : corners[0];
-			Vec3f c1 = corners[1] == null ? NULLVEC : corners[1];
-			Vec3f c2 = corners[2] == null ? NULLVEC : corners[2];
-			Vec3f c3 = corners[3] == null ? NULLVEC : corners[3];
-			Vec3f c4 = corners[4] == null ? NULLVEC : corners[4];
-			Vec3f c5 = corners[5] == null ? NULLVEC : corners[5];
-			Vec3f c6 = corners[6] == null ? NULLVEC : corners[6];
-			Vec3f c7 = corners[7] == null ? NULLVEC : corners[7];
+			V3F c0 = corners[0] == null ? NULLVEC : corners[0];
+			V3F c1 = corners[1] == null ? NULLVEC : corners[1];
+			V3F c2 = corners[2] == null ? NULLVEC : corners[2];
+			V3F c3 = corners[3] == null ? NULLVEC : corners[3];
+			V3F c4 = corners[4] == null ? NULLVEC : corners[4];
+			V3F c5 = corners[5] == null ? NULLVEC : corners[5];
+			V3F c6 = corners[6] == null ? NULLVEC : corners[6];
+			V3F c7 = corners[7] == null ? NULLVEC : corners[7];
 			float xw = x + w, yh = y + h, zd = z + d;
 			if(root.mirror){ float fl = xw; xw = x; x = fl; }
 			v0 = new float[]{ x  - c0.x, y  - c0.y, z  - c0.z };

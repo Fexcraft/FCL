@@ -4,7 +4,7 @@ import static net.fexcraft.lib.common.Static.toDegrees;
 import static org.lwjgl.opengl.GL11.*;
 
 import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.IDL;
 import org.lwjgl.opengl.GL11;
@@ -94,8 +94,8 @@ public class DefaultRenderer extends Renderer {
 	private static void genNorm(Polygon gon){
 		for(int i = 0; i < gon.vertices.length; i++){
 			boolean uz = i < 2;
-			Vec3f v0 = gon.vertices[uz ? 1 : i - 1].vector.sub(gon.vertices[uz ? 0 : i - 2].vector);
-			Vec3f v1 = gon.vertices[uz ? 1 : i - 1].vector.sub(gon.vertices[uz ? 2 : i].vector);
+			V3F v0 = gon.vertices[uz ? 1 : i - 1].vector.sub(gon.vertices[uz ? 0 : i - 2].vector);
+			V3F v1 = gon.vertices[uz ? 1 : i - 1].vector.sub(gon.vertices[uz ? 2 : i].vector);
 			gon.vertices[i].norm(v1.cross(v0).normalize());
 		}
 	}

@@ -16,13 +16,13 @@ public class TexturedPolygon {
 	private boolean invert = false;//, oppositetriangles;
     private float[] normals;
     private RGB color = null;
-    private ArrayList<Vec3f> list;
+    private ArrayList<V3F> list;
     private TexturedVertex[] vertices;
 	
 	public TexturedPolygon(TexturedVertex[] verts){
 		this.vertices = verts;
 		normals = new float[0];
-		list = new ArrayList<Vec3f>();
+		list = new ArrayList<V3F>();
     }
 
 	public TexturedPolygon(ArrayList<TexturedVertex> verts){
@@ -78,7 +78,7 @@ public class TexturedPolygon {
             for(int i = 0; i < vertices.length; i++){
             	TexturedVertex texvex = vertices[i];
             	if(!gnorm){
-                	Vec3f norm = list.get(i);
+					V3F norm = list.get(i);
                 	if(invert) GL11.glNormal3f(-norm.x, -norm.y, -norm.z);
                 	else GL11.glNormal3f(norm.x, norm.y, norm.z);
             	}
@@ -129,7 +129,7 @@ public class TexturedPolygon {
 	}
     
     private void norm(int i){
-    	Vec3f norm = list.get(i);
+		V3F norm = list.get(i);
     	if(invert) GL11.glNormal3f(-norm.x, -norm.y, -norm.z);
     	else GL11.glNormal3f(norm.x, norm.y, norm.z);
 	}
@@ -137,18 +137,18 @@ public class TexturedPolygon {
 	public void genIfMissingNormals(){
     	if(normals.length >= 3) return;
         if(TRIANGULATED_QUADS && vertices.length == 4){
-	        Vec3f vec0 = new Vec3f(vertices[1].vector.sub(vertices[0].vector));
-	        Vec3f vec1 = new Vec3f(vertices[1].vector.sub(vertices[2].vector));
-	        Vec3f vec2 = vec1.cross(vec0).normalize();
-	        vec0 = new Vec3f(vertices[2].vector.sub(vertices[0].vector));
-	        vec1 = new Vec3f(vertices[2].vector.sub(vertices[3].vector));
-	        Vec3f vec3 = vec1.cross(vec0).normalize();
+	        V3F vec0 = new V3F(vertices[1].vector.sub(vertices[0].vector));
+			V3F vec1 = new V3F(vertices[1].vector.sub(vertices[2].vector));
+			V3F vec2 = vec1.cross(vec0).normalize();
+	        vec0 = new V3F(vertices[2].vector.sub(vertices[0].vector));
+	        vec1 = new V3F(vertices[2].vector.sub(vertices[3].vector));
+			V3F vec3 = vec1.cross(vec0).normalize();
 	        normals = new float[]{ vec2.x, vec2.y, vec2.z, vec3.x, vec3.y, vec3.z };
         }
 		else if(vertices.length >= 3){
-	        Vec3f vec0 = new Vec3f(vertices[1].vector.sub(vertices[0].vector));
-	        Vec3f vec1 = new Vec3f(vertices[1].vector.sub(vertices[2].vector));
-	        Vec3f vec2 = vec1.cross(vec0).normalize();
+			V3F vec0 = new V3F(vertices[1].vector.sub(vertices[0].vector));
+			V3F vec1 = new V3F(vertices[1].vector.sub(vertices[2].vector));
+			V3F vec2 = vec1.cross(vec0).normalize();
 	        normals = new float[]{ vec2.x, vec2.y, vec2.z };
         }
 	}
@@ -166,7 +166,7 @@ public class TexturedPolygon {
 	}
 
 	public void clearNormals(){
-		normals = new float[0]; list = new ArrayList<Vec3f>();
+		normals = new float[0]; list = new ArrayList<>();
 	}
 
 	public boolean isInverted(){
@@ -177,7 +177,7 @@ public class TexturedPolygon {
 		return normals;
 	}
 
-	public List<Vec3f> getNormalVerts(){
+	public List<V3F> getNormalVerts(){
 		return list;
 	}
 

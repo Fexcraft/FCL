@@ -7,7 +7,7 @@ import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -126,8 +126,8 @@ public class Pos {
         GL11.glTranslatef(-x16, -y16, -z16);
     }
 
-	public Vec3f to16Float(){
-		return new Vec3f(x16, y16, z16);
+	public V3F to16Float(){
+		return new V3F(x16, y16, z16);
 	}
 
 	public Pos add(Pos pos){

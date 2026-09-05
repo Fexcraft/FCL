@@ -3,7 +3,7 @@ package net.fexcraft.lib.tmt;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 import net.fexcraft.lib.common.utils.Print;
 import net.fexcraft.mod.uni.EnvInfo;
 
@@ -81,8 +81,8 @@ public class JsonToTMT {
 				break;
 			}
 			case "cylinder": case "cyl": case "c": {
-				Vec3f offset = null; float tox = get(topoffx, map, 0f), toy = get(topoffy, map, 0f), toz = get(topoffz, map, 0f);
-				if(tox != 0f && toy != 0f && toz != 0f) offset = new Vec3f(tox, toy, toz); float rad2 = get(radius, map, 0f);
+				V3F offset = null; float tox = get(topoffx, map, 0f), toy = get(topoffy, map, 0f), toz = get(topoffz, map, 0f);
+				if(tox != 0f && toy != 0f && toz != 0f) offset = new V3F(tox, toy, toz); float rad2 = get(radius, map, 0f);
 				if(rad2 == 0f){
 					model.addCylinder(x, y, z, get(radius, map, 1f), get(length, map, 1f), get(segments, map, 16), get(basescale, map, 1f), get(topscale, map, 1f), get(direction, map, 4), offset);
 				}

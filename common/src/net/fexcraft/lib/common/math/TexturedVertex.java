@@ -5,28 +5,28 @@ package net.fexcraft.lib.common.math;
  */
 public class TexturedVertex {
 	
-	public Vec3f vector;
+	public V3F vector;
 	public float textureX, textureY;
 
-	public TexturedVertex(Vec3f vec, float x, float y){
+	public TexturedVertex(V3F vec, float x, float y){
 		vector = vec; textureX = x; textureY = y;
 	}
 
 	public TexturedVertex(float x, float y, float z, float u, float v){
-		this(new Vec3f(x, y, z), u, v);
+		this(new V3F(x, y, z), u, v);
 	}
 
 	public TexturedVertex(TexturedVertex texver, float x, float y){
-		vector = new Vec3f(texver.vector); textureX = x; textureY = y;
+		vector = new V3F(texver.vector); textureX = x; textureY = y;
 	}
 
 	public TexturedVertex(TexturedVertex other){
-		vector = new Vec3f(other.vector);
+		vector = new V3F(other.vector);
 		textureX = other.textureX; textureY = other.textureY;
 	}
 
     public TexturedVertex(V3D vec, float u, float v){
-		vector = new Vec3f(vec.x, vec.y, vec.z);
+		vector = new V3F(vec.x, vec.y, vec.z);
 		textureX = u;
 		textureY = v;
     }

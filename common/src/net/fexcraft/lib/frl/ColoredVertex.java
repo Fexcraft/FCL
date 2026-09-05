@@ -1,6 +1,6 @@
 package net.fexcraft.lib.frl;
 
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 
 /**
  * 
@@ -9,13 +9,13 @@ import net.fexcraft.lib.common.math.Vec3f;
  */
 public class ColoredVertex extends Vertex {
 	
-	protected Vec3f color = new Vec3f(1, 1, 1);
+	protected V3F color = new V3F(1, 1, 1);
 	
-	public ColoredVertex(Vec3f vec){
+	public ColoredVertex(V3F vec){
 		super(vec);
 	}
 	
-	public ColoredVertex(Vec3f vec, float u, float v){
+	public ColoredVertex(V3F vec, float u, float v){
 		super(vec, u, v);
 	}
 	
@@ -25,19 +25,19 @@ public class ColoredVertex extends Vertex {
 	}
 
 	@Override
-	public Vec3f color(){
+	public V3F color(){
 		return color;
 	}
 	
 	@Override
-	public Vertex color(Vec3f vec){
+	public Vertex color(V3F vec){
 		this.color = vec;
 		return this;
 	}
 
 	@Override
 	public Vertex color(float r, float g, float b){
-		return color(new Vec3f(r, g, b));
+		return color(new V3F(r, g, b));
 	}
 
 }

@@ -5,7 +5,13 @@ package net.fexcraft.lib.common.math;
 */
 public class V3I {
 
-	public static final V3I NULL = new V3I();
+	public static final V3I NULL = new V3I(){
+		@Override
+		public V3I set(int x, int y, int z){
+			this.x = this.y = this.z = 0;
+			return this;
+		}
+	};
 	public int x, y, z;
 
     public V3I(){
@@ -30,7 +36,7 @@ public class V3I {
         this((int)vector.x, (int)vector.y, (int)vector.z);
     }
 
-    public V3I(Vec3f vector){
+    public V3I(V3F vector){
         this((int)vector.x, (int)vector.y, (int)vector.z);
     }
 

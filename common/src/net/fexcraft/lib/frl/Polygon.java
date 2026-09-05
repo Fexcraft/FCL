@@ -3,7 +3,7 @@ package net.fexcraft.lib.frl;
 import java.util.Collection;
 
 import net.fexcraft.lib.common.math.RGB;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 
 /**
  * 
@@ -18,7 +18,7 @@ public class Polygon {
 	
 	public Polygon(int edges){
 		vertices = new Vertex[edges];
-		for(int i = 0; i < edges; i++) vertices[i] = new Vertex(new Vec3f());
+		for(int i = 0; i < edges; i++) vertices[i] = new Vertex(new V3F());
 	}
 	
 	public Polygon(Vertex[] verts){
@@ -31,7 +31,7 @@ public class Polygon {
 	
 	public Polygon color(RGB color){
 		if(colored = color != null){
-			Vec3f col = new Vec3f(color.toFloatArray(), 0);
+			V3F col = new V3F(color.toFloatArray(), 0);
 			for(int i = 0; i < vertices.length; i++){
 				if(vertices[i] instanceof ColoredVertex == false){
 					vertices[i] = new ColoredVertex(vertices[i]);

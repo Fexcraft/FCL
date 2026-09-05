@@ -1,7 +1,7 @@
 package net.fexcraft.lib.mc.utils;
 
 import net.fexcraft.lib.common.math.AxisRotator;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -15,13 +15,13 @@ public class Axis3DL implements AxisRotator {
     
     @Override public String toString(){ return "[ " + yaw + "y, " + pitch + "p, " + roll + "r ]";  }
     
-    public Vec3f getRelativeVector(Vec3f vec){
+    public V3F getRelativeVector(V3F vec){
         Matrix4f mat = new Matrix4f();
         mat.m00 = vec.x; mat.m10 = (float)vec.y; mat.m20 = (float)vec.z;
         Matrix4f.rotate(roll  * 3.14159265F / 180, new Vector3f(1F, 0F, 0F), mat, mat);
         Matrix4f.rotate(pitch * 3.14159265F / 180, new Vector3f(0F, 0F, 1F), mat, mat);
         Matrix4f.rotate(yaw   * 3.14159265F / 180, new Vector3f(0F, 1F, 0F), mat, mat);
-        return new Vec3f(mat.m00, mat.m10, mat.m20);
+        return new V3F(mat.m00, mat.m10, mat.m20);
     }
 
     private final void convertMatrixToAngles(){

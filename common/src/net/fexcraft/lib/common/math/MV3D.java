@@ -27,7 +27,7 @@ public class MV3D extends V3D {
 		super(vector.x, vector.y, vector.z);
     }
 
-    public MV3D(Vec3f vector){
+    public MV3D(V3F vector){
 		super(vector.x, vector.y, vector.z);
     }
 

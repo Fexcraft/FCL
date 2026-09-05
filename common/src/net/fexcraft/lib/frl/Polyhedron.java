@@ -59,8 +59,8 @@ public class Polyhedron {
 					verts[i].vector = verts[i].vector.add(turbo.rotationPointX * scale, turbo.rotationPointY * scale, turbo.rotationPointZ * scale);
 				}
 				boolean uz = i < 2;
-		        Vec3f vec0 = tp.getVertices()[uz ? 1 : i - 1].vector.sub(tp.getVertices()[uz ? 0 : i - 2].vector);
-		        Vec3f vec1 = tp.getVertices()[uz ? 1 : i - 1].vector.sub(tp.getVertices()[uz ? 2 : i].vector);
+				V3F vec0 = tp.getVertices()[uz ? 1 : i - 1].vector.sub(tp.getVertices()[uz ? 0 : i - 2].vector);
+				V3F vec1 = tp.getVertices()[uz ? 1 : i - 1].vector.sub(tp.getVertices()[uz ? 2 : i].vector);
 				verts[i].norm(vec1.cross(vec0).normalize());
 				//verts[i].color(1, i == 2 || i == 3 ? 1 : 0, 0);
 			}
@@ -84,8 +84,8 @@ public class Polyhedron {
 		for(int i = 0; i < verts.length; i++){
 			verts[i] = new Vertex(tp.getVertices()[i].vector.scale(scale), tp.getVertices()[i].textureX, tp.getVertices()[i].textureY);
 			boolean uz = i < 2;
-			Vec3f vec0 = tp.getVertices()[uz ? 1 : i - 1].vector.sub(tp.getVertices()[uz ? 0 : i - 2].vector);
-			Vec3f vec1 = tp.getVertices()[uz ? 1 : i - 1].vector.sub(tp.getVertices()[uz ? 2 : i].vector);
+			V3F vec0 = tp.getVertices()[uz ? 1 : i - 1].vector.sub(tp.getVertices()[uz ? 0 : i - 2].vector);
+			V3F vec1 = tp.getVertices()[uz ? 1 : i - 1].vector.sub(tp.getVertices()[uz ? 2 : i].vector);
 			verts[i].norm(vec1.cross(vec0).normalize());
 		}
 		polygons.add(new Polygon(verts));

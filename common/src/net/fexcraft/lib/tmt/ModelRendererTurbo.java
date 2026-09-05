@@ -6,10 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.common.math.RGB;
-import net.fexcraft.lib.common.math.TexturedPolygon;
-import net.fexcraft.lib.common.math.TexturedVertex;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.*;
 import net.fexcraft.lib.common.utils.ObjParser;
 import net.fexcraft.lib.common.utils.ObjParser.ObjModel;
 /**
@@ -1002,7 +999,7 @@ public class ModelRendererTurbo {
     	return addCylinder(x, y, z, radius, length, segments, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), null);
     }
     
-    public ModelRendererTurbo addCylinder(float x, float y, float z, float radius, float length, int segments, float baseScale, float topScale, int baseDirection, Vec3f topoff){
+    public ModelRendererTurbo addCylinder(float x, float y, float z, float radius, float length, int segments, float baseScale, float topScale, int baseDirection, V3F topoff){
     	return addCylinder(x, y, z, radius, length, segments, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), topoff);
     }
     
@@ -1031,7 +1028,7 @@ public class ModelRendererTurbo {
      * @param textureCircleDiameterH the diameter height of the circle on the texture
      * @param textureH the height of the texture of the body
      */
-	public ModelRendererTurbo addCylinder(float x, float y, float z, float radius, float length, int segments, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, Vec3f topoff){
+	public ModelRendererTurbo addCylinder(float x, float y, float z, float radius, float length, int segments, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, V3F topoff){
 		if(radius < 1){
 			int rad = radius < 0.5 ? 1 : 2;
 			if(textureCircleDiameterW < rad) textureCircleDiameterW = rad;
@@ -1128,11 +1125,11 @@ public class ModelRendererTurbo {
 		return addHollowCylinder(x, y, z, radius, radius2, length, segments, seglimit, baseScale, topScale, baseDirection, null);
 	}
 	
-	public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit,  float baseScale, float topScale, int baseDirection, Vec3f topoff){
+	public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit,  float baseScale, float topScale, int baseDirection, V3F topoff){
 		return addHollowCylinder(x, y, z, radius, radius2, length, segments, seglimit, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), topoff, new boolean[4]);
 	}
 	
-	public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit,  float baseScale, float topScale, int baseDirection, Vec3f topoff, boolean[] bools){
+	public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit,  float baseScale, float topScale, int baseDirection, V3F topoff, boolean[] bools){
 		return addHollowCylinder(x, y, z, radius, radius2, length, segments, seglimit, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), topoff, bools);
 	}
 	
@@ -1148,7 +1145,7 @@ public class ModelRendererTurbo {
 	 * Based on the addCylinder method. Not updated currently further, use the CylinderBuilder for newer features!
 	 * @author Ferdinand Calo' (FEX___96)
 	**/
-	public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, Vec3f topoff, boolean[] bools){
+	public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, V3F topoff, boolean[] bools){
 		if(radius < 1){
 			int rad = radius < 0.5 ? 1 : 2;
 			if(textureCircleDiameterW < rad) textureCircleDiameterW = rad;
@@ -1285,7 +1282,6 @@ public class ModelRendererTurbo {
 
 	/**
      * Adds a Waveform .obj file as a model. Model files use the entire texture file.
-     * @param location the ResourceLocation of the .obj file.
      */
     public ModelRendererTurbo addObj(InputStream stream){
 		ObjModel model = new ObjParser(stream).readComments(false).readModel(true).skipUV(!textured).parse();
@@ -1364,7 +1360,6 @@ public class ModelRendererTurbo {
      * Copies an array of vertices and polygons to the current shape. This mainly is
      * used to copy each shape to the main class, but you can just use it to copy
      * your own shapes, for example from other classes, into the current class.
-     * @param verts the array of vertices you want to copy
      * @param poly the array of polygons you want to copy
      * @return 
      */

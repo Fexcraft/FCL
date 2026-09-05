@@ -2,7 +2,7 @@ package net.fexcraft.lib.frl.gen;
 
 import java.util.List;
 
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.frl.Vertex;
@@ -35,15 +35,15 @@ public class Generator_Cuboid {
 			z -= d * 0.5f;
 		}
 		if(shaped){
-			List<Vec3f> array = map.getArray(CORNERS, 8, null);
-			Vec3f c0 = array.get(0) == null ? Generator.NULL_VEC : array.get(0);
-			Vec3f c1 = array.get(1) == null ? Generator.NULL_VEC : array.get(1);
-			Vec3f c2 = array.get(2) == null ? Generator.NULL_VEC : array.get(2);
-			Vec3f c3 = array.get(3) == null ? Generator.NULL_VEC : array.get(3);
-			Vec3f c4 = array.get(4) == null ? Generator.NULL_VEC : array.get(4);
-			Vec3f c5 = array.get(5) == null ? Generator.NULL_VEC : array.get(5);
-			Vec3f c6 = array.get(6) == null ? Generator.NULL_VEC : array.get(6);
-			Vec3f c7 = array.get(7) == null ? Generator.NULL_VEC : array.get(7);
+			List<V3F> array = map.getArray(CORNERS, 8, null);
+			V3F c0 = array.get(0) == null ? V3F.NULL : array.get(0);
+			V3F c1 = array.get(1) == null ? V3F.NULL : array.get(1);
+			V3F c2 = array.get(2) == null ? V3F.NULL : array.get(2);
+			V3F c3 = array.get(3) == null ? V3F.NULL : array.get(3);
+			V3F c4 = array.get(4) == null ? V3F.NULL : array.get(4);
+			V3F c5 = array.get(5) == null ? V3F.NULL : array.get(5);
+			V3F c6 = array.get(6) == null ? V3F.NULL : array.get(6);
+			V3F c7 = array.get(7) == null ? V3F.NULL : array.get(7);
 			float xw = x + w, yh = y + h, zd = z + d;
 			v0 = new float[]{ x  - c0.x, y  - c0.y, z  - c0.z };
 			v1 = new float[]{ xw + c1.x, y  - c1.y, z  - c1.z };

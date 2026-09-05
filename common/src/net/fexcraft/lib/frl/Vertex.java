@@ -1,7 +1,7 @@
 package net.fexcraft.lib.frl;
 
 import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 
 /**
  * 
@@ -10,29 +10,29 @@ import net.fexcraft.lib.common.math.Vec3f;
  */
 public class Vertex {
 	
-	public Vec3f COLOR_BLACK = new Vec3f(0, 0, 0);
-	public Vec3f COLOR_RED   = new Vec3f(1, 0, 0);
-	public Vec3f COLOR_BLUE  = new Vec3f(0, 0, 1);
-	public Vec3f COLOR_GREEN = new Vec3f(0, 1, 0);
-	public Vec3f COLOR_WHITE = new Vec3f(1, 1, 1);
+	public V3F COLOR_BLACK = new V3F(0, 0, 0);
+	public V3F COLOR_RED   = new V3F(1, 0, 0);
+	public V3F COLOR_BLUE  = new V3F(0, 0, 1);
+	public V3F COLOR_GREEN = new V3F(0, 1, 0);
+	public V3F COLOR_WHITE = new V3F(1, 1, 1);
 	
-	public Vec3f vector;
+	public V3F vector;
 	public float u, v;
-	public Vec3f norm;
+	public V3F norm;
 	
-	public Vertex(Vec3f vec){
+	public Vertex(V3F vec){
 		this.vector = vec;
 	}
 	
 	public Vertex(float[] vec){
-		this.vector = new Vec3f(vec[0], vec[1], vec[2]);
+		this.vector = new V3F(vec[0], vec[1], vec[2]);
 	}
 	
 	public Vertex(float x, float y, float z){
-		this.vector = new Vec3f(x, y, z);
+		this.vector = new V3F(x, y, z);
 	}
 	
-	public Vertex(Vec3f vec, float u, float v){
+	public Vertex(V3F vec, float u, float v){
 		this(vec);
 		this.u = u;
 		this.v = v;
@@ -43,11 +43,11 @@ public class Vertex {
 	}
 
 	public Vertex(double x, double y, double z){
-		this.vector = new Vec3f(x, y, z);
+		this.vector = new V3F(x, y, z);
 	}
 
 	public Vertex(V3D vec){
-		this.vector = new Vec3f(vec.x, vec.y, vec.z);
+		this.vector = new V3F(vec.x, vec.y, vec.z);
 	}
 
 	public Vertex(V3D vec, float u, float v){
@@ -69,11 +69,11 @@ public class Vertex {
 		return this;
 	}
 
-	public Vec3f color(){
+	public V3F color(){
 		return COLOR_WHITE;
 	}
 	
-	public Vertex color(Vec3f vec){
+	public Vertex color(V3F vec){
 		return this;
 	}
 
@@ -81,7 +81,7 @@ public class Vertex {
 		return this;
 	}
 	
-	public Vertex norm(Vec3f vec){
+	public Vertex norm(V3F vec){
 		this.norm = vec;
 		return this;
 	}

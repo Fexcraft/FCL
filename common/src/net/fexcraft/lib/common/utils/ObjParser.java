@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 
 /**
  * New OBJ Model Parser
@@ -179,7 +179,7 @@ public class ObjParser {
 					TexturedPolygon poly = new TexturedPolygon(verts);
 					if(norm){
 						for(float[] fl : norms){
-							poly.getNormalVerts().add(new Vec3f(fl[0], fl[1], fl[2]));
+							poly.getNormalVerts().add(new V3F(fl[0], fl[1], fl[2]));
 						}
 					}
 					if(invert) poly.setInvert(invert);

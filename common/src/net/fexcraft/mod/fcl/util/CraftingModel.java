@@ -1,6 +1,7 @@
 //FMT-Marker FVTM-1.6
 package net.fexcraft.mod.fcl.util;
 
+import net.fexcraft.lib.common.math.V3F;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 
 import java.util.ArrayList;
@@ -29,12 +30,12 @@ public class CraftingModel {
 		ArrayList<ModelRendererTurbo> glass = new ArrayList<ModelRendererTurbo>();
 		glass.add(new ModelRendererTurbo(glass, 49, 10, textureX, textureY).newCylinderBuilder()
 			.setPosition(0, 0, 0).setRadius(1.4f, 0.001f).setLength(0.5f).setSegments(16, 0).setScale(1, 1).setDirection(4)
-			.setTopOffset(new net.fexcraft.lib.common.math.Vec3f(0.0, -0.4, 0.0)).setTopRotation(new net.fexcraft.lib.common.math.Vec3f(0.0, 0.0, 0.0)).build()
+			.setTopOffset(new V3F(0.0, -0.4, 0.0)).setTopRotation(new V3F(0.0, 0.0, 0.0)).build()
 			.setRotationPoint(-5.2f, -17.2f, -5).setRotationAngle(0, 13, 0)
 		);
 		glass.add(new ModelRendererTurbo(glass, 56, 18, textureX, textureY).newCylinderBuilder()
 			.setPosition(0, 0, 0).setRadius(2, 1.7f).setLength(1).setSegments(16, 0).setScale(0.8f, 0.8f).setDirection(4)
-			.setTopOffset(new net.fexcraft.lib.common.math.Vec3f(0.0, -0.6, 0.0)).setTopRotation(new net.fexcraft.lib.common.math.Vec3f(0.0, 0.0, 0.0)).build()
+			.setTopOffset(new V3F(0.0, -0.6, 0.0)).setTopRotation(new V3F(0.0, 0.0, 0.0)).build()
 			.setRotationPoint(-5.2f, -17.4f, -5).setRotationAngle(0, 13, 0)
 		);
 		glass.add(new ModelRendererTurbo(glass, 119, 8, textureX, textureY).addBox(-0.2f, 0, 1.5f, 0.4f, 0.2f, 3)
@@ -148,12 +149,12 @@ public class CraftingModel {
 		ArrayList<ModelRendererTurbo> cup = new ArrayList<ModelRendererTurbo>();
 		cup.add(new ModelRendererTurbo(cup, 113, 0, textureX, textureY).newCylinderBuilder()
 			.setPosition(0, 0, 0).setRadius(2, 1.6f).setLength(3.5f).setSegments(12, 0).setScale(0.8f, 0.8f).setDirection(4)
-			.setTopOffset(null).setTopRotation(new net.fexcraft.lib.common.math.Vec3f(0.0, 0.0, 0.0)).build()
+			.setTopOffset(null).setTopRotation(new V3F(0.0, 0.0, 0.0)).build()
 			.setRotationPoint(5, -20, -5).setRotationAngle(0, 0, 0)
 		);
 		cup.add(new ModelRendererTurbo(cup, 70, 0, textureX, textureY).newCylinderBuilder()
 			.setPosition(0, 0, 0).setRadius(2, 0.001f).setLength(0.5f).setSegments(12, 0).setScale(0.8f, 0.7f).setDirection(4)
-			.setTopOffset(null).setTopRotation(new net.fexcraft.lib.common.math.Vec3f(0.0, 0.0, 0.0)).build()
+			.setTopOffset(null).setTopRotation(new V3F(0.0, 0.0, 0.0)).build()
 			.setRotationPoint(5, -16.5f, -5).setRotationAngle(0, 0, 0)
 		);
 		groups.add(cup);

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.lib.common.math.Vec3f;
 
 /**
  * Compact version of Path.class from FVTM. Only containing what is necessary for polygon generation.

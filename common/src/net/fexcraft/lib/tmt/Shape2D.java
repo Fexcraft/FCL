@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 
 public class Shape2D {
 	
@@ -34,7 +34,7 @@ public class Shape2D {
 		TexturedVertex[] vertsTop = new TexturedVertex[coords.size()];
 		TexturedVertex[] vertsBottom = new TexturedVertex[coords.size()];
 		TexturedPolygon[] poly = new TexturedPolygon[coords.size() + 2];
-		Vec3f extrudeVector = new Vec3f(0, 0, depth);
+		V3F extrudeVector = new V3F(0, 0, depth);
 
 		setVectorRotations(extrudeVector, rotX, rotY, rotZ);
 		
@@ -48,7 +48,7 @@ public class Shape2D {
 			float texU1 = ((float)(cur.u + u) / (float)textureWidth);
 			float texU2 = ((float)(shapeTextureWidth * 2 - cur.u + u) / (float)textureWidth);
 			float texV = ((float)(cur.v + v) / (float)textureHeight);
-			Vec3f vec = new Vec3f(cur.x, cur.y, 0);
+			V3F vec = new V3F(cur.x, cur.y, 0);
 			setVectorRotations(vec, rotX, rotY, rotZ);
 			verts[idx] = new TexturedVertex(
 				x + vec.x, y + vec.y, z + vec.z, texU1, texV);
@@ -92,7 +92,7 @@ public class Shape2D {
 		return new Shape3D(verts, poly);
 	}
 	
-	protected Vec3f setVectorRotations(Vec3f extrudeVector, float xRot, float yRot, float zRot){
+	protected V3F setVectorRotations(V3F extrudeVector, float xRot, float yRot, float zRot){
 		float x = xRot, y = yRot, z = zRot;
         float xC = (float)Math.cos(x), xS = (float)Math.sin(x);
         float yC = (float)Math.cos(y), yS = (float)Math.sin(y);
@@ -109,7 +109,7 @@ public class Shape2D {
 		double zy = zC*xy + zS*yx;
 		//
 		xVec = zx; yVec = zy; zVec = yz;
-        return new Vec3f(xVec, yVec, zVec);
+        return new V3F(xVec, yVec, zVec);
 	}
 	
 }

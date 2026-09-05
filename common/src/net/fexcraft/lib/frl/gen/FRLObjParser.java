@@ -1,6 +1,6 @@
 package net.fexcraft.lib.frl.gen;
 
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 import net.fexcraft.lib.frl.Material;
 import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
@@ -162,7 +162,7 @@ public class FRLObjParser {
 							for(int i = 0; i < norms.size(); i++){
 								if(i >= poly.vertices.length) break;
 								float[] fl = norms.get(i);
-								poly.vertices[i].norm(new Vec3f(fl[0], fl[1], fl[2]));
+								poly.vertices[i].norm(new V3F(fl[0], fl[1], fl[2]));
 							}
 						}
 						if(flip_f) poly.flip();

@@ -8,7 +8,7 @@ public class V3D {
 	public static final V3D NULL = new V3D(){
 		@Override
 		public V3D set(double x, double y, double z){
-			x = y = z = 0;
+			this.x = this.y = this.z = 0;
 			return this;
 		}
 	};
@@ -36,7 +36,7 @@ public class V3D {
         this(vector.x, vector.y, vector.z);
     }
 
-    public V3D(Vec3f vector){
+    public V3D(V3F vector){
         this(vector.x, vector.y, vector.z);
     }
 
