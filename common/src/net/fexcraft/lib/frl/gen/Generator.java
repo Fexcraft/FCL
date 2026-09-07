@@ -2,7 +2,6 @@ package net.fexcraft.lib.frl.gen;
 
 import java.util.List;
 
-import net.fexcraft.lib.common.math.V3F;
 import net.fexcraft.lib.frl.Polyhedron;
 
 import static net.fexcraft.lib.frl.gen.Generator.Values.*;
@@ -44,12 +43,16 @@ public class Generator {
 	public Polyhedron make(){
 		Type type = map.getValue(TYPE, Type.NONE);
 		switch(type){
+			case CUBOID:{
+				Generator_Cuboid.make(poly, map);
+				break;
+			}
 			case CYLINDER:{
 				Generator_Cylinder.make(poly, map);
 				break;
 			}
-			case CUBOID:{
-				Generator_Cuboid.make(poly, map);
+			case SPHERE:{
+				Generator_Sphere.make(poly, map);
 				break;
 			}
 			default: break;
@@ -84,7 +87,7 @@ public class Generator {
 	
 	public static enum Type {
 		
-		NONE, CUBOID, CYLINDER
+		NONE, CUBOID, CYLINDER, SPHERE
 		
 	}
 
@@ -113,6 +116,8 @@ public class Generator {
 		LENGTH, RADIUS1, RADIUS2, RADIUS3, RADIUS4,
 		AXIS_DIR, SEGMENTS, SEG_LIMIT, SEG_OFFSET, TOP_SCALE, BASE_SCALE,
 		RADIAL, SEG_WIDTH, SEG_HEIGHT, TOP_OFFSET, TOP_ROTATION,
+
+		CIRCLES, CIR_LIMIT, CIR_OFFSET
 	}
 
 }
