@@ -15,6 +15,10 @@ public class Generator {
 	
 	protected Polyhedron poly;
 	protected ValueMap map = new ValueMap();
+
+	public Generator(){
+		this(null);
+	}
 	
 	public Generator(Polyhedron poli){
 		if(poli != null) poly = poli;
