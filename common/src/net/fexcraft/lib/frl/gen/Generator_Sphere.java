@@ -6,6 +6,7 @@ import net.fexcraft.lib.common.math.V3F;
 import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.frl.Vertex;
+import net.fexcraft.mod.fcl.FCL;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,10 @@ import static net.fexcraft.lib.frl.gen.Generator.intToBoolArray;
 public class Generator_Sphere {
 
 	public static void make(Polyhedron poly, ValueMap map){
+		if(M4DW.SUPPLIER == null){
+			FCL.LOGGER.info("ERROR, NO MATRIX WRAPPER PRESENT, CANCELLING SPHERE CREATION");
+			return;
+		}
 		float radius = map.getValue(RADIUS1, 1f);
 		int segments = map.getValue(SEGMENTS, 4);
 		int seglimit = map.getValue(SEG_LIMIT, 0);
