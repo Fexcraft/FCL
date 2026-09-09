@@ -35,15 +35,24 @@ public class Generator_Sphere {
 		if(circles < 3) circles = 3;
 		if(circlelimit <= 0) circlelimit = circles;
 		ArrayList<Polygon> polis = new ArrayList<>();
+		float tu = 1f / map.getValue(TEXTURE_WIDTH, 1f);
+		float tv = 1f / map.getValue(TEXTURE_HEIGHT, 1f);
+		float u = poly.texU < 0 ? 0 : poly.texU * tu;
+		float v = poly.texV < 0 ? 0 : poly.texV * tv;
 		//
 		M4DW[] mat = new M4DW[]{ M4DW.create(), M4DW.create(), M4DW.create(), M4DW.create() };
 		V3F dv = new V3F(0, 1, 0);
 		V3F[] vs = new V3F[]{ new V3F(), new V3F(), new V3F(), new V3F() };
 		float rr = rad180 / circles, r;
+		float vr = (1f / circles) * radius * 2f;
 		float sr = (rad180 / segments) * 2f;
+		float ur = (1f / segments) * radius * 2f;
+		float cu0 = 0, cv0 = 0, cu1 = 0, cv1 = 0;
 		if(!rems[0]){
 			for(int i = 0; i < segments; i++){
 				if(i >= seglimit) break;
+				cu0 = i * ur * tu;
+				cu1 = (i + 1) * ur * tu;
 				mat[0].setRadians((i) * sr + seg_off, 0, 0);
 				mat[1].setRadians((i) * sr + seg_off, cir_off + rr, 0);
 				mat[2].setRadians((i + 1) * sr + seg_off, cir_off + rr, 0);
@@ -51,15 +60,19 @@ public class Generator_Sphere {
 				vs[1] = mat[1].rotate(dv, new V3F()).add(x, y, z);
 				vs[2] = mat[2].rotate(dv, new V3F()).add(x, y, z);
 				polis.add(new Polygon(new Vertex[]{
-					new Vertex(vs[0]),
-					new Vertex(vs[1]),
-					new Vertex(vs[2]),
+					new Vertex(vs[0], u + cu0, v),
+					new Vertex(vs[1], u + cu1, v),
+					new Vertex(vs[2], u + cu1, v + vr * tv),
 				}));
 			}
 		}
 		if(!rems[1]){
+			cv0 = (circles - 1) * vr * tv;
+			cv1 = cv0 + vr * tv;
 			for(int i = 0; i < segments; i++){
 				if(i >= seglimit) break;
+				cu0 = i * ur * tu;
+				cu1 = (i + 1) * ur * tu;
 				mat[0].setRadians((i) * sr + seg_off, rad180, 0);
 				mat[1].setRadians((i) * sr + seg_off, cir_off + (rad180 - rr), 0);
 				mat[2].setRadians((i + 1) * sr + seg_off, cir_off + (rad180 - rr), 0);
@@ -67,9 +80,9 @@ public class Generator_Sphere {
 				vs[1] = mat[1].rotate(dv, new V3F()).add(x, y, z);
 				vs[2] = mat[2].rotate(dv, new V3F()).add(x, y, z);
 				polis.add(new Polygon(new Vertex[]{
-					new Vertex(vs[0]),
-					new Vertex(vs[1]),
-					new Vertex(vs[2]),
+					new Vertex(vs[0], u + cu0, v + cv0),
+					new Vertex(vs[1], u + cu1, v + cv0),
+					new Vertex(vs[2], u + cu1, v + cv1),
 				}));
 			}
 		}
@@ -77,8 +90,12 @@ public class Generator_Sphere {
 			for(int ri = 1; ri < circles - 1; ri++){
 				if(ri >= circlelimit) break;
 				r = rr * ri;
+				cv0 = ri * vr * tv;
+				cv1 = cv0 + vr * tv;
 				for(int i = 0; i < segments; i++){
 					if(i >= seglimit) break;
+					cu0 = i * ur * tu;
+					cu1 = (i + 1) * ur * tu;
 					mat[0].setRadians((i) * sr + seg_off, cir_off + r, 0);
 					mat[1].setRadians((i + 1) * sr + seg_off, cir_off + r, 0);
 					mat[2].setRadians((i) * sr + seg_off, cir_off + r + rr, 0);
@@ -88,10 +105,10 @@ public class Generator_Sphere {
 					vs[2] = mat[2].rotate(dv, new V3F()).add(x, y, z);
 					vs[3] = mat[3].rotate(dv, new V3F()).add(x, y, z);
 					polis.add(new Polygon(new Vertex[]{
-						new Vertex(vs[0]),
-						new Vertex(vs[1]),
-						new Vertex(vs[3]),
-						new Vertex(vs[2]),
+						new Vertex(vs[0], u + cu0, v + cv0),
+						new Vertex(vs[1], u + cu1, v + cv0),
+						new Vertex(vs[3], u + cu1, v + cv1),
+						new Vertex(vs[2], u + cu0, v + cv1),
 					}));
 				}
 			}
