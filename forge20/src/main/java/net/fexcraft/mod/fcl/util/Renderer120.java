@@ -7,7 +7,7 @@ import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.TexturedPolygon;
 import net.fexcraft.lib.common.math.TexturedVertex;
-import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.lib.common.math.V3F;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -25,7 +25,7 @@ public class Renderer120 extends ModelRendererTurbo.Renderer {
 	public static final Vector3f AX = Renderer20.AX;
 	public static final Vector3f AZ = Renderer20.AZ;
 	//
-	private static Vec3f color = new Vec3f(1, 1, 1);
+	private static V3F color = new V3F(1, 1, 1);
 	public static PoseStack pose;
 	private static MultiBufferSource buffer;
 	private static VertexConsumer cons;
@@ -40,7 +40,7 @@ public class Renderer120 extends ModelRendererTurbo.Renderer {
 		color.z = arr[2];
 	}
 
-	public static void setColor(Vec3f col){
+	public static void setColor(V3F col){
 		color.copy(col);
 	}
 
