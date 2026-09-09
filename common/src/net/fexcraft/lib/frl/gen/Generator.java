@@ -17,7 +17,11 @@ public class Generator {
 	protected ValueMap map = new ValueMap();
 
 	public Generator(){
-		this(null);
+		this(null, Type.NONE);
+	}
+
+	public Generator(Type type){
+		this(null, type);
 	}
 	
 	public Generator(Polyhedron poli){
@@ -37,7 +41,7 @@ public class Generator {
 	}
 	
 	public Generator(Polyhedron poli, Type type){
-		this(poli, 0, 0, type);
+		this(poli, 1, 1, type);
 	}
 
 	public Polyhedron get(){
