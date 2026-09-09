@@ -1,6 +1,5 @@
-package net.fexcraft.mod.uni.util;
+package net.fexcraft.mod.fcl.util;
 
-import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.uni.UniEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
