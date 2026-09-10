@@ -144,7 +144,7 @@ public class Renderer20 extends Renderer {
 
 	private void fillVert(Matrix4f verma, Matrix3f norma, Vertex vert){
 		Vector4f vec = verma.transform(new Vector4f(vert.vector.x, vert.vector.y, vert.vector.z, 1.0F));
-		Vector3f norm = norma.transform(vert.norm == null ? NULLVEC : new Vector3f(vert.norm.x, vert.norm.y, vert.norm.z));
+		Vector3f norm = norma.transform(vert.norm == null ? new Vector3f(1, 1, 1) : new Vector3f(vert.norm.x, vert.norm.y, vert.norm.z));
 		cons.vertex(vec.x, vec.y, vec.z, color[0], color[1], color[2], alpha, vert.u, vert.v, overlay, light, norm.x, norm.y, norm.z);
 	}
 
