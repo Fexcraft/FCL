@@ -91,7 +91,7 @@ public class DefaultRenderer extends Renderer {
 		poly.recompile = false;
 	}
 
-	private static void genNorm(Polygon gon){
+	public static void genNorm(Polygon gon){
 		for(int i = 0; i < gon.vertices.length; i++){
 			boolean uz = i < 2;
 			V3F v0 = gon.vertices[uz ? 1 : i - 1].vector.sub(gon.vertices[uz ? 0 : i - 2].vector);
