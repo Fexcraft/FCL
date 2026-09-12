@@ -8,7 +8,7 @@ import net.fexcraft.mod.uni.IDL;
  * @author Ferdinand Calo' (FEX___96)
  *
  */
-public abstract class Renderer<GL extends GLO> {
+public abstract class Renderer {
 	
 	@SuppressWarnings("rawtypes")
 	public static Renderer RENDERER = new DefaultRenderer();
