@@ -2,6 +2,7 @@ package net.fexcraft.mod.fcl;
 
 import com.google.common.io.Files;
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.frl.CompactModel;
 import net.fexcraft.mod.fcl.ui.*;
 import net.fexcraft.mod.uni.ConfigBase;
 import net.fexcraft.mod.uni.EnvInfo;
@@ -39,6 +40,7 @@ public class UniFCL extends ConfigBase {
 	//
 	public static final ConcurrentHashMap<String, PacketFileListener> SFL_C = new ConcurrentHashMap<>();
 	public static final ConcurrentHashMap<String, PacketFileListener> SFL_S = new ConcurrentHashMap<>();
+	public static CompactModel CRAFTING_MODEL;
 	public static String SF_PATH;
 	public static File SF_FOLDER;
 
