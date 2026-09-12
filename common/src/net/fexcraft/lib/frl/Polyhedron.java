@@ -141,4 +141,10 @@ public class Polyhedron {
 		return this;
 	}
 
+	public Polyhedron ruv(float u, float v){
+		texU = u;
+		texV = v;
+		return this;
+	}
+
 }
