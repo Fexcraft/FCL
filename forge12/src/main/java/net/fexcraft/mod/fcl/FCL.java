@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.lib.frl.CompactParserBEO;
 import net.fexcraft.lib.mc.crafting.RecipeRegistry;
 import net.fexcraft.mod.fcl.mixint.CWProvider;
 import net.fexcraft.mod.fcl.mixint.EWProvider;
@@ -178,6 +179,8 @@ public class FCL {
 			FclRecipe.newBuilder("recipe.fcl.testing").add(new ItemStack(Blocks.COBBLESTONE, 4)).output(new ItemStack(Blocks.STONE_STAIRS, 5)).register();
 			FclRecipe.newBuilder("recipe.fcl.testing").add("ingotIron", 9).output(new ItemStack(Blocks.IRON_BLOCK, 1)).register();
 		}
+		if(event.getSide().isServer()) return;
+		UniFCL.CRAFTING_MODEL = CompactParserBEO.parse(net.minecraft.client.Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("fcl:models/block/crafting.bob")).getInputStream(), 1f);
 	}
 	
 	@Mod.EventHandler
