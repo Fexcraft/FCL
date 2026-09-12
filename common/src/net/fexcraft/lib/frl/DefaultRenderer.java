@@ -56,7 +56,7 @@ public class DefaultRenderer extends Renderer {
 		glNewList(poly.glId, GL_COMPILE);
 		for(Polygon gon : poly.polygons){
 			if(gon.vertices.length < 1) continue;
-			if(gon.vertices[0].norm == null) genNorm(gon);
+			if(gon.vertices[0].norm == null) gon.genNorm();
 			if(gon.lines){
 				glBegin(GL_LINE_STRIP);
 			}
@@ -89,15 +89,6 @@ public class DefaultRenderer extends Renderer {
 		}
 		glEndList();
 		poly.recompile = false;
-	}
-
-	public static void genNorm(Polygon gon){
-		for(int i = 0; i < gon.vertices.length; i++){
-			boolean uz = i < 2;
-			V3F v0 = gon.vertices[uz ? 1 : i - 1].vector.sub(gon.vertices[uz ? 0 : i - 2].vector);
-			V3F v1 = gon.vertices[uz ? 1 : i - 1].vector.sub(gon.vertices[uz ? 2 : i].vector);
-			gon.vertices[i].norm(v1.cross(v0).normalize());
-		}
 	}
 
 	private static void quadAsTriangleCol(Polygon poly, int x, int y, int z, int o){
