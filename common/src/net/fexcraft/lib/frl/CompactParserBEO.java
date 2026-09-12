@@ -112,11 +112,12 @@ public class CompactParserBEO {
 	}
 
 	private static void readPolygons(InputStream stream, CompactGroup group, int tx, int ty, float scale) throws IOException {
-		Polyhedron hedron = new Polyhedron();
+		Polyhedron hedron = null;
 		int r;
 		while(true){
 			if((r = stream.read()) == -1) break;
 			if(r != OBJECT) break;
+			hedron = new Polyhedron();
 			while(true){
 				if((r = stream.read()) == -1) break;
 				if(r == END){
