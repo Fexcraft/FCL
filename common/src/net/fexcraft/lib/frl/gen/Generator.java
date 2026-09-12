@@ -77,6 +77,16 @@ public class Generator {
 		map.put(key, value);
 		return this;
 	}
+
+	public Generator initArray(Enum<?> key, int size, Object def){
+		map.getArray(key, size, def);
+		return this;
+	}
+
+	public Generator set(Enum<?> key, int idx, Object value){
+		map.getArray(key).set(idx, value);
+		return this;
+	}
 	
 	public Generator removePolygon(int index){
 		if(!map.has(REMOVE_POLYGONS)) map.addArray(REMOVE_POLYGONS, int.class);
@@ -92,7 +102,7 @@ public class Generator {
 	public ValueMap getMap(){
 		return map;
 	}
-	
+
 	public static enum Type {
 		
 		NONE, CUBOID, CYLINDER, SPHERE
