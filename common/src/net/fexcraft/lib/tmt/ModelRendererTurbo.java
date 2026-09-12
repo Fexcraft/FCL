@@ -1128,14 +1128,6 @@ public class ModelRendererTurbo {
 		return addHollowCylinder(x, y, z, radius, radius2, length, segments, seglimit, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), topoff, bools);
 	}
 	
-	public CylinderBuilder newCylinderBuilder(){
-		return new CylinderBuilder(this);
-	}	
-	
-	public BoxBuilder newBoxBuilder(){
-		return new BoxBuilder(this);
-	}	
-	
 	/**
 	 * Based on the addCylinder method. Not updated currently further, use the CylinderBuilder for newer features!
 	 * @author Ferdinand Calo' (FEX___96)
