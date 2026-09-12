@@ -2,26 +2,24 @@ package net.fexcraft.mod.fcl.local;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.tmt.ModelRendererTurbo;
-import net.fexcraft.mod.fcl.util.CraftingModel;
+import net.fexcraft.lib.frl.CompactParserBEO;
+import net.fexcraft.mod.fcl.UniFCL;
 import net.fexcraft.mod.fcl.util.FCLRenderTypes;
-import net.fexcraft.mod.fcl.util.Renderer26MRT;
+import net.fexcraft.mod.fcl.util.FCLRenderUtil;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
 import org.joml.Quaternionf;
 
-import java.util.ArrayList;
-
-import static net.fexcraft.lib.common.Static.sixteenth;
-import static net.fexcraft.lib.tmt.ModelRendererTurbo.RENDERER;
 import static net.fexcraft.mod.fcl.local.CraftingBlock.FACING;
-import static net.fexcraft.mod.fcl.util.Renderer26MRT.*;
+import static net.fexcraft.mod.fcl.util.Renderer26.AY;
+import static net.fexcraft.mod.fcl.util.Renderer26.AZ;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -29,7 +27,16 @@ import static net.fexcraft.mod.fcl.util.Renderer26MRT.*;
 public class CraftingRenderer implements BlockEntityRenderer<CraftingEntity, BlockEntityRenderState> {
 
 	public static final IDL TEXTURE = IDLManager.getIDLCached("fcl:textures/block/crafting.png");
-	private static CraftingModel MODEL = new CraftingModel();
+
+	public CraftingRenderer(){
+		super();
+		try{
+			UniFCL.CRAFTING_MODEL = CompactParserBEO.parse(Minecraft.getInstance().getResourceManager().getResource(Identifier.parse("fcl:models/block/crafting.bob")).get().open(), 0.0625f);
+		}
+		catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
 
 	@Override
 	public BlockEntityRenderState createRenderState(){
@@ -43,12 +50,8 @@ public class CraftingRenderer implements BlockEntityRenderer<CraftingEntity, Blo
 		Direction dir = state.blockState.getValue(FACING);
 		pose.mulPose(new Quaternionf().rotateAxis(Static.toRadians(dir.getAxis() == Direction.Axis.Z ? dir.toYRot() : dir.toYRot() - 180), AY));
 		pose.mulPose(new Quaternionf().rotateAxis(Static.rad180, AZ));
-		Renderer26MRT.set(pose, FCLRenderTypes.getCutout(TEXTURE), nodecoll, state.lightCoords);
-		for(ArrayList<ModelRendererTurbo> group : MODEL.groups){
-			for(ModelRendererTurbo turbo : group){
-				RENDERER.render(turbo, sixteenth);
-			}
-		}
+		FCLRenderUtil.set(pose, nodecoll, FCLRenderTypes.getCutout(TEXTURE), state.lightCoords);
+		FCLRenderUtil.render(UniFCL.CRAFTING_MODEL);
 		pose.popPose();
 	}
 
