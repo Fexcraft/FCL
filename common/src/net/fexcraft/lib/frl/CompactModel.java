@@ -20,6 +20,12 @@ public class CompactModel {
 		authors.add(str);
 	}
 
+	public void render(){
+		for(CompactGroup group : groups.values()){
+			group.render();
+		}
+	}
+
 	public static class CompactGroup {
 
 		public ArrayList<Polyhedron> polyhedrons = new ArrayList<>();
@@ -29,6 +35,12 @@ public class CompactModel {
 
 		public CompactGroup(String str){
 			name = str;
+		}
+
+		public void render(){
+			for(Polyhedron hedron : polyhedrons){
+				hedron.render();
+			}
 		}
 
 	}
