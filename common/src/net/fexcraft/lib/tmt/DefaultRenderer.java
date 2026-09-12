@@ -14,7 +14,9 @@ public class DefaultRenderer extends ModelRendererTurbo.Renderer {
         if(mrt.rotationAngleX != 0.0F || mrt.rotationAngleY != 0.0F || mrt.rotationAngleZ != 0.0F){
             GL11.glPushMatrix();
             GL11.glTranslatef(mrt.rotationPointX * scale, mrt.rotationPointY * scale, mrt.rotationPointZ * scale);
-            mrt.rotationOrder.rotate(mrt);
+            if(mrt.rotationAngleY != 0.0F) GL11.glRotatef(mrt.rotationAngleY, 0.0F, 1.0F, 0.0F);
+            if(mrt.rotationAngleZ != 0.0F) GL11.glRotatef(mrt.rotationAngleZ, 0.0F, 0.0F, 1.0F);
+            if(mrt.rotationAngleX != 0.0F) GL11.glRotatef(mrt.rotationAngleX, 1.0F, 0.0F, 0.0F);
     		GL11.glCallList((Integer)mrt.glId);
             if(mrt.childModels != null){
                 for(ModelRendererTurbo child : mrt.childModels) child.render(scale);
