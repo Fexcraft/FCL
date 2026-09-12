@@ -87,4 +87,14 @@ public class Polygon {
 		return new Polygon(vertices).lines(lines).textured(textured);
 	}
 
+	public Polygon genNorm(){
+		for(int i = 0; i < vertices.length; i++){
+			boolean uz = i < 2;
+			V3F v0 = vertices[uz ? 1 : i - 1].vector.sub(vertices[uz ? 0 : i - 2].vector);
+			V3F v1 = vertices[uz ? 1 : i - 1].vector.sub(vertices[uz ? 2 : i].vector);
+			vertices[i].norm(v1.cross(v0).normalize());
+		}
+		return this;
+	}
+
 }
