@@ -6,7 +6,6 @@ import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.utils.CallbackContainer;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.lib.frl.Renderer;
-import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.fcl.local.CraftingRenderer;
 import net.fexcraft.mod.fcl.util.*;
 import net.fexcraft.mod.uni.EnvInfo;
@@ -59,7 +58,6 @@ public class FCLC implements ClientModInitializer {
 			});
 		});
 		//
-		ModelRendererTurbo.RENDERER = new Renderer26MRT();
 		Renderer.RENDERER = new Renderer26();
 		AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
 		UITab.IMPLEMENTATION = UUITab.class;
