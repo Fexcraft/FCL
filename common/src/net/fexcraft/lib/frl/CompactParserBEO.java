@@ -161,9 +161,7 @@ public class CompactParserBEO {
 							float[] uv = uvs.get(ids[i + len]);
 							verts[i] = new Vertex(vec, uv[0], uv[1]);
 						}
-						Polygon poly = new Polygon(verts);
-						DefaultRenderer.genNorm(poly);
-						hedron.polygons.add(poly);
+						hedron.polygons.add(new Polygon(verts).genNorm());
 						continue;
 					}
 					default: break;
