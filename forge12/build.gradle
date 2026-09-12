@@ -20,13 +20,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '12.118' // + getDateSuffix()
+version = '12.119'
 group = 'net.fexcraft.mod' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'FCL'
-
-def getDateSuffix(){
-    return new Date().format('ddMMyyHHmm')
-}
 
 sourceSets {
     main {
