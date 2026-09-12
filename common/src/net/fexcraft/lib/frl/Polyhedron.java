@@ -134,4 +134,11 @@ public class Polyhedron {
 		return hed;
 	}
 
+	public Polyhedron genNorm(){
+		for(Polygon polygon : polygons){
+			polygon.genNorm();
+		}
+		return this;
+	}
+
 }
