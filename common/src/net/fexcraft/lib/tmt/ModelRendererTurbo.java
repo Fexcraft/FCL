@@ -33,7 +33,6 @@ public class ModelRendererTurbo {
     /** Changed from radians to degrees, please re-check your model rotations! **/
     public float rotationAngleX = 0, rotationAngleY = 0, rotationAngleZ = 0;
     public float rotationPointX = 0, rotationPointY = 0, rotationPointZ = 0;
-    public RotationOrder rotationOrder = RotationOrder.YZX;
 	//
     public static final int MR_FRONT = 0, MR_BACK = 1, MR_LEFT = 2, MR_RIGHT = 3, MR_TOP = 4, MR_BOTTOM = 5;
     public boolean showModel, forcedRecompile, mirror, flip;
@@ -103,10 +102,6 @@ public class ModelRendererTurbo {
 	 */
 	public ModelRendererTurbo setRotationAngle(float x, float y, float z){
 		this.rotationAngleX = x; this.rotationAngleY = y; this.rotationAngleZ = z; return this;
-	}
-	
-	public ModelRendererTurbo setRotationOrder(RotationOrder rotor){
-		this.rotationOrder = rotor; return this;
 	}
 	
 	public ModelRendererTurbo setTextured(boolean bool){
