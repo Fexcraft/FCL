@@ -11,13 +11,13 @@ import com.google.common.collect.ImmutableMap;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonValue;
-import net.fexcraft.lib.common.math.TexturedPolygon;
-import net.fexcraft.lib.common.math.TexturedVertex;
 import net.fexcraft.lib.common.math.V3F;
+import net.fexcraft.lib.frl.Polygon;
+import net.fexcraft.lib.frl.Polyhedron;
+import net.fexcraft.lib.frl.Vertex;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
 import net.fexcraft.lib.mc.utils.Axis3DL;
 import net.fexcraft.lib.mc.utils.Static;
-import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -253,16 +253,16 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 				scale = root.customdata.containsKey("scale") ? Float.parseFloat(root.customdata.get("scale")) : Static.sixteenth;
 			}
 			else axis1.setAngles(180, 180, 0);
-			Collection<ModelRendererTurbo> mrts = model.getPolygons(state, side, root.customdata, rand);
+			Collection<Polyhedron> hedrons = model.getPolygons(state, side, root.customdata, rand);
 			//
 			try{
-				for(ModelRendererTurbo mrt : mrts){
-					TextureAtlasSprite sprite = mrt.texName == null ? deftex : getTex(root, mrt.texName);
-					axis.setAngles(-mrt.rotationAngleY, -mrt.rotationAngleZ, -mrt.rotationAngleX);
-					for(TexturedPolygon polygon : mrt.getFaces()){
-						if(polygon.getVertices().length != 4) continue;
-						V3F vec0 = new V3F(polygon.getVertices()[1].vector.sub(polygon.getVertices()[0].vector));
-						V3F vec1 = new V3F(polygon.getVertices()[1].vector.sub(polygon.getVertices()[2].vector));
+				for(Polyhedron hedron : hedrons){
+					TextureAtlasSprite sprite = hedron.glObj.material.none() ? deftex : getTex(root, hedron.glObj.material.texture.toString());
+					axis.setAngles(-hedron.rotY, -hedron.rotZ, -hedron.rotX);
+					for(Polygon polygon : hedron.polygons){
+						if(polygon.vertices.length != 4) continue;
+						V3F vec0 = new V3F(polygon.vertices[1].vector.sub(polygon.vertices[0].vector));
+						V3F vec1 = new V3F(polygon.vertices[1].vector.sub(polygon.vertices[2].vector));
 						V3F vec2 = vec1.cross(vec0).normalize();
 						vec2 = axis1.getRelativeVector(axis.getRelativeVector(vec2));
 						if(axis2 != null) vec2 = axis2.getRelativeVector(vec2);
@@ -270,10 +270,10 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 						builder.setContractUVs(true);
 						builder.setQuadOrientation(EnumFacing.getFacingFromVector(vec2.x, vec2.y, vec2.z));
 						builder.setTexture(sprite);
-						putVertexData(builder, mrt, polygon.getVertices()[0], vec2, TextureCoordinate.getDefaultUVs()[0], sprite);
-						putVertexData(builder, mrt, polygon.getVertices()[1], vec2, TextureCoordinate.getDefaultUVs()[1], sprite);
-						putVertexData(builder, mrt, polygon.getVertices()[2], vec2, TextureCoordinate.getDefaultUVs()[2], sprite);
-						putVertexData(builder, mrt, polygon.getVertices()[3], vec2, TextureCoordinate.getDefaultUVs()[3], sprite);
+						putVertexData(builder, hedron, polygon.vertices[0], vec2, TextureCoordinate.getDefaultUVs()[0], sprite);
+						putVertexData(builder, hedron, polygon.vertices[1], vec2, TextureCoordinate.getDefaultUVs()[1], sprite);
+						putVertexData(builder, hedron, polygon.vertices[2], vec2, TextureCoordinate.getDefaultUVs()[2], sprite);
+						putVertexData(builder, hedron, polygon.vertices[3], vec2, TextureCoordinate.getDefaultUVs()[3], sprite);
 						newquads.add(builder.build());
 					}
 				}
@@ -315,27 +315,23 @@ public class FCLBlockModelLoader implements ICustomModelLoader {
 			return root.textures.get(tempres.get(texName));
 		}
 
-		private final void putVertexData(Builder builder, ModelRendererTurbo mrt, TexturedVertex vert, V3F normal, TextureCoordinate textureinate, TextureAtlasSprite texture){
+		private final void putVertexData(Builder builder, Polyhedron hedron, Vertex vert, V3F normal, TextureCoordinate textureinate, TextureAtlasSprite texture){
 			for(int e = 0; e < format.getElementCount(); e++){
 				switch(format.getElement(e).getUsage()){
 					case POSITION:
 						V3F vec = axis.getRelativeVector(vert.vector);
-						vec = axis1.getRelativeVector(vec.add(mrt.rotationPointX, mrt.rotationPointY, mrt.rotationPointZ));
+						vec = axis1.getRelativeVector(vec.add(hedron.posX, hedron.posY, hedron.posZ));
 						if(axis2 != null) vec = axis2.getRelativeVector(vec);
 						builder.put(e, vec.x * scale + translate.x, vec.y * scale + translate.y, vec.z * scale + translate.z, 1);
 						break;
 					case COLOR:
-						if(mrt.getColor() != null){
-							float[] color = mrt.getColor().toFloatArray();
-							builder.put(e, color[0], color[1], color[2], color[3]);
-						}
-						else builder.put(e, 1, 1, 1, 1);
+						builder.put(e, vert.color().x, vert.color().y, vert.color().z, 1);
 						break;
 					case UV:
-						if(!mrt.textured){
+						/*if(!hedron.glObj.textured){
 							builder.put(e, texture.getInterpolatedU(0), texture.getInterpolatedV(0), 0, 1);
 						}
-						else builder.put(e, texture.getInterpolatedU(vert.textureX * 16), texture.getInterpolatedV(vert.textureY * 16), 0, 1);
+						else*/ builder.put(e, texture.getInterpolatedU(vert.u * 16), texture.getInterpolatedV(vert.v * 16), 0, 1);
 						break;
 					case NORMAL:
 						builder.put(e, normal.x, normal.y, normal.z, 0);
