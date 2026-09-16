@@ -31,8 +31,7 @@ public class CompactParserBEO {
 	private static final int UV = 5;
 	private static final int NORMAL = 6;
 	private static final int FACE = 7;
-	private static ArrayList<V3F> vecs = new ArrayList<>();
-	private static ArrayList<float[]> uvs = new ArrayList<>();
+	private static final int SETTING = 8;
 
 	/**
 	 * Returns a CompactModel.
@@ -54,10 +53,20 @@ public class CompactParserBEO {
 		int f0 = stream.read(), f1 = stream.read(), f2 = stream.read(), format = stream.read();
 		if(f0 != 6 || f1 != 2 || f2 != 15 || format < 0) return model;
 		int r;
+		ParseData data = new ParseData();
 		while((r = stream.read()) > -1){
 			switch(r){
 				case NAME:{
 					model.name = readString(stream);
+					break;
+				}
+				case SETTING:{
+					switch(stream.read()){
+						case NORMAL:{
+							data.normal_mode = stream.read();
+							break;
+						}
+					}
 					break;
 				}
 				case AUTHOR:{
@@ -72,7 +81,7 @@ public class CompactParserBEO {
 				}
 				case GROUP:{
 					CompactGroup group = new CompactGroup(readString(stream));
-					readPolygons(stream, group, model.tex_width, model.tex_height, scale);
+					readPolygons(stream, group, model.tex_width, model.tex_height, scale, data);
 					model.groups.put(group.name, group);
 					break;
 				}
@@ -82,8 +91,6 @@ public class CompactParserBEO {
 		}
 		//
 		stream.close();
-		vecs.clear();
-		uvs.clear();
 		return model;
 	}
 
@@ -111,7 +118,7 @@ public class CompactParserBEO {
 		return new String(read(stream), StandardCharsets.UTF_8);
 	}
 
-	private static void readPolygons(InputStream stream, CompactGroup group, int tx, int ty, float scale) throws IOException {
+	private static void readPolygons(InputStream stream, CompactGroup group, int tx, int ty, float scale, ParseData pd) throws IOException {
 		Polyhedron hedron = null;
 		int r;
 		while(true){
@@ -141,27 +148,30 @@ public class CompactParserBEO {
 					}
 					case VECTOR:{
 						float[] fl = readFloats(stream, 3);
-						vecs.add(new V3F(fl[0], fl[1], fl[2]));
+						pd.vecs.add(new V3F(fl[0], fl[1], fl[2]));
 						continue;
 					}
 					case UV:{
-						uvs.add(readFloats(stream, 2));
+						pd.uvs.add(readFloats(stream, 2));
 						continue;
 					}
 					case NORMAL:{
-						//
+						float[] fl = readFloats(stream, 3);
+						pd.nor.add(new V3F(fl[0], fl[1], fl[2]));
 						continue;
 					}
 					case FACE:{
 						int len = readIntegers(stream, 1)[0];
-						int[] ids = readIntegers(stream, len + len);
+						int[] ids = readIntegers(stream, len + len + (pd.normal_length(len)));
 						Vertex[] verts = new Vertex[len];
 						for(int i = 0; i < len; i++){
-							V3F vec = vecs.get(ids[i]);
-							float[] uv = uvs.get(ids[i + len]);
+							V3F vec = pd.vecs.get(ids[i]);
+							float[] uv = pd.uvs.get(ids[i + len]);
 							verts[i] = new Vertex(vec, uv[0], uv[1]);
 						}
-						hedron.polygons.add(new Polygon(verts).genNorm());
+						Polygon poly = new Polygon(verts);
+						pd.applyNormals(ids, poly);
+						hedron.polygons.add(poly);
 						continue;
 					}
 					default: break;
@@ -190,6 +200,34 @@ public class CompactParserBEO {
 			arr[i] = ByteBuffer.wrap(bit).getInt();
 		}
 		return arr;
+	}
+
+	public static class ParseData {
+
+		public ArrayList<V3F> vecs = new ArrayList<>();
+		public ArrayList<float[]> uvs = new ArrayList<>();
+		public ArrayList<V3F> nor = new ArrayList<>();
+		public int normal_mode = 0;
+
+		public int normal_length(int len){
+			return normal_mode == 0 ? 0 : normal_mode == 1 ? len : 1;
+		}
+
+		public void applyNormals(int[] ids, Polygon poly){
+			if(normal_mode == 0) poly.genNorm();
+			else if(normal_mode == 1){
+				for(int i = 0; i < poly.vertices.length; i++){
+					poly.vertices[i].norm(nor.get(ids[i + poly.vertices.length * 2]));
+				}
+			}
+			else if(normal_mode == 2){
+				V3F norm = nor.get(ids[ids.length - 1]);
+				for(int i = 0; i < poly.vertices.length; i++){
+					poly.vertices[i].norm(norm);
+				}
+			}
+		}
+
 	}
 
 }
