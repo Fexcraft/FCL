@@ -98,7 +98,7 @@ public class FRLObjParser {
 					}
 					else if(s.startsWith("vn ")){
 						if(!normals || ss.length < 3) continue;
-						raw_normals.add(new float[]{ p(ss[0]), p(ss[2]), p(ss[1]) });
+						raw_normals.add(new float[]{ p(ss[0]), p(ss[1]), p(ss[2]) });
 					}
 					continue;
 				}
