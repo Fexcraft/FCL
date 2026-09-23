@@ -3,8 +3,6 @@ package net.fexcraft.mod.uni.ui;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
