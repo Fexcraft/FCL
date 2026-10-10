@@ -34,6 +34,10 @@ public abstract class UIElement {
 			otx = tx = arr.get(0).integer_value();
 			oty = ty = arr.get(1).integer_value();
 		}
+		if(otx < 0) otx = 256 + otx;
+		if(oty < 0) oty = 256 + oty;
+		if(tx < 0) tx = 256 + tx;
+		if(ty < 0) ty = 256 + ty;
 		boolean slot = this instanceof UISlot;
 		arr = map.has("size") ? map.getArray("size") : new JsonArray(slot ? 18 : 10, slot? 18 : 10);
 		owidth = width = arr.get(0).integer_value();
