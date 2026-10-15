@@ -20,4 +20,8 @@ public class EnvInfo {
 		return UniReg.LOADER_VERSION.startsWith("1.2") && !is120();
 	}
 
+	public static boolean isFMT(){
+		return UniReg.LOADER_VERSION.equals("FMT");
+	}
+
 }
