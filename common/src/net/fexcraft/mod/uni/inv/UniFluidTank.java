@@ -1,5 +1,6 @@
 package net.fexcraft.mod.uni.inv;
 
+import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
@@ -27,7 +28,7 @@ public abstract class UniFluidTank {
 			return IMPL.getConstructor(int.class).newInstance(capacity);
 		}
 		catch(Exception e){
-			e.printStackTrace();
+			if(!EnvInfo.isFMT()) e.printStackTrace();
 			return null;
 		}
 	}
