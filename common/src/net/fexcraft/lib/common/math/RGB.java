@@ -113,7 +113,7 @@ public class RGB {
 	}
 
 	public float[] toFloatArray(){
-		return new float[]{(packed >> 16 & 255) / 255.0F, (packed >> 8 & 255) / 255.0F, (packed & 255) / 255.0F, alpha};
+		return new float[]{ (packed >> 16 & 255) / 255.0F, (packed >> 8 & 255) / 255.0F, (packed & 255) / 255.0F, alpha };
 	}
 
 	public void cpToArray(float[] arr){
@@ -124,7 +124,15 @@ public class RGB {
 	}
 
 	public byte[] toByteArray(){
-		return new byte[]{(byte)(((packed >> 16) & 255) - 128), (byte)(((packed >> 8) & 255) - 128), (byte)((packed & 255) - 128)};
+		return new byte[]{ (byte)(((packed >> 16) & 255) - 128), (byte)(((packed >> 8) & 255) - 128), (byte)((packed & 255) - 128) };
+	}
+
+	public static byte[] toByteArray(int packed){
+		return new byte[]{ (byte)(((packed >> 16) & 255) - 128), (byte)(((packed >> 8) & 255) - 128), (byte)((packed & 255) - 128) };
+	}
+
+	public static float[] toFloatArray(int packed){
+		return new float[]{ (packed >> 16 & 255) / 255.0F, (packed >> 8 & 255) / 255.0F, (packed & 255) / 255.0F, 1f };
 	}
 	
 	/// JSON ///
