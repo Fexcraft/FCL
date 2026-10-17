@@ -1,5 +1,6 @@
 package net.fexcraft.mod.uni.inv;
 
+import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
 
@@ -45,7 +46,7 @@ public abstract class UniInventory {
 			return IMPL.getConstructor(int.class).newInstance(size);
 		}
 		catch(Exception e){
-			e.printStackTrace();
+			if(!EnvInfo.isFMT()) e.printStackTrace();
 			return null;
 		}
 	}
